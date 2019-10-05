@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="ForgGuiGlobals">
+      <UniqueIdentifier>{f2295ca9-917c-4570-9190-15e1a5d59796}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgGuiMainWindow">
+      <UniqueIdentifier>{ed363b71-10d0-4f19-9eab-120552c8c239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{7c22bf0e-41ba-45af-9347-5bfb218d6b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\ForgGuiMenus">
+      <UniqueIdentifier>{4cbf16fe-03de-4cc3-8b16-bd3f1d03c4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\ForgGuiDlgs">
+      <UniqueIdentifier>{e89df173-692d-404d-aae5-a089ef04a315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\ForgGuiThread">
+      <UniqueIdentifier>{0f2b2b82-bfed-4052-a852-1df409ae69a2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ForgGuiGlobals\ForgGuiGlobalsBuild.hxx">
+      <Filter>ForgGuiGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgGuiGlobals\ForgGuiGlobals.hxx">
+      <Filter>ForgGuiGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\ForgGuiMenus\ForgGuiMenus.hxx">
+      <Filter>Entities\ForgGuiMenus</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgGuiGlobals\ForgGuiGlobals_Thread.hxx">
+      <Filter>ForgGuiGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\ForgGuiThread\ForgGuiThread.hxx">
+      <Filter>Entities\ForgGuiThread</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ForgGuiMainWindow\ForgGuiMainWindow.cxx">
+      <Filter>ForgGuiMainWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\ForgGuiMenus\ForgGuiMenus.cxx">
+      <Filter>Entities\ForgGuiMenus</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\ForgGuiDlgs\ForgGuiNewSimDlg.cxx">
+      <Filter>Entities\ForgGuiDlgs</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\ForgGuiDlgs\ForgGuiLoadSimDlg.cxx">
+      <Filter>Entities\ForgGuiDlgs</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\ForgGuiThread\ForgGuiThread.cxx">
+      <Filter>Entities\ForgGuiThread</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resources\ForgGuiResources.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ForgGuiMainWindow\ForgGuiMainWindow.hxx">
+      <Filter>ForgGuiMainWindow</Filter>
+    </QtMoc>
+    <QtMoc Include="Entities\ForgGuiDlgs\ForgGuiNewSimDlg.hxx">
+      <Filter>Entities\ForgGuiDlgs</Filter>
+    </QtMoc>
+    <QtMoc Include="Entities\ForgGuiDlgs\ForgGuiLoadSimDlg.hxx">
+      <Filter>Entities\ForgGuiDlgs</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>
