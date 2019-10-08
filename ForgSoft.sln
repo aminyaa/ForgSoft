@@ -4,11 +4,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgSoft", "ForgSoft\ForgSoft.vcxproj", "{B347FE6B-DC83-48DC-9CE3-494A543BEC5A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{B12702AD-ABFB-343A-A199-8E24837244A3} = {B12702AD-ABFB-343A-A199-8E24837244A3}
-	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgGui", "ForgGui\ForgGui.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgBase", "ForgBase\ForgBase.vcxproj", "{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,12 +23,12 @@ Global
 		{B347FE6B-DC83-48DC-9CE3-494A543BEC5A}.Release|x64.Build.0 = Release|x64
 		{B347FE6B-DC83-48DC-9CE3-494A543BEC5A}.Release|x86.ActiveCfg = Release|Win32
 		{B347FE6B-DC83-48DC-9CE3-494A543BEC5A}.Release|x86.Build.0 = Release|Win32
-		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.ActiveCfg = Debug|x64
-		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.Build.0 = Debug|x64
-		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x86.ActiveCfg = Debug|x64
-		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|x64
-		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
-		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|x64
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}.Debug|x64.ActiveCfg = Debug|x64
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}.Debug|x64.Build.0 = Debug|x64
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}.Debug|x86.ActiveCfg = Debug|x64
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}.Release|x64.ActiveCfg = Release|x64
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}.Release|x64.Build.0 = Release|x64
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

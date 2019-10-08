@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="FrgWidgets">
+      <UniqueIdentifier>{a6caad39-c278-47c7-972e-ca4af9ed1bcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgBaseGlobals">
+      <UniqueIdentifier>{7fcefc72-bd6f-4fc1-a27f-5b3c9e66d6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseDlgs">
+      <UniqueIdentifier>{eec51d8d-a629-42f3-83a8-9519440598f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseThread">
+      <UniqueIdentifier>{f775e0ed-3062-4a5d-a152-38aad108055d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMainWindow">
+      <UniqueIdentifier>{b561023f-e0b4-44df-acff-2b3807809372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu">
+      <UniqueIdentifier>{6fc5077a-c04e-439f-84cd-29c3c88a2434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseTree">
+      <UniqueIdentifier>{747cc7b9-a012-4718-9680-bedb2b529270}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseTreeItem">
+      <UniqueIdentifier>{a2a1295c-1a67-4404-9fdc-12a0fa1aeacd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
+      <Filter>FrgWidgets\FrgBaseDlgs</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgNewSim.cxx">
+      <Filter>FrgWidgets\FrgBaseDlgs</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseThread\FrgBaseThread.cxx">
+      <Filter>FrgWidgets\FrgBaseThread</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMainWindow\FrgBaseMainWindow.cxx">
+      <Filter>FrgWidgets\FrgBaseMainWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgBaseMenu.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgBaseMenuFile.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTree\FrgBaseTree.cxx">
+      <Filter>FrgWidgets\FrgBaseTree</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.cxx">
+      <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
+      <Filter>FrgBaseGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgBaseGlobals\FrgBaseGlobalsBuild.hxx">
+      <Filter>FrgBaseGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgBaseGlobals\FrgBaseGlobalsTypes.hxx">
+      <Filter>FrgBaseGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgBaseGlobals\FrgBaseGlobalsThread.hxx">
+      <Filter>FrgBaseGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseThread\FrgBaseThread.hxx">
+      <Filter>FrgWidgets\FrgBaseThread</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgBaseMenu.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgBaseMenuFile.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx">
+      <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx">
+      <Filter>FrgWidgets\FrgBaseDlgs</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgNewSim.hxx">
+      <Filter>FrgWidgets\FrgBaseDlgs</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseMainWindow\FrgBaseMainWindow.hxx">
+      <Filter>FrgWidgets\FrgBaseMainWindow</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseTree\FrgBaseTree.hxx">
+      <Filter>FrgWidgets\FrgBaseTree</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resources\ForgGuiResources.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+</Project>

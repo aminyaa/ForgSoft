@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Menus/File/Exit.png</file>
+        <file>Icons/Menus/File/Export.png</file>
+        <file>Icons/Menus/File/Import.png</file>
+        <file>Icons/Menus/File/Load.png</file>
+        <file>Icons/Menus/File/New.png</file>
+        <file>Icons/Menus/File/Save.png</file>
+        <file>Icons/Menus/File/SaveAll.png</file>
+        <file>Icons/Menus/File/SaveAs.png</file>
+        <file>Icons/TreeStyle/Eye.png</file>
+        <file>Icons/TreeStyle/stylesheet-branch-end.png</file>
+        <file>Icons/TreeStyle/stylesheet-branch-more.png</file>
+        <file>Icons/TreeStyle/stylesheet-vline.png</file>
+        <file>Icons/TreeStyle/User-Interface-Minus-icon.png</file>
+        <file>Icons/TreeStyle/User-Interface-Plus-icon.png</file>
+        <file>Icons/Forg Logo.png</file>
+    </qresource>
+</RCC>
