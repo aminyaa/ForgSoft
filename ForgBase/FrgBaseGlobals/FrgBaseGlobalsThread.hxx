@@ -3,7 +3,7 @@
 #define _FrgBaseGlobalsThread_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgThread.hxx>
+#include <FrgBaseThread.hxx>
 
 #include <QtCore/QObject>
 

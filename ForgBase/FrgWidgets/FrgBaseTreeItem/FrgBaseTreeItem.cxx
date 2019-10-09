@@ -1,10 +1,11 @@
 #include <FrgBaseTreeItem.hxx>
-#include <FrgTree.hxx>
+#include <FrgBaseTree.hxx>
+#include <FrgBaseTreeItemProperty.hxx>
 
 #include <qttreepropertybrowser.h>
 #include <qtvariantproperty.h>
 
-ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem(const FrgString& itemName, FrgBaseTreeItem* parentItem, FrgTree* parentTree, FrgMainWindow* parentMainWindow)
+ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem(const FrgString& itemName, FrgBaseTreeItem* parentItem, FrgBaseTree* parentTree, FrgBaseMainWindow* parentMainWindow)
 	: QTreeWidgetItem(parentItem)
 	, theParentTree_(parentTree)
 	, theParentMainWindow_(parentMainWindow)
@@ -32,7 +33,7 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem(const FrgString& itemName, FrgBase
 
 void ForgBaseLib::FrgBaseTreeItem::CreateProperty()
 {
-	theProperty_ = FrgNew QtTreePropertyBrowser;
+	/*theProperty_ = FrgNew QtTreePropertyBrowser;
 
 	theVariantPropertyManager_ = FrgNew QtVariantPropertyManager;
 	theVariantEditorFactory_ = FrgNew QtVariantEditorFactory;
@@ -49,5 +50,7 @@ void ForgBaseLib::FrgBaseTreeItem::CreateProperty()
 
 	theProperty_->addProperty(topItem);
 	theProperty_->setPropertiesWithoutValueMarked(FrgTrue);
-	theProperty_->setRootIsDecorated(FrgFalse);
+	theProperty_->setRootIsDecorated(FrgFalse);*/
+
+	theProperty_ = FrgNew FrgBaseTreeItemProperty(this);
 }

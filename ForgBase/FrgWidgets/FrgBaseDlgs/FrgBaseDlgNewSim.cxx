@@ -1,5 +1,5 @@
-#include <FrgDlgNewSim.hxx>
-#include <FrgMainWindow.hxx>
+#include <FrgBaseDlgNewSim.hxx>
+#include <FrgBaseMainWindow.hxx>
 
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QVBoxLayout>
@@ -9,7 +9,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtGui/QKeyEvent>
 
-ForgBaseLib::FrgDlgNewSim::FrgDlgNewSim(FrgMainWindow* parent)
+ForgBaseLib::FrgBaseDlgNewSim::FrgBaseDlgNewSim(FrgBaseMainWindow* parent)
 	: QDialog(parent)
 {
 	this->setMinimumSize(QSize(450, 600));
@@ -21,7 +21,7 @@ ForgBaseLib::FrgDlgNewSim::FrgDlgNewSim(FrgMainWindow* parent)
 	setupLayout();
 }
 
-void ForgBaseLib::FrgDlgNewSim::setupLayout()
+void ForgBaseLib::FrgBaseDlgNewSim::setupLayout()
 {
 	theMPI_GroupBox_ = FrgNew QGroupBox(QMainWindow::tr("Process Options"));
 	the_Layout_NewSim_ = FrgNew QVBoxLayout;
@@ -73,12 +73,12 @@ void ForgBaseLib::FrgDlgNewSim::setupLayout()
 	this->theBtnOK_->setFocus();
 }
 
-void ForgBaseLib::FrgDlgNewSim::onOK()
+void ForgBaseLib::FrgBaseDlgNewSim::onOK()
 {
 	accept();
 }
 
-void ForgBaseLib::FrgDlgNewSim::ShowParallelOptions()
+void ForgBaseLib::FrgBaseDlgNewSim::ShowParallelOptions()
 {
 	bool b = theRadioBtn2_->isChecked();
 	this->theParallelLabel_->setVisible(b);
@@ -86,7 +86,7 @@ void ForgBaseLib::FrgDlgNewSim::ShowParallelOptions()
 	this->theBtnOK_->setFocus();
 }
 
-void ForgBaseLib::FrgDlgNewSim::keyPressEvent(QKeyEvent* event)
+void ForgBaseLib::FrgBaseDlgNewSim::keyPressEvent(QKeyEvent* event)
 {
 	switch (event->key())
 	{

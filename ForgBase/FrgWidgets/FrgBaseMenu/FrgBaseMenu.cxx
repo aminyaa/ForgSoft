@@ -1,9 +1,9 @@
-#include <FrgMenu.hxx>
-#include <FrgMainWindow.hxx>
+#include <FrgBaseMenu.hxx>
+#include <FrgBaseMainWindow.hxx>
 
 #include <QtWidgets/QToolBar>
 
-ForgBaseLib::FrgMenu::FrgMenu(const FrgString& title, FrgMainWindow* parentMainWindow)
+ForgBaseLib::FrgBaseMenu::FrgBaseMenu(const FrgString& title, FrgBaseMainWindow* parentMainWindow)
 	: QMenu(QMainWindow::tr(title.toLocal8Bit().data()), parentMainWindow)
 	, theParentMainWindow_(parentMainWindow)
 {
@@ -14,12 +14,12 @@ ForgBaseLib::FrgMenu::FrgMenu(const FrgString& title, FrgMainWindow* parentMainW
 	theToolBar_ = FrgNew QToolBar(str + " Toolbar", parentMainWindow);
 }
 
-ForgBaseLib::FrgMenu::FrgMenu(FrgMainWindow* parentMainWindow)
-	: FrgMenu("", parentMainWindow)
+ForgBaseLib::FrgBaseMenu::FrgBaseMenu(FrgBaseMainWindow* parentMainWindow)
+	: FrgBaseMenu("", parentMainWindow)
 {
 }
 
-void ForgBaseLib::FrgMenu::AddItem(const FrgString& title)
+void ForgBaseLib::FrgBaseMenu::AddItem(const FrgString& title)
 {
 	FrgString str = title;
 	str.remove('&');
@@ -34,14 +34,14 @@ void ForgBaseLib::FrgMenu::AddItem(const FrgString& title)
 		theToolBar_->addAction(action);
 }
 
-void ForgBaseLib::FrgMenu::AddItem(const FrgString& iconAddress, const FrgString& title)
+void ForgBaseLib::FrgBaseMenu::AddItem(const FrgString& iconAddress, const FrgString& title)
 {
 	AddItem(title);
 
 	theItems_.at(theItems_.size() - 1)->setIcon(QIcon(iconAddress));
 }
 
-void ForgBaseLib::FrgMenu::AddItem(const FrgString& iconAddress, const FrgString& title, const FrgString& shortcut, FrgBool isInToolbar)
+void ForgBaseLib::FrgBaseMenu::AddItem(const FrgString& iconAddress, const FrgString& title, const FrgString& shortcut, FrgBool isInToolbar)
 {
 	theItemIsInToolBarCondition_ = isInToolbar;
 
@@ -50,7 +50,7 @@ void ForgBaseLib::FrgMenu::AddItem(const FrgString& iconAddress, const FrgString
 	theItems_.at(theItems_.size() - 1)->setShortcut(QMainWindow::tr(shortcut.toLocal8Bit().data()));
 }
 
-void ForgBaseLib::FrgMenu::SetEnabledItem(const FrgString& title, FrgBool condition)
+void ForgBaseLib::FrgBaseMenu::SetEnabledItem(const FrgString& title, FrgBool condition)
 {
 	for (FrgInt i = 0; i < theItems_.size(); i++)
 	{
@@ -62,7 +62,7 @@ void ForgBaseLib::FrgMenu::SetEnabledItem(const FrgString& title, FrgBool condit
 	}
 }
 
-QAction* ForgBaseLib::FrgMenu::GetItem(const FrgString& title)
+QAction* ForgBaseLib::FrgBaseMenu::GetItem(const FrgString& title)
 {
 	for (FrgInt i = 0; i < theItems_.size(); i++)
 	{

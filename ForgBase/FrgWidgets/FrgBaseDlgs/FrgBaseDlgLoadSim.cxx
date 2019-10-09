@@ -1,13 +1,13 @@
-#include <FrgDlgLoadSim.hxx>
-#include <FrgMainWindow.hxx>
+#include <FrgBaseDlgLoadSim.hxx>
+#include <FrgBaseMainWindow.hxx>
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QFileDialog>
 
-ForgBaseLib::FrgDlgLoadSim::FrgDlgLoadSim(FrgMainWindow* parent)
-	: FrgDlgNewSim(parent)
+ForgBaseLib::FrgBaseDlgLoadSim::FrgBaseDlgLoadSim(FrgBaseMainWindow* parent)
+	: FrgBaseDlgNewSim(parent)
 {
 	this->setWindowTitle(QMainWindow::tr("Load Simulation"));
 
@@ -28,7 +28,7 @@ ForgBaseLib::FrgDlgLoadSim::FrgDlgLoadSim(FrgMainWindow* parent)
 	connect(theBrowseBtn_, SIGNAL(clicked()), this, SLOT(ShowBrowseDialog()));
 }
 
-void ForgBaseLib::FrgDlgLoadSim::ShowBrowseDialog()
+void ForgBaseLib::FrgBaseDlgLoadSim::ShowBrowseDialog()
 {
 	QString fileName = QFileDialog::getOpenFileName(this, "Open a simulation", "",
 		"frg Files (*.frg)");

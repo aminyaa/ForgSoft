@@ -1,5 +1,5 @@
-#include <FrgFileMenu.hxx>
-#include <FrgMainWindow.hxx>
+#include <FrgBaseMenuFile.hxx>
+#include <FrgBaseMainWindow.hxx>
 
 #include <QtWidgets/QMenuBar>
 
@@ -8,8 +8,8 @@ Action = new QAction(QIcon(IconAddress), QMainWindow::tr(Text), Parent);\
 Action->setShortcut(QMainWindow::tr(Shortcut));\
 Action->setStatusTip(QMainWindow::tr(StatusTip));
 
-ForgBaseLib::FrgFileMenu::FrgFileMenu(FrgMainWindow* parentMainWindow)
-	: FrgMenu("&File", parentMainWindow)
+ForgBaseLib::FrgBaseMenuFile::FrgBaseMenuFile(FrgBaseMainWindow* parentMainWindow)
+	: FrgBaseMenu("&File", parentMainWindow)
 {
 	AddItem(":/Icons/Menus/File/New.png", "&New", "Ctrl+N");
 	AddItem(":/Icons/Menus/File/Load.png", "&Load", "Ctrl+L");

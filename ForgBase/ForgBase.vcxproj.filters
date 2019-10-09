@@ -43,6 +43,18 @@
     <Filter Include="FrgWidgets\FrgBaseTreeItem">
       <UniqueIdentifier>{a2a1295c-1a67-4404-9fdc-12a0fa1aeacd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseSceneTreeItem">
+      <UniqueIdentifier>{c96c7ca1-d890-41ab-baf0-f7c5d7125d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseTreeItemProperty">
+      <UniqueIdentifier>{90ce8d14-8b32-4dbe-b22d-9b576a5b2533}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseVTKEntities">
+      <UniqueIdentifier>{e2cb6e25-d84a-48be-a6b2-48b33920fe49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle">
+      <UniqueIdentifier>{4c1126e0-f79e-4274-8d5d-d38385213780}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -69,6 +81,15 @@
     <ClCompile Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.cxx">
       <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.cxx">
+      <Filter>FrgWidgets\FrgBaseSceneTreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperty\FrgBaseTreeItemProperty.cxx">
+      <Filter>FrgWidgets\FrgBaseTreeItemProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.cxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -94,6 +115,15 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx">
       <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.hxx">
+      <Filter>FrgWidgets\FrgBaseSceneTreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperty\FrgBaseTreeItemProperty.hxx">
+      <Filter>FrgWidgets\FrgBaseTreeItemProperty</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

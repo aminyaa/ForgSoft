@@ -1,6 +1,7 @@
-#include <FrgTree.hxx>
-#include <FrgTreeItem.hxx>
-#include <FrgMainWindow.hxx>
+#include <FrgBaseTree.hxx>
+#include <FrgBaseTreeItem.hxx>
+#include <FrgBaseMainWindow.hxx>
+#include <FrgBaseTreeItemProperty.hxx>
 
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QDockWidget>
@@ -8,7 +9,7 @@
 
 #include <qttreepropertybrowser.h>
 
-ForgBaseLib::FrgTree::FrgTree(FrgMainWindow* parent)
+ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	: QTreeWidget(parent)
 	, theParentMainWindow_(parent)
 {
@@ -48,86 +49,86 @@ ForgBaseLib::FrgTree::FrgTree(FrgMainWindow* parent)
 	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, FrgInt)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, FrgInt)));
 }
 
-void ForgBaseLib::FrgTree::FormTree()
+void ForgBaseLib::FrgBaseTree::FormTree()
 {
-	theItems_.push_back(FrgNew FrgTreeItem("Geometry", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Geometry", FrgNullPtr, this, theParentMainWindow_));
 
-	FrgNew FrgTreeItem("3D-CAD Models", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("3D-CAD Models", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Parts", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Parts", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Contacts", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Contacts", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	theItems_.push_back(FrgNew FrgTreeItem("Continua", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Continua", FrgNullPtr, this, theParentMainWindow_));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Regions", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Regions", FrgNullPtr, this, theParentMainWindow_));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Stopping Criteria", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Stopping Criteria", FrgNullPtr, this, theParentMainWindow_));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Solution Histories", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Solution Histories", FrgNullPtr, this, theParentMainWindow_));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Solution Views", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Solution Views", FrgNullPtr, this, theParentMainWindow_));
 
-	FrgNew FrgTreeItem("Current Solution", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Current Solution", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	theItems_.push_back(FrgNew FrgTreeItem("Monitors", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Monitors", FrgNullPtr, this, theParentMainWindow_));
 
-	FrgNew FrgTreeItem("Physical Time", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Physical Time", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 	theItems_.at(theItems_.size() - 1)->child(theItems_.at(theItems_.size() - 1)->childCount() - 1)->setIcon(0, QIcon(":/Icons/TreeStyle/Eye.png"));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Plots", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Plots", FrgNullPtr, this, theParentMainWindow_));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Summaries", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Summaries", FrgNullPtr, this, theParentMainWindow_));
 
-	theItems_.push_back(FrgNew FrgTreeItem("Tools", FrgNullPtr, this, theParentMainWindow_));
+	theItems_.push_back(FrgNew FrgBaseTreeItem("Tools", FrgNullPtr, this, theParentMainWindow_));
 
-	FrgNew FrgTreeItem("Annotations", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Annotations", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Colormaps", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Colormaps", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Coordinate Systems", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Coordinate Systems", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Custom Trees", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Custom Trees", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Data Focus", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Data Focus", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Data Set Functions", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Data Set Functions", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Environment Maps", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Environment Maps", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Field Functions", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Field Functions", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Filters", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Filters", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Layouts", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Layouts", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Parameters", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Parameters", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Rendering Materials", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Rendering Materials", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Tables", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Tables", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Tags", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Tags", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Transforms", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Transforms", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Units", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Units", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Update Events", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Update Events", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("User Code", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("User Code", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Views", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Views", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 
-	FrgNew FrgTreeItem("Volume Shapes", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
+	FrgNew FrgBaseTreeItem("Volume Shapes", theItems_.at(theItems_.size() - 1), this, theParentMainWindow_);
 }
 
-void ForgBaseLib::FrgTree::ClearTree()
+void ForgBaseLib::FrgBaseTree::ClearTree()
 {
 	this->clear();
 }
 
-void  ForgBaseLib::FrgTree::keyPressEvent(QKeyEvent* event)
+void  ForgBaseLib::FrgBaseTree::keyPressEvent(QKeyEvent* event)
 {
 	QTreeWidget::keyPressEvent(event);
 	switch (event->key())
@@ -145,11 +146,11 @@ void  ForgBaseLib::FrgTree::keyPressEvent(QKeyEvent* event)
 	}
 }
 
-void ForgBaseLib::FrgTree::itemClickedSlot(QTreeWidgetItem* item, FrgInt column)
+void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, FrgInt column)
 {
 	if (theParentMainWindow_->GetPropertyWidget())
 	{
-		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgTreeItem*)item)->GetProperty();
-		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgTreeItem*)item)->GetProperty());
+		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgBaseTreeItem*)item)->GetProperty()->GetPropertyBrowser();
+		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgBaseTreeItem*)item)->GetProperty()->GetPropertyBrowser());
 	}
 }

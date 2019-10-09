@@ -1,7 +1,7 @@
-#include <FrgThread.hxx>
-#include <FrgMainWindow.hxx>
+#include <FrgBaseThread.hxx>
+#include <FrgBaseMainWindow.hxx>
 
-ForgBaseLib::FrgThread::FrgThread(FrgMainWindow* parent, void(*function)(), QMutex* mutex, void(*lockFunction)())
+ForgBaseLib::FrgBaseThread::FrgBaseThread(FrgBaseMainWindow* parent, void(*function)(), QMutex* mutex, void(*lockFunction)())
 	: QThread(parent)
 	, theParentMainWindow_(parent)
 	, theFunction_(function)
@@ -10,7 +10,7 @@ ForgBaseLib::FrgThread::FrgThread(FrgMainWindow* parent, void(*function)(), QMut
 {
 }
 
-void ForgBaseLib::FrgThread::run()
+void ForgBaseLib::FrgBaseThread::run()
 {
 	if (theMutex_)
 	{
@@ -24,7 +24,7 @@ void ForgBaseLib::FrgThread::run()
 	(*theFunction_)();
 }
 
-void ForgBaseLib::FrgThread::start()
+void ForgBaseLib::FrgBaseThread::start()
 {
 	QThread::start();
 }

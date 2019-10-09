@@ -15,5 +15,6 @@
         <file>Icons/TreeStyle/User-Interface-Minus-icon.png</file>
         <file>Icons/TreeStyle/User-Interface-Plus-icon.png</file>
         <file>Icons/Forg Logo.png</file>
+        <file>Icons/Scenes/Geometry_Scene_Icon.png</file>
     </qresource>
 </RCC>

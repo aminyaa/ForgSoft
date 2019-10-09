@@ -1,9 +1,11 @@
-#include <FrgMainWindow.hxx>
-#include <FrgTree.hxx>
-#include <FrgTreeItem.hxx>
-#include <FrgFileMenu.hxx>
-#include <FrgDlgNewSim.hxx>
-#include <FrgDlgLoadSim.hxx>
+#include <FrgBaseMainWindow.hxx>
+#include <FrgBaseTree.hxx>
+#include <FrgBaseTreeItem.hxx>
+#include <FrgBaseMenuFile.hxx>
+#include <FrgBaseDlgNewSim.hxx>
+#include <FrgBaseDlgLoadSim.hxx>
+#include <FrgBaseTreeItemProperty.hxx>
+#include <FrgBaseSceneTreeItem.hxx>
 
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QMenu>
@@ -23,13 +25,13 @@ using namespace QtilitiesLogging;
 using namespace Qtilities::CoreGui;
 //using namespace boost::archive;
 
-ForgBaseLib::FrgMainWindow::FrgMainWindow(QWidget* parent)
+ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	: QMainWindow(parent)
 {
 	this->window()->setWindowIcon(QIcon(":/Icons/Forg Logo.png"));
 
 	//theMenus_ = FrgMakeSharedPtr(FrgMenus)(this);
-	theFileMenu_ = FrgMakeSharedPtr(FrgFileMenu)(this);
+	theFileMenu_ = FrgMakeSharedPtr(FrgBaseMenuFile)(this);
 
 	this->setCentralWidget(FrgNew QWidget);
 
@@ -45,9 +47,9 @@ ForgBaseLib::FrgMainWindow::FrgMainWindow(QWidget* parent)
 	}
 }
 
-void ForgBaseLib::FrgMainWindow::FileNewActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()
 {
-	FrgSharedPtr<FrgDlgNewSim> dlg = FrgMakeSharedPtr(FrgDlgNewSim)(this);
+	FrgSharedPtr<FrgBaseDlgNewSim> dlg = FrgMakeSharedPtr(FrgBaseDlgNewSim)(this);
 
 	if (dlg->exec() == QDialog::Accepted)
 	{
@@ -58,12 +60,14 @@ void ForgBaseLib::FrgMainWindow::FileNewActionSlot()
 
 		CreateTree();
 		CreateProperties();
+
+		FrgBaseSceneTreeItem sc1("scene1", theTreeWidget_->theTree_->GetItems().at(0), theTreeWidget_->theTree_, this);
 	}
 }
 
-void ForgBaseLib::FrgMainWindow::FileLoadActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileLoadActionSlot()
 {
-	FrgSharedPtr<FrgDlgLoadSim> dlg = FrgMakeSharedPtr(FrgDlgLoadSim)(this);
+	FrgSharedPtr<FrgBaseDlgLoadSim> dlg = FrgMakeSharedPtr(FrgBaseDlgLoadSim)(this);
 
 	if (dlg->exec() == QDialog::Accepted)
 	{
@@ -87,7 +91,7 @@ void ForgBaseLib::FrgMainWindow::FileLoadActionSlot()
 	}
 }
 
-void ForgBaseLib::FrgMainWindow::FileSaveActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileSaveActionSlot()
 {
 	/*FrgString fileName = QFileDialog::getSaveFileName(this, "Save current simulation", "",
 		"Frg Files (*.Frg)");
@@ -110,32 +114,32 @@ void ForgBaseLib::FrgMainWindow::FileSaveActionSlot()
 	ParseInfoToConsole("Simulation was saved successfully at \"" + fileName + "\"");*/
 }
 
-void ForgBaseLib::FrgMainWindow::FileSaveAsActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileSaveAsActionSlot()
 {
 	ParseInfoToConsole("Save As... was clicked!");
 }
 
-void ForgBaseLib::FrgMainWindow::FileSaveAllActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileSaveAllActionSlot()
 {
 	ParseInfoToConsole("SaveAll was clicked!");
 }
 
-void ForgBaseLib::FrgMainWindow::FileImportActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileImportActionSlot()
 {
 	ParseInfoToConsole("Import was clicked!");
 }
 
-void ForgBaseLib::FrgMainWindow::FileExportActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileExportActionSlot()
 {
 	ParseInfoToConsole("Export was clicked!");
 }
 
-void ForgBaseLib::FrgMainWindow::FileExitActionSlot()
+void ForgBaseLib::FrgBaseMainWindow::FileExitActionSlot()
 {
 	ParseInfoToConsole("Exit was clicked!");
 }
 
-void ForgBaseLib::FrgMainWindow::CreateConsoleOutput()
+void ForgBaseLib::FrgBaseMainWindow::CreateConsoleOutput()
 {
 	Log->setLoggerSettingsEnabled(false);
 	LOG_INITIALIZE();
@@ -167,22 +171,22 @@ void ForgBaseLib::FrgMainWindow::CreateConsoleOutput()
 	//LOG_FINALIZE();
 }
 
-void ForgBaseLib::FrgMainWindow::ParseInfoToConsole(const FrgString& info)
+void ForgBaseLib::FrgBaseMainWindow::ParseInfoToConsole(const FrgString& info)
 {
 	LOG_INFO_E(theConsoleWidget_->theEngineName_, info);
 }
 
-void ForgBaseLib::FrgMainWindow::ParseWarningToConsole(const FrgString& info)
+void ForgBaseLib::FrgBaseMainWindow::ParseWarningToConsole(const FrgString& info)
 {
 	LOG_WARNING_E(theConsoleWidget_->theEngineName_, info);
 }
 
-void ForgBaseLib::FrgMainWindow::ParseErrorToConsole(const FrgString& info)
+void ForgBaseLib::FrgBaseMainWindow::ParseErrorToConsole(const FrgString& info)
 {
 	LOG_ERROR_E(theConsoleWidget_->theEngineName_, info);
 }
 
-void ForgBaseLib::FrgMainWindow::SetMainWindowStyleSheet()
+void ForgBaseLib::FrgBaseMainWindow::SetMainWindowStyleSheet()
 {
 	FrgString seperatorStyle = "QMainWindow::separator {"
 		"  height: 5px;"
@@ -207,7 +211,7 @@ void ForgBaseLib::FrgMainWindow::SetMainWindowStyleSheet()
 	AddMainWindowStyleSheet(statusBarStyle);
 }
 
-void ForgBaseLib::FrgMainWindow::AddMainWindowStyleSheet(const FrgString& styleSheet)
+void ForgBaseLib::FrgBaseMainWindow::AddMainWindowStyleSheet(const FrgString& styleSheet)
 {
 	FrgString str = this->styleSheet();
 
@@ -216,20 +220,20 @@ void ForgBaseLib::FrgMainWindow::AddMainWindowStyleSheet(const FrgString& styleS
 	this->setStyleSheet(str);
 }
 
-void ForgBaseLib::FrgMainWindow::CreateTree()
+void ForgBaseLib::FrgBaseMainWindow::CreateTree()
 {
-	theTreeWidget_->theTree_ = FrgNew FrgTree(this);
+	theTreeWidget_->theTree_ = FrgNew FrgBaseTree(this);
 	theTreeWidget_->theTree_->FormTree();
 	theTreeWidget_->theDockWidget_->setWidget(theTreeWidget_->theTree_);
 }
 
-void ForgBaseLib::FrgMainWindow::CreateProperties()
+void ForgBaseLib::FrgBaseMainWindow::CreateProperties()
 {
-	thePropertyWidget_->theProperty_ = theTreeWidget_->theTree_->GetItems().at(0)->GetProperty();
+	thePropertyWidget_->theProperty_ = theTreeWidget_->theTree_->GetItems().at(0)->GetProperty()->GetPropertyBrowser();
 	thePropertyWidget_->theDockWidget_->setWidget(thePropertyWidget_->theProperty_);
 }
 
-void ForgBaseLib::FrgMainWindow::InitFrgMainWindow()
+void ForgBaseLib::FrgBaseMainWindow::InitFrgMainWindow()
 {
 	theTreeWidget_ = FrgMakeSharedPtr(TreeWidgetStruct)();
 	theTreeWidget_->theDockWidget_ = FrgNew QDockWidget("Simulation Tree", this);
