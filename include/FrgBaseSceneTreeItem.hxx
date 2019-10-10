@@ -41,6 +41,9 @@ public:
 
 	FrgBaseSceneTreeItem(const FrgString& title, FrgBaseTreeItem* parent = FrgNullPtr, FrgBaseTree* parentTree = FrgNullPtr, FrgBaseMainWindow* parentMainwindow = FrgNullPtr);
 
+	void StartScene();
+	void StartScene2();
+
 	FrgGetMacro(vtkSmartPointer<vtkRenderer>, Renderer, theRenderer_);
 	FrgGetMacro(vtkSmartPointer<vtkRenderWindowInteractor>, RenderWindowInteractor, theRenderWindowInteractor_);
 	FrgGetMacro(vtkSmartPointer<FrgBaseInteractorStyle>, InteractorStyle, theInteractorStyle_);
