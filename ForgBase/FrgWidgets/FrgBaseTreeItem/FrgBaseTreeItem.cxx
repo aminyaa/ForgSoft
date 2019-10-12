@@ -2,6 +2,8 @@
 #include <FrgBaseTree.hxx>
 #include <FrgBaseTreeItemProperty.hxx>
 
+#include <FrgBaseMenu.hxx>
+
 #include <qttreepropertybrowser.h>
 #include <qtvariantproperty.h>
 
@@ -29,6 +31,8 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem(const FrgString& itemName, FrgBase
 	}
 
 	CreateProperty();
+
+	theContextMenu_ = FrgNew FrgBaseMenu;
 }
 
 void ForgBaseLib::FrgBaseTreeItem::CreateProperty()

@@ -31,9 +31,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)D</TargetName>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -69,7 +71,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PreprocessorDefinitions>FORGBASE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)/ThirdParties/QtPropertyBrowser/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCore;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCoreGui;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesExtensionSystem;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesLogging;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesProjectManagement;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesTesting;$(MSBuildProjectDirectory)/ThirdParties/VTK/include/;$(MSBuildProjectDirectory)/FrgBaseGlobals;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTree;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMainWindow;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMenu;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseDlgs;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseThread;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseSceneTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItemProperty;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseVTKEntities/FrgBaseInteractorStyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)/ThirdParties/QtPropertyBrowser/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCore;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCoreGui;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesExtensionSystem;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesLogging;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesProjectManagement;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesTesting;$(MSBuildProjectDirectory)/ThirdParties/VTK/include/;$(MSBuildProjectDirectory)/FrgBaseGlobals;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTree;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMainWindow;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMenu;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseDlgs;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseThread;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseSceneTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItemProperty;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseVTKEntities/FrgBaseInteractorStyle;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseVTKEntities/FrgBasePlot2D;C:\Program Files (x86)\Microsoft SDKs\MPI\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
@@ -77,12 +79,13 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\VTK\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Qt5Cored.lib;Qt5Widgetsd.lib;QtPropertyBrowserd.lib;QtilitiesCored-1.5.lib;QtilitiesCoreGuid-1.5.lib;QtilitiesExtensionSystemd-1.5.lib;QtilitiesLoggingd-1.5.lib;QtilitiesProjectManagementd-1.5.lib;QtilitiesTestingd-1.5.lib;vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(BOOST_INCLUDELIB);$(VTK_LIBDIR);$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Debug;$(MSBuildProjectDirectory)\ThirdParties\VTK\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Cored.lib;Qt5Widgetsd.lib;QtPropertyBrowserd.lib;QtilitiesCored-1.5.lib;QtilitiesCoreGuid-1.5.lib;QtilitiesExtensionSystemd-1.5.lib;QtilitiesLoggingd-1.5.lib;QtilitiesProjectManagementd-1.5.lib;QtilitiesTestingd-1.5.lib;vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
-for /r "$(MSBuildProjectDirectory)" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+for /r "$(MSBuildProjectDirectory)\FrgBaseGlobals" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -92,7 +95,7 @@ for /r "$(MSBuildProjectDirectory)" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDi
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <PreprocessorDefinitions>FORGBASE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)/ThirdParties/QtPropertyBrowser/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCore;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCoreGui;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesExtensionSystem;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesLogging;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesProjectManagement;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesTesting;$(MSBuildProjectDirectory)/ThirdParties/VTK/include/;$(MSBuildProjectDirectory)/FrgBaseGlobals;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTree;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMainWindow;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMenu;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseDlgs;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseThread;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseSceneTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItemProperty;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseVTKEntities/FrgBaseInteractorStyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)/ThirdParties/QtPropertyBrowser/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCore;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesCoreGui;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesExtensionSystem;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesLogging;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesProjectManagement;$(MSBuildProjectDirectory)/ThirdParties/Qtilities/include/QtilitiesTesting;$(MSBuildProjectDirectory)/ThirdParties/VTK/include/;$(MSBuildProjectDirectory)/FrgBaseGlobals;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTree;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMainWindow;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseMenu;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseDlgs;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseThread;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseSceneTreeItem;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseTreeItemProperty;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseVTKEntities/FrgBaseInteractorStyle;$(MSBuildProjectDirectory)/FrgWidgets/FrgBaseVTKEntities/FrgBasePlot2D;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
@@ -100,12 +103,13 @@ for /r "$(MSBuildProjectDirectory)" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDi
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\VTK\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Qt5Core.lib;Qt5Widgets.lib;QtPropertyBrowser.lib;QtilitiesCore-1.5.lib;QtilitiesCoreGui-1.5.lib;QtilitiesExtensionSystem-1.5.lib;QtilitiesLogging-1.5.lib;QtilitiesProjectManagement-1.5.lib;QtilitiesTesting-1.5.lib;vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(BOOST_INCLUDELIB);$(VTK_LIBDIR);$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Release;$(MSBuildProjectDirectory)\ThirdParties\VTK\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Qt5Core.lib;Qt5Widgets.lib;QtPropertyBrowser.lib;QtilitiesCore-1.5.lib;QtilitiesCoreGui-1.5.lib;QtilitiesExtensionSystem-1.5.lib;QtilitiesLogging-1.5.lib;QtilitiesProjectManagement-1.5.lib;QtilitiesTesting-1.5.lib;vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
-for /r "$(MSBuildProjectDirectory)" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+for /r "$(MSBuildProjectDirectory)\FrgBaseGlobals" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -125,6 +129,7 @@ for /r "$(MSBuildProjectDirectory)" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDi
     <ClCompile Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseTree\FrgBaseTree.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.cxx" />
+    <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx" />
@@ -135,6 +140,7 @@ for /r "$(MSBuildProjectDirectory)" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDi
     <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperty\FrgBaseTreeItemProperty.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx" />
+    <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx" />
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx" />
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgNewSim.hxx" />
     <QtMoc Include="FrgWidgets\FrgBaseMainWindow\FrgBaseMainWindow.hxx" />

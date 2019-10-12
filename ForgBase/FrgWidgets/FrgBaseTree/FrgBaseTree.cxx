@@ -5,6 +5,7 @@
 
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QDockWidget>
+#include <FrgBaseMenu.hxx>
 #include <QKeyEvent>
 
 #include <qttreepropertybrowser.h>
@@ -46,7 +47,13 @@ ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 
 	this->setStyleSheet(style);
 
-	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, FrgInt)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, FrgInt)));
+	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	connect(this,
+		SIGNAL(customContextMenuRequested(const QPoint&)),
+		SLOT(onCustomContextMenuRequested(const QPoint&)));
 }
 
 void ForgBaseLib::FrgBaseTree::FormTree()
@@ -146,11 +153,41 @@ void  ForgBaseLib::FrgBaseTree::keyPressEvent(QKeyEvent* event)
 	}
 }
 
-void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, FrgInt column)
+void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 {
 	if (theParentMainWindow_->GetPropertyWidget())
 	{
 		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgBaseTreeItem*)item)->GetProperty()->GetPropertyBrowser();
 		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgBaseTreeItem*)item)->GetProperty()->GetPropertyBrowser());
 	}
+}
+
+ForgBaseLib::FrgBaseTreeItem* ForgBaseLib::FrgBaseTree::GetTreeItem(const FrgString& title)
+{
+	for (int i = 0; i < theItems_.size(); i++)
+	{
+		if (theItems_.at(i)->text(0) == title)
+			return theItems_.at(i);
+	}
+
+	GetParentMainWindow()->ParseErrorToConsole(title + " not found");
+
+	return FrgNullPtr;
+}
+
+void ForgBaseLib::FrgBaseTree::onCustomContextMenuRequested(const QPoint& pos)
+{
+	FrgBaseTreeItem* item = (ForgBaseLib::FrgBaseTreeItem*) this->itemAt(pos);
+
+	if (item)
+	{
+		emit itemClicked(item, 0);
+
+		showContextMenu(item, this->viewport()->mapToGlobal(pos));
+	}
+}
+
+void ForgBaseLib::FrgBaseTree::showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos)
+{
+	item->GetContextMenu()->exec(globalPos);
 }

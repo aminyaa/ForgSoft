@@ -55,6 +55,9 @@
     <Filter Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle">
       <UniqueIdentifier>{4c1126e0-f79e-4274-8d5d-d38385213780}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D">
+      <UniqueIdentifier>{7a1769dd-43c6-4413-9f36-bfdc4916a81c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -90,6 +93,9 @@
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.cxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.cxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -124,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

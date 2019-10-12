@@ -40,11 +40,6 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	SetMainWindowStyleSheet();
 
 	InitFrgMainWindow();
-
-	for (FrgInt i = 0; i < 200; i++)
-	{
-		theDoubles_.push_back(sin(i));
-	}
 }
 
 void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()
@@ -59,6 +54,8 @@ void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()
 		theFileMenu_->SetEnabledItem("Save As...", FrgTrue);
 
 		CreateTree();
+		theTreeWidget_->theTree_->FormTree();
+		theTreeWidget_->theDockWidget_->setWidget(theTreeWidget_->theTree_);
 		CreateProperties();
 
 		FrgBaseSceneTreeItem sc1("scene1", theTreeWidget_->theTree_->GetItems().at(0), theTreeWidget_->theTree_, this);
@@ -223,8 +220,6 @@ void ForgBaseLib::FrgBaseMainWindow::AddMainWindowStyleSheet(const FrgString& st
 void ForgBaseLib::FrgBaseMainWindow::CreateTree()
 {
 	theTreeWidget_->theTree_ = FrgNew FrgBaseTree(this);
-	theTreeWidget_->theTree_->FormTree();
-	theTreeWidget_->theDockWidget_->setWidget(theTreeWidget_->theTree_);
 }
 
 void ForgBaseLib::FrgBaseMainWindow::CreateProperties()
