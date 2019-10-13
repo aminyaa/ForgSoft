@@ -41,7 +41,7 @@ using FrgSharedPtr = std::shared_ptr<T>;
 #define EndFrgBaseLib }
 
 template<class T>
-FrgString& CorrectName(T* parentItem, const FrgString& name)\
+FrgString CorrectName(T* parentItem, const FrgString& name)\
 {\
 parentItem->sortChildren(0, Qt::AscendingOrder); \
 \

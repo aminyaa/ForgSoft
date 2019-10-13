@@ -1,14 +1,14 @@
 #include <FrgBaseTree.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseMainWindow.hxx>
-#include <FrgBaseTreeItemProperty.hxx>
+#include <FrgBaseTreeItemProperties.hxx>
 
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QDockWidget>
 #include <FrgBaseMenu.hxx>
 #include <QKeyEvent>
 
-#include <qttreepropertybrowser.h>
+#include <FrgBaseTreeItemPropertiesBrowser.hxx>
 
 ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	: QTreeWidget(parent)
@@ -157,8 +157,8 @@ void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, int column
 {
 	if (theParentMainWindow_->GetPropertyWidget())
 	{
-		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgBaseTreeItem*)item)->GetProperty()->GetPropertyBrowser();
-		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgBaseTreeItem*)item)->GetProperty()->GetPropertyBrowser());
+		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgBaseTreeItem*)item)->GetProperties()->GetPropertyBrowser();
+		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgBaseTreeItem*)item)->GetProperties()->GetPropertyBrowser());
 	}
 }
 
@@ -189,5 +189,6 @@ void ForgBaseLib::FrgBaseTree::onCustomContextMenuRequested(const QPoint& pos)
 
 void ForgBaseLib::FrgBaseTree::showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos)
 {
+	theLastRightClicked_ = item;
 	item->GetContextMenu()->exec(globalPos);
 }

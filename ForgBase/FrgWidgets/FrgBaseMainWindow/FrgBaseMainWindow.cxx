@@ -4,7 +4,7 @@
 #include <FrgBaseMenuFile.hxx>
 #include <FrgBaseDlgNewSim.hxx>
 #include <FrgBaseDlgLoadSim.hxx>
-#include <FrgBaseTreeItemProperty.hxx>
+#include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseSceneTreeItem.hxx>
 
 #include <QtWidgets/QDockWidget>
@@ -17,7 +17,7 @@
 #include <QtilitiesCoreGui/QtilitiesApplication>
 #include <QtilitiesCoreGui/WidgetLoggerEngine>
 
-#include <qttreepropertybrowser.h>
+#include <FrgBaseTreeItemPropertiesBrowser.hxx>
 
 #include <fstream>
 
@@ -224,7 +224,7 @@ void ForgBaseLib::FrgBaseMainWindow::CreateTree()
 
 void ForgBaseLib::FrgBaseMainWindow::CreateProperties()
 {
-	thePropertyWidget_->theProperty_ = theTreeWidget_->theTree_->GetItems().at(0)->GetProperty()->GetPropertyBrowser();
+	thePropertyWidget_->theProperty_ = theTreeWidget_->theTree_->GetItems().at(0)->GetProperties()->GetPropertyBrowser();
 	thePropertyWidget_->theDockWidget_->setWidget(thePropertyWidget_->theProperty_);
 }
 

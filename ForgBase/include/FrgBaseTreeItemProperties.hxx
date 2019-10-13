@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgBaseTreeItemProperty_Header
-#define _FrgBaseTreeItemProperty_Header
+#ifndef _FrgBaseTreeItemProperties_Header
+#define _FrgBaseTreeItemProperties_Header
 
 #include <FrgBaseGlobals.hxx>
 
@@ -11,13 +11,14 @@
 #include <qttreepropertybrowser.h>
 #include <qtvariantproperty.h>
 
-class QtTreePropertyBrowser;
 class QtVariantPropertyManager;
 class QtVariantEditorFactory;
 class QtVariantProperty;
 class QtProperty;
 
 BeginFrgBaseLib
+
+class FrgBaseTreeItemPropertiesBrowser;
 
 typedef FrgInt Int;
 typedef FrgDouble Double;
@@ -28,22 +29,21 @@ typedef QPointF PointF;
 //typedef QVector3D Vector4D;
 
 #define AddPropertyMACRO(type)\
-void ForgBaseLib::FrgBaseTreeItemProperty::AddProperty##type(const FrgString& topProperty, const FrgString& name, const type& value)\
+void ForgBaseLib::FrgBaseTreeItemProperties::AddProperty##type(const FrgString& topProperty, const FrgString& name, const type& value, const FrgString& propertyId = "")\
 {\
-	QtVariantProperty* item = AddProperty(topProperty, QVariant::type, name);\
+	QtVariantProperty* item = AddProperty(topProperty, QVariant::type, name, propertyId);\
 \
 	item->setValue(value);\
-	item->setPropertyId(item->propertyName());\
 }
 
 class FrgBaseTreeItem;
 
-class FrgBaseTreeItemProperty
+class FORGBASE_EXPORT FrgBaseTreeItemProperties
 {
 
 private:
 
-	QtTreePropertyBrowser* thePropertyBrowser_;
+	FrgBaseTreeItemPropertiesBrowser* thePropertyBrowser_;
 	QtVariantPropertyManager* theVariantPropertyManager_;
 	QtVariantEditorFactory* theVariantEditorFactory_;
 
@@ -53,7 +53,7 @@ private:
 
 public:
 
-	FrgBaseTreeItemProperty(FrgBaseTreeItem* parent);
+	FrgBaseTreeItemProperties(FrgBaseTreeItem* parent);
 
 	FrgGetMacro(FrgVector<QtProperty*>, Properties, theTopProperties_);
 
@@ -61,9 +61,9 @@ public:
 
 	QtProperty* GetProperty(const FrgString& name);
 
-	void AddTopProperty(const FrgString& name);
+	void AddTopProperty(const FrgString& name, const FrgString& topProperty = "");
 
-	QtVariantProperty* AddProperty(const FrgString& topProperty, FrgInt propertyType, const FrgString& name);
+	QtVariantProperty* AddProperty(const FrgString& topProperty, FrgInt propertyType, const FrgString& name, const FrgString& propertyId = "");
 
 	/*void AddPropertyString(const FrgString& topProperty, const FrgString& name, const FrgString& value);
 
@@ -73,7 +73,10 @@ public:
 
 	void SetEnabled(const FrgString& name, FrgBool condition = FrgTrue);
 
-	FrgGetMacro(QtTreePropertyBrowser*, PropertyBrowser, thePropertyBrowser_);
+	void SetExpanded(const FrgString& title, FrgBool condition);
+
+	FrgGetMacro(FrgBaseTreeItemPropertiesBrowser*, PropertyBrowser, thePropertyBrowser_);
+	FrgGetMacro(QtVariantPropertyManager*, PropertyManager, theVariantPropertyManager_);
 
 	AddPropertyMACRO(Int);
 	AddPropertyMACRO(Double);
@@ -86,4 +89,4 @@ public:
 
 EndFrgBaseLib
 
-#endif // !_FrgBaseTreeItemProperty_Header
+#endif // !_FrgBaseTreeItemProperties_Header

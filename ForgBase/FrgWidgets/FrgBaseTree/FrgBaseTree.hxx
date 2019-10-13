@@ -11,7 +11,15 @@ BeginFrgBaseLib
 class FrgBaseMainWindow;
 class FrgBaseTreeItem;
 
-class FORGBASE_EXPORT FrgBaseTree : public QTreeWidget
+struct FrgBaseTreeCache
+{
+	FrgBaseTreeItem* theLastLeftClicked_;
+	FrgBaseTreeItem* theLastRightClicked_;
+};
+
+class FORGBASE_EXPORT FrgBaseTree 
+	: public QTreeWidget
+	, public FrgBaseTreeCache
 {
 
 	Q_OBJECT

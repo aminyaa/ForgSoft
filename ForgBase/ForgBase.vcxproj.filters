@@ -46,9 +46,6 @@
     <Filter Include="FrgWidgets\FrgBaseSceneTreeItem">
       <UniqueIdentifier>{c96c7ca1-d890-41ab-baf0-f7c5d7125d95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrgWidgets\FrgBaseTreeItemProperty">
-      <UniqueIdentifier>{90ce8d14-8b32-4dbe-b22d-9b576a5b2533}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrgWidgets\FrgBaseVTKEntities">
       <UniqueIdentifier>{e2cb6e25-d84a-48be-a6b2-48b33920fe49}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,9 @@
     </Filter>
     <Filter Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D">
       <UniqueIdentifier>{7a1769dd-43c6-4413-9f36-bfdc4916a81c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseTreeItemProperties">
+      <UniqueIdentifier>{90ce8d14-8b32-4dbe-b22d-9b576a5b2533}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,14 +87,17 @@
     <ClCompile Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.cxx">
       <Filter>FrgWidgets\FrgBaseSceneTreeItem</Filter>
     </ClCompile>
-    <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperty\FrgBaseTreeItemProperty.cxx">
-      <Filter>FrgWidgets\FrgBaseTreeItemProperty</Filter>
-    </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.cxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.cxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.cxx">
+      <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemPropertiesBrowser.cxx">
+      <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,14 +128,17 @@
     <ClInclude Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.hxx">
       <Filter>FrgWidgets\FrgBaseSceneTreeItem</Filter>
     </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperty\FrgBaseTreeItemProperty.hxx">
-      <Filter>FrgWidgets\FrgBaseTreeItemProperty</Filter>
-    </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.hxx">
+      <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemPropertiesBrowser.hxx">
+      <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

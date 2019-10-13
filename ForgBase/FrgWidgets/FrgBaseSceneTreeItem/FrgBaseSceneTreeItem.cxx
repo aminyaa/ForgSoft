@@ -1,7 +1,7 @@
 #include <FrgBaseSceneTreeItem.hxx>
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTreeItem.hxx>
-#include <FrgBaseTreeItemProperty.hxx>
+#include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseInteractorStyle.hxx>
 #include <FrgBasePlot2D.hxx>
 
@@ -34,7 +34,7 @@ ForgBaseLib::FrgBaseSceneTreeItem::FrgBaseSceneTreeItem(const FrgString& title, 
 {
 	setIcon(0, QIcon(":/Icons/Scenes/Geometry_Scene_Icon.png"));
 
-	GetProperty()->SetEnabled("Name", FrgTrue);
+	GetProperties()->SetEnabled("Name", FrgTrue);
 
 	//StartScene();
 	//StartScene2();

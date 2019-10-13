@@ -7,13 +7,13 @@
 #include <QtWidgets/QMainWindow>
 
 class QDockWidget;
-class QtTreePropertyBrowser;
 
 BeginFrgBaseLib
 
 //class FrgMenus;
 class FrgBaseTree;
 class FrgBaseMenuFile;
+class FrgBaseTreeItemPropertiesBrowser;
 
 class FORGBASE_EXPORT FrgBaseMainWindow : public QMainWindow
 {
@@ -36,7 +36,7 @@ private:
 	struct PropertiesWidgetStruct
 	{
 		QDockWidget* theDockWidget_ = FrgNullPtr;
-		QtTreePropertyBrowser* theProperty_ = FrgNullPtr;
+		FrgBaseTreeItemPropertiesBrowser* theProperty_ = FrgNullPtr;
 	};
 
 	FrgSharedPtr<TreeWidgetStruct> theTreeWidget_ = FrgNullPtr;

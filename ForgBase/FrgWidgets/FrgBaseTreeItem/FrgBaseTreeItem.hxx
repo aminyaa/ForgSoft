@@ -17,7 +17,7 @@ BeginFrgBaseLib
 
 class FrgBaseMainWindow;
 class FrgBaseTree;
-class FrgBaseTreeItemProperty;
+class FrgBaseTreeItemProperties;
 class FrgBaseMenu;
 
 class FORGBASE_EXPORT FrgBaseTreeItem : public QTreeWidgetItem
@@ -29,7 +29,7 @@ private:
 	FrgBaseTree* theParentTree_ = FrgNullPtr;
 	FrgString theObjectName_;
 
-	FrgBaseTreeItemProperty* theProperty_;
+	FrgBaseTreeItemProperties* theProperties_;
 
 	FrgBaseMenu* theContextMenu_ = FrgNullPtr;
 
@@ -41,16 +41,18 @@ public:
 
 	FrgBaseTreeItem(const FrgString& itemName, FrgBaseTreeItem* parentItem = FrgNullPtr, FrgBaseTree* parentTree = FrgNullPtr, FrgBaseMainWindow* parentMainWindow = FrgNullPtr);
 
-	void CreateProperty();
-
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgString, ObjectName, theObjectName_);
 	//FrgGetMacro(QtTreePropertyBrowser*, Property, theProperty_);
 
-	FrgGetMacro(FrgBaseTreeItemProperty*, Property, theProperty_);
+	FrgGetMacro(FrgBaseTreeItemProperties*, Properties, theProperties_);
 
 	FrgGetMacro(FrgBaseMenu*, ContextMenu, theContextMenu_);
+
+private:
+
+	void CreateProperties();
 };
 
 EndFrgBaseLib

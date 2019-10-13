@@ -1,6 +1,6 @@
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseTree.hxx>
-#include <FrgBaseTreeItemProperty.hxx>
+#include <FrgBaseTreeItemProperties.hxx>
 
 #include <FrgBaseMenu.hxx>
 
@@ -30,12 +30,12 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem(const FrgString& itemName, FrgBase
 		this->GetObjectName() = str;
 	}
 
-	CreateProperty();
+	CreateProperties();
 
 	theContextMenu_ = FrgNew FrgBaseMenu;
 }
 
-void ForgBaseLib::FrgBaseTreeItem::CreateProperty()
+void ForgBaseLib::FrgBaseTreeItem::CreateProperties()
 {
 	/*theProperty_ = FrgNew QtTreePropertyBrowser;
 
@@ -56,5 +56,5 @@ void ForgBaseLib::FrgBaseTreeItem::CreateProperty()
 	theProperty_->setPropertiesWithoutValueMarked(FrgTrue);
 	theProperty_->setRootIsDecorated(FrgFalse);*/
 
-	theProperty_ = FrgNew FrgBaseTreeItemProperty(this);
+	theProperties_ = FrgNew FrgBaseTreeItemProperties(this);
 }
