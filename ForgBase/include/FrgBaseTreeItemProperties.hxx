@@ -82,6 +82,9 @@ public:
 	AddPropertyMACRO(Double);
 	AddPropertyMACRO(String);
 	AddPropertyMACRO(PointF);
+
+	void AddPropertyFlagType(const FrgString& topProperty, const FrgString& name, QStringList flagNames, const FrgString& propertyId = "");
+
 	/*AddPropertyMACRO(Vector2D);
 	AddPropertyMACRO(Vector3D);
 	AddPropertyMACRO(Vector4D);*/

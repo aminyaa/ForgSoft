@@ -45,12 +45,12 @@
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
       <Filter>NihadVessel</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\NihadVesselSceneTreeItem.hxx">
-      <Filter>NihadVessel</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NihadVessel\NihadTree.hxx">
+      <Filter>NihadVessel</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadVesselSceneTreeItem.hxx">
       <Filter>NihadVessel</Filter>
     </QtMoc>
   </ItemGroup>

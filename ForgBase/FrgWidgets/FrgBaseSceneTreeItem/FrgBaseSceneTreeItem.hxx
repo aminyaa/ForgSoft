@@ -36,20 +36,22 @@ private:
 
 	vtkSmartPointer<vtkTextActor> theLogoActor_;
 
+	void Init();
+
 
 public:
 
 	FrgBaseSceneTreeItem(const FrgString& title, FrgBaseTreeItem* parent = FrgNullPtr, FrgBaseTree* parentTree = FrgNullPtr, FrgBaseMainWindow* parentMainwindow = FrgNullPtr);
 
-	virtual void StartScene() {}
-
-	void StartScene2();
-
-	void StartSceneNihad();
+	void StartScene();
 
 	FrgGetMacro(vtkSmartPointer<vtkRenderer>, Renderer, theRenderer_);
 	FrgGetMacro(vtkSmartPointer<vtkRenderWindowInteractor>, RenderWindowInteractor, theRenderWindowInteractor_);
 	FrgGetMacro(vtkSmartPointer<FrgBaseInteractorStyle>, InteractorStyle, theInteractorStyle_);
+	FrgGetMacro(vtkSmartPointer<vtkCamera>, Camera, theCamera_);
+	FrgGetMacro(vtkSmartPointer<vtkTextActor>, LogoActor, theLogoActor_);
+
+	void Render();
 };
 
 EndFrgBaseLib

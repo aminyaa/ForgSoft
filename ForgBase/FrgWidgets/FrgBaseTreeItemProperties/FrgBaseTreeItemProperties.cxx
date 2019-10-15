@@ -39,7 +39,7 @@ ForgBaseLib::FrgBaseTreeItemProperties::FrgBaseTreeItemProperties(FrgBaseTreeIte
 		"selection - background - color: #1464A0;"
 		"selection - color: #F0F0F0;"
 		"}"
-);
+	);
 }
 
 QtProperty* ForgBaseLib::FrgBaseTreeItemProperties::GetTopProperty(const FrgString& name)
@@ -89,10 +89,10 @@ void ForgBaseLib::FrgBaseTreeItemProperties::AddTopProperty(const FrgString& nam
 
 QtVariantProperty* ForgBaseLib::FrgBaseTreeItemProperties::AddProperty(const FrgString& topProperty, FrgInt propertyType, const FrgString& name, const FrgString& propertyId)
 {
-	QtVariantProperty * item = theVariantPropertyManager_->addProperty(propertyType, QLatin1String(name.toLocal8Bit().data()));
+	QtVariantProperty* item = theVariantPropertyManager_->addProperty(propertyType, QLatin1String(name.toLocal8Bit().data()));
 	item->setPropertyId(propertyId);
 	//theParentTreeItem_->GetParentMainWindow()->ParseErrorToConsole(name + " =======> " + item->propertyId());
-	if(QtProperty* topItem = GetTopProperty(topProperty))
+	if (QtProperty* topItem = GetTopProperty(topProperty))
 		topItem->addSubProperty(item);
 
 	return item;
@@ -131,4 +131,11 @@ void ForgBaseLib::FrgBaseTreeItemProperties::SetExpanded(const FrgString& title,
 {
 	//theParentTreeItem_->GetParentMainWindow()->ParseInfoToConsole(QString::number(thePropertyBrowser_->items(GetProperty(title)).size()));
 	thePropertyBrowser_->setExpanded(thePropertyBrowser_->items(GetProperty(title))[0], condition);
+}
+
+void ForgBaseLib::FrgBaseTreeItemProperties::AddPropertyFlagType(const FrgString& topProperty, const FrgString& name, QStringList flagNames, const FrgString& propertyId)
+{
+	QtVariantProperty* item = AddProperty(topProperty, QtVariantPropertyManager::flagTypeId(), name, propertyId);
+
+	item->setAttribute(QLatin1String("flagNames"), flagNames);
 }

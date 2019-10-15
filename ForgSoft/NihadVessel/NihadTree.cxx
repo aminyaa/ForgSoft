@@ -14,9 +14,15 @@
 #include <IO_IGES.hxx>
 
 #include <QtWidgets/QAction>
+#include <QtWidgets/QFileDialog>
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QPushButton>
+
+#include <qtpropertymanager.h>
 
 #define NbNetColumnsID 222
 #define NbNetRowsID 223
+#define PartsListID 1285
 
 ForgBaseLib::NihadTree::NihadTree(FrgBaseMainWindow* parent)
 	: FrgBaseTree(parent)
@@ -30,15 +36,15 @@ void ForgBaseLib::NihadTree::FormTree()
 	FrgString ScenesItem = "Scenes";
 	FrgString PlotsItem = "Plots";
 
-	GetItems().push_back(FrgNew FrgBaseTreeItem(GeometryItem, FrgNullPtr, this, GetParentMainWindow()));
+	AddItemToTree(FrgNew FrgBaseTreeItem(GeometryItem, FrgNullPtr, this, GetParentMainWindow()));
 
-	GetItems().push_back(FrgNew FrgBaseTreeItem(PartsItem, FrgNullPtr, this, GetParentMainWindow()));
+	AddItemToTree(FrgNew FrgBaseTreeItem(PartsItem, FrgNullPtr, this, GetParentMainWindow()));
 
-	GetItems().push_back(FrgNew FrgBaseTreeItem(ScenesItem, FrgNullPtr, this, GetParentMainWindow()));
+	AddItemToTree(FrgNew FrgBaseTreeItem(ScenesItem, FrgNullPtr, this, GetParentMainWindow()));
 
-	GetItems().push_back(FrgNew FrgBaseTreeItem(PlotsItem, FrgNullPtr, this, GetParentMainWindow()));
+	AddItemToTree(FrgNew FrgBaseTreeItem(PlotsItem, FrgNullPtr, this, GetParentMainWindow()));
 
-	FrgString GeometryNewMenu = "&New Geometry";
+	FrgString GeometryNewMenu = "&New Geometry Nihad";
 	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
 	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(NewGeometryClickedSlot(bool)));
 
@@ -59,7 +65,7 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 	FrgBaseTreeItem* NihadGeometryTreeItem = theNihadGeometryTreeItems_.at(theNihadGeometryTreeItems_.size() - 1)->theTreeItem_;
 	AutLib::Leg_Nihad2_HullPatch* patch = theNihadGeometryTreeItems_.at(theNihadGeometryTreeItems_.size() - 1)->thePatch_;
 
-	GetItems().push_back(FrgNew FrgBaseTreeItem(NihadGeometryTreeItem->text(0), FrgNullPtr, this, GetParentMainWindow()));
+	AddItemToTree(NihadGeometryTreeItem);
 
 	patch->FwdSection().Tightness0()->SetValue(0.9);
 	patch->FwdSection().Tightness1()->SetValue(0.9);
@@ -131,7 +137,7 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 		NihadGeometryTreeItem->GetProperties()->GetPropertyManager()
 		, SIGNAL(valueChanged(QtProperty*, const QVariant&))
 		, this
-		, SLOT(PropertyValueChangedSlot(QtProperty*, const QVariant&))
+		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
 	);
 
 	FrgString CreatePartFromGeometryMenu = "&Create Part from Geometry";
@@ -143,12 +149,39 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 		, this
 		, SLOT(CreatePartFromGeometryClickedSlot(bool))
 	);
+
+	GetParentMainWindow()->ParseInfoToConsole("\"" + NihadGeometryTreeItem->text(0) + "\" geometry successfully created.");
 }
 
 void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 {
-	NihadVesselSceneTreeItem* NihadSceneItem =
+	theNihadSceneTreeItems_.push_back(FrgNew NihadSceneTreeItemStruct);
+
+	theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->theTreeItem_ =
 		FrgNew NihadVesselSceneTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
+
+	NihadVesselSceneTreeItem* NihadSceneItem =
+		theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->theTreeItem_;
+
+	AddItemToTree(NihadSceneItem);
+
+	NihadSceneItem->GetProperties()->AddPropertyFlagType("Properties", "Parts List", thePartsNamesList_, FrgString::number(PartsListID));
+
+	connect
+	(
+		NihadSceneItem->GetProperties()->GetPropertyManager()
+		, SIGNAL(valueChanged(QtProperty*, const QVariant&))
+		, this
+		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
+	);
+
+	NihadSceneItem->GetProperties()->GetPropertyBrowser()->layout()->addWidget(NihadSceneItem->GetOKButton());
+
+	theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_ = theNihadPartTreeItems_.at(0);
+
+	NihadSceneItem->GetPartsPointer().push_back(theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_);
+
+	GetParentMainWindow()->ParseInfoToConsole("\"" + NihadSceneItem->text(0) + "\" scene successfully created.");
 }
 
 #define SetNihadParametersWithProperty(patch, parameter, ID, value)\
@@ -160,7 +193,7 @@ if (FrgString::number(patch->parameter->Index()) == ID)\
 		patch->parameter->SetValue(value.toInt());\
 }
 
-void ForgBaseLib::NihadTree::PropertyValueChangedSlot(QtProperty* property, const QVariant& value)
+void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* property, const QVariant& value)
 {
 	for (int i = 0; i < theNihadGeometryTreeItems_.size(); i++)
 	{
@@ -210,11 +243,17 @@ void ForgBaseLib::NihadTree::PropertyValueChangedSlot(QtProperty* property, cons
 			SetNihadParametersWithProperty(patch, BowRounding(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, StemRake(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, ForeFootShape(), property->propertyId(), value);
+		}
+	}
 
-			patch->Perform();
-
-			patch->FileFormat() = AutLib::Leg_EntityIO_Format::IGES;
-			patch->ExportToFile();
+	for (int i = 0; i < theNihadSceneTreeItems_.size(); i++)
+	{
+		if (theNihadSceneTreeItems_.at(i)->theTreeItem_->GetProperties() == (GetParentMainWindow()->GetPropertyWidget()->theProperty_->GetParentProperties()))
+		{
+			if (FrgString::number(PartsListID) == property->propertyId())
+			{
+				GetParentMainWindow()->ParseErrorToConsole(value.toString());
+			}
 		}
 	}
 }
@@ -224,9 +263,120 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 	theNihadPartTreeItems_.push_back(FrgNew NihadPartTreeItemStruct);
 
 	theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_ =
-		FrgNew FrgBaseTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Parts"), theLastRightClicked_->text(0)), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
+		FrgNew FrgBaseTreeItem(theLastRightClicked_->text(0), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
 
 	FrgBaseTreeItem* NihadPartTreeItem = theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_;
 
-	GetItems().push_back(FrgNew FrgBaseTreeItem(NihadPartTreeItem->text(0), FrgNullPtr, this, GetParentMainWindow()));
+	theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theGeometryPointer_ = GetGeometryTreeItem(theLastRightClicked_);
+
+	AddItemToTree(NihadPartTreeItem);
+
+	theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theGeometryPointer_->thePatch_->Perform();
+
+	FrgString ExportPartString = "&Export";
+	NihadPartTreeItem->GetContextMenu()->AddItem(ExportPartString);
+	connect
+	(
+		NihadPartTreeItem->GetContextMenu()->GetItem(ExportPartString.remove('&'))
+		, SIGNAL(triggered(bool))
+		, this
+		, SLOT(ExportPartSlot(bool))
+	);
+
+	thePartsNamesList_ << NihadPartTreeItem->text(0);
+
+	UpdateTree();
+
+	GetParentMainWindow()->ParseInfoToConsole("\"" + NihadPartTreeItem->text(0) + "\" part successfully created.");
+}
+
+void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
+{
+	QList<QString> QfileTypes;
+	QfileTypes.push_back("IGES (*.igs)");
+	QfileTypes.push_back("STEP (*.stp; *.step)");
+	QfileTypes.push_back("Tecplot (*.plt)");
+
+	QString fileTypes;
+	for (int i = 0; i < QfileTypes.size() - 1; i++)
+	{
+		fileTypes += QfileTypes.at(i);
+		fileTypes += ";;";
+	}
+	fileTypes += QfileTypes.at(QfileTypes.size() - 1);
+
+	QString* ext = new QString("IGES");
+	QString fileName = QFileDialog::getSaveFileName(GetParentMainWindow(),
+		QMainWindow::tr("Export Part"), "",
+		fileTypes, ext);
+
+	if (fileName.isEmpty())
+		return;
+	else
+	{
+		if (*ext == "IGES (*.igs)")
+		{
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->SetFileName(fileName.toStdString());
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->SetFileFormat(AutLib::Leg_EntityIO_Format::IGES);
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->ExportToFile();
+		}
+		else if (*ext == "STEP (*.stp; *.step)")
+		{
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->SetFileName(fileName.toStdString());
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->SetFileFormat(AutLib::Leg_EntityIO_Format::STEP);
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->ExportToFile();
+		}
+		else if (*ext == "Tecplot (*.plt)")
+		{
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->SetFileName(fileName.toStdString());
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->SetFileFormat(AutLib::Leg_EntityIO_Format::TecPlot);
+			GetPartTreeItem(theLastRightClicked_)->theGeometryPointer_->thePatch_->ExportToFile();
+		}
+	}
+
+	GetParentMainWindow()->ParseInfoToConsole("\"" + theLastRightClicked_->text(0) + "\" saved successfully at\"" + fileName + "\"");
+}
+
+ForgBaseLib::NihadGeometryTreeItemStruct* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)
+{
+	for (int i = 0; i < theNihadGeometryTreeItems_.size(); i++)
+	{
+		if (theNihadGeometryTreeItems_.at(i)->theTreeItem_ == item)
+			return theNihadGeometryTreeItems_.at(i);
+	}
+}
+
+ForgBaseLib::NihadPartTreeItemStruct* ForgBaseLib::NihadTree::GetPartTreeItem(FrgBaseTreeItem* item)
+{
+	for (int i = 0; i < theNihadPartTreeItems_.size(); i++)
+	{
+		if (theNihadPartTreeItems_.at(i)->theTreeItem_ == item)
+			return theNihadPartTreeItems_.at(i);
+	}
+}
+
+void ForgBaseLib::NihadTree::UpdateTree()
+{
+	for (int i = 0; i< GetItems().size(); i++)
+	{
+		if (GetItems().at(i)->childCount() != 0)
+			GetItems().at(i)->setExpanded(FrgTrue);
+	}
+	FrgBaseTreeItem* item = GetTreeItem("Scenes");
+
+	if (item)
+	{
+		for (int i = 0; i < item->childCount(); i++)
+		{
+			FrgBaseTreeItemProperties* itemProperties = ((FrgBaseTreeItem*)(item->child(i)))->GetProperties();
+			itemProperties->GetPropertyManager()->setAttribute(itemProperties->GetProperty("Parts List"), "flagNames", thePartsNamesList_);
+		}
+	}
+}
+
+void ForgBaseLib::NihadTree::AddItemToTree(FrgBaseTreeItem* item)
+{
+	GetItems().push_back(item);
+
+	UpdateTree();
 }

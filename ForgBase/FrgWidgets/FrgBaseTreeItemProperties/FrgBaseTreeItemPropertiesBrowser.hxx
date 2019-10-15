@@ -10,7 +10,7 @@ BeginFrgBaseLib
 
 class FrgBaseTreeItemProperties;
 
-class FrgBaseTreeItemPropertiesBrowser : public QtTreePropertyBrowser
+class FORGBASE_EXPORT FrgBaseTreeItemPropertiesBrowser : public QtTreePropertyBrowser
 {
 
 private:

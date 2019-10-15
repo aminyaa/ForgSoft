@@ -170,8 +170,6 @@ ForgBaseLib::FrgBaseTreeItem* ForgBaseLib::FrgBaseTree::GetTreeItem(const FrgStr
 			return theItems_.at(i);
 	}
 
-	GetParentMainWindow()->ParseErrorToConsole(title + " not found");
-
 	return FrgNullPtr;
 }
 

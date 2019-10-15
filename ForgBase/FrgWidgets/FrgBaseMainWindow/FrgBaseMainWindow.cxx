@@ -48,8 +48,6 @@ void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()
 
 	if (dlg->exec() == QDialog::Accepted)
 	{
-		ParseInfoToConsole("New was clicked!");
-
 		theFileMenu_->SetEnabledItem("Save", FrgTrue);
 		theFileMenu_->SetEnabledItem("Save As...", FrgTrue);
 
