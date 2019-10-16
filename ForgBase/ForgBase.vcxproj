@@ -126,7 +126,6 @@ for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$
     <ClCompile Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseThread\FrgBaseThread.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.cxx" />
-    <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemPropertiesBrowser.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseTree\FrgBaseTree.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.cxx" />
@@ -139,7 +138,6 @@ for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobalsTypes.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.hxx" />
-    <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemPropertiesBrowser.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx" />

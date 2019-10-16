@@ -3,7 +3,7 @@
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
-#include <FrgBaseTreeItemPropertiesBrowser.hxx>
+#include <qtpropertybrowser.h>
 
 #include <NihadVesselSceneTreeItem.hxx>
 
@@ -19,6 +19,8 @@
 #include <QtWidgets/QPushButton>
 
 #include <qtpropertymanager.h>
+#include <SelectObjectsPropertyFactory.hxx>
+#include <SelectObjectsPropertyManager.hxx>
 
 #define NbNetColumnsID 222
 #define NbNetRowsID 223
@@ -165,7 +167,7 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 
 	AddItemToTree(NihadSceneItem);
 
-	NihadSceneItem->GetProperties()->AddPropertyFlagType("Properties", "Parts List", thePartsNamesList_, FrgString::number(PartsListID));
+	//NihadSceneItem->GetProperties()->AddPropertyFlagType("Properties", "Parts List", thePartsNamesList_, FrgString::number(PartsListID));
 
 	connect
 	(
@@ -182,6 +184,35 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 	NihadSceneItem->GetPartsPointer().push_back(theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_);
 
 	GetParentMainWindow()->ParseInfoToConsole("\"" + NihadSceneItem->text(0) + "\" scene successfully created.");
+
+	SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager(this);
+
+	FrgBaseTreeItem* sharedToParts = GetTreeItem("Parts");
+
+	SelectObjectsPropertyFactory* factory = FrgNew SelectObjectsPropertyFactory(this, sharedToParts);
+
+	NihadSceneItem->GetProperties()->AddProperty<SelectObjectsPropertyManager>("Parts List", manager, factory);
+	//QtProperty* partsListProperty = manager->addProperty("Parts List");
+
+	//QtTreePropertyBrowser* browser = new QtTreePropertyBrowser();
+	/*browser->setFactoryForManager(manager, factory);
+	browser->addProperty(partsListProperty);
+	browser->show();*/
+
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->unsetFactoryForManager(NihadSceneItem->GetProperties()->GetPropertyManager());
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->unsetFactoryForManager(manager);
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->setFactoryForManager(manager, factory);
+
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->addProperty(partsListProperty);
+
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser() = new QtTreePropertyBrowser();
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->setFactoryForManager(manager, factory);
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->addProperty(partsListProperty);
+	//NihadSceneItem->GetProperties()->AddTopProperty("Properties");
+	NihadSceneItem->GetProperties()->GetPropertyBrowser()->show();
+
+	//GetParentMainWindow()->ParseWarningToConsole(NihadSceneItem->GetProperties()->GetPropertyManager()->value(partsListProperty).toString());
+
 }
 
 #define SetNihadParametersWithProperty(patch, parameter, ID, value)\
@@ -197,7 +228,7 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 {
 	for (int i = 0; i < theNihadGeometryTreeItems_.size(); i++)
 	{
-		if (theNihadGeometryTreeItems_.at(i)->theTreeItem_->GetProperties() == (GetParentMainWindow()->GetPropertyWidget()->theProperty_->GetParentProperties()))
+		if (theNihadGeometryTreeItems_.at(i)->theTreeItem_->GetProperties() == ((FrgBaseTreeItem*)theLastLeftClicked_)->GetProperties())
 		{
 			AutLib::Leg_Nihad2_HullPatch* patch = theNihadGeometryTreeItems_.at(i)->thePatch_;
 
@@ -248,7 +279,7 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 	for (int i = 0; i < theNihadSceneTreeItems_.size(); i++)
 	{
-		if (theNihadSceneTreeItems_.at(i)->theTreeItem_->GetProperties() == (GetParentMainWindow()->GetPropertyWidget()->theProperty_->GetParentProperties()))
+		if (theNihadSceneTreeItems_.at(i)->theTreeItem_->GetProperties() == ((FrgBaseTreeItem*)theLastLeftClicked_)->GetProperties())
 		{
 			if (FrgString::number(PartsListID) == property->propertyId())
 			{

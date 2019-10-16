@@ -17,8 +17,6 @@
 #include <QtilitiesCoreGui/QtilitiesApplication>
 #include <QtilitiesCoreGui/WidgetLoggerEngine>
 
-#include <FrgBaseTreeItemPropertiesBrowser.hxx>
-
 #include <fstream>
 
 using namespace QtilitiesLogging;

@@ -12,11 +12,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cxx" />
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.cxx" />
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.cxx" />
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.cxx" />
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.cxx" />
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx" />
     <ClCompile Include="NihadVessel\NihadTree.cxx" />
     <ClCompile Include="NihadVessel\NihadVesselSceneTreeItem.cxx" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.hxx" />
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.hxx" />
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx" />
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.hxx" />
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx" />
     <QtMoc Include="NihadVessel\NihadVesselSceneTreeItem.hxx" />
     <QtMoc Include="NihadVessel\NihadTree.hxx" />
@@ -78,7 +86,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory)\ForgGlobals;$(MSBuildProjectDirectory)\NihadVessel;$(SolutionDir)ForgBase\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(QTDIR)\include;$(OPENCASCADE_INCLUDEDIR);$(MSBuildProjectDirectory)/ThirdParties/AutMarine/include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\ForgGlobals;$(MSBuildProjectDirectory)\NihadVessel;$(SolutionDir)ForgBase\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsDlg;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsProperty;$(QTDIR)\include;$(OPENCASCADE_INCLUDEDIR);$(MSBuildProjectDirectory)/ThirdParties/AutMarine/include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>
@@ -96,7 +104,7 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory)\ForgGlobals;$(MSBuildProjectDirectory)\NihadVessel;$(SolutionDir)ForgBase\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(OPENCASCADE_INCLUDEDIR);$(MSBuildProjectDirectory)/ThirdParties/AutMarine/include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(Qt_INCLUDEPATH_);$(QTDIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\ForgGlobals;$(MSBuildProjectDirectory)\NihadVessel;$(SolutionDir)ForgBase\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsDlg;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsProperty;$(OPENCASCADE_INCLUDEDIR);$(MSBuildProjectDirectory)/ThirdParties/AutMarine/include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(Qt_INCLUDEPATH_);$(QTDIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
     </ClCompile>

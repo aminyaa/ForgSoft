@@ -8,8 +8,6 @@
 #include <FrgBaseMenu.hxx>
 #include <QKeyEvent>
 
-#include <FrgBaseTreeItemPropertiesBrowser.hxx>
-
 ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	: QTreeWidget(parent)
 	, theParentMainWindow_(parent)
@@ -159,6 +157,8 @@ void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, int column
 	{
 		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgBaseTreeItem*)item)->GetProperties()->GetPropertyBrowser();
 		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgBaseTreeItem*)item)->GetProperties()->GetPropertyBrowser());
+
+		theLastLeftClicked_ = (FrgBaseTreeItem*)item;
 	}
 }
 

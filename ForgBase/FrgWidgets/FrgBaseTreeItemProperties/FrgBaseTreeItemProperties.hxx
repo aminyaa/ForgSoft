@@ -18,8 +18,6 @@ class QtProperty;
 
 BeginFrgBaseLib
 
-class FrgBaseTreeItemPropertiesBrowser;
-
 typedef FrgInt Int;
 typedef FrgDouble Double;
 typedef FrgString String;
@@ -43,9 +41,13 @@ class FORGBASE_EXPORT FrgBaseTreeItemProperties
 
 private:
 
-	FrgBaseTreeItemPropertiesBrowser* thePropertyBrowser_;
-	QtVariantPropertyManager* theVariantPropertyManager_;
-	QtVariantEditorFactory* theVariantEditorFactory_;
+	QtAbstractPropertyBrowser* thePropertyBrowser_ = FrgNullPtr;
+
+	QtAbstractPropertyManager* theAbstractPropertyManager_ = FrgNullPtr;
+	QtAbstractEditorFactory<QtAbstractPropertyManager>* theAbstractEditorFactory_ = FrgNullPtr;
+
+	QtVariantPropertyManager* theVariantPropertyManager_ = FrgNullPtr;
+	QtVariantEditorFactory* theVariantEditorFactory_ = FrgNullPtr;
 
 	FrgVector<QtProperty*> theTopProperties_;
 
@@ -75,13 +77,25 @@ public:
 
 	void SetExpanded(const FrgString& title, FrgBool condition);
 
-	FrgGetMacro(FrgBaseTreeItemPropertiesBrowser*, PropertyBrowser, thePropertyBrowser_);
+	FrgGetMacro(QtAbstractPropertyBrowser*, PropertyBrowser, thePropertyBrowser_);
 	FrgGetMacro(QtVariantPropertyManager*, PropertyManager, theVariantPropertyManager_);
+	FrgGetMacro(FrgBaseTreeItem*, ParentTreeItem, theParentTreeItem_);
+	FrgGetMacro(QtAbstractPropertyManager*, AbstractPropertyManager, theAbstractPropertyManager_);
+	FrgGetMacro(QtAbstractEditorFactory<QtAbstractPropertyManager>*, AbstractEditorFactory, theAbstractEditorFactory_);
 
 	AddPropertyMACRO(Int);
 	AddPropertyMACRO(Double);
 	AddPropertyMACRO(String);
 	AddPropertyMACRO(PointF);
+
+	template<class PropertyManager>
+	void AddProperty(const FrgString& title, PropertyManager* manager, QtAbstractEditorFactory<PropertyManager>* factory)
+	{
+		thePropertyBrowser_->setFactoryForManager<PropertyManager>(manager, factory);
+
+		QtProperty* item = manager->addProperty(title);
+		thePropertyBrowser_->addProperty(item);
+	}
 
 	void AddPropertyFlagType(const FrgString& topProperty, const FrgString& name, QStringList flagNames, const FrgString& propertyId = "");
 

@@ -26,11 +26,17 @@
     <Filter Include="NihadVessel">
       <UniqueIdentifier>{a10a169d-8806-4c5e-b900-fbbcd55ab156}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\CustomPropertyType">
+      <UniqueIdentifier>{2a904060-429b-4878-ba79-e0d6d1941499}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\CustomPropertyType\SelectObjectsDlg">
+      <UniqueIdentifier>{21c6d88f-b68a-4ecc-be47-ca9250e159bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\CustomPropertyType\SelectObjectsProperty">
+      <UniqueIdentifier>{a5f2ecb3-1650-42a0-97d3-8bd952ac4474}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cxx">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
       <Filter>NihadVessel</Filter>
     </ClCompile>
@@ -39,6 +45,21 @@
     </ClCompile>
     <ClCompile Include="NihadVessel\NihadVesselSceneTreeItem.cxx">
       <Filter>NihadVessel</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.cxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsDlg</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.cxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.cxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.cxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +73,18 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\NihadVesselSceneTreeItem.hxx">
       <Filter>NihadVessel</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.hxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsDlg</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.hxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.hxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -96,9 +96,6 @@
     <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.cxx">
       <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
     </ClCompile>
-    <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemPropertiesBrowser.cxx">
-      <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -135,9 +132,6 @@
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.hxx">
-      <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
-    </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemPropertiesBrowser.hxx">
       <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
     </ClInclude>
   </ItemGroup>

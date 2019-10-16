@@ -1,19 +1,18 @@
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseMainWindow.hxx>
-#include <FrgBaseTreeItemPropertiesBrowser.hxx>
 
 ForgBaseLib::FrgBaseTreeItemProperties::FrgBaseTreeItemProperties(FrgBaseTreeItem* parent)
 	: theParentTreeItem_(parent)
 {
-	thePropertyBrowser_ = FrgNew FrgBaseTreeItemPropertiesBrowser(this);
+	thePropertyBrowser_ = FrgNew QtTreePropertyBrowser;
 
 	theVariantPropertyManager_ = FrgNew QtVariantPropertyManager;
 	theVariantEditorFactory_ = FrgNew QtVariantEditorFactory;
 
 	thePropertyBrowser_->setFactoryForManager(theVariantPropertyManager_, theVariantEditorFactory_);
-	thePropertyBrowser_->setPropertiesWithoutValueMarked(FrgTrue);
-	thePropertyBrowser_->setRootIsDecorated(FrgFalse);
+	//((QtTreePropertyBrowser*)thePropertyBrowser_)->setPropertiesWithoutValueMarked(FrgTrue);
+	//((QtTreePropertyBrowser*)thePropertyBrowser_)->setRootIsDecorated(FrgFalse);
 
 	AddTopProperty("Properties");
 	AddPropertyString("Properties", "Name", theParentTreeItem_->text(0));
@@ -130,7 +129,7 @@ void ForgBaseLib::FrgBaseTreeItemProperties::SetEnabled(const FrgString& name, F
 void ForgBaseLib::FrgBaseTreeItemProperties::SetExpanded(const FrgString& title, FrgBool condition)
 {
 	//theParentTreeItem_->GetParentMainWindow()->ParseInfoToConsole(QString::number(thePropertyBrowser_->items(GetProperty(title)).size()));
-	thePropertyBrowser_->setExpanded(thePropertyBrowser_->items(GetProperty(title))[0], condition);
+	((QtTreePropertyBrowser*)thePropertyBrowser_)->setExpanded(thePropertyBrowser_->items(GetProperty(title))[0], condition);
 }
 
 void ForgBaseLib::FrgBaseTreeItemProperties::AddPropertyFlagType(const FrgString& topProperty, const FrgString& name, QStringList flagNames, const FrgString& propertyId)
