@@ -24,7 +24,9 @@ public:
 
 signals:
 
-	void LabelChanged(const QList<QTreeWidgetItem*>& filePath);
+	void LabelChanged(const QList<QTreeWidgetItem*>& label);
+
+	void ObjectsSelectedUpdate(QList<QTreeWidgetItem*>);
 
 private slots:
 

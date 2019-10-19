@@ -2,6 +2,7 @@
 #include <QtWidgets/QTreeWidgetItem>
 #include <SelectObjectsPropertyManager.hxx>
 #include <SelectObjectsDlg.hxx>
+#include <QtWidgets/QTreeWidgetItem>
 
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
@@ -49,6 +50,9 @@ void ForgBaseLib::SelectObjectsPropertyWidget::SetObjectsLabel(QList<QTreeWidget
 void ForgBaseLib::SelectObjectsPropertyWidget::buttonClicked()
 {
 	FrgSharedPtr<SelectObjectsDlg> dlg = FrgMakeSharedPtr(SelectObjectsDlg)(this, theTreeItemSelection_);
+
+	connect(dlg.get(), SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
+		this, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)));
 
 	if (dlg->exec() == QDialog::Accepted)
 	{

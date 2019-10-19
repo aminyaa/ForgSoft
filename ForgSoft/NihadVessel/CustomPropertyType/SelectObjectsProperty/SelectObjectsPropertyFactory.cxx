@@ -31,6 +31,8 @@ QWidget* ForgBaseLib::SelectObjectsPropertyFactory::createEditor(SelectObjectsPr
 		this, SLOT(slotSetValue(const QList<QTreeWidgetItem*>&)));
 	connect(widget, SIGNAL(destroyed(QObject*)),
 		this, SLOT(slotWidgetDestroyed(QObject*)));
+	connect(widget, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
+		this, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)));
 	return widget;
 }
 

@@ -29,6 +29,10 @@ protected:
 
 	virtual void disconnectPropertyManager(SelectObjectsPropertyManager* manager);
 
+signals:
+
+	void ObjectsSelectedUpdate(QList<QTreeWidgetItem*> selectedItems);
+
 private slots:
 
 	void slotPropertyChanged(QtProperty* property, const QList<QTreeWidgetItem*>& value);

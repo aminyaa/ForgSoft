@@ -32,7 +32,7 @@ public:
 
 public slots:
 
-	void OKButtonClickedSlot(bool checked);
+	void RenderSceneSlot();
 
 private:
 

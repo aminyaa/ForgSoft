@@ -5,6 +5,7 @@
 #include <FrgBaseGlobals.hxx>
 
 #include <QtWidgets/QDialog>
+#include <QtCore/QMap>
 
 class QTreeWidgetItem;
 class QPushButton;
@@ -39,7 +40,13 @@ private:
 
 	QList<QTreeWidgetItem*> theSelectedObjects_;
 
+	QMap<QTreeWidgetItem*, QTreeWidgetItem*> theTreeItemsToOriginalItems_;
+
 	void setupLayout();
+
+signals:
+
+	void ObjectsSelectedUpdate(QList<QTreeWidgetItem*> selectedItems);
 
 private slots:
 

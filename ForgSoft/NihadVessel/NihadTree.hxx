@@ -70,6 +70,8 @@ public slots:
 
 	void ExportPartSlot(bool b);
 
+	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
+
 private:
 
 	void AddItemToTree(FrgBaseTreeItem* item);

@@ -177,28 +177,30 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
 	);
 
-	NihadSceneItem->GetProperties()->GetPropertyBrowser()->layout()->addWidget(NihadSceneItem->GetOKButton());
+	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->layout()->addWidget(NihadSceneItem->GetOKButton());
 
-	theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_ = theNihadPartTreeItems_.at(0);
+	//theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_ = theNihadPartTreeItems_.at(0);
 
-	NihadSceneItem->GetPartsPointer().push_back(theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_);
+	//NihadSceneItem->GetPartsPointer().push_back(theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->thePartPointer_);
 
-	GetParentMainWindow()->ParseInfoToConsole("\"" + NihadSceneItem->text(0) + "\" scene successfully created.");
+	//GetParentMainWindow()->ParseInfoToConsole("\"" + NihadSceneItem->text(0) + "\" scene successfully created.");
 
-	SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager(this);
+	SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager();
 
 	FrgBaseTreeItem* sharedToParts = GetTreeItem("Parts");
 
-	SelectObjectsPropertyFactory* factory = FrgNew SelectObjectsPropertyFactory(this, sharedToParts);
+	SelectObjectsPropertyFactory* factory = FrgNew SelectObjectsPropertyFactory(FrgNullPtr, sharedToParts);
 
 	NihadSceneItem->GetProperties()->AddProperty<SelectObjectsPropertyManager>("Parts List", manager, factory);
-	//QtProperty* partsListProperty = manager->addProperty("Parts List");
+	QtProperty* partsListProperty = manager->addProperty("Parts List");
 
-	//QtTreePropertyBrowser* browser = new QtTreePropertyBrowser();
-	/*browser->setFactoryForManager(manager, factory);
+	QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
+	browser->setFactoryForManager(manager, factory);
 	browser->addProperty(partsListProperty);
-	browser->show();*/
+	NihadSceneItem->GetProperties()->GetPropertyBrowser() = browser;
 
+	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)), 
+		this, SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->unsetFactoryForManager(NihadSceneItem->GetProperties()->GetPropertyManager());
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->unsetFactoryForManager(manager);
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->setFactoryForManager(manager, factory);
@@ -209,7 +211,6 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->setFactoryForManager(manager, factory);
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->addProperty(partsListProperty);
 	//NihadSceneItem->GetProperties()->AddTopProperty("Properties");
-	NihadSceneItem->GetProperties()->GetPropertyBrowser()->show();
 
 	//GetParentMainWindow()->ParseWarningToConsole(NihadSceneItem->GetProperties()->GetPropertyManager()->value(partsListProperty).toString());
 
@@ -410,4 +411,28 @@ void ForgBaseLib::NihadTree::AddItemToTree(FrgBaseTreeItem* item)
 	GetItems().push_back(item);
 
 	UpdateTree();
+}
+
+void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> selectedItems)
+{
+	QList<NihadPartTreeItemStruct*> output;
+	for (int i = 0; i < theNihadPartTreeItems_.size(); i++)
+	{
+		for (int j = 0; j < selectedItems.size(); j++)
+		{
+			if (theNihadPartTreeItems_.at(i)->theTreeItem_ == selectedItems.at(j))
+			{
+				for (int k = 0; k < theNihadSceneTreeItems_.size(); k++)
+				{
+					if(theNihadSceneTreeItems_.at(k)->theTreeItem_ == theLastLeftClicked_)
+						theNihadSceneTreeItems_.at(k)->thePartPointer_ = theNihadPartTreeItems_.at(i);
+
+				}
+				output.push_back(theNihadPartTreeItems_.at(i));
+			}
+		}
+	}
+	((NihadVesselSceneTreeItem*)theLastLeftClicked_)->GetPartsPointer() = output;
+
+	((NihadVesselSceneTreeItem*)theLastLeftClicked_)->RenderSceneSlot();
 }

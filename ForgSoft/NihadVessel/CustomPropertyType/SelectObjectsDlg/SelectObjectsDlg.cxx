@@ -26,6 +26,7 @@ ForgBaseLib::SelectObjectsDlg::SelectObjectsDlg(QWidget* parent, QTreeWidgetItem
 		for (int i = 0; i < item->childCount(); i++)
 		{
 			items.push_back(new QTreeWidgetItem(*item->child(i)));
+			theTreeItemsToOriginalItems_.insert(items.at(i), item->child(i));
 		}
 		theTree_->addTopLevelItems(items);
 
@@ -61,7 +62,17 @@ void ForgBaseLib::SelectObjectsDlg::setupLayout()
 
 void ForgBaseLib::SelectObjectsDlg::onOK()
 {
-	theSelectedObjects_ = theTree_->selectedItems();
+	QList<QTreeWidgetItem*> selectedItems = theTree_->selectedItems();
+
+	for (int i = 0; i < selectedItems.size(); i++)
+	{
+		theSelectedObjects_.push_back(theTreeItemsToOriginalItems_.value(selectedItems.at(i)));
+	}
+
+	if (!theSelectedObjects_.isEmpty())
+	{
+		emit ObjectsSelectedUpdate(theSelectedObjects_);
+	}
 
 	accept();
 }
