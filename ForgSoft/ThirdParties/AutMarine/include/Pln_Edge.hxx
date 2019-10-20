@@ -98,8 +98,6 @@ namespace AutLib
 			if (Discrete) Discretize();
 		}
 
-		Standard_Boolean IsRing() const;
-
 		Standard_Boolean SameSense() const
 		{
 			return SameSense_;
@@ -169,6 +167,13 @@ namespace AutLib
 		void SetWire(const std::weak_ptr<Pln_Wire>& theWire)
 		{
 			theWire_ = theWire;
+		}
+
+		//- virtual functions and operators
+
+		virtual Standard_Boolean IsRing() const
+		{
+			return Standard_False;
 		}
 
 		//- Static functions and operators

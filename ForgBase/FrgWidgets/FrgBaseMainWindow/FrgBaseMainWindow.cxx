@@ -6,6 +6,7 @@
 #include <FrgBaseDlgLoadSim.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseSceneTreeItem.hxx>
+#include <FrgBaseTabWidget.hxx>
 
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QMenu>
@@ -26,6 +27,7 @@ using namespace Qtilities::CoreGui;
 ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	: QMainWindow(parent)
 {
+
 	this->window()->setWindowIcon(QIcon(":/Icons/Forg Logo.png"));
 
 	//theMenus_ = FrgMakeSharedPtr(FrgMenus)(this);
@@ -54,7 +56,7 @@ void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()
 		theTreeWidget_->theDockWidget_->setWidget(theTreeWidget_->theTree_);
 		CreateProperties();
 
-		FrgBaseSceneTreeItem sc1("scene1", theTreeWidget_->theTree_->GetItems().at(0), theTreeWidget_->theTree_, this);
+		//FrgBaseSceneTreeItem sc1("scene1", theTreeWidget_->theTree_->GetItems().at(0), theTreeWidget_->theTree_, this);
 	}
 }
 
@@ -240,4 +242,7 @@ void ForgBaseLib::FrgBaseMainWindow::InitFrgMainWindow()
 
 	theTreeWidget_->theDockWidget_->setMinimumWidth(200);
 	thePropertyWidget_->theDockWidget_->setMinimumWidth(200);
+
+	theTabWidget_ = FrgMakeSharedPtr(FrgBaseTabWidget)(this);
+	this->setCentralWidget(theTabWidget_.get());
 }

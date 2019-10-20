@@ -28,6 +28,12 @@ namespace AutLib
 
 	public:
 
+		TopoDS_Shape GetStation(const Standard_Real theX) const;
+
+		TopoDS_Shape GetButtock(const Standard_Real theY) const;
+
+		TopoDS_Shape GetWater(const Standard_Real theZ) const;
+
 	};
 }
 

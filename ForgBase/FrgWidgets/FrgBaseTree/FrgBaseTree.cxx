@@ -12,6 +12,7 @@ ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	: QTreeWidget(parent)
 	, theParentMainWindow_(parent)
 {
+
 	this->setColumnCount(1);
 	this->setHeaderLabel(tr("Simulation"));
 	this->header()->setSectionResizeMode(0, QHeaderView::Interactive);

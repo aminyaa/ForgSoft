@@ -127,7 +127,7 @@ namespace AutLib
 
 		void ApplyRake
 		(
-			Leg_Model_CorneredSectionCtrlPts& theSection,
+			Leg_Model_SectionCtrlPts& theSection,
 			const Standard_Real theRake
 		);
 
@@ -216,6 +216,23 @@ namespace AutLib
 		{
 			return *this;
 		}
+	};
+
+
+	class Leg_Nihad2_BareHull
+		: public Leg_Nihad2_HullPatch
+	{
+
+		/*Private Data*/
+
+	protected:
+
+		void MakeFace() override;
+
+	public:
+
+		Leg_Nihad2_BareHull()
+		{}
 	};
 }
 

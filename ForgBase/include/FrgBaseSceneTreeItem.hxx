@@ -41,7 +41,13 @@ private:
 
 public:
 
-	FrgBaseSceneTreeItem(const FrgString& title, FrgBaseTreeItem* parent = FrgNullPtr, FrgBaseTree* parentTree = FrgNullPtr, FrgBaseMainWindow* parentMainwindow = FrgNullPtr);
+	FrgBaseSceneTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent = FrgNullPtr,
+		FrgBaseTree* parentTree = FrgNullPtr,
+		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
+	);
 
 	void StartScene();
 

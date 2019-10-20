@@ -58,11 +58,12 @@ namespace AutLib
 
 	protected:
 
-		Cad3d_TModel()
-		{}
+		
 
 	public:
 
+		Cad3d_TModel()
+		{}
 
 		const Entity3d_Box& BoundingBox() const
 		{
@@ -140,12 +141,24 @@ namespace AutLib
 
 		//- Static functions and operators
 
-		static std::shared_ptr<Cad3d_TModel> MakeSolid(const std::vector<std::shared_ptr<TModel_Surface>>& theSurfaces, const Standard_Real theTolerance);
+		static std::shared_ptr<Cad3d_TModel> 
+			MakeSolid
+			(
+				const std::vector<std::shared_ptr<TModel_Surface>>& theSurfaces,
+				const Standard_Real theTolerance
+			);
 
 		//! returns true if the algorithm unable to construct a shell structure
-		static Standard_Boolean MakeShells(const std::shared_ptr<Cad3d_TModel>& theSolid);
+		static Standard_Boolean 
+			MakeShells
+			(
+				const std::shared_ptr<Cad3d_TModel>& theSolid
+			);
 
-		static void SplitByShells(const std::shared_ptr<Cad3d_TModel>& theSolid);
+		static void SplitByShells
+		(
+			const std::shared_ptr<Cad3d_TModel>& theSolid
+		);
 	};
 }
 

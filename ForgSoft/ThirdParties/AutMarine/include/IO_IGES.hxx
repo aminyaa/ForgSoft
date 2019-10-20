@@ -44,9 +44,6 @@ namespace AutLib
 		(
 			const word& theFileName
 		);
-
-		void ExportToPlt(OFstream& File) const;
-
 	};
 }
 

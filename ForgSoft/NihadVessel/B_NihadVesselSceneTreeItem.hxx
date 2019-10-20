@@ -9,7 +9,7 @@ class QPushButton;
 
 BeginFrgBaseLib
 
-struct NihadPartTreeItemStruct;
+struct NihadVesselPartTreeItem;
 
 class NihadVesselSceneTreeItem : public FrgBaseSceneTreeItem
 {
@@ -18,17 +18,19 @@ class NihadVesselSceneTreeItem : public FrgBaseSceneTreeItem
 
 private:
 
-	QList<NihadPartTreeItemStruct*> thePartsPointer_;
-
-	QPushButton* theOKButton_ = FrgNullPtr;
+	QList<FrgSharedPtr<NihadVesselPartTreeItem>> thePartsPointer_;
 
 public:
 
-	NihadVesselSceneTreeItem(const FrgString& title, FrgBaseTreeItem* parent = FrgNullPtr, FrgBaseTree* parentTree = FrgNullPtr, FrgBaseMainWindow* parentMainwindow = FrgNullPtr);
+	NihadVesselSceneTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent = FrgNullPtr,
+		FrgBaseTree* parentTree = FrgNullPtr,
+		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
+	);
 
-	FrgGetMacro(QList<NihadPartTreeItemStruct*>, PartsPointer, thePartsPointer_);
-
-	FrgGetMacro(QPushButton*, OKButton, theOKButton_);
+	FrgGetMacro(QList<FrgSharedPtr<NihadVesselPartTreeItem>>, PartsPointer, thePartsPointer_);
 
 public slots:
 

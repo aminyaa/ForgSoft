@@ -20,7 +20,7 @@ class FrgBaseTree;
 class FrgBaseTreeItemProperties;
 class FrgBaseMenu;
 
-class FORGBASE_EXPORT FrgBaseTreeItem : public QTreeWidgetItem
+class FORGBASE_EXPORT FrgBaseTreeItem : public QTreeWidgetItem, public std::enable_shared_from_this<FrgBaseTreeItem>
 {
 
 private:
@@ -39,7 +39,13 @@ private:
 
 public:
 
-	FrgBaseTreeItem(const FrgString& itemName, FrgBaseTreeItem* parentItem = FrgNullPtr, FrgBaseTree* parentTree = FrgNullPtr, FrgBaseMainWindow* parentMainWindow = FrgNullPtr);
+	FrgBaseTreeItem
+	(
+		const FrgString& itemName,
+		FrgBaseTreeItem* parentItem = FrgNullPtr,
+		FrgBaseTree* parentTree = FrgNullPtr,
+		FrgBaseMainWindow* parentMainWindow = FrgNullPtr
+	);
 
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);

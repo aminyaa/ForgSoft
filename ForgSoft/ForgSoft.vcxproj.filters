@@ -43,9 +43,6 @@
     <ClCompile Include="NihadVessel\NihadTree.cxx">
       <Filter>NihadVessel</Filter>
     </ClCompile>
-    <ClCompile Include="NihadVessel\NihadVesselSceneTreeItem.cxx">
-      <Filter>NihadVessel</Filter>
-    </ClCompile>
     <ClCompile Include="main.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,6 +58,18 @@
     <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.cxx">
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\NihadVesselGeometryTreeItem.cxx">
+      <Filter>NihadVessel</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\NihadVesselPartTreeItem.cxx">
+      <Filter>NihadVessel</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\NihadVesselScenePreviewTreeItem.cxx">
+      <Filter>NihadVessel</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\NihadVesselScenePartTreeItem.cxx">
+      <Filter>NihadVessel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -69,9 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NihadVessel\NihadTree.hxx">
-      <Filter>NihadVessel</Filter>
-    </QtMoc>
-    <QtMoc Include="NihadVessel\NihadVesselSceneTreeItem.hxx">
       <Filter>NihadVessel</Filter>
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.hxx">
@@ -85,6 +91,18 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.hxx">
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadVesselGeometryTreeItem.hxx">
+      <Filter>NihadVessel</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadVesselPartTreeItem.hxx">
+      <Filter>NihadVessel</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadVesselScenePreviewTreeItem.hxx">
+      <Filter>NihadVessel</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadVesselScenePartTreeItem.hxx">
+      <Filter>NihadVessel</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

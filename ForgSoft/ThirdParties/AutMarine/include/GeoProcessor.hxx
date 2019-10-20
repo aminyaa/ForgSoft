@@ -141,6 +141,17 @@ namespace AutLib
 			return Oriented_cgal(Point, P0, P1) < 0.0;
 		}
 
+		inline Standard_Boolean IsPointRightFacet_cgal
+		(
+			const Pnt3d& thePoint,
+			const Pnt3d& theP0,
+			const Pnt3d& theP1,
+			const Pnt3d& theP2
+		)
+		{
+			return Oriented_cgal(thePoint, theP0, theP1, theP2) < 0.0;
+		}
+
 		inline Standard_Boolean IsPointLeftEdge_cgal
 		(
 			const Pnt2d& Point,
@@ -149,6 +160,17 @@ namespace AutLib
 		)
 		{
 			return Oriented_cgal(Point, P0, P1) > 0.0;
+		}
+
+		inline Standard_Boolean IsPointLeftFacet_cgal
+		(
+			const Pnt3d& thePoint,
+			const Pnt3d& theP0,
+			const Pnt3d& theP1,
+			const Pnt3d& theP2
+		)
+		{
+			return Oriented_cgal(thePoint, theP0, theP1, theP2) > 0.0;
 		}
 
 		inline Standard_Boolean IsPointRightEdge_fast

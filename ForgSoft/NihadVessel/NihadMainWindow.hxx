@@ -15,6 +15,10 @@ public:
 	NihadMainWindow(QWidget* parent = FrgNullPtr);
 
 	void CreateTree() override;
+
+protected slots:
+
+	void FileImportActionSlot() override;
 };
 
 EndFrgBaseLib

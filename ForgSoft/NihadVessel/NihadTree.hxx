@@ -16,25 +16,27 @@ namespace AutLib
 BeginFrgBaseLib
 
 class FrgBaseMenu;
-class NihadVesselSceneTreeItem;
+class NihadVesselGeometryTreeItem;
+class NihadVesselPartTreeItem;
+class FrgBaseSceneTreeItem;
 
-struct NihadGeometryTreeItemStruct
-{
-	FrgBaseTreeItem* theTreeItem_ = FrgNullPtr;
-	AutLib::Leg_Nihad2_HullPatch* thePatch_ = FrgNullPtr;
-};
+//struct NihadGeometryTreeItemStruct
+//{
+//	FrgBaseTreeItem* theTreeItem_ = FrgNullPtr;
+//	AutLib::Leg_Nihad2_HullPatch* thePatch_ = FrgNullPtr;
+//};
 
-struct NihadPartTreeItemStruct
-{
-	FrgBaseTreeItem* theTreeItem_ = FrgNullPtr;
-	NihadGeometryTreeItemStruct* theGeometryPointer_ = FrgNullPtr;
-};
+//struct NihadPartTreeItemStruct
+//{
+//	FrgBaseTreeItem* theTreeItem_ = FrgNullPtr;
+//	NihadVesselGeometryTreeItem* theGeometryPointer_ = FrgNullPtr;
+//};
 
-struct NihadSceneTreeItemStruct
-{
-	NihadVesselSceneTreeItem* theTreeItem_ = FrgNullPtr;
-	NihadPartTreeItemStruct* thePartPointer_ = FrgNullPtr;
-};
+//struct NihadSceneTreeItemStruct
+//{
+//	NihadVesselSceneTreeItem* theTreeItem_ = FrgNullPtr;
+//	NihadVesselPartTreeItem* thePartPointer_ = FrgNullPtr;
+//};
 
 class NihadTree : public FrgBaseTree
 {
@@ -43,9 +45,9 @@ class NihadTree : public FrgBaseTree
 
 private:
 
-	QList<NihadGeometryTreeItemStruct*> theNihadGeometryTreeItems_;
-	QList<NihadPartTreeItemStruct*> theNihadPartTreeItems_;
-	QList<NihadSceneTreeItemStruct*> theNihadSceneTreeItems_;
+	QList<FrgSharedPtr<NihadVesselGeometryTreeItem>> theGeometryTreeItems_;
+	QList<FrgSharedPtr<NihadVesselPartTreeItem>> thePartTreeItems_;
+	QList<FrgSharedPtr<FrgBaseSceneTreeItem>> theSceneTreeItems_;
 
 public:
 
@@ -53,10 +55,11 @@ public:
 
 	void FormTree() override;
 
-	FrgGetMacro(QList<NihadGeometryTreeItemStruct*>, NihadGeometryTreeItems, theNihadGeometryTreeItems_);
+	FrgGetMacro(QList<FrgSharedPtr<NihadVesselGeometryTreeItem>>, GeometryTreeItems, theGeometryTreeItems_);
+	FrgGetMacro(QList<FrgSharedPtr<NihadVesselPartTreeItem>>, PartTreeItems, thePartTreeItems_);
 
-	NihadGeometryTreeItemStruct* GetGeometryTreeItem(FrgBaseTreeItem* item);
-	NihadPartTreeItemStruct* GetPartTreeItem(FrgBaseTreeItem* item);
+	FrgSharedPtr<NihadVesselGeometryTreeItem> GetGeometryTreeItem(FrgSharedPtr<FrgBaseTreeItem> item);
+	FrgSharedPtr<NihadVesselPartTreeItem> GetPartTreeItem(FrgSharedPtr<FrgBaseTreeItem> item);
 
 public slots:
 
@@ -72,9 +75,11 @@ public slots:
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
 
+	void PreviewGeometryClickedSlot(bool);
+
 private:
 
-	void AddItemToTree(FrgBaseTreeItem* item);
+	//void AddItemToTree(FrgBaseTreeItem* item);
 
 	void UpdateTree();
 

@@ -115,8 +115,8 @@ void AutLib::Cad_BlockEntity<EntityType>::Print
 	Standard_OStream & Ostream
 ) const
 {
-	Ostream << " Nb. of Entity = " << NbEntities() << endl;
-	Ostream << " Entity List: " << endl;
+	Ostream << " Nb. of Entity = " << NbEntities() << std::endl;
+	Ostream << " Entity List: " << std::endl;
 
 	auto iter = theEntities_.begin();
 	while (iter NOT_EQUAL theEntities_.end())

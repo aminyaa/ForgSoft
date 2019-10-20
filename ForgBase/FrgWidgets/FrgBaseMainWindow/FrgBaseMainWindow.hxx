@@ -14,6 +14,7 @@ BeginFrgBaseLib
 //class FrgMenus;
 class FrgBaseTree;
 class FrgBaseMenuFile;
+class FrgBaseTabWidget;
 
 class FORGBASE_EXPORT FrgBaseMainWindow : public QMainWindow
 {
@@ -48,6 +49,8 @@ private:
 
 	FrgSharedPtr<PropertiesWidgetStruct> thePropertyWidget_ = FrgNullPtr;
 
+	FrgSharedPtr<FrgBaseTabWidget> theTabWidget_ = FrgNullPtr;
+
 public:
 
 	FrgBaseMainWindow(QWidget* parent = FrgNullPtr);
@@ -59,6 +62,7 @@ public:
 	//FrgGetMacro(FrgSharedPtr<FrgMenus>, Menus, theMenus_);
 	FrgGetMacro(FrgBaseTree*, Tree, theTreeWidget_->theTree_);
 	FrgGetMacro(FrgSharedPtr<PropertiesWidgetStruct>, PropertyWidget, thePropertyWidget_);
+	FrgGetMacro(FrgSharedPtr<FrgBaseTabWidget>, TabWidget, theTabWidget_);
 
 protected slots:
 
@@ -70,7 +74,7 @@ protected slots:
 	void FileSaveActionSlot();
 	void FileSaveAsActionSlot();
 	void FileSaveAllActionSlot();
-	void FileImportActionSlot();
+	virtual void FileImportActionSlot();
 	void FileExportActionSlot();
 	void FileExitActionSlot();
 

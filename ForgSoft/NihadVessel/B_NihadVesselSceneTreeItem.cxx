@@ -3,6 +3,9 @@
 #include <FrgBaseTree.hxx>
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
+#include <FrgBaseTabWidget.hxx>
+#include <NihadVesselGeometryTreeItem.hxx>
+#include <NihadVesselPartTreeItem.hxx>
 
 #include <array>
 
@@ -197,12 +200,18 @@ std::vector<Handle(Poly_Triangulation)> triangulate(const TopoDS_Shape& shape) {
 	return triangulated_faces;
 }
 
-ForgBaseLib::NihadVesselSceneTreeItem::NihadVesselSceneTreeItem(const FrgString& title, FrgBaseTreeItem* parent, FrgBaseTree* parentTree, FrgBaseMainWindow* parentMainwindow)
+ForgBaseLib::NihadVesselSceneTreeItem::NihadVesselSceneTreeItem
+(
+	const FrgString& title,
+	FrgBaseTreeItem* parent,
+	FrgBaseTree* parentTree,
+	FrgBaseMainWindow* parentMainwindow
+)
 	: FrgBaseSceneTreeItem(title, parent, parentTree, parentMainwindow)
 {
-	theOKButton_ = new QPushButton("OK");
+	//theOKButton_ = new QPushButton("OK");
 
-	connect(theOKButton_, SIGNAL(clicked(bool)), this, SLOT(RenderSceneSlot()));
+	//connect(theOKButton_, SIGNAL(clicked(bool)), this, SLOT(RenderSceneSlot()));
 
 	//GetProperties()->Add
 }
@@ -211,7 +220,7 @@ void ForgBaseLib::NihadVesselSceneTreeItem::RenderSceneSlot()
 {
 	for (int i = 0; i < thePartsPointer_.size(); i++)
 	{
-		thePartsPointer_.at(i)->theGeometryPointer_->thePatch_->Discrete();
+		thePartsPointer_.at(i)->GetGeometryPointer()->GetPatch()->Discrete();
 	}
 	//StartScene();
 
@@ -220,6 +229,9 @@ void ForgBaseLib::NihadVesselSceneTreeItem::RenderSceneSlot()
 	GetLogoActor()->SetInput("Nihad");
 
 	Render();
+
+	GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
+	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(this);
 }
 
 void ForgBaseLib::NihadVesselSceneTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
@@ -241,7 +253,7 @@ void ForgBaseLib::NihadVesselSceneTreeItem::CreateActor()
 		int it = 0;
 		for
 			(
-				TopExp_Explorer Explorer(thePartsPointer_.at(iParts)->theGeometryPointer_->thePatch_->Entity(), TopAbs_FACE);
+				TopExp_Explorer Explorer(thePartsPointer_.at(iParts)->GetGeometryPointer()->GetPatch()->Entity(), TopAbs_FACE);
 				Explorer.More();
 				Explorer.Next(), it++
 				)
@@ -315,7 +327,7 @@ void ForgBaseLib::NihadVesselSceneTreeItem::CreateActor()
 void ForgBaseLib::NihadVesselSceneTreeItem::CreateActor2()
 {
 	VTK_Helper helper;
-	vtkSmartPointer<vtkPolyData> polydata = helper.cascade_to_vtk(triangulate(thePartsPointer_.at(0)->theGeometryPointer_->thePatch_->Entity()));
+	vtkSmartPointer<vtkPolyData> polydata = helper.cascade_to_vtk(triangulate(thePartsPointer_.at(0)->GetGeometryPointer()->GetPatch()->Entity()));
 
 	helper.colour_original_faces();
 

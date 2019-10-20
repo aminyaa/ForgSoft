@@ -4,7 +4,6 @@
 
 #include <GModel_Entity.hxx>
 #include <Entity2d_Box.hxx>
-#include <Pnt3d.hxx>
 
 #include <Standard_Handle.hxx>
 #include <TopoDS_Face.hxx>

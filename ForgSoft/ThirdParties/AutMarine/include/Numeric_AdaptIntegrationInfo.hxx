@@ -17,8 +17,6 @@ namespace AutLib
 		friend class Numeric_AdaptIntegration;
 
 		/*private Data*/
-
-		Standard_Boolean IsDone_;
 		Standard_Boolean IsConverged_;
 
 		Standard_Real theTolerance_;
@@ -28,11 +26,6 @@ namespace AutLib
 		Standard_Integer theInitialIter_;
 
 	protected:
-
-		Standard_Boolean& Change_IsDone()
-		{
-			return IsDone_;
-		}
 
 		Standard_Boolean& Change_IsConverged()
 		{
@@ -46,7 +39,6 @@ namespace AutLib
 
 		void Reset()
 		{
-			IsDone_ = Standard_False;
 			IsConverged_ = Standard_False;
 
 			theResult_ = 0;
@@ -59,18 +51,13 @@ namespace AutLib
 		static const Standard_Integer DEFAULT_INIT_ITERATIONS;
 
 		Numeric_AdaptIntegrationInfo()
-			: IsDone_(Standard_False)
-			, IsConverged_(Standard_False)
+			: IsConverged_(Standard_False)
 			, theTolerance_(DEFAULT_TOLERANCE)
 			, theMaxIters_(DEFAULT_MAX_ITERATIONS)
 			, theInitialIter_(DEFAULT_INIT_ITERATIONS)
 			, theResult_(0)
 		{}
 
-		Standard_Boolean IsDone() const
-		{
-			return IsDone_;
-		}
 
 		Standard_Boolean IsConverged() const
 		{

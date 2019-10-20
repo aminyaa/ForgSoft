@@ -58,6 +58,9 @@
     <Filter Include="FrgWidgets\FrgBaseTreeItemProperties">
       <UniqueIdentifier>{90ce8d14-8b32-4dbe-b22d-9b576a5b2533}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseTabWidget">
+      <UniqueIdentifier>{f7488a61-e33a-4cd4-b45c-28700df8bcb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -95,6 +98,9 @@
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.cxx">
       <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTabWidget\FrgBaseTabWidget.cxx">
+      <Filter>FrgWidgets\FrgBaseTabWidget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +153,9 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBaseTree\FrgBaseTree.hxx">
       <Filter>FrgWidgets\FrgBaseTree</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseTabWidget\FrgBaseTabWidget.hxx">
+      <Filter>FrgWidgets\FrgBaseTabWidget</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

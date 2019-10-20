@@ -255,13 +255,13 @@ void AutLib::Cad_EntityManager<EntityType>::Print
 ) const
 {
 	Ostream << "-----------------{ Entities Blocks Informations }-----------------\n";
-	Ostream << " Nb. of Blocks: " << theBlocks_.size() << endl;
-	Ostream << " Block List: " << endl;
+	Ostream << " Nb. of Blocks: " << theBlocks_.size() << std::endl;
+	Ostream << " Block List: " << std::endl;
 
 	auto Iter = theBlocks_.begin();
 	while (Iter NOT_EQUAL theBlocks_.end())
 	{
-		Ostream << endl;
+		Ostream << std::endl;
 		Ostream << "  - " << Iter->first;
 		if (PrintCurves)
 		{
@@ -270,6 +270,6 @@ void AutLib::Cad_EntityManager<EntityType>::Print
 		Iter++;
 	}
 
-	Ostream << endl;
+	Ostream << std::endl;
 	Ostream << "-----------------{ End of Entities Blocks Informations }-----------------\n";
 }

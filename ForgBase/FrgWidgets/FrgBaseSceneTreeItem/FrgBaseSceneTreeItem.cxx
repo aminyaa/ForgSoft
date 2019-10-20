@@ -28,7 +28,13 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2)
 VTK_MODULE_INIT(vtkInteractionStyle)
 VTK_MODULE_INIT(vtkRenderingFreeType)
 
-ForgBaseLib::FrgBaseSceneTreeItem::FrgBaseSceneTreeItem(const FrgString& title, FrgBaseTreeItem* parent, FrgBaseTree* parentTree, FrgBaseMainWindow* parentMainWindow)
+ForgBaseLib::FrgBaseSceneTreeItem::FrgBaseSceneTreeItem
+(
+	const FrgString& title,
+	FrgBaseTreeItem* parent,
+	FrgBaseTree* parentTree,
+	FrgBaseMainWindow* parentMainWindow
+)
 	: FrgBaseTreeItem(title, parent, parentTree, parentMainWindow)
 	, QVTKOpenGLNativeWidget(parentMainWindow)
 {
@@ -128,7 +134,7 @@ void ForgBaseLib::FrgBaseSceneTreeItem::Render()
 
 	//FrgBasePlot2D* thePlot2D_ = FrgNew FrgBasePlot2D;
 
-	GetParentMainWindow()->setCentralWidget(this);
+	//GetParentMainWindow()->setCentralWidget(this);
 }
 
 void ForgBaseLib::FrgBaseSceneTreeItem::StartScene()

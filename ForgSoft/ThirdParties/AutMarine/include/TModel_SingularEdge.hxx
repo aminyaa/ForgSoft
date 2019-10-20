@@ -1,13 +1,13 @@
 #pragma once
-#ifndef _TModel_Singular_Header
-#define _TModel_Singular_Header
+#ifndef _TModel_SingularEdge_Header
+#define _TModel_SingularEdge_Header
 
 #include <TModel_Edge.hxx>
 
 namespace AutLib
 {
 
-	class TModel_Singular
+	class TModel_SingularEdge
 		: public TModel_Edge
 	{
 
@@ -15,7 +15,7 @@ namespace AutLib
 
 	public:
 
-		TModel_Singular
+		TModel_SingularEdge
 		(
 			const std::shared_ptr<TModel_Vertex>& theVtx,
 			const std::shared_ptr<TModel_parCurve>& thePar
@@ -23,7 +23,7 @@ namespace AutLib
 			: TModel_Edge(theVtx, theVtx, nullptr, thePar, Standard_True)
 		{}
 
-		TModel_Singular
+		TModel_SingularEdge
 		(
 			const std::shared_ptr<TModel_parCurve>& thePar,
 			const Standard_Boolean theSense = Standard_True
@@ -31,7 +31,7 @@ namespace AutLib
 			: TModel_Edge(nullptr, thePar, Standard_True)
 		{}
 
-		TModel_Singular
+		TModel_SingularEdge
 		(
 			const Standard_Integer theIndex,
 			const std::shared_ptr<TModel_Vertex>& theVtx,
@@ -40,7 +40,7 @@ namespace AutLib
 			: TModel_Edge(theIndex, theVtx, theVtx, nullptr, thePar, Standard_True)
 		{}
 
-		TModel_Singular
+		TModel_SingularEdge
 		(
 			const Standard_Integer theIndex,
 			const std::shared_ptr<TModel_parCurve>& thePar
@@ -48,7 +48,7 @@ namespace AutLib
 			: TModel_Edge(theIndex, nullptr, thePar, Standard_True)
 		{}
 
-		TModel_Singular
+		TModel_SingularEdge
 		(
 			const Standard_Integer theIndex,
 			const word& theName,
@@ -58,7 +58,7 @@ namespace AutLib
 			: TModel_Edge(theIndex, theName, theVtx, theVtx, nullptr, thePar, Standard_True)
 		{}
 
-		TModel_Singular
+		TModel_SingularEdge
 		(
 			const Standard_Integer theIndex,
 			const word& theName,
@@ -77,4 +77,4 @@ namespace AutLib
 	};
 }
 
-#endif // !_TModel_Singular_Header
+#endif // !_TModel_SingularEdge_Header

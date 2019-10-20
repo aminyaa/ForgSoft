@@ -4,15 +4,12 @@
 #include <QtWidgets/QTreeWidgetItem>
 #include <NihadMainWindow.hxx>
 
-#include <NihadVesselSceneTreeItem.hxx>
-#include <SelectObjectsDlg.hxx>
-
 
 int main(int argc, char** argv)
 {
 	QApplication app(argc, argv);
-	ForgBaseLib::NihadMainWindow w;
+	FrgSharedPtr<ForgBaseLib::NihadMainWindow> w = FrgMakeSharedPtr(ForgBaseLib::NihadMainWindow)();
 
-	w.show();
+	w->show();
 	app.exec();
 }

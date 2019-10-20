@@ -17,6 +17,8 @@ ForgBaseLib::FrgBaseMenuFile::FrgBaseMenuFile(FrgBaseMainWindow* parentMainWindo
 	AddItem(":/Icons/Menus/File/SaveAs.png", "Save As...", "Ctrl+Shift+S");
 	AddItem(":/Icons/Menus/File/Exit.png", "E&xit", "Ctrl+Q", FrgFalse);
 
+	AddItem(":/Icons/Menus/File/Import.png", "Import", "Ctrl+I", FrgFalse);
+
 	SetEnabledItem("Save", FrgFalse);
 	SetEnabledItem("Save As...", FrgFalse);
 
@@ -25,6 +27,7 @@ ForgBaseLib::FrgBaseMenuFile::FrgBaseMenuFile(FrgBaseMainWindow* parentMainWindo
 	connect(GetItem("New"), SIGNAL(triggered()), GetParentMainWindow(), SLOT(FileNewActionSlot()));
 	connect(GetItem("Load"), SIGNAL(triggered()), GetParentMainWindow(), SLOT(FileLoadActionSlot()));
 	connect(GetItem("Save"), SIGNAL(triggered()), GetParentMainWindow(), SLOT(FileSaveActionSlot()));
+	connect(GetItem("Import"), SIGNAL(triggered()), GetParentMainWindow(), SLOT(FileImportActionSlot()));
 
 	GetParentMainWindow()->addToolBar(GetToolBar());
 }

@@ -47,6 +47,14 @@ namespace AutLib
 		)
 			: Pln_Edge(theVrtx, theVrtx, theCurve, Sense, Discrete)
 		{}
+
+
+		//- override functions and operators
+
+		Standard_Boolean IsRing() const override
+		{
+			return Standard_True;
+		}
 	};
 }
 

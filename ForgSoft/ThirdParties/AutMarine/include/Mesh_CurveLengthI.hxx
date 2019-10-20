@@ -5,7 +5,7 @@
 namespace AutLib
 {
 
-	template<class CurveType, class SizeMap>
+	/*template<class CurveType, class SizeMap>
 	Standard_Real Mesh_CurveLength::Length
 	(
 		const Mesh_CurveEntity<CurveType, SizeMap>& theCurve,
@@ -35,5 +35,5 @@ namespace AutLib
 		}
 
 		return theInfo.Result();
-	}
+	}*/
 }

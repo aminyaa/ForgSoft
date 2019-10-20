@@ -15,13 +15,15 @@
 	PARAM_TYPE& PARAM_NAME() {return the##PARAM_NAME##_;}													\
 	void Set##PARAM_NAME(const PARAM_TYPE the##PARAM_NAME) {the##PARAM_NAME##_ = the##PARAM_NAME;}
 
-#define GLOBAL_ACCESS_VECTOR(PARAM_TYPE, PARAM_NAME, INDEX)																						\
-	const PARAM_TYPE& PARAM_NAME##INDEX() const {return the##PARAM_NAME##_[INDEX];}																\
-	PARAM_TYPE& PARAM_NAME##INDEX() {return the##PARAM_NAME##_[INDEX];}																			\
-	void Set##PARAM_NAME##INDEX(const PARAM_TYPE& the##PARAM_NAME) {the##PARAM_NAME##_[INDEX] = the##PARAM_NAME;}								\
-	void Set##PARAM_NAME(const Standard_Integer theIndex, const PARAM_TYPE& the##PARAM_NAME) {the##PARAM_NAME##_[theIndex] = the##PARAM_NAME;}	\
-	const PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) const {return the##PARAM_NAME##_[theIndex];}									\
-	PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) {return the##PARAM_NAME##_[theIndex];}
+#define GLOBAL_ACCESS_VECTOR(PARAM_TYPE, PARAM_NAME, INDEX)																							\
+	const PARAM_TYPE& PARAM_NAME##INDEX() const {return the##PARAM_NAME##s_[INDEX];}																\
+	PARAM_TYPE& PARAM_NAME##INDEX() {return the##PARAM_NAME##s_[INDEX];}																			\
+	void Set##PARAM_NAME##INDEX(const PARAM_TYPE& the##PARAM_NAME) {the##PARAM_NAME##s_[INDEX] = the##PARAM_NAME;}
+
+#define GLOBAL_ACCESS_VECTOR_INDEX(PARAM_TYPE, PARAM_NAME)																						\
+	void Set##PARAM_NAME(const Standard_Integer theIndex, const PARAM_TYPE& the##PARAM_NAME) {the##PARAM_NAME##s_[theIndex] = the##PARAM_NAME;}	\
+	const PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) const {return the##PARAM_NAME##s_[theIndex];}									\
+	PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) {return the##PARAM_NAME##s_[theIndex];}
 
 
 #endif // !_Global_AccessMethod_Header

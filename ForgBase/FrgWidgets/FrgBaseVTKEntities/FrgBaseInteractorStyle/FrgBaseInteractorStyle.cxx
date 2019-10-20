@@ -156,7 +156,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnLeftButtonUp()
 				(GeometrySelectedColorRGB.redF(), GeometrySelectedColorRGB.greenF(), GeometrySelectedColorRGB.blueF());
 				this->theSelectedActors_[i]->theActor_->GetProperty()->SetDiffuse(1.0);
 				this->theSelectedActors_[i]->theActor_->GetProperty()->SetSpecular(0.0);
-				this->theSelectedActors_[i]->theActor_->GetProperty()->EdgeVisibilityOn();
+				//this->theSelectedActors_[i]->theActor_->GetProperty()->EdgeVisibilityOn();
 
 				theSelectedActors_[i]->theActor_->GetProperty()->SetOpacity(1.0);
 			}
