@@ -1,5 +1,8 @@
 #include <FrgBasePlot2D.hxx>
 
+#include <FrgBaseMainWindow.hxx>
+#include <FrgBaseTabWidget.hxx>
+
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderWindow.h>
@@ -14,8 +17,23 @@
 #include <vtkChartLegend.h>
 #include <vtkTextProperty.h>
 #include <vtkAxis.h>
+#include <vtkGenericOpenGLRenderWindow.h>
 
-ForgBaseLib::FrgBasePlot2D::FrgBasePlot2D()
+#include <vtkAutoInit.h>
+
+VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
+VTK_MODULE_INIT(vtkRenderingOpenGL2)
+VTK_MODULE_INIT(vtkInteractionStyle)
+VTK_MODULE_INIT(vtkRenderingFreeType)
+
+ForgBaseLib::FrgBasePlot2D::FrgBasePlot2D
+(
+	const FrgString& itemName,
+	FrgBaseTreeItem* parentItem,
+	FrgBaseTree* parentTree,
+	FrgBaseMainWindow* parentMainWindow
+)
+	: FrgBaseTreeItem(itemName, parentItem, parentTree, parentMainWindow)
 {
 	// Create a table with some points in it
 	theTable_ =	vtkSmartPointer<vtkTable>::New();
@@ -37,7 +55,7 @@ ForgBaseLib::FrgBasePlot2D::FrgBasePlot2D()
 
 	// Fill in the table with some example values
 	int numPoints = 69;
-	float inc = 7.5 / (numPoints - 1);
+	float inc = 7.5 / ((float)numPoints - 1);
 	theTable_->SetNumberOfRows(numPoints);
 	for (int i = 0; i < numPoints; ++i)
 	{
@@ -83,7 +101,22 @@ ForgBaseLib::FrgBasePlot2D::FrgBasePlot2D()
 	//view->GetRenderWindow()->SetMultiSamples(0);
 
 	// Start interactor
-	theView_->GetRenderWindow()->Render();
+	//theView_->GetRenderWindow()->Render();
+	//theView_->GetInteractor()->Initialize();
+
+	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+
+	theView_->GetInteractor()->SetRenderWindow(theRenderWindow_);
+	theRenderWindow_->SetInteractor(theView_->GetInteractor());
+
+	theView_->SetRenderWindow(theRenderWindow_);
+	theRenderWindow_->AddRenderer(theView_->GetRenderer());
+
+	this->SetRenderWindow(theRenderWindow_);
 	theView_->GetInteractor()->Initialize();
-	theView_->GetInteractor()->Start();
+	//theView_->GetInteractor()->Start();
+	theRenderWindow_->Render();
+
+
+	GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
 }

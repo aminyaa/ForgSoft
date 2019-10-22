@@ -3,7 +3,7 @@
 #define _NihadVesselScenePreviewTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgBaseSceneTreeItem.hxx>
+#include <NihadVesselScenePartTreeItem.hxx>
 #include <Entity3d_TriangulationFwd.hxx>
 
 #include <vtkSmartPointer.h>
@@ -12,7 +12,7 @@ class vtkActor;
 
 BeginFrgBaseLib
 
-class NihadVesselScenePreviewTreeItem : public FrgBaseSceneTreeItem
+class NihadVesselScenePreviewTreeItem : public NihadVesselScenePartTreeItem
 {
 
 	Q_OBJECT

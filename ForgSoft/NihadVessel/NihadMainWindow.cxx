@@ -3,6 +3,7 @@
 #include <NihadTree.hxx>
 #include <NihadTree.hxx>
 #include <NihadVesselPartTreeItem.hxx>
+#include <FrgBaseGlobalsThread.hxx>
 
 #include <IO_IGES.hxx>
 #include <FastDiscrete_Params.hxx>
@@ -51,12 +52,22 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 		{
 			AutLib::IO_IGES reader(AutLib::gl_fast_discrete_parameters);
 			reader.Verbose() = 1;
-			reader.ReadFile(fileName.toStdString());
+			reader.SetToDiscrete();
+
+			FrgExecuteFunctionInProcess(this, reader.ReadFile(fileName.toStdString()););
+
+			//reader.ReadFile(fileName.toStdString());
 
 			auto surfaces = AutLib::TModel_Tools::GetSurfaces(reader.Shape());
 			auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
 
-			((NihadTree*)GetTree())->GetPartTreeItems().push_back(FrgMakeSharedPtr(NihadVesselPartTreeItem)(fileName, GetTree()->GetTreeItem("Parts"), GetTree(), this));
+			((NihadTree*)GetTree())->GetPartTreeItems().push_back
+			(
+				FrgMakeSharedPtr(NihadVesselPartTreeItem)
+				(
+					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), "Import"), GetTree()->GetTreeItem("Parts"), GetTree(), this
+					)
+			);
 
 			((NihadTree*)GetTree())->GetPartTreeItems().at(((NihadTree*)GetTree())->GetPartTreeItems().size() - 1)->GetTModel() = solid;
 		}

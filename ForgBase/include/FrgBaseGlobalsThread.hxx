@@ -4,6 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseThread.hxx>
+#include <QtCore/QEventLoop>
 
 #include <QtCore/QObject>
 
@@ -50,7 +51,7 @@ auto functionName = fnptr<void()>([&]{function;});
 
 //#define FrgExecuteFunctionInProcess(parentMainWindow, function)\
 //FrgDefineProcessFunction(MAKE_UNIQUE(func), function);\
-//FrgThread MAKE_UNIQUE(thread)(parentMainWindow, MAKE_UNIQUE(func));\
+//FrgBaseThread MAKE_UNIQUE(thread)(parentMainWindow, MAKE_UNIQUE(func));\
 //MAKE_UNIQUE(thread).start();\
 //QEventLoop MAKE_UNIQUE(eventLoop);\
 //QObject::connect(&MAKE_UNIQUE(thread), SIGNAL(finished()), &MAKE_UNIQUE(eventLoop), SLOT(quit()));\
@@ -59,10 +60,10 @@ auto functionName = fnptr<void()>([&]{function;});
 
 #define FrgExecuteFunctionInMultiProcess(parentMainWindow, N, function)\
 FrgDefineProcessFunction(MAKE_UNIQUE(func), function); \
-FrgVector<FrgSharedPtr<FrgThread>> MAKE_UNIQUE(thread);\
+FrgVector<FrgSharedPtr<FrgBaseThread>> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(FrgMakeSharedPtr(FrgThread)(parentMainWindow, MAKE_UNIQUE(func)));\
+MAKE_UNIQUE(thread).push_back(FrgMakeSharedPtr(FrgBaseThread)(parentMainWindow, MAKE_UNIQUE(func)));\
 MAKE_UNIQUE(thread).at(i)->start();\
 }\
 FrgVector<FrgSharedPtr<QEventLoop>> MAKE_UNIQUE(eventLoop);\

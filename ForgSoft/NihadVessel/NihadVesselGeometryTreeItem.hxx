@@ -10,6 +10,8 @@ namespace AutLib
 	class Leg_Nihad2_HullPatch;
 }
 
+class TopoDS_Shape;
+
 BeginFrgBaseLib
 
 class NihadVesselGeometryTreeItem : public QObject, public FrgBaseTreeItem
@@ -32,6 +34,8 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch>, Patch, thePatch_);
+
+	const TopoDS_Shape& GetTopoDS_Shape();
 
 };
 

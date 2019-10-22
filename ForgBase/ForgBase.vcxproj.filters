@@ -134,9 +134,6 @@
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx">
-      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
-    </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.hxx">
       <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBaseTabWidget\FrgBaseTabWidget.hxx">
       <Filter>FrgWidgets\FrgBaseTabWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

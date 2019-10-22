@@ -19,6 +19,7 @@ class FrgBaseMenu;
 class NihadVesselGeometryTreeItem;
 class NihadVesselPartTreeItem;
 class FrgBaseSceneTreeItem;
+class FrgBasePlot2D;
 
 //struct NihadGeometryTreeItemStruct
 //{
@@ -48,6 +49,7 @@ private:
 	QList<FrgSharedPtr<NihadVesselGeometryTreeItem>> theGeometryTreeItems_;
 	QList<FrgSharedPtr<NihadVesselPartTreeItem>> thePartTreeItems_;
 	QList<FrgSharedPtr<FrgBaseSceneTreeItem>> theSceneTreeItems_;
+	QList<FrgSharedPtr<FrgBasePlot2D>> thePlotsItems_;
 
 public:
 
@@ -76,6 +78,8 @@ public slots:
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
 
 	void PreviewGeometryClickedSlot(bool);
+
+	void NewPlotClickedSlot(bool);
 
 private:
 

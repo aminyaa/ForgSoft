@@ -15,8 +15,6 @@ struct FrgBaseTreeCache
 {
 	FrgBaseTreeItem* theLastLeftClicked_;
 	FrgBaseTreeItem* theLastRightClicked_;
-
-	QStringList thePartsNamesList_;
 };
 
 class FORGBASE_EXPORT FrgBaseTree 

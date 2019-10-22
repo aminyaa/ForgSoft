@@ -1,5 +1,4 @@
 #include <NihadVesselScenePreviewTreeItem.hxx>
-
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTabWidget.hxx>
 
@@ -29,9 +28,9 @@ ForgBaseLib::NihadVesselScenePreviewTreeItem::NihadVesselScenePreviewTreeItem
 	FrgBaseTree* parentTree,
 	FrgBaseMainWindow* parentMainwindow
 )
-	: FrgBaseSceneTreeItem(title, parent, parentTree, parentMainwindow)
+	: NihadVesselScenePartTreeItem(title, parent, parentTree, parentMainwindow)
 {
-
+	
 }
 
 void ForgBaseLib::NihadVesselScenePreviewTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
@@ -75,7 +74,7 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 
 	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 
-	actor->SetMapper(HullMapper);
+	//actor->SetMapper(HullMapper);
 
 	// Create a transform to rescale model
 	double center[3];
@@ -87,8 +86,8 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 			bounds[5] - bounds[4]);
 
 	auto userTransform = vtkSmartPointer<vtkTransform>::New();
-	userTransform->Translate(-center[0], -center[1], -center[2]);
-	userTransform->Scale(1.0 / maxBound, 1.0 / maxBound, 1.0 / maxBound);
+	/*userTransform->Translate(-center[0], -center[1], -center[2]);
+	userTransform->Scale(1.0 / maxBound, 1.0 / maxBound, 1.0 / maxBound);*/
 	auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
 	transform->SetTransform(userTransform);
 	transform->SetInputData(Hull);
@@ -103,9 +102,18 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 	HullMapper->ScalarVisibilityOff();
 
 	actor->GetProperty()->EdgeVisibilityOn();
+	actor->GetProperty()->SetLineWidth(2.0);
 
 	if (GetRenderer()->GetActors()->GetNumberOfItems() != 0)
-		GetRenderer()->RemoveActor(GetRenderer()->GetActors()->GetLastActor());
+		GetRenderer()->RemoveActor(GetActors().at(0));
+
+	GetActors().insert(0, actor);
+	GetActors().at(0)->SetMapper(HullMapper);
+
+	for (int iActor = 1; iActor < GetActors().size(); iActor++)
+	{
+		GetActors().at(iActor)->GetProperty()->SetOpacity(0.5);
+	}
 
 	AddActorToTheRenderer(actor);
 }
@@ -128,7 +136,7 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::RenderSceneSlot()
 	}
 	else
 	{
-		GetRenderer()->ResetCamera();
+		//GetRenderer()->ResetCamera();
 		GetRenderer()->ResetCameraClippingRange();
 		GetRenderWindow()->Render();
 	}

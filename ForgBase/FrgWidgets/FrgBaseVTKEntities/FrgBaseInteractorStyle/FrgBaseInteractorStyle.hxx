@@ -16,7 +16,7 @@ BeginFrgBaseLib
 
 class FrgBaseSceneTreeItem;
 
-class FrgBaseInteractorStyle : public vtkInteractorStyleTrackballCamera
+class FORGBASE_EXPORT FrgBaseInteractorStyle : public vtkInteractorStyleTrackballCamera
 {
 	struct FrgBaseActor
 	{

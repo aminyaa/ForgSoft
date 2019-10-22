@@ -36,6 +36,8 @@ private:
 
 	vtkSmartPointer<vtkTextActor> theLogoActor_;
 
+	QList<vtkSmartPointer<vtkActor>> theActors_;
+
 	void Init();
 
 
@@ -54,8 +56,10 @@ public:
 	FrgGetMacro(vtkSmartPointer<vtkRenderer>, Renderer, theRenderer_);
 	FrgGetMacro(vtkSmartPointer<vtkRenderWindowInteractor>, RenderWindowInteractor, theRenderWindowInteractor_);
 	FrgGetMacro(vtkSmartPointer<FrgBaseInteractorStyle>, InteractorStyle, theInteractorStyle_);
-	FrgGetMacro(vtkSmartPointer<vtkCamera>, Camera, theCamera_);
+	FrgGetMacro(vtkSmartPointer<vtkCamera>, FrgBaseCamera, theCamera_);
 	FrgGetMacro(vtkSmartPointer<vtkTextActor>, LogoActor, theLogoActor_);
+	FrgGetMacro(vtkSmartPointer<vtkGenericOpenGLRenderWindow>, FrgBaseRenderWindow, theRenderWindow_);
+	FrgGetMacro(QList<vtkSmartPointer<vtkActor>>, Actors, theActors_);
 
 	void Render();
 };

@@ -3,6 +3,7 @@
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
+#include <FrgBasePlot2D.hxx>
 #include <qtpropertybrowser.h>
 
 #include <NihadVesselGeometryTreeItem.hxx>
@@ -42,11 +43,14 @@ ForgBaseLib::NihadTree::NihadTree(FrgBaseMainWindow* parent)
 void ForgBaseLib::NihadTree::FormTree()
 {
 	FrgString GeometryItem = "Geometry";
+	FrgString AnalysisItem = "Analysis";
 	FrgString PartsItem = "Parts";
 	FrgString ScenesItem = "Scenes";
 	FrgString PlotsItem = "Plots";
 
 	FrgNew FrgBaseTreeItem(GeometryItem, FrgNullPtr, this, GetParentMainWindow());
+
+	FrgNew FrgBaseTreeItem(AnalysisItem, FrgNullPtr, this, GetParentMainWindow());
 
 	FrgNew FrgBaseTreeItem(PartsItem, FrgNullPtr, this, GetParentMainWindow());
 
@@ -61,6 +65,14 @@ void ForgBaseLib::NihadTree::FormTree()
 	FrgString ScenesNewMenu = "&New Scene";
 	GetTreeItem(ScenesItem)->GetContextMenu()->AddItem(ScenesNewMenu);
 	connect(GetTreeItem(ScenesItem)->GetContextMenu()->GetItem(ScenesNewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(NewSceneClickedSlot(bool)));
+
+	FrgString AnalysisNewMenu = "&New Analyze";
+	GetTreeItem(AnalysisItem)->GetContextMenu()->AddItem(AnalysisNewMenu);
+	connect(GetTreeItem(AnalysisItem)->GetContextMenu()->GetItem(AnalysisNewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(NewAnalysisClickedSlot(bool)));
+
+	FrgString PlotsNewMenu = "&New Plot";
+	GetTreeItem(PlotsItem)->GetContextMenu()->AddItem(PlotsNewMenu);
+	connect(GetTreeItem(PlotsItem)->GetContextMenu()->GetItem(PlotsNewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(NewPlotClickedSlot(bool)));
 }
 
 void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
@@ -174,20 +186,20 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 	//theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew NihadVesselSceneTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
 
-	FrgSharedPtr<NihadVesselScenePartTreeItem> NihadSceneItem =
-		std::dynamic_pointer_cast<NihadVesselScenePartTreeItem>(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
+	/*FrgSharedPtr<NihadVesselScenePartTreeItem> NihadSceneItem =
+		std::dynamic_pointer_cast<NihadVesselScenePartTreeItem>(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));*/
 
 	//AddItemToTree(NihadSceneItem);
 
 	//NihadSceneItem->GetProperties()->AddPropertyFlagType("Properties", "Parts List", thePartsNamesList_, FrgString::number(PartsListID));
 
-	connect
+	/*connect
 	(
 		NihadSceneItem->GetProperties()->GetPropertyManager()
 		, SIGNAL(valueChanged(QtProperty*, const QVariant&))
 		, this
 		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
-	);
+	);*/
 
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->layout()->addWidget(NihadSceneItem->GetOKButton());
 
@@ -197,7 +209,7 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 
 	//GetParentMainWindow()->ParseInfoToConsole("\"" + NihadSceneItem->text(0) + "\" scene successfully created.");
 
-	SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager();
+	/*SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager();
 
 	FrgBaseTreeItem* sharedToParts = GetTreeItem("Parts");
 
@@ -211,8 +223,8 @@ void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 	browser->addProperty(partsListProperty);
 	NihadSceneItem->GetProperties()->GetPropertyBrowser() = browser;
 
-	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)), 
-		this, SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
+	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
+		this, SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));*/
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->unsetFactoryForManager(NihadSceneItem->GetProperties()->GetPropertyManager());
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->unsetFactoryForManager(manager);
 	//NihadSceneItem->GetProperties()->GetPropertyBrowser()->setFactoryForManager(manager, factory);
@@ -319,34 +331,31 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 {
-	thePartTreeItems_.push_back(FrgMakeSharedPtr(NihadVesselPartTreeItem)(theLastRightClicked_->text(0), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow()));
+	thePartTreeItems_.push_back
+	(FrgMakeSharedPtr(NihadVesselPartTreeItem)
+		(
+			theLastRightClicked_->text(0),
+			GetTreeItem("Parts"), GetParentMainWindow()->GetTree(),
+			GetParentMainWindow(), theLastRightClicked_->shared_from_this()
+			)
+	);
 
 	//theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew FrgBaseTreeItem(theLastRightClicked_->text(0), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
 
-	FrgSharedPtr<FrgBaseTreeItem> NihadPartTreeItem = thePartTreeItems_.at(thePartTreeItems_.size() - 1);
+	//FrgSharedPtr<FrgBaseTreeItem> NihadPartTreeItem = thePartTreeItems_.at(thePartTreeItems_.size() - 1);
 
-	thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetGeometryPointer() = GetGeometryTreeItem(theLastRightClicked_->shared_from_this());
+	//thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetGeometryPointer() = GetGeometryTreeItem(theLastRightClicked_->shared_from_this());
 
 	//AddItemToTree(NihadPartTreeItem);
 
-	thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetGeometryPointer()->GetPatch()->Perform();
+	//thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetGeometryPointer()->GetPatch()->Perform();
 
-	FrgString ExportPartString = "&Export";
-	NihadPartTreeItem->GetContextMenu()->AddItem(ExportPartString);
-	connect
-	(
-		NihadPartTreeItem->GetContextMenu()->GetItem(ExportPartString.remove('&'))
-		, SIGNAL(triggered(bool))
-		, this
-		, SLOT(ExportPartSlot(bool))
-	);
-
-	thePartsNamesList_ << NihadPartTreeItem->text(0);
+	//thePartsNamesList_ << NihadPartTreeItem->text(0);
 
 	UpdateTree();
 
-	GetParentMainWindow()->ParseInfoToConsole("\"" + NihadPartTreeItem->text(0) + "\" part successfully created.");
+	//GetParentMainWindow()->ParseInfoToConsole("\"" + NihadPartTreeItem->text(0) + "\" part successfully created.");
 }
 
 void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
@@ -423,14 +432,14 @@ void ForgBaseLib::NihadTree::UpdateTree()
 	}
 	FrgBaseTreeItem* item = GetTreeItem("Scenes");
 
-	if (item)
+	/*if (item)
 	{
 		for (int i = 0; i < item->childCount(); i++)
 		{
 			FrgBaseTreeItemProperties* itemProperties = ((FrgBaseTreeItem*)(item->child(i)))->GetProperties();
 			itemProperties->GetPropertyManager()->setAttribute(itemProperties->GetProperty("Parts List"), "flagNames", thePartsNamesList_);
 		}
-	}
+	}*/
 }
 
 //void ForgBaseLib::NihadTree::AddItemToTree(FrgBaseTreeItem* item)
@@ -471,4 +480,9 @@ void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 	NihadPreviewScene->GetEntityTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
 
 	NihadPreviewScene->RenderSceneSlot();
+}
+
+void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
+{
+	thePlotsItems_.push_back(FrgMakeSharedPtr(FrgBasePlot2D)(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Plot"), theLastRightClicked_, this, GetParentMainWindow()));
 }

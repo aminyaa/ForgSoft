@@ -15,9 +15,9 @@ ForgBaseLib::FrgBaseMenuFile::FrgBaseMenuFile(FrgBaseMainWindow* parentMainWindo
 	AddItem(":/Icons/Menus/File/Load.png", "&Load", "Ctrl+L");
 	AddItem(":/Icons/Menus/File/Save.png", "&Save", "Ctrl+S");
 	AddItem(":/Icons/Menus/File/SaveAs.png", "Save As...", "Ctrl+Shift+S");
-	AddItem(":/Icons/Menus/File/Exit.png", "E&xit", "Ctrl+Q", FrgFalse);
 
 	AddItem(":/Icons/Menus/File/Import.png", "Import", "Ctrl+I", FrgFalse);
+	AddItem(":/Icons/Menus/File/Exit.png", "E&xit", "Ctrl+Q", FrgFalse);
 
 	SetEnabledItem("Save", FrgFalse);
 	SetEnabledItem("Save As...", FrgFalse);

@@ -1,5 +1,7 @@
 #include <NihadVesselGeometryTreeItem.hxx>
 
+#include <Leg_Vessel_Nihad2.hxx>
+
 ForgBaseLib::NihadVesselGeometryTreeItem::NihadVesselGeometryTreeItem
 (
 	const FrgString& title,
@@ -10,4 +12,9 @@ ForgBaseLib::NihadVesselGeometryTreeItem::NihadVesselGeometryTreeItem
 	: FrgBaseTreeItem(title, parent, parentTree, parentMainwindow)
 {
 
+}
+
+const TopoDS_Shape& ForgBaseLib::NihadVesselGeometryTreeItem::GetTopoDS_Shape()
+{
+	return thePatch_->Entity();
 }

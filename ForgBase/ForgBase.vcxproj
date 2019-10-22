@@ -142,7 +142,7 @@ for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$
     <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx" />
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx" />
-    <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx" />
+    <QtMoc Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx" />
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx" />
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgNewSim.hxx" />
     <QtMoc Include="FrgWidgets\FrgBaseMainWindow\FrgBaseMainWindow.hxx" />

@@ -3,8 +3,10 @@
 #define _FrgBasePlot2D_Header
 
 #include <FrgBaseGlobals.hxx>
+#include <FrgBaseTreeItem.hxx>
 
 #include <vtkSmartPointer.h>
+#include <QVTKOpenGLNativeWidget.h>
 
 class vtkTable;
 class vtkContextView;
@@ -12,17 +14,27 @@ class vtkFloatArray;
 
 BeginFrgBaseLib
 
-class FrgBasePlot2D
+class FORGBASE_EXPORT FrgBasePlot2D : public QVTKOpenGLNativeWidget, public FrgBaseTreeItem
 {
+
+	Q_OBJECT
 
 private:
 
 	vtkSmartPointer<vtkTable> theTable_;
 	vtkSmartPointer<vtkContextView> theView_;
 
+	vtkSmartPointer<vtkGenericOpenGLRenderWindow> theRenderWindow_;
+
 public:
 
-	FrgBasePlot2D();
+	FrgBasePlot2D
+	(
+		const FrgString& itemName,
+		FrgBaseTreeItem* parentItem = FrgNullPtr,
+		FrgBaseTree* parentTree = FrgNullPtr,
+		FrgBaseMainWindow* parentMainWindow = FrgNullPtr
+	);
 
 	//void AddColumn(vtkSmartPointer<vtkFloatArray> array);
 

@@ -32,7 +32,8 @@ public:
 		const FrgString& title,
 		FrgBaseTreeItem* parent = FrgNullPtr,
 		FrgBaseTree* parentTree = FrgNullPtr,
-		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
+		FrgBaseMainWindow* parentMainwindow = FrgNullPtr,
+		FrgSharedPtr<FrgBaseTreeItem> parentGeometry = FrgNullPtr
 	);
 
 	FrgGetMacro(FrgSharedPtr<NihadVesselGeometryTreeItem>, GeometryPointer, theGeometryPointer_);
