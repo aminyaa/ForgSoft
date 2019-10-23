@@ -36,7 +36,7 @@ namespace AutLib
 
 		std::weak_ptr<Pln_Wire> theWire_;
 
-		Standard_Boolean SameSense_;
+		Standard_Boolean Sense_;
 
 		mutable std::shared_ptr<Entity2d_Polygon> thePoly_;
 
@@ -56,7 +56,7 @@ namespace AutLib
 			: theVtx0_(theV0)
 			, theVtx1_(theV1)
 			, theCurve_(theCurve)
-			, SameSense_(Sense)
+			, Sense_(Sense)
 		{
 			if (Discrete) Discretize();
 		}
@@ -74,7 +74,7 @@ namespace AutLib
 			, theVtx0_(theV0)
 			, theVtx1_(theV1)
 			, theCurve_(theCurve)
-			, SameSense_(Sense)
+			, Sense_(Sense)
 		{
 			if (Discrete) Discretize();
 		}
@@ -93,14 +93,14 @@ namespace AutLib
 			, theVtx0_(theV0)
 			, theVtx1_(theV1)
 			, theCurve_(theCurve)
-			, SameSense_(Sense)
+			, Sense_(Sense)
 		{
 			if (Discrete) Discretize();
 		}
 
-		Standard_Boolean SameSense() const
+		Standard_Boolean Sense() const
 		{
-			return SameSense_;
+			return Sense_;
 		}
 
 		const std::shared_ptr<Pln_Vertex>& Vtx0() const

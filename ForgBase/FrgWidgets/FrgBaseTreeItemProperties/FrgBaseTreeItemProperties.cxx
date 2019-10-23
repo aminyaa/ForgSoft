@@ -52,16 +52,47 @@ QtProperty* ForgBaseLib::FrgBaseTreeItemProperties::GetTopProperty(const FrgStri
 	return FrgNullPtr;
 }
 
+QtProperty* ForgBaseLib::FrgBaseTreeItemProperties::GetTopPropertyById(const FrgString& id)
+{
+	for (int i = 0; i < theTopProperties_.size(); i++)
+	{
+		if (theTopProperties_.at(i)->propertyId() == id)
+			return theTopProperties_.at(i);
+	}
+
+	return FrgNullPtr;
+}
+
 QtProperty* ForgBaseLib::FrgBaseTreeItemProperties::GetProperty(const FrgString& name)
 {
 	for (int i = 0; i < theTopProperties_.size(); i++)
 	{
-		if (GetTopProperty(name))
-			return GetTopProperty(name);
+		QtProperty* item = GetTopProperty(name);
+		if (item)
+			return item;
 		for (int j = 0; j < theTopProperties_.at(i)->subProperties().size(); j++)
 		{
-			if (theTopProperties_.at(i)->subProperties().at(j)->propertyName() == name)
-				return theTopProperties_.at(i)->subProperties().at(j);
+			QtProperty* subItem = theTopProperties_.at(i)->subProperties().at(j);
+			if (subItem->propertyName() == name)
+				return subItem;
+		}
+	}
+
+	return FrgNullPtr;
+}
+
+QtProperty* ForgBaseLib::FrgBaseTreeItemProperties::GetPropertyById(const FrgString& id)
+{
+	for (int i = 0; i < theTopProperties_.size(); i++)
+	{
+		QtProperty* item = GetTopPropertyById(id);
+		if (item)
+			return item;
+		for (int j = 0; j < theTopProperties_.at(i)->subProperties().size(); j++)
+		{
+			QtProperty* subItem = theTopProperties_.at(i)->subProperties().at(j);
+			if (subItem->propertyId() == id)
+				return subItem;
 		}
 	}
 

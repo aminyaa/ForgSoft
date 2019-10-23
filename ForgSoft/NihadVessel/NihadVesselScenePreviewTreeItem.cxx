@@ -105,7 +105,10 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 	actor->GetProperty()->SetLineWidth(2.0);
 
 	if (GetRenderer()->GetActors()->GetNumberOfItems() != 0)
+	{
 		GetRenderer()->RemoveActor(GetActors().at(0));
+		GetActors().removeAt(0);
+	}
 
 	GetActors().insert(0, actor);
 	GetActors().at(0)->SetMapper(HullMapper);
@@ -125,7 +128,7 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::RenderSceneSlot()
 
 	CreateActor();
 
-	GetLogoActor()->SetInput("Nihad");
+	GetLogoActor()->SetInput("Tonb");
 	if (i == 0)
 	{
 		Render();

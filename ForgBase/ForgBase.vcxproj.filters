@@ -61,6 +61,9 @@
     <Filter Include="FrgWidgets\FrgBaseTabWidget">
       <UniqueIdentifier>{f7488a61-e33a-4cd4-b45c-28700df8bcb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseTabBar">
+      <UniqueIdentifier>{60307433-6956-41b7-af39-916dcfb01d4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -101,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseTabWidget\FrgBaseTabWidget.cxx">
       <Filter>FrgWidgets\FrgBaseTabWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseTabBar\FrgBaseTabBar.cxx">
+      <Filter>FrgWidgets\FrgBaseTabBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +162,9 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D\FrgBasePlot2D.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBasePlot2D</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseTabBar\FrgBaseTabBar.hxx">
+      <Filter>FrgWidgets\FrgBaseTabBar</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

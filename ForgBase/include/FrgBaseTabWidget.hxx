@@ -9,8 +9,9 @@
 BeginFrgBaseLib
 
 class FrgBaseMainWindow;
+class FrgBaseTabBar;
 
-class FrgBaseTabWidget : public QTabWidget
+class FORGBASE_EXPORT FrgBaseTabWidget : public QTabWidget
 {
 
 	Q_OBJECT
@@ -18,12 +19,14 @@ class FrgBaseTabWidget : public QTabWidget
 private:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
+	FrgBaseTabBar* theTabBar_ = FrgNullPtr;
 
 public:
 
 	FrgBaseTabWidget(FrgBaseMainWindow* parentMainWindow);
 
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
+	FrgGetMacro(FrgBaseTabBar*, TabBar, theTabBar_);
 };
 
 EndFrgBaseLib

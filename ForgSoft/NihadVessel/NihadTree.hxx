@@ -81,6 +81,8 @@ public slots:
 
 	void NewPlotClickedSlot(bool);
 
+	void TabBarClickedSlot(int index);
+
 private:
 
 	//void AddItemToTree(FrgBaseTreeItem* item);

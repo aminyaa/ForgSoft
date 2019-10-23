@@ -3,11 +3,16 @@
 namespace AutLib
 {
 
-	template<class CurveType, class SizeMap>
-	Standard_Real AutLib::Mesh_CurveLength_Function<CurveType, SizeMap>::Value
+	template<class gCurveType, class MetricPrcsrType>
+	Mesh_CurveLength_Function<gCurveType, MetricPrcsrType>::Mesh_CurveLength_Function
 	(
-		const Standard_Real x
-	) const
+		const entity& theEntity
+	)
+		: theEntity_(theEntity)
+	{}
+
+	template<class gCurveType, class MetricPrcsrType>
+	Standard_Real Mesh_CurveLength_Function<gCurveType, MetricPrcsrType>::Value(const Standard_Real x) const
 	{
 		const auto& map = theEntity_.SizeMap();
 		const auto& curve = theEntity_.Curve();
@@ -19,8 +24,8 @@ namespace AutLib
 		if (p < first) p = first;
 		if (p > last) p = last;
 
-		typename CurveType::ptType pt;
-		typename CurveType::vtType vec;
+		Point pt;
+		Vector vec;
 
 		curve.D1(p, pt, vec);
 		return map.IntegrandPerSize(pt, vec);

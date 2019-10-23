@@ -4,6 +4,7 @@
 #include <SelectObjectsPropertyManager.hxx>
 #include <SelectObjectsPropertyFactory.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
+#include <FrgBaseInteractorStyle.hxx>
 #include <NihadTree.hxx>
 
 #include <FrgBaseMainWindow.hxx>
@@ -22,6 +23,7 @@
 #include <vtkRenderer.h>
 #include <vtkCamera.h>
 #include <vtkTextActor.h>
+#include <vtkProperty.h>
 
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
@@ -79,7 +81,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
 
 	CreateActor();
 
-	GetLogoActor()->SetInput("Nihad");
+	GetLogoActor()->SetInput("Tonb");
 
 	//for (int i = 0; i < theActors_.size(); i++)
 	//{
@@ -178,6 +180,16 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 
 				GetActors().push_back(actor);
 				GetActors().at(GetActors().size() - 1)->SetMapper(HullMapper);
+
+				/*auto color = GetInteractorStyle()->GeometryColorRGB;
+				actor->GetProperty()->SetAmbientColor(color.redF(), color.greenF(), color.blueF());
+				actor->GetProperty()->SetDiffuseColor(color.redF(), color.greenF(), color.blueF());
+				actor->GetProperty()->SetSpecularColor(1.0, 1.0, 1.0);
+				actor->GetProperty()->SetSpecular(0.5);
+				actor->GetProperty()->SetDiffuse(0.7);
+				actor->GetProperty()->SetAmbient(0.5);
+				actor->GetProperty()->SetSpecularPower(20.0);
+				actor->GetProperty()->SetOpacity(1.0);*/
 
 				AddActorToTheRenderer(actor);
 			}

@@ -54,7 +54,7 @@ namespace AutLib
 		virtual Standard_Real CalcLength() const = 0;
 	};
 
-	namespace numLib
+	namespace marineLib
 	{
 		typedef std::vector<std::shared_ptr<Marine_VesselStation>> stationList;
 	}

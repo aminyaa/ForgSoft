@@ -26,12 +26,18 @@ typedef QPointF PointF;
 //typedef QVector3D Vector3D;
 //typedef QVector3D Vector4D;
 
-#define AddPropertyMACRO(type)\
+#define MACROAddProperty(type)\
 void ForgBaseLib::FrgBaseTreeItemProperties::AddProperty##type(const FrgString& topProperty, const FrgString& name, const type& value, const FrgString& propertyId = "")\
 {\
 	QtVariantProperty* item = AddProperty(topProperty, QVariant::type, name, propertyId);\
 \
 	item->setValue(value);\
+}
+
+#define MACROSetAttributeProperty(attribute)\
+void ForgBaseLib::FrgBaseTreeItemProperties::Set##attribute##Attribute(const FrgString& id, const QVariant& value)\
+{\
+((QtVariantProperty*)GetPropertyById(id))->setAttribute(#attribute, value);\
 }
 
 class FrgBaseTreeItem;
@@ -61,11 +67,43 @@ public:
 
 	QtProperty* GetTopProperty(const FrgString& name);
 
+	QtProperty* GetTopPropertyById(const FrgString& id);
+
 	QtProperty* GetProperty(const FrgString& name);
+
+	QtProperty* GetPropertyById(const FrgString& id);
 
 	void AddTopProperty(const FrgString& name, const FrgString& topProperty = "");
 
 	QtVariantProperty* AddProperty(const FrgString& topProperty, FrgInt propertyType, const FrgString& name, const FrgString& propertyId = "");
+
+	template<typename Type>
+	void AddProperty(const FrgString& topProperty, const FrgString& name, const Type& value, const FrgString& propertyId = "")
+	{
+	}
+
+	template<typename = double>
+	void AddProperty(const FrgString& topProperty, const FrgString& name, const double& value, const FrgString& propertyId = "", double minimum = 0.0, double maximum = 1.0, double step = 0.05)
+	{
+		QtVariantProperty* item = AddProperty(topProperty, QVariant::Double, name, propertyId);
+
+		item->setValue(value);
+
+		SetminimumAttribute(propertyId, minimum);
+		SetmaximumAttribute(propertyId, maximum);
+		SetsingleStepAttribute(propertyId, step);
+	}
+
+	template<typename = int>
+	void AddProperty(const FrgString& topProperty, const FrgString& name, const int& value, const FrgString& propertyId = "", int minimum = 0, int maximum = 1)
+	{
+		QtVariantProperty* item = AddProperty(topProperty, QVariant::Int, name, propertyId);
+
+		item->setValue(value);
+
+		SetminimumAttribute(propertyId, minimum);
+		SetmaximumAttribute(propertyId, maximum);
+	}
 
 	/*void AddPropertyString(const FrgString& topProperty, const FrgString& name, const FrgString& value);
 
@@ -83,10 +121,15 @@ public:
 	FrgGetMacro(QtAbstractPropertyManager*, AbstractPropertyManager, theAbstractPropertyManager_);
 	FrgGetMacro(QtAbstractEditorFactory<QtAbstractPropertyManager>*, AbstractEditorFactory, theAbstractEditorFactory_);
 
-	AddPropertyMACRO(Int);
-	AddPropertyMACRO(Double);
-	AddPropertyMACRO(String);
-	AddPropertyMACRO(PointF);
+	MACROAddProperty(Int);
+	MACROAddProperty(Double);
+	MACROAddProperty(String);
+	MACROAddProperty(PointF);
+
+	MACROSetAttributeProperty(minimum);
+	MACROSetAttributeProperty(maximum);
+	MACROSetAttributeProperty(singleStep);
+	MACROSetAttributeProperty(decimals);
 
 	template<class PropertyManager>
 	void AddProperty(const FrgString& title, PropertyManager* manager, QtAbstractEditorFactory<PropertyManager>* factory)

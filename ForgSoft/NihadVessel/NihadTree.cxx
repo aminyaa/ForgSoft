@@ -4,6 +4,7 @@
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBasePlot2D.hxx>
+#include <FrgBaseTabWidget.hxx>
 #include <qtpropertybrowser.h>
 
 #include <NihadVesselGeometryTreeItem.hxx>
@@ -31,8 +32,8 @@
 #define NbNetRowsID 223
 #define PartsListID 1285
 
-#define NbSegments_U 15
-#define NbSegments_V 15
+#define NbSegments_U 35
+#define NbSegments_V 35
 
 ForgBaseLib::NihadTree::NihadTree(FrgBaseMainWindow* parent)
 	: FrgBaseTree(parent)
@@ -73,6 +74,10 @@ void ForgBaseLib::NihadTree::FormTree()
 	FrgString PlotsNewMenu = "&New Plot";
 	GetTreeItem(PlotsItem)->GetContextMenu()->AddItem(PlotsNewMenu);
 	connect(GetTreeItem(PlotsItem)->GetContextMenu()->GetItem(PlotsNewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(NewPlotClickedSlot(bool)));
+
+	connect(GetParentMainWindow()->GetTabWidget().get(), SIGNAL(tabBarClicked(int)), this, SLOT(TabBarClickedSlot(int)));
+
+	connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(TreeItemDoubleClickedSlot(QTreeWidgetItem*, int)));
 }
 
 void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
@@ -96,63 +101,66 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 	patch->MidSection().Trim()->SetValue(0.1);
 	patch->FwdSection().Trim()->SetValue(0.1);
 
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Dimensions");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Dimensions", "Length on deck", patch->Dimensions().LengthOnDeck()->Value(), FrgString::number(patch->Dimensions().LengthOnDeck()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Dimensions", "Beam on deck", patch->Dimensions().BeamOnDeck()->Value(), FrgString::number(patch->Dimensions().BeamOnDeck()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Dimensions", "Depth at bow", patch->Dimensions().DepthAtBow()->Value(), FrgString::number(patch->Dimensions().DepthAtBow()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Dimensions", "Depth at transom", patch->Dimensions().DepthAtTransom()->Value(), FrgString::number(patch->Dimensions().DepthAtTransom()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Dimensions", "Transom height", patch->Dimensions().TransomHeight()->Value(), FrgString::number(patch->Dimensions().TransomHeight()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyInt("Dimensions", "Number of sections", patch->Dimensions().NbNetColumns(), FrgString::number(NbNetColumnsID));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyInt("Dimensions", "Number of rows", patch->Dimensions().NbNetRows(), FrgString::number(NbNetRowsID));
-	NihadGeometryTreeItem->GetProperties()->GetProperty("Number of rows")->setEnabled(FrgFalse);
+	auto NihadProperties = NihadGeometryTreeItem->GetProperties();
 
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Hull Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyInt("Hull Parameters", "Max area location", patch->MaxAreaLocation()->Value(), FrgString::number(patch->MaxAreaLocation()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyInt("Hull Parameters", "Aft fullness", patch->AftFullness()->Value(), FrgString::number(patch->AftFullness()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyInt("Hull Parameters", "Fwd fullness", patch->FwdFullness()->Value(), FrgString::number(patch->FwdFullness()->Index()));
+	NihadProperties->AddTopProperty("Dimensions");
+	NihadProperties->AddProperty<double>("Dimensions", "Length on deck", patch->Dimensions().LengthOnDeck()->Value(), FrgString::number(patch->Dimensions().LengthOnDeck()->Index()), 1.0, 500.0, 1.0);
+	NihadProperties->AddProperty<double>("Dimensions", "Beam on deck", patch->Dimensions().BeamOnDeck()->Value(), FrgString::number(patch->Dimensions().BeamOnDeck()->Index()), 1.0, 500.0, 0.15);
+	NihadProperties->AddProperty<double>("Dimensions", "Depth at bow", patch->Dimensions().DepthAtBow()->Value(), FrgString::number(patch->Dimensions().DepthAtBow()->Index()), 1.0, 500.0, 0.15);
+	NihadProperties->AddProperty<double>("Dimensions", "Depth at transom", patch->Dimensions().DepthAtTransom()->Value(), FrgString::number(patch->Dimensions().DepthAtTransom()->Index()), 1.0, 500.0, 0.15);
+	NihadProperties->AddProperty<double>("Dimensions", "Transom height", patch->Dimensions().TransomHeight()->Value(), FrgString::number(patch->Dimensions().TransomHeight()->Index()), 0.0, 500.0, 0.15);
+	NihadProperties->AddProperty<int>("Dimensions", "Number of sections", patch->Dimensions().NbNetColumns(), FrgString::number(NbNetColumnsID), 5, 90);
+	NihadProperties->AddProperty<int>("Dimensions", "Number of rows", patch->Dimensions().NbNetRows(), FrgString::number(NbNetRowsID), 5, 90);
+	NihadProperties->GetProperty("Number of rows")->setEnabled(FrgFalse);
 	
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Aft Parameters", "Hull Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Aft Parameters", "Deadrise", patch->AftSection().Deadrise()->Value(), FrgString::number(patch->AftSection().Deadrise()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Aft Parameters", "Side slope", patch->AftSection().SideSlope()->Value(), FrgString::number(patch->AftSection().SideSlope()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Aft Parameters", "Trim", patch->AftSection().Trim()->Value(), FrgString::number(patch->AftSection().Trim()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Aft Parameters", "Tightness0", patch->AftSection().Tightness0()->Value(), FrgString::number(patch->AftSection().Tightness0()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Aft Parameters", "Tightness1", patch->AftSection().Tightness1()->Value(), FrgString::number(patch->AftSection().Tightness1()->Index()));
-	
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Mid Parameters", "Hull Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Mid Parameters", "Deadrise", patch->MidSection().Deadrise()->Value(), FrgString::number(patch->MidSection().Deadrise()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Mid Parameters", "Side slope", patch->MidSection().SideSlope()->Value(), FrgString::number(patch->MidSection().SideSlope()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Mid Parameters", "Trim", patch->MidSection().Trim()->Value(), FrgString::number(patch->MidSection().Trim()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Mid Parameters", "Tightness0", patch->MidSection().Tightness0()->Value(), FrgString::number(patch->MidSection().Tightness0()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Mid Parameters", "Tightness1", patch->MidSection().Tightness1()->Value(), FrgString::number(patch->MidSection().Tightness1()->Index()));
+	NihadProperties->AddTopProperty("Hull Parameters");
+	NihadProperties->AddProperty<double>("Hull Parameters", "Max area location", patch->MaxAreaLocation()->Value(), FrgString::number(patch->MaxAreaLocation()->Index()));
+	NihadProperties->AddProperty<double>("Hull Parameters", "Aft fullness", patch->AftFullness()->Value(), FrgString::number(patch->AftFullness()->Index()));
+	NihadProperties->AddProperty<double>("Hull Parameters", "Fwd fullness", patch->FwdFullness()->Value(), FrgString::number(patch->FwdFullness()->Index()));
 
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Fwd Parameters", "Hull Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Fwd Parameters", "Deadrise", patch->FwdSection().Deadrise()->Value(), FrgString::number(patch->FwdSection().Deadrise()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Fwd Parameters", "Side slope", patch->FwdSection().SideSlope()->Value(), FrgString::number(patch->FwdSection().SideSlope()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Fwd Parameters", "Trim", patch->FwdSection().Trim()->Value(), FrgString::number(patch->FwdSection().Trim()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Fwd Parameters", "Tightness0", patch->FwdSection().Tightness0()->Value(), FrgString::number(patch->FwdSection().Tightness0()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Fwd Parameters", "Tightness1", patch->FwdSection().Tightness1()->Value(), FrgString::number(patch->FwdSection().Tightness1()->Index()));
+	NihadProperties->AddTopProperty("Aft Parameters", "Hull Parameters");
+	NihadProperties->AddProperty<double>("Aft Parameters", "Deadrise", patch->AftSection().Deadrise()->Value(), FrgString::number(patch->AftSection().Deadrise()->Index()));
+	NihadProperties->AddProperty<double>("Aft Parameters", "Side slope", patch->AftSection().SideSlope()->Value(), FrgString::number(patch->AftSection().SideSlope()->Index()));
+	NihadProperties->AddProperty<double>("Aft Parameters", "Trim", patch->AftSection().Trim()->Value(), FrgString::number(patch->AftSection().Trim()->Index()));
+	NihadProperties->AddProperty<double>("Aft Parameters", "Tightness0", patch->AftSection().Tightness0()->Value(), FrgString::number(patch->AftSection().Tightness0()->Index()));
+	NihadProperties->AddProperty<double>("Aft Parameters", "Tightness1", patch->AftSection().Tightness1()->Value(), FrgString::number(patch->AftSection().Tightness1()->Index()));
 
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Keel Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Keel Parameters", "Position", patch->Position()->Value(), FrgString::number(patch->Position()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Keel Parameters", "Rise point", patch->RisePoint()->Value(), FrgString::number(patch->RisePoint()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Keel Parameters", "Rise slope", patch->RiseSlope()->Value(), FrgString::number(patch->RiseSlope()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Keel Parameters", "Transom slope", patch->TransomSlope()->Value(), FrgString::number(patch->TransomSlope()->Index()));
-	
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Transom Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Transom Parameters", "Rake", patch->Rake()->Value(), FrgString::number(patch->Rake()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Transom Parameters", "Width", patch->Width()->Value(), FrgString::number(patch->Width()->Index()));
+	NihadProperties->AddTopProperty("Mid Parameters", "Hull Parameters");
+	NihadProperties->AddProperty<double>("Mid Parameters", "Deadrise", patch->MidSection().Deadrise()->Value(), FrgString::number(patch->MidSection().Deadrise()->Index()));
+	NihadProperties->AddProperty<double>("Mid Parameters", "Side slope", patch->MidSection().SideSlope()->Value(), FrgString::number(patch->MidSection().SideSlope()->Index()));
+	NihadProperties->AddProperty<double>("Mid Parameters", "Trim", patch->MidSection().Trim()->Value(), FrgString::number(patch->MidSection().Trim()->Index()));
+	NihadProperties->AddProperty<double>("Mid Parameters", "Tightness0", patch->MidSection().Tightness0()->Value(), FrgString::number(patch->MidSection().Tightness0()->Index()));
+	NihadProperties->AddProperty<double>("Mid Parameters", "Tightness1", patch->MidSection().Tightness1()->Value(), FrgString::number(patch->MidSection().Tightness1()->Index()));
 
-	NihadGeometryTreeItem->GetProperties()->AddTopProperty("Stem Parameters");
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Stem Parameters", "Bow rounding", patch->BowRounding()->Value(), FrgString::number(patch->BowRounding()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Stem Parameters", "Stem rake", patch->StemRake()->Value(), FrgString::number(patch->StemRake()->Index()));
-	NihadGeometryTreeItem->GetProperties()->AddPropertyDouble("Stem Parameters", "Fore foot shape", patch->ForeFootShape()->Value(), FrgString::number(patch->ForeFootShape()->Index()));
+	NihadProperties->AddTopProperty("Fwd Parameters", "Hull Parameters");
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Deadrise", patch->FwdSection().Deadrise()->Value(), FrgString::number(patch->FwdSection().Deadrise()->Index()));
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Side slope", patch->FwdSection().SideSlope()->Value(), FrgString::number(patch->FwdSection().SideSlope()->Index()));
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Trim", patch->FwdSection().Trim()->Value(), FrgString::number(patch->FwdSection().Trim()->Index()));
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Tightness0", patch->FwdSection().Tightness0()->Value(), FrgString::number(patch->FwdSection().Tightness0()->Index()));
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Tightness1", patch->FwdSection().Tightness1()->Value(), FrgString::number(patch->FwdSection().Tightness1()->Index()));
 
-	NihadGeometryTreeItem->GetProperties()->SetExpanded("Aft Parameters", FrgFalse);
-	NihadGeometryTreeItem->GetProperties()->SetExpanded("Fwd Parameters", FrgFalse);
-	NihadGeometryTreeItem->GetProperties()->SetExpanded("Mid Parameters", FrgFalse);
-	NihadGeometryTreeItem->GetProperties()->SetExpanded("Keel Parameters", FrgFalse);
-	NihadGeometryTreeItem->GetProperties()->SetExpanded("Transom Parameters", FrgFalse);
-	NihadGeometryTreeItem->GetProperties()->SetExpanded("Stem Parameters", FrgFalse);
+	NihadProperties->AddTopProperty("Keel Parameters");
+	NihadProperties->AddProperty<double>("Keel Parameters", "Position", patch->Position()->Value(), FrgString::number(patch->Position()->Index()));
+	NihadProperties->AddProperty<double>("Keel Parameters", "Rise point", patch->RisePoint()->Value(), FrgString::number(patch->RisePoint()->Index()));
+	NihadProperties->AddProperty<double>("Keel Parameters", "Rise slope", patch->RiseSlope()->Value(), FrgString::number(patch->RiseSlope()->Index()));
+	NihadProperties->AddProperty<double>("Keel Parameters", "Transom slope", patch->TransomSlope()->Value(), FrgString::number(patch->TransomSlope()->Index()));
+
+	NihadProperties->AddTopProperty("Transom Parameters");
+	NihadProperties->AddProperty<double>("Transom Parameters", "Rake", patch->Rake()->Value(), FrgString::number(patch->Rake()->Index()), -30.0, 30.0, 1.0);
+	NihadProperties->AddProperty<double>("Transom Parameters", "Width", patch->Width()->Value(), FrgString::number(patch->Width()->Index()));
+
+	NihadProperties->AddTopProperty("Stem Parameters");
+	NihadProperties->AddProperty<double>("Stem Parameters", "Bow rounding", patch->BowRounding()->Value(), FrgString::number(patch->BowRounding()->Index()));
+	NihadProperties->AddProperty<double>("Stem Parameters", "Stem rake", patch->StemRake()->Value(), FrgString::number(patch->StemRake()->Index()), -45.0, 45.0, 1.0);
+	NihadProperties->AddProperty<double>("Stem Parameters", "Fore foot shape", patch->ForeFootShape()->Value(), FrgString::number(patch->ForeFootShape()->Index()));
+
+
+	NihadProperties->SetExpanded("Aft Parameters", FrgFalse);
+	NihadProperties->SetExpanded("Fwd Parameters", FrgFalse);
+	NihadProperties->SetExpanded("Mid Parameters", FrgFalse);
+	NihadProperties->SetExpanded("Keel Parameters", FrgFalse);
+	NihadProperties->SetExpanded("Transom Parameters", FrgFalse);
+	NihadProperties->SetExpanded("Stem Parameters", FrgFalse);
 
 	connect
 	(
@@ -257,7 +265,7 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 		{
 			FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = theGeometryTreeItems_.at(i)->GetPatch();
 
-			if (NbNetColumnsID == property->propertyId())
+			if (FrgString::number(NbNetColumnsID) == property->propertyId())
 				patch->SetNbNetColumns(value.toInt());
 
 			SetNihadParametersWithProperty(patch, Dimensions().LengthOnDeck(), property->propertyId(), value);
@@ -485,4 +493,9 @@ void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
 {
 	thePlotsItems_.push_back(FrgMakeSharedPtr(FrgBasePlot2D)(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Plot"), theLastRightClicked_, this, GetParentMainWindow()));
+}
+
+void ForgBaseLib::NihadTree::TabBarClickedSlot(int index)
+{
+	//scrollTo(this->indexFromItem((FrgBaseTreeItem*)(GetParentMainWindow()->GetTabWidget()->widget(index)), 0));
 }

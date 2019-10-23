@@ -2,44 +2,44 @@
 namespace AutLib
 {
 
-	template<class CurveType, class SizeMap>
-	void Mesh_CurveOptmPoint_Newton<CurveType, SizeMap>::Perform
+	template<class gCurveType, class MetricPrcsrType>
+	void Mesh_CurveOptmPoint_Newton<gCurveType, MetricPrcsrType>::Perform
 	(
 		const Standard_Real theGuess,
-		IterInfo & theIterInfo,
-		IntgInfo & theIntgInfo
+		const std::shared_ptr<iterInfo>& theIter, 
+		const std::shared_ptr<intgInfo>& theInteg
 	)
 	{
-		Mesh_CurveOptmPoint_Newton_Function<CurveType, SizeMap> fun(U0(), Step(), Curve(), theIntgInfo);
-		Mesh_CurveOptmPoint_Newton_Derivation<CurveType, SizeMap> der(Curve());
+		Mesh_CurveOptmPoint_Newton_Function<gCurveType, MetricPrcsrType> fun(U0(), Step(), Entity(), theInteg);
+		Mesh_CurveOptmPoint_Newton_Derivation<gCurveType, MetricPrcsrType> der(Entity());
 
 		Numeric_NewtonSolver
 			<
-			Mesh_CurveOptmPoint_Newton_Function<CurveType, SizeMap>,
-			Mesh_CurveOptmPoint_Newton_Derivation<CurveType, SizeMap>,
+			Mesh_CurveOptmPoint_Newton_Function<gCurveType, MetricPrcsrType>,
+			Mesh_CurveOptmPoint_Newton_Derivation<gCurveType, MetricPrcsrType>,
 			true
 			>
-			Iterator(fun, der, theIterInfo);
+			Iterator(fun, der, *theIter);
 
 		Iterator.Perform(theGuess);
 
-		Debug_If_Condition_Message(NOT theIterInfo.IsDone(), "Newton's Algorithm is not performed");
+		Debug_If_Condition_Message(NOT Iterator.IsDone(), "Newton's Algorithm is not performed");
 
-		if (theIterInfo.Condition() IS_EQUAL NewtonIter_ZERODIVIDE)
+		if (theIter->Condition() IS_EQUAL NewtonIter_ZERODIVIDE)
 		{
 			FatalErrorIn("Standard_Real Mesh_CurveIteration::Iteration()")
 				<< "divide zero in Iterative function" << endl
 				<< abort(FatalError);
 		}
 
-		if (theIterInfo.Condition() IS_EQUAL NewtonIter_LEVEL_EXCEEDED)
+		if (theIter->Condition() IS_EQUAL NewtonIter_LEVEL_EXCEEDED)
 		{
-			IterFailedIn("Standard_Real Mesh_CurveIteration::Iteration()", theIterInfo.NbIterations())
+			IterFailedIn("Standard_Real Mesh_CurveIteration::Iteration()", theIter->NbIterations())
 				<< "LEVEL EXCEEDED encountered in Iterative function" << endl
 				<< abort(IterFail);
 		}
 
-		theCorrected_ = theIterInfo.Result();
+		ChangeCorrected() = theIter->Result();
 		Change_IsDone() = Standard_True;
 	}
 }

@@ -2,11 +2,11 @@
 namespace AutLib
 {
 
-	template<class gCurveType, class SizeMapType>
-	Mesh_CurveEntity<gCurveType, SizeMapType>::Mesh_CurveEntity
+	template<class gCurveType, class MetricPrcsrType>
+	Mesh_CurveEntity<gCurveType, MetricPrcsrType>::Mesh_CurveEntity
 	(
 		const gCurveType& theCurve, 
-		const SizeMapType& theSizeMap, 
+		const MetricPrcsrType& theSizeMap, 
 		const Standard_Real theFirst, 
 		const Standard_Real theLast
 	)
@@ -17,9 +17,9 @@ namespace AutLib
 	{
 	}
 
-	template<class gCurveType, class SizeMapType>
-	typename Mesh_CurveEntity<gCurveType, SizeMapType>::Point 
-		Mesh_CurveEntity<gCurveType, SizeMapType>::Value
+	template<class gCurveType, class MetricPrcsrType>
+	typename Mesh_CurveEntity<gCurveType, MetricPrcsrType>::Point 
+		Mesh_CurveEntity<gCurveType, MetricPrcsrType>::Value
 		(
 			const Standard_Real x
 		) const
@@ -31,8 +31,8 @@ namespace AutLib
 
 //- Static members
 
-template<class gCurveType, class SizeMapType>
-Standard_Real AutLib::Mesh_CurveEntity<gCurveType, SizeMapType>::Integrand
+template<class gCurveType, class MetricPrcsrType>
+Standard_Real AutLib::Mesh_CurveEntity<gCurveType, MetricPrcsrType>::Integrand
 (
 	const Standard_Real x,
 	const Mesh_CurveEntity& theEntity
@@ -45,8 +45,8 @@ Standard_Real AutLib::Mesh_CurveEntity<gCurveType, SizeMapType>::Integrand
 	if (param < first) param = first;
 	if (param > last) param = last;
 
-	typename CurveType::ptType point;
-	typename CurveType::vtType vector;
+	Point point;
+	typename cascadeLib::vec_type_from_point<Point>::vcType vector;
 
 	theEntity.Curve().D1(param, point, vector);
 	return theEntity.SizeMap().IntegrandPerSize(point, vector);
