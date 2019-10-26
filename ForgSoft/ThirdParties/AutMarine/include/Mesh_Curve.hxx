@@ -6,97 +6,75 @@
 #include <Global_Done.hxx>
 #include <Entity_Connectivity.hxx>
 #include <Entity_StaticData.hxx>
-#include <Geo_CascadeTraits.hxx>
 #include <Mesh_CurveInfo.hxx>
-#include <Mesh_CurveEntity.hxx>
+#include <Mesh_CurveLength.hxx>
+
+#include <memory>
+#include <vector>
+
 
 namespace AutLib
 {
 
-	class Mesh_Curve_Base
+	/*class Mesh_CurveBase
 	{
-
-		typedef Mesh_CurveInfo info;
-
-		/*Private Data*/
-
-		Standard_Real theFirstParameter_;
-		Standard_Real theLastParameter_;
-
-		std::shared_ptr<info> theInfo_;
-
-	protected:
-
-		Mesh_Curve_Base();
-
-		Mesh_Curve_Base
-		(
-			const Standard_Real theFirst,
-			const Standard_Real theLast,
-			const std::shared_ptr<info>& theInfo
-		);
-
-		Standard_Real& ChangeFirstParameter()
-		{
-			return theFirstParameter_;
-		}
-
-		Standard_Real& ChangeLastParameter()
-		{
-			return theLastParameter_;
-		}
 
 	public:
 
-		Standard_Real FirstParameter() const
-		{
-			return theFirstParameter_;
-		}
+		static void InitRunTime();
+	};*/
 
-		Standard_Real LastParameter() const
-		{
-			return theLastParameter_;
-		}
-
-		const std::shared_ptr<info>& Info() const
-		{
-			return theInfo_;
-		}
-
-		void LoadInfo(const std::shared_ptr<info>& theInfo)
-		{
-			theInfo_ = theInfo;
-		}
-
-	};
-
-
-	template<class gCurveType, class MetricPrcsrType>
+	template<class CurveType, class SizeMap>
 	class Mesh_Curve
 		: public Global_Done
-		, public Mesh_Curve_Base
+		//, public Mesh_CurveBase
 	{
 
-		typedef typename cascadeLib::pt_type_from_curve<gCurveType>::ptType Point;
-
 		typedef Mesh_CurveInfo info;
-		typedef Numeric_AdaptIntegrationInfo intgInfo;
-		typedef Entity_StaticData<Point, connectivity::dual> chain;
-		typedef Mesh_CurveEntity<gCurveType, MetricPrcsrType> entity;
+		typedef typename SizeMap::ptType Point;
 
+		typedef Entity_StaticData<Point, connectivity::dual> chain;
+		typedef Mesh_CurveEntity<CurveType, SizeMap> entity;
+		typedef Numeric_AdaptIntegrationInfo intgInfo;
 
 		/*Private Data*/
 
-		Handle(gCurveType) theCurve_;
+		Handle(CurveType) theCurve_;
 
-		std::shared_ptr<MetricPrcsrType> theMetricMap_;
+		Standard_Real theFirst_;
+		Standard_Real theLast_;
+
+		std::shared_ptr<SizeMap> theSizeMap_;
+
+		std::shared_ptr<info> theInfo_;
 
 		std::shared_ptr<chain> theChain_;
 
 
-		//- private functions and operators
-
 		void MakeChain(const std::vector<Standard_Real>& theParameters);
+
+
+
+		//- Static functions and operators
+
+	public:
+
+		static Standard_Real CalcLength
+		(
+			const entity& theCurve,
+			const Standard_Integer theMaxLevel,
+			intgInfo& theInfo
+		);
+
+		static Standard_Real CalcLength
+		(
+			const entity& theCurve,
+			const Standard_Integer theLevel,
+			const Standard_Integer theMaxLevel,
+			intgInfo& theInfo
+		);
+
+	private:
 
 		static Standard_Real CalcNextParameter
 		(
@@ -120,7 +98,6 @@ namespace AutLib
 			const info& theInfo
 		);
 
-
 	public:
 
 		Mesh_Curve()
@@ -128,21 +105,42 @@ namespace AutLib
 
 		Mesh_Curve
 		(
-			const Handle(gCurveType)& theCurve,
-			const Standard_Real theU0,
-			const Standard_Real theU1, 
-			const std::shared_ptr<MetricPrcsrType>& theMetricMap,
+			const Standard_Real theFirst,
+			const Standard_Real theLast,
+			const Handle(CurveType)& theCurve,
+			const std::shared_ptr<SizeMap>& theSizeMap,
 			const std::shared_ptr<info>& theInfo
-		);
+		)
+			: theFirst_(theFirst)
+			, theLast_(theLast)
+			, theCurve_(theCurve)
+			, theSizeMap_(theSizeMap)
+			, theInfo_(theInfo)
+		{}
 
-		const Handle(gCurveType)& Geometry() const
+		const Handle(CurveType)& Curve() const
 		{
 			return theCurve_;
 		}
 
-		const std::shared_ptr<MetricPrcsrType>& MetricMap() const
+		Standard_Real FirstParameter() const
 		{
-			return theMetricMap_;
+			return theFirst_;
+		}
+
+		Standard_Real LastParameter() const
+		{
+			return theLast_;
+		}
+
+		const std::shared_ptr<SizeMap>& Map() const
+		{
+			return theSizeMap_;
+		}
+
+		const std::shared_ptr<info>& Info() const
+		{
+			return theInfo_;
 		}
 
 		const std::shared_ptr<chain>& Mesh() const
@@ -152,34 +150,30 @@ namespace AutLib
 
 		void LoadCurve
 		(
-			const Handle(gCurveType)& theCurve,
-			const Standard_Real theU0, 
-			const Standard_Real theU1
-		);
+			const Standard_Real theFirst,
+			const Standard_Real theLast,
+			const Handle(CurveType)& theCurve
+		)
+		{
+			theFirst_ = theFirst;
+			theLast_ = theLast;
+			theCurve_ = theCurve;
+		}
 
-		void LoadMap(const std::shared_ptr<MetricPrcsrType>& theSizeMap);
+		void LoadMap(const std::shared_ptr<SizeMap>& theSizeMap)
+		{
+			theSizeMap_ = theSizeMap;
+		}
 
+		void LoadInfo(const std::shared_ptr<info>& theInfo)
+		{
+			theInfo_ = theInfo;
+		}
 
 		void Perform();
-
-
-		//- static functions and operators
-
-		static Standard_Real CalcLength
-		(
-			const entity& theEntity,
-			const Standard_Integer theMaxLevel,
-			intgInfo& theInfo
-		);
-
-		static Standard_Real CalcLength
-		(
-			const entity& theEntity, 
-			const Standard_Integer theLevel, 
-			const Standard_Integer theMaxLevel,
-			intgInfo& theInfo
-		);
 	};
+
+
 }
 
 #include <Mesh_CurveI.hxx>

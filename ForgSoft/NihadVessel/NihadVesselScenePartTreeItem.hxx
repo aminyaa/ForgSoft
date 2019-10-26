@@ -7,6 +7,8 @@
 
 BeginFrgBaseLib
 
+class NihadVesselPartTreeItem;
+
 class NihadVesselScenePartTreeItem : public FrgBaseSceneTreeItem
 {
 
@@ -14,7 +16,7 @@ class NihadVesselScenePartTreeItem : public FrgBaseSceneTreeItem
 
 private:
 
-	QList<FrgSharedPtr<FrgBaseTreeItem>> thePartsPointer_;
+	QList<FrgSharedPtr<NihadVesselPartTreeItem>> thePartsPointer_;
 
 public:
 
@@ -26,7 +28,7 @@ public:
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
 	);
 	
-	FrgGetMacro(QList<FrgSharedPtr<FrgBaseTreeItem>>, PartsPointer, thePartsPointer_);
+	FrgGetMacro(QList<FrgSharedPtr<NihadVesselPartTreeItem>>, PartsPointer, thePartsPointer_);
 
 public slots:
 

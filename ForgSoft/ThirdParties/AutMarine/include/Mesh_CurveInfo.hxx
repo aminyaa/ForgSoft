@@ -3,7 +3,6 @@
 #define _Mesh_CurveInfo_Header
 
 #include <Standard_TypeDef.hxx>
-#include <Global_AccessMethod.hxx>
 
 #include <memory>
 
@@ -24,7 +23,7 @@ namespace AutLib
 
 		/*Private Data*/
 
-		Standard_Integer theLengthCalcMaxLevel_;
+		Standard_Integer theMaxLevel_LengthCalc_;
 		Standard_Real theUnderRelaxation_;
 
 		Standard_Boolean IgnoreNonConvergency_;
@@ -41,7 +40,21 @@ namespace AutLib
 		static const Standard_Integer DEFAULT_MAX_LEVEL_LENGTH_CALC;
 		static const Standard_Real DEFAULT_UNDER_RELAXATION;
 
-		Mesh_CurveInfo();
+		Mesh_CurveInfo()
+			: theMaxLevel_LengthCalc_(DEFAULT_MAX_LEVEL_LENGTH_CALC)
+			, theUnderRelaxation_(DEFAULT_UNDER_RELAXATION)
+			, IgnoreNonConvergency_(Standard_False)
+		{}
+
+		Standard_Integer MaxLevel_LengthCalc() const
+		{
+			return theMaxLevel_LengthCalc_;
+		}
+
+		Standard_Real UnderRelaxation() const
+		{
+			return theUnderRelaxation_;
+		}
 
 		Standard_Boolean IgnoreNonConvergency() const
 		{
@@ -68,9 +81,19 @@ namespace AutLib
 			return theCorrAlgInfo_;
 		}
 
-		void SetIgnoreNonConvergency(const Standard_Boolean theCondition)
+		void SetMaxLevel_LengthCalc(const Standard_Integer theValue)
 		{
-			IgnoreNonConvergency_ = theCondition;
+			theMaxLevel_LengthCalc_ = theValue;
+		}
+
+		void SetUnderRelaxation(const Standard_Real theUR)
+		{
+			theUnderRelaxation_ = theUR;
+		}
+
+		void SetIgnoreNonConvergency(const Standard_Boolean NonConvergency)
+		{
+			IgnoreNonConvergency_ = NonConvergency;
 		}
 
 		void OverrideOverallLengthIntgInfo(const std::shared_ptr<intgInfo>& theInfo)
@@ -92,12 +115,6 @@ namespace AutLib
 		{
 			theCorrAlgInfo_ = theInfo;
 		}
-
-		//- Macros
-
-		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Integer, LengthCalcMaxLevel)
-			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, UnderRelaxation)
-
 	};
 }
 

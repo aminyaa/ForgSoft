@@ -59,7 +59,8 @@ namespace AutLib
 		Leg_Model::realList xSideSlopeAngle;
 		Leg_Model::realList xTightness0;
 		Leg_Model::realList xTightness1;
-		Leg_Model::realList xTrim;
+		Leg_Model::realList xTrim0;
+		Leg_Model::realList xTrim1;
 
 		Leg_Model::realList xRake;
 
@@ -93,7 +94,8 @@ namespace AutLib
 			xSideSlopeAngle.resize(n);
 			xTightness0.resize(n);
 			xTightness1.resize(n);
-			xTrim.resize(n);
+			xTrim0.resize(n);
+			xTrim1.resize(n);
 
 			xRake.resize(n);
 

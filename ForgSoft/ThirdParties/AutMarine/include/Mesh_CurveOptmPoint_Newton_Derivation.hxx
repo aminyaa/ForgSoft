@@ -8,33 +8,39 @@
 namespace AutLib
 {
 
-	template<class gCurveType, class MetricPrcsrType>
+	template<class CurveType, class SizeMap>
 	class Mesh_CurveOptmPoint_Newton_Derivation
 		: public Numeric_NewtonSolver_Derivation<true>
 	{
 
-		typedef Mesh_CurveEntity<gCurveType, MetricPrcsrType> entity;
+		typedef Mesh_CurveEntity<CurveType, SizeMap> entity;
 
 		/*Private Data*/
 
-		const entity& theEntity_;
+		const entity& theCurve_;
 
 	public:
 
-		Mesh_CurveOptmPoint_Newton_Derivation(const entity& theEntity);
-
-		const entity& Entity() const
+		Mesh_CurveOptmPoint_Newton_Derivation
+		(
+			const entity& theCurve
+		)
+			: theCurve_(theCurve)
 		{
-			return theEntity_;
+			Lower() = theCurve.FirstParameter();
+			Upper() = theCurve.LastParameter();
+		}
+
+		const entity& Curve() const
+		{
+			return theCurve_;
 		}
 
 		Standard_Real Value(const Standard_Real x) const override
 		{
-			return entity::Integrand(x, Entity());
+			return entity::Integrand(x, Curve());
 		}
 	};
 }
-
-#include <Mesh_CurveOptmPoint_Newton_DerivationI.hxx>
 
 #endif // !_Mesh_CurveOptmPoint_Newton_Derivation_Header

@@ -20,6 +20,7 @@ namespace AutLib
 	class Pln_Vertex;
 	class Pln_Curve;
 	class Pln_Wire;
+	class Pln_CmpEdge;
 
 	class Pln_Edge
 		: public Pln_Entity
@@ -42,6 +43,14 @@ namespace AutLib
 
 
 		void Discretize() const;
+
+	protected:
+
+		std::shared_ptr<Entity2d_Polygon>& ChangeMesh()
+		{
+			return thePoly_;
+		}
+
 
 	public:
 
@@ -101,6 +110,11 @@ namespace AutLib
 		Standard_Boolean Sense() const
 		{
 			return Sense_;
+		}
+
+		Standard_Boolean IsDiscretized() const
+		{
+			return (Standard_Boolean)thePoly_;
 		}
 
 		const std::shared_ptr<Pln_Vertex>& Vtx0() const
@@ -197,6 +211,20 @@ namespace AutLib
 			RetrieveVertices
 			(
 				const std::vector<std::shared_ptr<Pln_Edge>>& theEdges
+			);
+
+		static std::shared_ptr<Pln_CmpEdge> 
+			Cut
+			(
+				const std::shared_ptr<Pln_Edge>& theTarget,
+				std::shared_ptr<Pln_Edge>& theCutter
+			);
+
+		static std::shared_ptr<Pln_CmpEdge> 
+			Cut
+			(
+				const std::shared_ptr<Pln_Edge>& theTarget,
+				std::shared_ptr<Pln_Curve>& theCutter
 			);
 
 		static Standard_Boolean IsLess

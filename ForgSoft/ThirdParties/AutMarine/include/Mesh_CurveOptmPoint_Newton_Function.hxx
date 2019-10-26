@@ -3,41 +3,54 @@
 #define _Mesh_CurveOptmPoint_Newton_Function_Header
 
 #include <Numeric_NewtonSolver.hxx>
-#include <Geo_CurveLength.hxx>
+#include <Mesh_CurveLength.hxx>
 #include <Mesh_CurveEntity.hxx>
-
-#include <memory>
 
 namespace AutLib
 {
 
-	class Mesh_CurveOptmPoint_Newton_Function_Base
+	// Forward Declarations
+	class Numeric_AdaptIntegrationInfo;
+
+	template<class CurveType, class SizeMap>
+	class Mesh_CurveOptmPoint_Newton_Function
+		: public Numeric_NewtonSolver_Function<true>
 	{
 
+		typedef Mesh_CurveEntity<CurveType, SizeMap> entity;
 		typedef Numeric_AdaptIntegrationInfo info;
 
 		/*Private Data*/
 
+		const entity& theCurve_;
+
 		Standard_Real theX0_;
 		Standard_Real theStep_;
 
-		const std::shared_ptr<info>& theInfo_;
+		info& theInfo_;
 
-	protected:
+	public:
 
-		Mesh_CurveOptmPoint_Newton_Function_Base
+		Mesh_CurveOptmPoint_Newton_Function
 		(
 			const Standard_Real theX0,
 			const Standard_Real theStep,
-			const std::shared_ptr<info>& theInfo
+			const entity& theCurve,
+			info& theInfo
 		)
 			: theX0_(theX0)
 			, theStep_(theStep)
+			, theCurve_(theCurve)
 			, theInfo_(theInfo)
-		{}
+		{
+			Lower() = theCurve_.FirstParameter();
+			Upper() = theCurve_.LastParameter();
+		}
 
-
-	public:
+		const entity& Curve() const
+		{
+			return theCurve_;
+		}
 
 		Standard_Real X0() const
 		{
@@ -49,42 +62,10 @@ namespace AutLib
 			return theStep_;
 		}
 
-		const std::shared_ptr<info>& Info() const
-		{
-			return theInfo_;
-		}
-	};
-
-	template<class gCurveType, class MetricPrcsrType>
-	class Mesh_CurveOptmPoint_Newton_Function
-		: public Numeric_NewtonSolver_Function<true>
-		, public Mesh_CurveOptmPoint_Newton_Function_Base
-	{
-
-		typedef Mesh_CurveEntity<gCurveType, MetricPrcsrType> entity;
-		typedef Numeric_AdaptIntegrationInfo info;
-
-		/*Private Data*/
-
-		const entity& theCurve_;
-
-	public:
-
-		Mesh_CurveOptmPoint_Newton_Function
-		(
-			const Standard_Real theX0,
-			const Standard_Real theStep,
-			const entity& theCurve,
-			const std::shared_ptr<info>& theInfo
-		);
-
-		const entity& Entity() const
-		{
-			return theCurve_;
-		}
-
 		Standard_Real Value(const Standard_Real x) const override;
 	};
+
+
 }
 
 #include <Mesh_CurveOptmPoint_Newton_FunctionI.hxx>

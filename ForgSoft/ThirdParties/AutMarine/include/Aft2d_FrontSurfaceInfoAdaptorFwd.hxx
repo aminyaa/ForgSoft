@@ -2,7 +2,7 @@
 #ifndef _Aft2d_FrontSurfaceInfoAdaptorFwd_Header
 #define _Aft2d_FrontSurfaceInfoAdaptorFwd_Header
 
-#include <Aft_FrontTraits.hxx>
+#include <Aft2d_FrontSurfaceTraits.hxx>
 
 namespace AutLib
 {
@@ -11,7 +11,7 @@ namespace AutLib
 	template<class FrontTraits>
 	class Aft2d_FrontInfoAdaptorTemplate;
 
-	typedef Aft2d_FrontInfoAdaptorTemplate<Aft_FrontTraits<Aft2d_EdgeSurface>>
+	typedef Aft2d_FrontInfoAdaptorTemplate<Aft2d_FrontSurfaceTraits>
 		Aft2d_FrontSurfaceInfoAdaptor;
 }
 

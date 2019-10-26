@@ -25,10 +25,6 @@ namespace AutLib
 
 		typedef typename EdgeTraits::nodeType nodeType;
 		typedef std::shared_ptr<nodeType> node_ptr;
-		typedef typename nodeType::ptType Point;
-
-		template< bool cond, typename U >
-		using resolvedType = typename std::enable_if< cond, U >::type;
 
 		enum
 		{
@@ -110,8 +106,6 @@ namespace AutLib
 		(
 			const std::vector<std::shared_ptr<Aft_Edge>>& theEdges
 		);
-
-
 	};
 }
 

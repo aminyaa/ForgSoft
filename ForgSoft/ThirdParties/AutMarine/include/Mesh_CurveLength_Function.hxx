@@ -2,24 +2,21 @@
 #ifndef _Mesh_CurveLength_Function_Header
 #define _Mesh_CurveLength_Function_Header
 
-#include <Numeric_IntegrationFunction.hxx>
-#include <Geo_CascadeTraits.hxx>
+#include <Numeric_AdaptIntegration.hxx>
 
 namespace AutLib
 {
 
 	// Forward Declarations
-	template<class gCurveType, class MetricPrcsrType>
+	template<class CurveType, class SizeMap>
 	class Mesh_CurveEntity;
 
-	template<class gCurveType, class MetricPrcsrType>
+	template<class CurveType, class SizeMap>
 	class Mesh_CurveLength_Function
-		: public Numeric_IntegrationFunction
+		: public Numeric_AdaptIntegration_Value
 	{
 
-		typedef Mesh_CurveEntity<gCurveType, MetricPrcsrType> entity;
-		typedef typename cascadeLib::pt_type_from_curve<gCurveType>::ptType Point;
-		typedef typename cascadeLib::vec_type_from_point<Point>::vcType Vector;
+		typedef Mesh_CurveEntity<CurveType, SizeMap> entity;
 
 		/*Private Data*/
 
@@ -27,7 +24,12 @@ namespace AutLib
 
 	public:
 
-		Mesh_CurveLength_Function(const entity& theEntity);
+		Mesh_CurveLength_Function
+		(
+			const entity& theEntity
+		)
+			: theEntity_(theEntity)
+		{}
 
 		Standard_Real Value(const Standard_Real x) const override;
 	};

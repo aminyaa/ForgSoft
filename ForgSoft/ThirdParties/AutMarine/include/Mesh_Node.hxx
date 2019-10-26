@@ -15,8 +15,8 @@ namespace AutLib
 		: public Mesh_Entity
 		, public Mesh_NodeAdaptor
 		<
-		typename NodeTraits::edgeType,
-		typename NodeTraits::elementType,
+		typename NodeTraits::edgeType, 
+		typename NodeTraits::elementType, 
 		typename NodeTraits::facetType
 		>
 	{

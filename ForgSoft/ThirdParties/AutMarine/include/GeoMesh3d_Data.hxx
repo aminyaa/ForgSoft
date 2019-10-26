@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _GeoMesh3d_Data_Header
-#define _GeoMesh3d_Data_Header
+#ifndef _GeoMesh2d_Data_Header
+#define _GeoMesh2d_Data_Header
 
 #include <GeoMesh_Data.hxx>
 #include <Entity3d_Tetrahedralization.hxx>
@@ -18,4 +18,4 @@ namespace AutLib
 	void GeoMesh3d_Data::Construct(const triangulation& theTriangulation);
 }
 
-#endif // !_GeoMesh3d_Data_Header
+#endif // !_GeoMesh2d_Data_Header

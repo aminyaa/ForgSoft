@@ -4,6 +4,8 @@
 
 #include <Mesh_CurveEntity.hxx>
 
+#include <memory>
+
 namespace AutLib
 {
 
@@ -17,18 +19,27 @@ namespace AutLib
 
 		typedef Numeric_AdaptIntegrationInfo info;
 
-		template<class gCurveType, class MetricPrcsrType>
+		template<class CurveType, class SizeMap>
 		static Standard_Real Length
 		(
-			const Mesh_CurveEntity<gCurveType, MetricPrcsrType>& theEntity,
+			const Mesh_CurveEntity<CurveType, SizeMap>& theCurve,
 			const Standard_Real theLower,
-			const Standard_Real theUpper, 
+			const Standard_Real theUpper,
 			info& theInfo
 		);
 
-		template<class gCurveType, class MetricPrcsrType>
-		static Standard_Real Length(const Mesh_CurveEntity<gCurveType, MetricPrcsrType>& theEntity, info& theInfo);
+		template<class CurveType, class SizeMap>
+		static Standard_Real Length
+		(
+			const Mesh_CurveEntity<CurveType, SizeMap>& theCurve,
+			info& theInfo
+		)
+		{
+			return Length(theCurve, theCurve.FirstParameter(), theCurve.LastParameter(), theInfo);
+		}
 	};
+
+	//extern std::shared_ptr<Numeric_AdaptIntegrationInfo> mesh_curve_length_info;
 }
 
 #include <Mesh_CurveLengthI.hxx>

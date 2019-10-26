@@ -5,21 +5,21 @@
 namespace AutLib
 {
 
-	template<class gCurveType, class MetricPrcsrType>
+	/*template<class CurveType, class SizeMap>
 	Standard_Real Mesh_CurveLength::Length
 	(
-		const Mesh_CurveEntity<gCurveType, MetricPrcsrType>& theEntity,
+		const Mesh_CurveEntity<CurveType, SizeMap>& theCurve,
 		const Standard_Real theLower,
-		const Standard_Real theUpper, 
-		info & theInfo
+		const Standard_Real theUpper,
+		info& theInfo
 	)
 	{
-		Numeric_AdaptIntegration<Mesh_CurveLength_Function<gCurveType, MetricPrcsrType>>
-			Integration(theEntity, theLower, theUpper, theInfo);
+		Numeric_AdaptIntegration<Mesh_CurveLength_Function<CurveType, SizeMap>>
+			Integration(theCurve, theLower, theUpper, theInfo);
 
 		Integration.Perform();
 
-		if (NOT Integration.IsDone())
+		if (NOT theInfo.IsDone())
 		{
 			FatalErrorIn("Standard_Real Mesh_CurveLength::Length()")
 				<< "Integration has not been performed!" << endl
@@ -28,21 +28,12 @@ namespace AutLib
 
 		if (NOT theInfo.IsConverged())
 		{
+			cout << "nb iterations = " << theInfo.MaxNbIterations() << std::endl;
 			IterFailedIn(FunctionSIG, theInfo.MaxNbIterations())
-				<< "Algorithm is not converged!" << " nb iterations = " << theInfo.MaxNbIterations() << endl
+				<< "Algorithm is not converged!" << endl
 				<< abort(IterFail);
 		}
 
 		return theInfo.Result();
-	}
-
-	template<class gCurveType, class MetricPrcsrType>
-	Standard_Real Mesh_CurveLength::Length
-	(
-		const Mesh_CurveEntity<gCurveType, MetricPrcsrType>& theEntity,
-		info & theInfo
-	)
-	{
-		return Length(theEntity, theEntity.FirstParameter(), theEntity.LastParameter(), theInfo);
-	}
+	}*/
 }

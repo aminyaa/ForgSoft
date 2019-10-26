@@ -19,7 +19,7 @@ class NihadVesselScenePreviewTreeItem : public NihadVesselScenePartTreeItem
 
 private:
 
-	FrgSharedPtr<AutLib::Entity3d_Triangulation> theEntityTriangulation_ = FrgNullPtr;
+	FrgVector<FrgSharedPtr<AutLib::Entity3d_Triangulation>> theEntitiesTriangulation_;
 
 public:
 
@@ -31,7 +31,7 @@ public:
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
 	);
 
-	FrgGetMacro(FrgSharedPtr<AutLib::Entity3d_Triangulation>, EntityTriangulation, theEntityTriangulation_);
+	FrgGetMacro(FrgVector<FrgSharedPtr<AutLib::Entity3d_Triangulation>>, EntitiesTriangulation, theEntitiesTriangulation_);
 
 public slots:
 

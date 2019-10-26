@@ -101,6 +101,8 @@ void ForgBaseLib::FrgBaseSceneTreeItem::Init()
 	theRenderer_->AddActor2D(theLogoActor_);
 
 	theCamera_ = vtkSmartPointer<vtkCamera>::New();
+	theRenderer_->LightFollowCameraOn();
+	theRenderer_->TwoSidedLightingOn();
 }
 
 void ForgBaseLib::FrgBaseSceneTreeItem::Render()

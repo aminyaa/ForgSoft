@@ -3,7 +3,8 @@
 #define _Mesh_CurveOptmPoint_CorrectionInfo_Header
 
 #include <Standard_TypeDef.hxx>
-#include <Global_AccessMethod.hxx>
+
+#include <memory>
 
 namespace AutLib
 {
@@ -31,11 +32,35 @@ namespace AutLib
 			, theMaxLevel_(DEFAULT_MAX_LEVEL)
 		{}
 
-		//- macros
+		Standard_Real Tolerance() const
+		{
+			return theTolerance_;
+		}
 
-		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, Tolerance)
-			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, UnderRelaxation)
-			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Integer, MaxLevel)
+		Standard_Real UnderRelaxation() const
+		{
+			return theUnderRelaxation_;
+		}
+
+		Standard_Integer MaxLevel() const
+		{
+			return theMaxLevel_;
+		}
+
+		void SetTolerance(const Standard_Real theTol)
+		{
+			theTolerance_ = theTol;
+		}
+
+		void SetUnderRelaxation(const Standard_Real theUnderRelaxation)
+		{
+			theUnderRelaxation_ = theUnderRelaxation;
+		}
+
+		void SetMaxLevel(const Standard_Integer theLevel)
+		{
+			theMaxLevel_ = theLevel;
+		}
 	};
 }
 

@@ -44,8 +44,8 @@ namespace AutLib
 			/ CalcElementSize(thePoint);
 	}
 
-	/*template<class SizeFun>
-	Standard_Real 
+	template<class SizeFun>
+	Standard_Real
 		Geo_MetricPrcsr<SizeFun, void>::CalcDistance
 		(
 			const Point& theP0,
@@ -56,15 +56,15 @@ namespace AutLib
 	}
 
 	template<class SizeFun>
-	Standard_Real 
+	Standard_Real
 		Geo_MetricPrcsr<SizeFun, void>::CalcSquareDistance
 		(
-			const Point& theP0, 
+			const Point& theP0,
 			const Point& theP1
 		) const
 	{
 		return theP0.SquareDistance(theP1);
-	}*/
+	}
 
 	template<class SizeFun>
 	Standard_Real Geo_MetricPrcsr<SizeFun, void>::Integrand

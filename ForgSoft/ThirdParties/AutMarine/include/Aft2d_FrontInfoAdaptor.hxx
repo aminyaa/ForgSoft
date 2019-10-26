@@ -3,12 +3,12 @@
 #define _Aft2d_FrontInfoAdaptor_Header
 
 #include <Aft2d_FrontInfoAdaptorTemplate.hxx>
-#include <Aft_FrontTraits.hxx>
+#include <Aft2d_FrontTraits.hxx>
 
 namespace AutLib
 {
 
-	typedef Aft2d_FrontInfoAdaptorTemplate<Aft_FrontTraits<Aft2d_Edge>>
+	typedef Aft2d_FrontInfoAdaptorTemplate<Aft2d_FrontTraits>
 		Aft2d_FrontInfoAdaptor;
 }
 

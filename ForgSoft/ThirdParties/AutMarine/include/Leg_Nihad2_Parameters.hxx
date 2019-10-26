@@ -63,7 +63,8 @@ namespace AutLib
 
 		std::shared_ptr<parameter> theDeadrise_;
 		std::shared_ptr<parameter> theSideSlope_;
-		std::shared_ptr<parameter> theTrim_;
+		std::shared_ptr<parameter> theTrim0_;
+		std::shared_ptr<parameter> theTrim1_;
 		std::shared_ptr<parameter> theTightness0_;
 		std::shared_ptr<parameter> theTightness1_;
 
@@ -76,13 +77,15 @@ namespace AutLib
 		(
 			const std::shared_ptr<parameter>& theDeadrise,
 			const std::shared_ptr<parameter>& theSideSlope,
-			const std::shared_ptr<parameter>& theTrim,
+			const std::shared_ptr<parameter>& theTrim0,
+			const std::shared_ptr<parameter>& theTrim1,
 			const std::shared_ptr<parameter>& theTightness0, 
 			const std::shared_ptr<parameter>& theTightness1
 		)
 			: theDeadrise_(theDeadrise)
 			, theSideSlope_(theSideSlope)
-			, theTrim_(theTrim)
+			, theTrim0_(theTrim0)
+			, theTrim1_(theTrim1)
 			, theTightness0_(theTightness0)
 			, theTightness1_(theTightness1)
 		{}
@@ -91,7 +94,8 @@ namespace AutLib
 
 		GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, Deadrise)
 			GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, SideSlope)
-			GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, Trim)
+			GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, Trim0)
+			GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, Trim1)
 			GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, Tightness0)
 			GLOBAL_ACCESS_SINGLE(std::shared_ptr<parameter>, Tightness1)
 	};

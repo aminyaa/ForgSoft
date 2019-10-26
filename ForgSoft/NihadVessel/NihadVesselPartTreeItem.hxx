@@ -12,7 +12,7 @@ namespace AutLib
 
 BeginFrgBaseLib
 
-class NihadVesselGeometryTreeItem;
+//class NihadVesselGeometryTreeItem;
 
 class NihadVesselPartTreeItem : public QObject, public FrgBaseTreeItem
 {
@@ -21,7 +21,7 @@ class NihadVesselPartTreeItem : public QObject, public FrgBaseTreeItem
 
 private:
 
-	FrgSharedPtr<NihadVesselGeometryTreeItem> theGeometryPointer_ = FrgNullPtr;
+	//FrgSharedPtr<NihadVesselGeometryTreeItem> theGeometryPointer_ = FrgNullPtr;
 
 	FrgSharedPtr<AutLib::Cad3d_TModel> theTModel_ = FrgNullPtr;
 
@@ -36,7 +36,7 @@ public:
 		FrgSharedPtr<FrgBaseTreeItem> parentGeometry = FrgNullPtr
 	);
 
-	FrgGetMacro(FrgSharedPtr<NihadVesselGeometryTreeItem>, GeometryPointer, theGeometryPointer_);
+	//FrgGetMacro(FrgSharedPtr<NihadVesselGeometryTreeItem>, GeometryPointer, theGeometryPointer_);
 	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, TModel, theTModel_);
 };
 

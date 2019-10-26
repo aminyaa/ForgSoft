@@ -137,7 +137,8 @@ namespace AutLib
 		std::shared_ptr<Leg_Model_SectionCtrlPts> CreateRawSection
 		(
 			const Standard_Integer Section,
-			const Standard_Real theTrimm,
+			const Standard_Real theTrimm1,
+			const Standard_Real theTrimm2,
 			const Standard_Real theTightness1,
 			const Standard_Real theTightness2
 		);
@@ -186,6 +187,7 @@ namespace AutLib
 
 		void Perform();
 
+		void PerformToPreview() override;
 
 		const Leg_Model::geomSurface& Patch() const
 		{

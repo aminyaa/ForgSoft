@@ -16,7 +16,7 @@ namespace AutLib
 		, public Aft_NodeAdaptor
 		<
 		typename NodeTraits::edgeType,
-		typename NodeTraits::elementType,
+		typename NodeTraits::elementType, 
 		typename NodeTraits::facetType
 		>
 	{

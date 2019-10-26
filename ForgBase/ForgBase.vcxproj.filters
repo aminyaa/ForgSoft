@@ -64,6 +64,9 @@
     <Filter Include="FrgWidgets\FrgBaseTabBar">
       <UniqueIdentifier>{60307433-6956-41b7-af39-916dcfb01d4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis">
+      <UniqueIdentifier>{c015cdea-40f6-44f2-afcf-27657e9fe209}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -108,6 +111,9 @@
     <ClCompile Include="FrgWidgets\FrgBaseTabBar\FrgBaseTabBar.cxx">
       <Filter>FrgWidgets\FrgBaseTabBar</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis\FrgBaseVTKAxis.cxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -142,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseTreeItemProperties\FrgBaseTreeItemProperties.hxx">
       <Filter>FrgWidgets\FrgBaseTreeItemProperties</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis\FrgBaseVTKAxis.hxx">
+      <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

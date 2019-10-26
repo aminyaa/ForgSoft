@@ -52,10 +52,10 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 		{
 			AutLib::IO_IGES reader(AutLib::gl_fast_discrete_parameters);
 			reader.Verbose() = 1;
-			reader.FastDiscreteParams()->Deflection = 0.1;
-			reader.FastDiscreteParams()->InParallel = true;
+			//reader.FastDiscreteParams()->Deflection = 0.1;
+			//reader.FastDiscreteParams()->InParallel = true;
 			//reader.FastDiscreteParams()->Angle = 3;
-			reader.SetToDiscrete();
+			//reader.SetToDiscrete();
 
 			FrgExecuteFunctionInProcess(this, reader.ReadFile(fileName.toStdString()););
 

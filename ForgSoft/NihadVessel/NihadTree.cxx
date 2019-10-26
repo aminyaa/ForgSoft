@@ -18,6 +18,8 @@
 #include <Leg_Vessel_Nihad2.hxx>
 #include <Cad_Tools.hxx>
 #include <IO_IGES.hxx>
+#include <TModel_Tools.hxx>
+#include <Cad3d_TModel.hxx>
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
@@ -87,19 +89,23 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 	//theNihadGeometryTreeItems_.at(theNihadGeometryTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew FrgBaseTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), "Nihad"), GetTreeItem("Geometry"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
 
-	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetPatch() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_HullPatch)();
+	//theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetPatch() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_HullPatch)();
+	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_HullPatch)();
 
 	FrgSharedPtr<FrgBaseTreeItem> NihadGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
-	FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetPatch();
+	FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_HullPatch>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	//AddItemToTree(NihadGeometryTreeItem);
 
 	patch->FwdSection().Tightness0()->SetValue(0.9);
 	patch->FwdSection().Tightness1()->SetValue(0.9);
 
-	patch->AftSection().Trim()->SetValue(0.1);
-	patch->MidSection().Trim()->SetValue(0.1);
-	patch->FwdSection().Trim()->SetValue(0.1);
+	patch->AftSection().Trim0()->SetValue(0.1);
+	patch->AftSection().Trim1()->SetValue(0.1);
+	patch->MidSection().Trim0()->SetValue(0.1);
+	patch->MidSection().Trim1()->SetValue(0.1);
+	patch->FwdSection().Trim0()->SetValue(0.1);
+	patch->FwdSection().Trim1()->SetValue(0.1);
 
 	auto NihadProperties = NihadGeometryTreeItem->GetProperties();
 
@@ -121,21 +127,24 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 	NihadProperties->AddTopProperty("Aft Parameters", "Hull Parameters");
 	NihadProperties->AddProperty<double>("Aft Parameters", "Deadrise", patch->AftSection().Deadrise()->Value(), FrgString::number(patch->AftSection().Deadrise()->Index()));
 	NihadProperties->AddProperty<double>("Aft Parameters", "Side slope", patch->AftSection().SideSlope()->Value(), FrgString::number(patch->AftSection().SideSlope()->Index()));
-	NihadProperties->AddProperty<double>("Aft Parameters", "Trim", patch->AftSection().Trim()->Value(), FrgString::number(patch->AftSection().Trim()->Index()));
+	NihadProperties->AddProperty<double>("Aft Parameters", "Trim 0", patch->AftSection().Trim0()->Value(), FrgString::number(patch->AftSection().Trim0()->Index()));
+	NihadProperties->AddProperty<double>("Aft Parameters", "Trim 1", patch->AftSection().Trim1()->Value(), FrgString::number(patch->AftSection().Trim1()->Index()));
 	NihadProperties->AddProperty<double>("Aft Parameters", "Tightness0", patch->AftSection().Tightness0()->Value(), FrgString::number(patch->AftSection().Tightness0()->Index()));
 	NihadProperties->AddProperty<double>("Aft Parameters", "Tightness1", patch->AftSection().Tightness1()->Value(), FrgString::number(patch->AftSection().Tightness1()->Index()));
 
 	NihadProperties->AddTopProperty("Mid Parameters", "Hull Parameters");
 	NihadProperties->AddProperty<double>("Mid Parameters", "Deadrise", patch->MidSection().Deadrise()->Value(), FrgString::number(patch->MidSection().Deadrise()->Index()));
 	NihadProperties->AddProperty<double>("Mid Parameters", "Side slope", patch->MidSection().SideSlope()->Value(), FrgString::number(patch->MidSection().SideSlope()->Index()));
-	NihadProperties->AddProperty<double>("Mid Parameters", "Trim", patch->MidSection().Trim()->Value(), FrgString::number(patch->MidSection().Trim()->Index()));
+	NihadProperties->AddProperty<double>("Mid Parameters", "Trim 0", patch->MidSection().Trim0()->Value(), FrgString::number(patch->MidSection().Trim0()->Index()));
+	NihadProperties->AddProperty<double>("Mid Parameters", "Trim 1", patch->MidSection().Trim1()->Value(), FrgString::number(patch->MidSection().Trim1()->Index()));
 	NihadProperties->AddProperty<double>("Mid Parameters", "Tightness0", patch->MidSection().Tightness0()->Value(), FrgString::number(patch->MidSection().Tightness0()->Index()));
 	NihadProperties->AddProperty<double>("Mid Parameters", "Tightness1", patch->MidSection().Tightness1()->Value(), FrgString::number(patch->MidSection().Tightness1()->Index()));
 
 	NihadProperties->AddTopProperty("Fwd Parameters", "Hull Parameters");
 	NihadProperties->AddProperty<double>("Fwd Parameters", "Deadrise", patch->FwdSection().Deadrise()->Value(), FrgString::number(patch->FwdSection().Deadrise()->Index()));
 	NihadProperties->AddProperty<double>("Fwd Parameters", "Side slope", patch->FwdSection().SideSlope()->Value(), FrgString::number(patch->FwdSection().SideSlope()->Index()));
-	NihadProperties->AddProperty<double>("Fwd Parameters", "Trim", patch->FwdSection().Trim()->Value(), FrgString::number(patch->FwdSection().Trim()->Index()));
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Trim 0", patch->FwdSection().Trim0()->Value(), FrgString::number(patch->FwdSection().Trim0()->Index()));
+	NihadProperties->AddProperty<double>("Fwd Parameters", "Trim 1", patch->FwdSection().Trim1()->Value(), FrgString::number(patch->FwdSection().Trim1()->Index()));
 	NihadProperties->AddProperty<double>("Fwd Parameters", "Tightness0", patch->FwdSection().Tightness0()->Value(), FrgString::number(patch->FwdSection().Tightness0()->Index()));
 	NihadProperties->AddProperty<double>("Fwd Parameters", "Tightness1", patch->FwdSection().Tightness1()->Value(), FrgString::number(patch->FwdSection().Tightness1()->Index()));
 
@@ -263,7 +272,8 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 	{
 		if (theGeometryTreeItems_.at(i)->GetProperties() == ((FrgBaseTreeItem*)theLastLeftClicked_)->GetProperties())
 		{
-			FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = theGeometryTreeItems_.at(i)->GetPatch();
+			//FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = theGeometryTreeItems_.at(i)->GetPatch();
+			FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_HullPatch>(theGeometryTreeItems_.at(i)->GetEntity());
 
 			if (FrgString::number(NbNetColumnsID) == property->propertyId())
 				patch->SetNbNetColumns(value.toInt());
@@ -280,19 +290,22 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 			SetNihadParametersWithProperty(patch, AftSection().Deadrise(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, AftSection().SideSlope(), property->propertyId(), value);
-			SetNihadParametersWithProperty(patch, AftSection().Trim(), property->propertyId(), value);
+			SetNihadParametersWithProperty(patch, AftSection().Trim0(), property->propertyId(), value);
+			SetNihadParametersWithProperty(patch, AftSection().Trim1(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, AftSection().Tightness0(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, AftSection().Tightness1(), property->propertyId(), value);
 
 			SetNihadParametersWithProperty(patch, MidSection().Deadrise(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, MidSection().SideSlope(), property->propertyId(), value);
-			SetNihadParametersWithProperty(patch, MidSection().Trim(), property->propertyId(), value);
+			SetNihadParametersWithProperty(patch, MidSection().Trim0(), property->propertyId(), value);
+			SetNihadParametersWithProperty(patch, MidSection().Trim1(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, MidSection().Tightness0(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, MidSection().Tightness1(), property->propertyId(), value);
 
 			SetNihadParametersWithProperty(patch, FwdSection().Deadrise(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, FwdSection().SideSlope(), property->propertyId(), value);
-			SetNihadParametersWithProperty(patch, FwdSection().Trim(), property->propertyId(), value);
+			SetNihadParametersWithProperty(patch, FwdSection().Trim0(), property->propertyId(), value);
+			SetNihadParametersWithProperty(patch, FwdSection().Trim1(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, FwdSection().Tightness0(), property->propertyId(), value);
 			SetNihadParametersWithProperty(patch, FwdSection().Tightness1(), property->propertyId(), value);
 
@@ -326,11 +339,11 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 		auto previewScene = std::dynamic_pointer_cast<NihadVesselScenePreviewTreeItem>(theSceneTreeItems_.at(i));
 		if (previewScene)
 		{
-			((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetPatch()->Perform();
+			((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PerformToPreview();
 
-			auto gsurfaces = ((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetPatch()->Patch();
+			auto gsurfaces = ((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PreviewEntity();
 
-			previewScene->GetEntityTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
+			previewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
 
 			previewScene->RenderSceneSlot();
 		}
@@ -347,6 +360,12 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 			GetParentMainWindow(), theLastRightClicked_->shared_from_this()
 			)
 	);
+
+	std::dynamic_pointer_cast<AutLib::Leg_Nihad2_HullPatch>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+
+	auto surfaces = AutLib::TModel_Tools::GetSurfaces(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape());
+	auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
+	thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetTModel() = solid;
 
 	//theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew FrgBaseTreeItem(theLastRightClicked_->text(0), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
@@ -392,21 +411,21 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	{
 		if (*ext == "IGES (*.igs)")
 		{
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
+			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::IGES);
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();
+			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
+			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::STEP);
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();
+			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
 		}
 		else if (*ext == "Tecplot (*.plt)")
 		{
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
+			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::TecPlot);
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();
+			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
 		}
 	}
 
@@ -459,7 +478,7 @@ void ForgBaseLib::NihadTree::UpdateTree()
 
 void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> selectedItems)
 {
-	QList<FrgSharedPtr<FrgBaseTreeItem>> output;
+	QList<FrgSharedPtr<NihadVesselPartTreeItem>> output;
 	for (int i = 0; i < thePartTreeItems_.size(); i++)
 	{
 		for (int j = 0; j < selectedItems.size(); j++)
@@ -477,15 +496,15 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 
 void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 {
-	((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetPatch()->Perform();
-	auto gsurfaces = ((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetPatch()->Patch();
+	((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PerformToPreview();
+	auto gsurfaces = ((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PreviewEntity();
 
 	theSceneTreeItems_.push_back(FrgMakeSharedPtr(NihadVesselScenePreviewTreeItem)(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Preview"), theLastRightClicked_, this, GetParentMainWindow()));
 
 	FrgSharedPtr<NihadVesselScenePreviewTreeItem> NihadPreviewScene = 
 		std::dynamic_pointer_cast<NihadVesselScenePreviewTreeItem>(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
 
-	NihadPreviewScene->GetEntityTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
+	NihadPreviewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
 
 	NihadPreviewScene->RenderSceneSlot();
 }

@@ -5,11 +5,12 @@
 #define RESET_FRONT_INFO
 #include <Aft_FrontInfo.hxx>
 #include <Mesh_Counters.hxx>
-#include <Mesh_AftTypeTraits.hxx>
+#include <Mesh_TypeTraits.hxx>
 #include <error.hxx>
 #include <OSstream.hxx>
 
-
+//#include "Aft2d_FrontTraits.hxx"
+//#include "Aft2d_FrontInfoAdaptor.hxx"
 
 namespace AutLib
 {

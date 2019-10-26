@@ -76,7 +76,7 @@ namespace AutLib
 
 		Point Centre() const
 		{
-			Point pt =
+			Point pt = 
 				(Node0()->Coord() + Node1()->Coord() + Node2()->Coord() + Node3()->Coord())
 				/ (Standard_Real)4.0;
 			return std::move(pt);
@@ -174,14 +174,14 @@ namespace AutLib
 		GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 0)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 1)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 2)
-			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 3)
+			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 3)		
 
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 0)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 1)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 2)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 3)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 4)
-			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 5)
+			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 5)		
 
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<facetType>, Facet, 0)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<facetType>, Facet, 1)
@@ -251,8 +251,8 @@ namespace AutLib
 
 		Point Centre() const
 		{
-			Point pt =
-				(Node0()->Coord() + Node1()->Coord() + Node2()->Coord())
+			Point pt = 
+				(Node0()->Coord() + Node1()->Coord() + Node2()->Coord()) 
 				/ (Standard_Real)3.0;
 			return std::move(pt);
 		}
@@ -454,7 +454,7 @@ namespace AutLib
 	};
 
 
-
+	
 }
 
 #endif // !_Mesh_Element_Header

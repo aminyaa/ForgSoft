@@ -1,11 +1,12 @@
 #pragma once
 #ifndef _Mesh2d_NodeFwd_Header
 #define _Mesh2d_NodeFwd_Header
-
+					
 namespace AutLib
 {
 
 	// Forward Declarations
+
 	struct Mesh2d_NodeTraits;
 
 	template<class NodeTraits>

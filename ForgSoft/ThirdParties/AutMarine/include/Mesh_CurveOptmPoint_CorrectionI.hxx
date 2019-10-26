@@ -1,12 +1,14 @@
 #pragma once
+#include <Global_Macros.hxx>
+#include <iostream>
 namespace AutLib
 {
 
-	template<class gCurveType, class MetricPrcsrType>
-	void Mesh_CurveOptmPoint_Correction<gCurveType, MetricPrcsrType>::Perform()
+	template<class CurveType, class SizeMap>
+	void Mesh_CurveOptmPoint_Correction<CurveType, SizeMap>::Perform()
 	{
-		const auto& map = Entity().SizeMap();
-		const auto& curve = Entity().Curve();
+		const auto& map = Curve().SizeMap();
+		const auto& curve = Curve().Curve();
 
 		const auto nbLevels = Info().MaxLevel();
 		const auto tol = Info().Tolerance();
@@ -16,7 +18,7 @@ namespace AutLib
 		auto P0 = curve.Value(U0());
 
 		auto Umin = U0();
-		auto Umax = Entity().LastParameter();
+		auto Umax = Curve().LastParameter();
 
 		forThose(Iter, 1, nbLevels)
 		{

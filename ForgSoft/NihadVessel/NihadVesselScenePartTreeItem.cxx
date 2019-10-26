@@ -13,6 +13,8 @@
 #include <Cad3d_TModel.hxx>
 #include <TModel_Surface.hxx>
 #include <Cad_Tools.hxx>
+#include <FastDiscrete.hxx>
+#include <FastDiscrete_Params.hxx>
 
 #include <vtkPolyData.h>
 #include <vtkPoints.h>
@@ -34,6 +36,8 @@
 #include <vtkTransformPolyDataFilter.h>
 #include <vtkTriangleFilter.h>
 #include <vtkTriangleMeshPointNormals.h>
+
+std::shared_ptr<AutLib::FastDiscrete_Params> FrgFastParameters = std::make_shared<AutLib::FastDiscrete_Params>();
 
 ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 (
@@ -72,11 +76,11 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 
 void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
 {
-	for (int i = 0; i < thePartsPointer_.size(); i++)
+	/*for (int i = 0; i < thePartsPointer_.size(); i++)
 	{
 		if (std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(i))->GetGeometryPointer())
 			(std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(i)))->GetGeometryPointer()->GetPatch()->Discrete();
-	}
+	}*/
 	//StartScene();
 
 	CreateActor();
@@ -105,7 +109,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 
 	for (int iParts = 0; iParts < thePartsPointer_.size(); iParts++)
 	{
-		if (std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetGeometryPointer())
+		/*if (std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetGeometryPointer())
 		{
 			int it = 0;
 			for
@@ -161,8 +165,6 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 						bounds[5] - bounds[4]);
 
 				auto userTransform = vtkSmartPointer<vtkTransform>::New();
-				/*userTransform->Translate(-center[0], -center[1], -center[2]);
-				userTransform->Scale(1.0 / maxBound, 1.0 / maxBound, 1.0 / maxBound);*/
 				auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
 				transform->SetTransform(userTransform);
 				transform->SetInputData(Hull);
@@ -181,25 +183,26 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 				GetActors().push_back(actor);
 				GetActors().at(GetActors().size() - 1)->SetMapper(HullMapper);
 
-				/*auto color = GetInteractorStyle()->GeometryColorRGB;
-				actor->GetProperty()->SetAmbientColor(color.redF(), color.greenF(), color.blueF());
-				actor->GetProperty()->SetDiffuseColor(color.redF(), color.greenF(), color.blueF());
-				actor->GetProperty()->SetSpecularColor(1.0, 1.0, 1.0);
-				actor->GetProperty()->SetSpecular(0.5);
-				actor->GetProperty()->SetDiffuse(0.7);
-				actor->GetProperty()->SetAmbient(0.5);
-				actor->GetProperty()->SetSpecularPower(20.0);
-				actor->GetProperty()->SetOpacity(1.0);*/
+				//auto color = GetInteractorStyle()->GeometryColorRGB;
+				//actor->GetProperty()->SetAmbientColor(color.redF(), color.greenF(), color.blueF());
+				//actor->GetProperty()->SetDiffuseColor(color.redF(), color.greenF(), color.blueF());
+				//actor->GetProperty()->SetSpecularColor(1.0, 1.0, 1.0);
+				//actor->GetProperty()->SetSpecular(0.5);
+				//actor->GetProperty()->SetDiffuse(0.7);
+				//actor->GetProperty()->SetAmbient(0.5);
+				//actor->GetProperty()->SetSpecularPower(20.0);
+				//actor->GetProperty()->SetOpacity(1.0);
 
 				AddActorToTheRenderer(actor);
 			}
-		}
+		}*/
 
-		else if (std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetTModel())
+		if (std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetTModel())
 		{
 			auto model = std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetTModel();
 
 			std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
+
 			model->RetrieveFacesTo(surfaces);
 			for (int iSurface = 0; iSurface < surfaces.size(); iSurface++)
 			{
@@ -207,9 +210,14 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 				vtkNew<vtkPoints> points;
 				vtkNew<vtkCellArray> polys;
 
-				TopLoc_Location Loc;
-				Handle(Poly_Triangulation) Triangulation = surfaces.at(iSurface)->Triangulation();
+				AutLib::FastDiscrete::Triangulation(surfaces.at(iSurface)->Face(), *(FrgFastParameters));
+
+				//TopLoc_Location Loc;
+				//Handle(Poly_Triangulation) Triangulation = surfaces.at(iSurface)->Triangulation();
+				Handle(Poly_Triangulation) Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(surfaces.at(iSurface)->Face());
 				//BRep_Tool::Triangulation(surfaces.at(iSurface)->Face(), Loc);
+
+				std::cout << "triangulation Is Null = " << Triangulation.IsNull() << std::endl;
 
 				if (Triangulation.IsNull()) continue;
 

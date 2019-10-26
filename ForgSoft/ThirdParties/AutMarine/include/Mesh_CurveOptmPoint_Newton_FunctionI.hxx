@@ -1,26 +1,13 @@
 #pragma once
+#include <iostream>
 namespace AutLib
 {
-
-	template<class gCurveType, class MetricPrcsrType>
-	Mesh_CurveOptmPoint_Newton_Function<gCurveType, MetricPrcsrType>::Mesh_CurveOptmPoint_Newton_Function
+	template<class CurveType, class SizeMap>
+	Standard_Real Mesh_CurveOptmPoint_Newton_Function<CurveType, SizeMap>::Value
 	(
-		const Standard_Real theX0,
-		const Standard_Real theStep, 
-		const entity& theCurve, 
-		const std::shared_ptr<info>& theInfo
-	)
-		: Mesh_CurveOptmPoint_Newton_Function_Base(theX0, theStep, theInfo)
-		, theCurve_(theCurve)
+		const Standard_Real x
+	) const
 	{
-		Lower() = Entity().FirstParameter();
-		Upper() = Entity().LastParameter();
-	}
-
-	template<class gCurveType, class MetricPrcsrType>
-	Standard_Real Mesh_CurveOptmPoint_Newton_Function<gCurveType, MetricPrcsrType>::Value(const Standard_Real x) const
-	{
-		Geo_CurveIntegrand<gCurveType, MetricPrcsrType> Integrand(Entity().Curve(), Entity().SizeMap());
-		return GeoLib::CalcCurveLength<gCurveType, MetricPrcsrType>::_(Integrand, X0(), x, *Info()) - Step();
+		return Mesh_CurveLength::Length(Curve(), X0(), x, theInfo_) - Step();
 	}
 }

@@ -22,6 +22,11 @@ namespace AutLib
 
 		typedef Entity_Box<Point> box;
 
+
+		using base::CalcElementSize;
+		using base::CalcDistance;
+		using base::CalcSquareDistance;
+
 		Mesh_AftMetricPrcsrIso_Base
 		(
 			const std::shared_ptr<SizeFun>& theSizeFunction
@@ -45,8 +50,6 @@ namespace AutLib
 		Standard_Real CalcDistance(const Point& thePt, const frontType& theFront) const;
 
 		Standard_Real CalcSquareDistance(const Point& thePt, const frontType& theFront) const;
-
-		Point CalcOptimumCoord(const Standard_Real theSize, const frontType& theFront) const;
 
 		Point CalcCentreOf(const frontType& theFront) const;
 

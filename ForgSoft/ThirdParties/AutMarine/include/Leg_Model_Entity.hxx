@@ -201,6 +201,8 @@ namespace AutLib
 
 		TopoDS_Shape theEntity_;
 
+		TopoDS_Shape thePreview_;
+
 	protected:
 
 		Leg_Model_Entity()
@@ -217,6 +219,11 @@ namespace AutLib
 		TopoDS_Shape& ChangeEntity()
 		{
 			return theEntity_;
+		}
+
+		TopoDS_Shape& ChangePreviewEntity()
+		{
+			return thePreview_;
 		}
 
 	public:
@@ -239,6 +246,11 @@ namespace AutLib
 			return theEntity_;
 		}
 
+		const TopoDS_Shape& PreviewEntity() const
+		{
+			return thePreview_;
+		}
+
 		TopoDS_Shape Section(const gp_Pln& thePlane) const;
 
 		void Discrete();
@@ -258,6 +270,8 @@ namespace AutLib
 		void ExportToFile() const;
 
 		void CalcBoundingBox();
+
+		virtual void PerformToPreview() = 0;
 
 		static Entity3d_Box BoundingBox(const TopoDS_Shape& theShape);
 	};

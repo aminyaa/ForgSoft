@@ -1,6 +1,7 @@
 #include <NihadVesselGeometryTreeItem.hxx>
+#include <Leg_Model_Entity.hxx>
 
-#include <Leg_Vessel_Nihad2.hxx>
+//#include <Leg_Vessel_Nihad2.hxx>
 
 ForgBaseLib::NihadVesselGeometryTreeItem::NihadVesselGeometryTreeItem
 (
@@ -16,5 +17,5 @@ ForgBaseLib::NihadVesselGeometryTreeItem::NihadVesselGeometryTreeItem
 
 const TopoDS_Shape& ForgBaseLib::NihadVesselGeometryTreeItem::GetTopoDS_Shape()
 {
-	return thePatch_->Entity();
+	return theEntity_->Entity();
 }

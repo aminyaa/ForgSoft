@@ -7,7 +7,7 @@
 
 namespace AutLib
 {
-	class Leg_Nihad2_HullPatch;
+	class Leg_Model_Entity;
 }
 
 class TopoDS_Shape;
@@ -21,7 +21,8 @@ class NihadVesselGeometryTreeItem : public QObject, public FrgBaseTreeItem
 
 private:
 
-	FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> thePatch_ = FrgNullPtr;
+	//FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> thePatch_ = FrgNullPtr;
+	FrgSharedPtr<AutLib::Leg_Model_Entity> theEntity_ = FrgNullPtr;
 
 public:
 
@@ -33,7 +34,8 @@ public:
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
 	);
 
-	FrgGetMacro(FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch>, Patch, thePatch_);
+	//FrgGetMacro(FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch>, Patch, thePatch_);
+	FrgGetMacro(FrgSharedPtr<AutLib::Leg_Model_Entity>, Entity, theEntity_);
 
 	const TopoDS_Shape& GetTopoDS_Shape();
 

@@ -3,7 +3,6 @@
 #define _GeoMesh_BackgroundInfo_Header
 
 #include <Standard_TypeDef.hxx>
-#include <Global_AccessMethod.hxx>
 
 namespace AutLib
 {
@@ -26,10 +25,25 @@ namespace AutLib
 			, theFactor_(DEFAULT_FACTOR)
 		{}
 
-		
-		//- Macros
-		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Integer, NbIters)
-			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, Factor)
+		Standard_Integer MaxNbIters() const
+		{
+			return theNbIters_;
+		}
+
+		Standard_Real Factor() const
+		{
+			return theFactor_;
+		}
+
+		void SetMaxnbIters(const Standard_Integer theValue)
+		{
+			theNbIters_ = theValue;
+		}
+
+		void SetFactor(const Standard_Real theFactor)
+		{
+			theFactor_ = theFactor;
+		}
 	};
 
 	class GeoMesh_Background_SmoothingLaplacianInfo
@@ -50,10 +64,25 @@ namespace AutLib
 			, theFactor_(DEFAULT_FACTOR)
 		{}
 
-		
-		//- Macros
-		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Integer, NbIters)
-			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, Factor)
+		Standard_Integer MaxNbIters() const
+		{
+			return theNbIters_;
+		}
+
+		Standard_Real Factor() const
+		{
+			return theFactor_;
+		}
+
+		void SetMaxnbIters(const Standard_Integer theValue)
+		{
+			theNbIters_ = theValue;
+		}
+
+		void SetFactor(const Standard_Real theFactor)
+		{
+			theFactor_ = theFactor;
+		}
 	};
 }
 

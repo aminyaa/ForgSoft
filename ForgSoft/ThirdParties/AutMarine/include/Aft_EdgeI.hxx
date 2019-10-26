@@ -2,6 +2,7 @@
 #include <map>
 namespace AutLib
 {
+
 	template<class EdgeTraits>
 	std::vector<std::shared_ptr<typename Aft_Edge<EdgeTraits>::nodeType>>
 		Aft_Edge<EdgeTraits>::RetrieveNodes

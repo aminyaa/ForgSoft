@@ -9,8 +9,8 @@
 #include <memory>
 #include <vector>
 
-//#include "Mesh2d_Element.hxx"
-//#include "Mesh2d_Node.hxx"
+#include "Mesh2d_Element.hxx"
+#include "Mesh2d_Node.hxx"
 
 namespace AutLib
 {

@@ -5,9 +5,9 @@
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseMainWindow.hxx>
 
-#include <Leg_Vessel_Nihad2.hxx>
-#include <TModel_Surface.hxx>
-#include <Cad3d_TModel.hxx>
+//#include <Leg_Vessel_Nihad2.hxx>
+//#include <TModel_Surface.hxx>
+//#include <Cad3d_TModel.hxx>
 
 ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 (
@@ -29,7 +29,7 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 		, SLOT(ExportPartSlot(bool))
 	);
 
-	GetGeometryPointer() = std::dynamic_pointer_cast<NihadVesselGeometryTreeItem>(parentGeometry);
+	/*GetGeometryPointer() = std::dynamic_pointer_cast<NihadVesselGeometryTreeItem>(parentGeometry);
 
 	if (GetGeometryPointer())
 	{
@@ -39,7 +39,7 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 	if (GetTModel())
 	{
 		
-	}
+	}*/
 
 	GetParentMainWindow()->ParseInfoToConsole("\"" + this->text(0) + "\" part successfully created.");
 }

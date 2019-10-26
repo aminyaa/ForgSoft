@@ -30,19 +30,22 @@ namespace AutLib
 
 		static const param FWD_TIGHTNESS0;
 		static const param FWD_TIGHTNESS1;
-		static const param FWD_TRIM;
+		static const param FWD_TRIM0;
+		static const param FWD_TRIM1;
 		static const param FWD_DEADRISE;
 		static const param FWD_SIDE_SLOPE;
 
 		static const param MID_TIGHTNESS0;
 		static const param MID_TIGHTNESS1;
-		static const param MID_TRIM;
+		static const param MID_TRIM0;
+		static const param MID_TRIM1;
 		static const param MID_DEADRISE;
 		static const param MID_SIDE_SLOPE;
 
 		static const param AFT_TIGHTNESS0;
 		static const param AFT_TIGHTNESS1;
-		static const param AFT_TRIM;
+		static const param AFT_TRIM0;
+		static const param AFT_TRIM1;
 		static const param AFT_DEADRISE;
 		static const param AFT_SIDE_SLOPE;
 
