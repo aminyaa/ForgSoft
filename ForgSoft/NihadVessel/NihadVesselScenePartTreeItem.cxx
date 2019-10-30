@@ -39,12 +39,22 @@
 
 std::shared_ptr<AutLib::FastDiscrete_Params> FrgFastParameters = std::make_shared<AutLib::FastDiscrete_Params>();
 
+#define FrgFastParameters_AngleID "FrgFastParameters_Angle"
+#define FrgFastParameters_DeflectionID "FrgFastParameters_Deflection"
+#define FrgFastParameters_MinSizeID "FrgFastParameters_MinSize"
+#define FrgFastParameters_InParallelID "FrgFastParameters_InParallel"
+#define FrgFastParameters_RelativeID "FrgFastParameters_Relative"
+#define FrgFastParameters_AdaptiveMinID "FrgFastParameters_AdaptiveMin"
+#define FrgFastParameters_InternalVerticesModeID "FrgFastParameters_InternalVerticesMode"
+#define FrgFastParameters_ControlSurfaceDeflectionID "FrgFastParameters_ControlSurfaceDeflection"
+
 ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 (
 	const FrgString& title,
 	FrgBaseTreeItem* parent,
 	FrgBaseTree* parentTree,
-	FrgBaseMainWindow* parentMainwindow
+	FrgBaseMainWindow* parentMainwindow,
+	FrgBool discreteParameters
 )
 	: FrgBaseSceneTreeItem(title, parent, parentTree, parentMainwindow)
 {
@@ -61,6 +71,20 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 	browser->setFactoryForManager(manager, factory);
 	browser->addProperty(partsListProperty);
 	this->GetProperties()->GetPropertyBrowser() = browser;
+
+	if(discreteParameters)
+	{
+		this->GetProperties()->AddTopProperty("Discrete parameters");
+
+		this->GetProperties()->AddProperty<double>("Discrete parameters", "Angle", FrgFastParameters->Angle, FrgFastParameters_AngleID, 0.01, 360.0, 1.0);
+		this->GetProperties()->AddProperty<double>("Discrete parameters", "Deflection", FrgFastParameters->Deflection, FrgFastParameters_DeflectionID);
+		this->GetProperties()->AddProperty<double>("Discrete parameters", "MinSize", FrgFastParameters->MinSize, FrgFastParameters_MinSizeID);
+		this->GetProperties()->AddProperty<bool>("Discrete parameters", "InParallel", FrgFastParameters->InParallel, FrgFastParameters_InParallelID);
+		this->GetProperties()->AddProperty<bool>("Discrete parameters", "Relative", FrgFastParameters->Relative, FrgFastParameters_RelativeID);
+		this->GetProperties()->AddProperty<bool>("Discrete parameters", "AdaptiveMin", FrgFastParameters->AdaptiveMin, FrgFastParameters_AdaptiveMinID);
+		this->GetProperties()->AddProperty<bool>("Discrete parameters", "InternalVerticesMode", FrgFastParameters->InternalVerticesMode, FrgFastParameters_InternalVerticesModeID);
+		this->GetProperties()->AddProperty<bool>("Discrete parameters", "ControlSurfaceDeflection", FrgFastParameters->ControlSurfaceDeflection, FrgFastParameters_ControlSurfaceDeflectionID);
+	}
 
 	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
 		((NihadTree*)parentTree), SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
@@ -201,38 +225,40 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 		{
 			auto model = std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetTModel();
 
-			std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
+			//std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
 
-			model->RetrieveFacesTo(surfaces);
-			for (int iSurface = 0; iSurface < surfaces.size(); iSurface++)
+			AutLib::FastDiscrete::Triangulation(model->Shape(), *(FrgFastParameters));
+			std::vector<Handle(Poly_Triangulation)> Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(model->Shape());
+			//model->RetrieveFacesTo(surfaces);
+			for (int iSurface = 0; iSurface < Triangulation.size(); iSurface++)
 			{
 				vtkNew<vtkPolyData> Hull;
 				vtkNew<vtkPoints> points;
 				vtkNew<vtkCellArray> polys;
 
-				AutLib::FastDiscrete::Triangulation(surfaces.at(iSurface)->Face(), *(FrgFastParameters));
+				//AutLib::FastDiscrete::Triangulation(surfaces.at(iSurface)->Face(), *(FrgFastParameters));
 
 				//TopLoc_Location Loc;
 				//Handle(Poly_Triangulation) Triangulation = surfaces.at(iSurface)->Triangulation();
-				Handle(Poly_Triangulation) Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(surfaces.at(iSurface)->Face());
+				//Handle(Poly_Triangulation) Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(surfaces.at(iSurface)->Face());
 				//BRep_Tool::Triangulation(surfaces.at(iSurface)->Face(), Loc);
 
-				std::cout << "triangulation Is Null = " << Triangulation.IsNull() << std::endl;
+				//std::cout << "triangulation Is Null = " << Triangulation.at(iSurface).IsNull() << std::endl;
 
-				if (Triangulation.IsNull()) continue;
+				if (Triangulation.at(iSurface).IsNull()) continue;
 
-				int nbNodes = Triangulation->Nodes().Size();
-				int nbElements = Triangulation->Triangles().Size();
+				int nbNodes = Triangulation.at(iSurface)->Nodes().Size();
+				int nbElements = Triangulation.at(iSurface)->Triangles().Size();
 
 				for (auto i = 0ul; i < nbNodes; ++i)
 				{
-					points->InsertPoint(i, Triangulation->Nodes().Value(i + 1).X(), Triangulation->Nodes().Value(i + 1).Y(), Triangulation->Nodes().Value(i + 1).Z());
+					points->InsertPoint(i, Triangulation.at(iSurface)->Nodes().Value(i + 1).X(), Triangulation.at(iSurface)->Nodes().Value(i + 1).Y(), Triangulation.at(iSurface)->Nodes().Value(i + 1).Z());
 				}
 
 				for (int i = 0; i < nbElements; i++)
 				{
 					int I1, I2, I3;
-					Triangulation->Triangles().Value(i + 1).Get(I1, I2, I3);
+					Triangulation.at(iSurface)->Triangles().Value(i + 1).Get(I1, I2, I3);
 					std::array<std::array<vtkIdType, 3>, 1> order = { { {I1 - 1,I2 - 1,I3 - 1 } } };
 					polys->InsertNextCell(vtkIdType(3), order[0].data());
 				}

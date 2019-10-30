@@ -61,8 +61,10 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 
 			//reader.ReadFile(fileName.toStdString());
 
-			auto surfaces = AutLib::TModel_Tools::GetSurfaces(reader.Shape());
-			auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
+			//auto surfaces = AutLib::TModel_Tools::GetSurfaces(reader.Shape());
+			//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
+			
+			auto solid = AutLib::Cad3d_TModel::MakeSolid(reader.Shape(), 1.0e-6);
 
 			((NihadTree*)GetTree())->GetPartTreeItems().push_back
 			(

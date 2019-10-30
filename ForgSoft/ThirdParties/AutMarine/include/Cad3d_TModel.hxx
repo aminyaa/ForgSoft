@@ -8,6 +8,8 @@
 #include <Entity3d_Box.hxx>
 #include <OFstream.hxx>
 
+#include <TopoDS_Shape.hxx>
+
 class TopoDS_Face;
 class TopoDS_Shape;
 
@@ -48,6 +50,7 @@ namespace AutLib
 
 		Entity3d_Box theBoundingBox_;
 
+		TopoDS_Shape theShape_;
 
 		//- private functions and operators
 
@@ -117,6 +120,15 @@ namespace AutLib
 			return theInner_;
 		}
 
+		const TopoDS_Shape& Shape() const
+		{
+			return theShape_;
+		}
+
+		void SetShape(const TopoDS_Shape& theShape)
+		{
+			theShape_ = theShape;
+		}
 
 		void RetrieveFacesTo
 		(
@@ -140,6 +152,13 @@ namespace AutLib
 
 
 		//- Static functions and operators
+
+		static std::shared_ptr<Cad3d_TModel> 
+			MakeSolid
+			(
+				const TopoDS_Shape& theShape, 
+				const Standard_Real theTolerance
+			);
 
 		static std::shared_ptr<Cad3d_TModel> 
 			MakeSolid

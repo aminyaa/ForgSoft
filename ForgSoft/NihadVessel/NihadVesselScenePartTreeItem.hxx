@@ -25,7 +25,8 @@ public:
 		const FrgString& title,
 		FrgBaseTreeItem* parent = FrgNullPtr,
 		FrgBaseTree* parentTree = FrgNullPtr,
-		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
+		FrgBaseMainWindow* parentMainwindow = FrgNullPtr,
+		FrgBool discreteParameters = FrgTrue
 	);
 	
 	FrgGetMacro(QList<FrgSharedPtr<NihadVesselPartTreeItem>>, PartsPointer, thePartsPointer_);

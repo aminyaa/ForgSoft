@@ -20,6 +20,7 @@
 #include <IO_IGES.hxx>
 #include <TModel_Tools.hxx>
 #include <Cad3d_TModel.hxx>
+#include <Cad_Tools.hxx>
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
@@ -89,11 +90,11 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 	//theNihadGeometryTreeItems_.at(theNihadGeometryTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew FrgBaseTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), "Nihad"), GetTreeItem("Geometry"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
 
-	//theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetPatch() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_HullPatch)();
-	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_HullPatch)();
+	//theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetPatch() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_BareHull)();
+	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_BareHull)();
 
 	FrgSharedPtr<FrgBaseTreeItem> NihadGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
-	FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_HullPatch>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
+	FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	//AddItemToTree(NihadGeometryTreeItem);
 
@@ -272,8 +273,8 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 	{
 		if (theGeometryTreeItems_.at(i)->GetProperties() == ((FrgBaseTreeItem*)theLastLeftClicked_)->GetProperties())
 		{
-			//FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = theGeometryTreeItems_.at(i)->GetPatch();
-			FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_HullPatch>(theGeometryTreeItems_.at(i)->GetEntity());
+			//FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = theGeometryTreeItems_.at(i)->GetPatch();
+			FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(theGeometryTreeItems_.at(i)->GetEntity());
 
 			if (FrgString::number(NbNetColumnsID) == property->propertyId())
 				patch->SetNbNetColumns(value.toInt());
@@ -341,9 +342,9 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 		{
 			((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PerformToPreview();
 
-			auto gsurfaces = ((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PreviewEntity();
+			auto shape = ((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PreviewEntity();
 
-			previewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
+			previewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewUnMergedPatchCurves(shape, NbSegments_U, NbSegments_V);
 
 			previewScene->RenderSceneSlot();
 		}
@@ -361,10 +362,12 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 			)
 	);
 
-	std::dynamic_pointer_cast<AutLib::Leg_Nihad2_HullPatch>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
 
-	auto surfaces = AutLib::TModel_Tools::GetSurfaces(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape());
-	auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
+	//auto surfaces = AutLib::TModel_Tools::GetSurfaces(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape());
+	//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
+	
+	auto solid = AutLib::Cad3d_TModel::MakeSolid(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape(), 1.0e-6);
 	thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetTModel() = solid;
 
 	//theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_ =
@@ -411,12 +414,16 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	{
 		if (*ext == "IGES (*.igs)")
 		{
+			AutLib::Cad_Tools::ExportToIGES("M", ((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetTModel()->Shape(), fileName.toStdString());
+			
 			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::IGES);
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{
+			AutLib::Cad_Tools::ExportToSTEP(((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetTModel()->Shape(), fileName.toStdString());
+
 			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::STEP);
 			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
@@ -497,14 +504,15 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 {
 	((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PerformToPreview();
-	auto gsurfaces = ((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PreviewEntity();
+	auto shape = ((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PreviewEntity();
+	
 
 	theSceneTreeItems_.push_back(FrgMakeSharedPtr(NihadVesselScenePreviewTreeItem)(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Preview"), theLastRightClicked_, this, GetParentMainWindow()));
 
 	FrgSharedPtr<NihadVesselScenePreviewTreeItem> NihadPreviewScene = 
 		std::dynamic_pointer_cast<NihadVesselScenePreviewTreeItem>(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
 
-	NihadPreviewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewPatchCurves(gsurfaces, NbSegments_U, NbSegments_V);
+	NihadPreviewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewUnMergedPatchCurves(shape, NbSegments_U, NbSegments_V);
 
 	NihadPreviewScene->RenderSceneSlot();
 }
