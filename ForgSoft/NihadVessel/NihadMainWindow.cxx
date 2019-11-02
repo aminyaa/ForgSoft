@@ -65,12 +65,15 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 			//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
 			
 			auto solid = AutLib::Cad3d_TModel::MakeSolid(reader.Shape(), 1.0e-6);
+			QString bareFileName = QFileInfo(fileName).fileName();
+			bareFileName.remove(".igs");
+			bareFileName.remove(".iges");
 
 			((NihadTree*)GetTree())->GetPartTreeItems().push_back
 			(
 				FrgMakeSharedPtr(NihadVesselPartTreeItem)
 				(
-					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), "Import"), GetTree()->GetTreeItem("Parts"), GetTree(), this
+					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), GetTree(), this
 					)
 			);
 

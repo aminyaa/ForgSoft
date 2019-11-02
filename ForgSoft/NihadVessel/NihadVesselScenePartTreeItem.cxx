@@ -62,10 +62,13 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 
 	FrgBaseTreeItem* sharedToParts = ((NihadTree*)parentTree)->GetTreeItem("Parts");
 
-	SelectObjectsPropertyFactory* factory = FrgNew SelectObjectsPropertyFactory(FrgNullPtr, sharedToParts);
+	QtAbstractEditorFactory<QtAbstractPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory(FrgNullPtr, sharedToParts);
 
 	this->GetProperties()->AddProperty<SelectObjectsPropertyManager>("Parts List", manager, factory);
 	QtProperty* partsListProperty = manager->addProperty("Parts List");
+
+	this->GetProperties()->GetAbstractEditorFactory() = factory;
+	this->GetProperties()->GetAbstractPropertyManager() = manager;
 
 	QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
 	browser->setFactoryForManager(manager, factory);
