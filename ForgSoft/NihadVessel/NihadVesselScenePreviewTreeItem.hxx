@@ -21,6 +21,8 @@ private:
 
 	FrgVector<FrgSharedPtr<AutLib::Entity3d_Triangulation>> theEntitiesTriangulation_;
 
+	QList<vtkSmartPointer<vtkActor>> thePreviewActors_;
+
 public:
 
 	NihadVesselScenePreviewTreeItem

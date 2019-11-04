@@ -80,6 +80,8 @@ namespace AutLib
 		//- Private functions and operators
 
 
+	protected:
+
 		void AllocateMemory();
 
 
@@ -235,6 +237,8 @@ namespace AutLib
 
 		Leg_Nihad2_BareHull()
 		{}
+
+		void PerformToPreview() override;
 	};
 }
 

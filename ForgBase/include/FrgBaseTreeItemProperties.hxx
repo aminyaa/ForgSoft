@@ -105,6 +105,14 @@ public:
 		SetmaximumAttribute(propertyId, maximum);
 	}
 
+	template<typename = bool>
+	void AddProperty(const FrgString& topProperty, const FrgString& name, const bool& value, const FrgString& propertyId = "")
+	{
+		QtVariantProperty* item = AddProperty(topProperty, QVariant::Bool, name, propertyId);
+
+		item->setValue(value);
+	}
+
 	/*void AddPropertyString(const FrgString& topProperty, const FrgString& name, const FrgString& value);
 
 	void AddPropertyDouble(const FrgString& topProperty, const FrgString& name, FrgDouble value);

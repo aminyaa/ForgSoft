@@ -28,7 +28,7 @@ ForgBaseLib::NihadVesselScenePreviewTreeItem::NihadVesselScenePreviewTreeItem
 	FrgBaseTree* parentTree,
 	FrgBaseMainWindow* parentMainwindow
 )
-	: NihadVesselScenePartTreeItem(title, parent, parentTree, parentMainwindow)
+	: NihadVesselScenePartTreeItem(title, parent, parentTree, parentMainwindow, FrgFalse)
 {
 	
 }
@@ -40,6 +40,7 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::AddActorToTheRenderer(vtkSmar
 
 void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 {
+	QList<vtkSmartPointer<vtkActor>> actors;
 
 	for (int iTriangulation = 0; iTriangulation < theEntitiesTriangulation_.size(); iTriangulation++)
 	{
@@ -107,21 +108,45 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 		actor->GetProperty()->EdgeVisibilityOn();
 		actor->GetProperty()->SetLineWidth(2.0);
 
-		if (GetRenderer()->GetActors()->GetNumberOfItems() != 0)
+		/*if (GetRenderer()->GetActors()->GetNumberOfItems() != 0)
 		{
 			GetRenderer()->RemoveActor(GetActors().at(0));
 			GetActors().removeAt(0);
-		}
+		}*/
 
-		GetActors().insert(0, actor);
-		GetActors().at(0)->SetMapper(HullMapper);
+		/*GetActors().insert(0, actor);
+		GetActors().at(0)->SetMapper(HullMapper);*/
+		actor->SetMapper(HullMapper);
+		actors.push_back(actor);
 
-		for (int iActor = 1; iActor < GetActors().size(); iActor++)
+		for (int iActor = 0; iActor < GetActors().size(); iActor++)
 		{
 			GetActors().at(iActor)->GetProperty()->SetOpacity(0.5);
 		}
 
-		AddActorToTheRenderer(actor);
+	}
+
+	for (int i = 0; i < thePreviewActors_.size(); i++)
+	{
+		GetRenderer()->RemoveActor(thePreviewActors_.at(i));
+	}
+
+	/*for (int iPreviewActor = 0; iPreviewActor < thePreviewActors_.size(); iPreviewActor++)
+	{
+		GetParentMainWindow()->ParseInfoToConsole("index = " + FrgString::number(GetActors().indexOf(thePreviewActors_.at(iPreviewActor))));
+		GetActors().removeAt(GetActors().indexOf(thePreviewActors_.at(iPreviewActor)));
+	}*/
+
+	/*for (int iPreviewActor = 0; iPreviewActor < thePreviewActors_.size(); iPreviewActor++)
+	{
+		GetActors().push_back(thePreviewActors_.at(iPreviewActor));
+	}*/
+
+	thePreviewActors_ = actors;
+
+	for (int i = 0; i < thePreviewActors_.size(); i++)
+	{
+		AddActorToTheRenderer(thePreviewActors_.at(i));
 	}
 }
 
