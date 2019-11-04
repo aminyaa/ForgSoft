@@ -75,6 +75,9 @@
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
       <Filter>NihadVessel</Filter>
     </ClInclude>
+    <ClInclude Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx">
+      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NihadVessel\NihadTree.hxx">
@@ -84,9 +87,6 @@
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsDlg</Filter>
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.hxx">
-      <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
-    </QtMoc>
-    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx">
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.hxx">

@@ -30,7 +30,7 @@
     <QtMoc Include="NihadVessel\NihadVesselGeometryTreeItem.hxx" />
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.hxx" />
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.hxx" />
-    <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx" />
+    <ClInclude Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx" />
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.hxx" />
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx" />
     <QtMoc Include="NihadVessel\NihadTree.hxx" />

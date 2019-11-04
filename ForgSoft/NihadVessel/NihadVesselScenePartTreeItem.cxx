@@ -62,18 +62,18 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 
 	FrgBaseTreeItem* sharedToParts = ((NihadTree*)parentTree)->GetTreeItem("Parts");
 
-	QtAbstractEditorFactory<QtAbstractPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory(FrgNullPtr, sharedToParts);
+	QtAbstractEditorFactory<SelectObjectsPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory<SelectObjectsPropertyManager>(FrgNullPtr, sharedToParts);
 
 	this->GetProperties()->AddProperty<SelectObjectsPropertyManager>("Parts List", manager, factory);
 	QtProperty* partsListProperty = manager->addProperty("Parts List");
 
-	this->GetProperties()->GetAbstractEditorFactory() = factory;
-	this->GetProperties()->GetAbstractPropertyManager() = manager;
+	//this->GetProperties()->GetAbstractEditorFactory() = factory;
+	//this->GetProperties()->GetAbstractPropertyManager() = manager;
 
-	QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
-	browser->setFactoryForManager(manager, factory);
-	browser->addProperty(partsListProperty);
-	this->GetProperties()->GetPropertyBrowser() = browser;
+	//QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
+	//browser->setFactoryForManager(manager, factory);
+	//browser->addProperty(partsListProperty);
+	//this->GetProperties()->GetPropertyBrowser() = browser;
 
 	if(discreteParameters)
 	{

@@ -80,8 +80,6 @@ namespace AutLib
 		//- Private functions and operators
 
 
-	protected:
-
 		void AllocateMemory();
 
 
