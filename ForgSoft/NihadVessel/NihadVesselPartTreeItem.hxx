@@ -33,7 +33,7 @@ public:
 		FrgBaseTreeItem* parent = FrgNullPtr,
 		FrgBaseTree* parentTree = FrgNullPtr,
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr,
-		FrgSharedPtr<FrgBaseTreeItem> parentGeometry = FrgNullPtr
+		FrgBaseTreeItem* parentGeometry = FrgNullPtr
 	);
 
 	//FrgGetMacro(FrgSharedPtr<NihadVesselGeometryTreeItem>, GeometryPointer, theGeometryPointer_);

@@ -37,6 +37,9 @@
 #include <vtkTriangleFilter.h>
 #include <vtkTriangleMeshPointNormals.h>
 
+#include <QtDoublePropertyManager>
+#include <QtDoubleSpinBoxFactory>
+
 std::shared_ptr<AutLib::FastDiscrete_Params> FrgFastParameters = std::make_shared<AutLib::FastDiscrete_Params>();
 
 #define FrgFastParameters_AngleID "FrgFastParameters_Angle"
@@ -57,25 +60,78 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 	FrgBool discreteParameters
 )
 	: FrgBaseSceneTreeItem(title, parent, parentTree, parentMainwindow)
+	, theDiscreteParametersBool_(discreteParameters)
 {
-	SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager();
+	//SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager();
 
-	FrgBaseTreeItem* sharedToParts = ((NihadTree*)parentTree)->GetTreeItem("Parts");
+	//FrgBaseTreeItem* sharedToParts = ((NihadTree*)parentTree)->GetTreeItem("Parts");
 
-	QtAbstractEditorFactory<SelectObjectsPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory<SelectObjectsPropertyManager>(FrgNullPtr, sharedToParts);
-
-	this->GetProperties()->AddProperty<SelectObjectsPropertyManager>("Parts List", manager, factory);
-	QtProperty* partsListProperty = manager->addProperty("Parts List");
+	//QtAbstractEditorFactory<SelectObjectsPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory<SelectObjectsPropertyManager>(FrgNullPtr, sharedToParts);
+	//QtAbstractEditorFactory<SelectObjectsPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory(FrgNullPtr, sharedToParts);
+	
+	//this->GetProperties()->GetPropertyBrowser()->setFactoryForManager(manager, factory);
+	//this->GetProperties()->AddProperty("Parts List", manager, factory);
+	//QtProperty* partsListProperty = manager->addProperty("Parts List");
 
 	//this->GetProperties()->GetAbstractEditorFactory() = factory;
 	//this->GetProperties()->GetAbstractPropertyManager() = manager;
 
-	//QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
-	//browser->setFactoryForManager(manager, factory);
-	//browser->addProperty(partsListProperty);
+	/*QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
+	browser->setFactoryForManager(manager, factory);
+	browser->addProperty(partsListProperty);*/
 	//this->GetProperties()->GetPropertyBrowser() = browser;
 
-	if(discreteParameters)
+	//this->GetProperties()->GetPropertyBrowser()->setFactoryForManager(undecoratedManager, undecoratedFactory);
+	//this->GetProperties()->GetPropertyBrowser()->addProperty(undecoratedProperty);
+
+	
+
+	//connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
+		//((NihadTree*)parentTree), SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
+
+	/*connect
+	(
+		this->GetProperties()->GetPropertyManager()
+		, SIGNAL(valueChanged(QtProperty*, const QVariant&))
+		, this
+		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
+	);*/
+}
+
+void ForgBaseLib::NihadVesselScenePartTreeItem::DoAfterConstruct()
+{
+	SelectObjectsPropertyManager* manager = FrgNew SelectObjectsPropertyManager();
+
+	FrgBaseTreeItem* sharedToParts = (GetParentTree())->GetTreeItem("Parts");
+
+	QtProperty* prop = manager->addProperty("Parts List");
+
+	QtAbstractEditorFactory<SelectObjectsPropertyManager>* factory = FrgNew SelectObjectsPropertyFactory(FrgNullPtr, sharedToParts);
+
+	((QtTreePropertyBrowser*)(GetProperties()->GetPropertyBrowser()))->setFactoryForManager(manager, factory);
+	((QtTreePropertyBrowser*)(GetProperties()->GetPropertyBrowser()))->addProperty(prop);
+	//this->GetProperties()->AddProperty("Parts List", manager, factory);
+
+	QtAbstractPropertyBrowser* browser = new QtTreePropertyBrowser();
+	browser->setFactoryForManager(manager, factory);
+	browser->addProperty(prop);
+	this->GetProperties()->GetPropertyBrowser() = browser;
+	//browser->show();
+	//this->GetProperties()->GetPropertyBrowser() = browser;
+
+	/*QtDoublePropertyManager* undecoratedManager = new QtDoublePropertyManager();
+	QtProperty* undecoratedProperty = undecoratedManager->addProperty("Undecorated");
+	undecoratedManager->setValue(undecoratedProperty, 123.45);
+
+	QtDoubleSpinBoxFactory* undecoratedFactory = new QtDoubleSpinBoxFactory();
+
+	((QtTreePropertyBrowser*)(GetProperties()->GetPropertyBrowser()))->setFactoryForManager(undecoratedManager, undecoratedFactory);
+	((QtTreePropertyBrowser*)(GetProperties()->GetPropertyBrowser()))->addProperty(undecoratedProperty);*/
+
+	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
+		(GetParentTree()), SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
+
+	if (theDiscreteParametersBool_)
 	{
 		this->GetProperties()->AddTopProperty("Discrete parameters");
 
@@ -88,17 +144,6 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 		this->GetProperties()->AddProperty<bool>("Discrete parameters", "InternalVerticesMode", FrgFastParameters->InternalVerticesMode, FrgFastParameters_InternalVerticesModeID);
 		this->GetProperties()->AddProperty<bool>("Discrete parameters", "ControlSurfaceDeflection", FrgFastParameters->ControlSurfaceDeflection, FrgFastParameters_ControlSurfaceDeflectionID);
 	}
-
-	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
-		((NihadTree*)parentTree), SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
-
-	/*connect
-	(
-		this->GetProperties()->GetPropertyManager()
-		, SIGNAL(valueChanged(QtProperty*, const QVariant&))
-		, this
-		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
-	);*/
 }
 
 void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
@@ -224,9 +269,9 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 			}
 		}*/
 
-		if (std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetTModel())
+		if (((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetTModel())
 		{
-			auto model = std::dynamic_pointer_cast<NihadVesselPartTreeItem>(thePartsPointer_.at(iParts))->GetTModel();
+			auto model = ((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetTModel();
 
 			//std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
 

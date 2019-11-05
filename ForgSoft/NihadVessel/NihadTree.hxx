@@ -46,10 +46,10 @@ class NihadTree : public FrgBaseTree
 
 private:
 
-	QList<FrgSharedPtr<NihadVesselGeometryTreeItem>> theGeometryTreeItems_;
-	QList<FrgSharedPtr<NihadVesselPartTreeItem>> thePartTreeItems_;
-	QList<FrgSharedPtr<FrgBaseSceneTreeItem>> theSceneTreeItems_;
-	QList<FrgSharedPtr<FrgBasePlot2D>> thePlotsItems_;
+	QList<NihadVesselGeometryTreeItem*> theGeometryTreeItems_;
+	QList<NihadVesselPartTreeItem*> thePartTreeItems_;
+	QList<FrgBaseSceneTreeItem*> theSceneTreeItems_;
+	QList<FrgBasePlot2D*> thePlotsItems_;
 
 public:
 
@@ -57,11 +57,11 @@ public:
 
 	void FormTree() override;
 
-	FrgGetMacro(QList<FrgSharedPtr<NihadVesselGeometryTreeItem>>, GeometryTreeItems, theGeometryTreeItems_);
-	FrgGetMacro(QList<FrgSharedPtr<NihadVesselPartTreeItem>>, PartTreeItems, thePartTreeItems_);
+	FrgGetMacro(QList<NihadVesselGeometryTreeItem*>, GeometryTreeItems, theGeometryTreeItems_);
+	FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartTreeItems, thePartTreeItems_);
 
-	FrgSharedPtr<NihadVesselGeometryTreeItem> GetGeometryTreeItem(FrgSharedPtr<FrgBaseTreeItem> item);
-	FrgSharedPtr<NihadVesselPartTreeItem> GetPartTreeItem(FrgSharedPtr<FrgBaseTreeItem> item);
+	NihadVesselGeometryTreeItem* GetGeometryTreeItem(FrgBaseTreeItem* item);
+	NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
 
 public slots:
 

@@ -71,7 +71,7 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 
 			((NihadTree*)GetTree())->GetPartTreeItems().push_back
 			(
-				FrgMakeSharedPtr(NihadVesselPartTreeItem)
+				FrgNew NihadVesselPartTreeItem
 				(
 					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), GetTree(), this
 					)

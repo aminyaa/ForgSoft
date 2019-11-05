@@ -20,7 +20,7 @@ class FrgBaseTree;
 class FrgBaseTreeItemProperties;
 class FrgBaseMenu;
 
-class FORGBASE_EXPORT FrgBaseTreeItem : public QTreeWidgetItem, public std::enable_shared_from_this<FrgBaseTreeItem>
+class FORGBASE_EXPORT FrgBaseTreeItem : public QTreeWidgetItem
 {
 
 private:
@@ -29,7 +29,7 @@ private:
 	FrgBaseTree* theParentTree_ = FrgNullPtr;
 	FrgString theObjectName_;
 
-	FrgBaseTreeItemProperties* theProperties_;
+	FrgBaseTreeItemProperties* theProperties_ = FrgNullPtr;
 
 	FrgBaseMenu* theContextMenu_ = FrgNullPtr;
 
@@ -55,6 +55,8 @@ public:
 	FrgGetMacro(FrgBaseTreeItemProperties*, Properties, theProperties_);
 
 	FrgGetMacro(FrgBaseMenu*, ContextMenu, theContextMenu_);
+
+	virtual void DoAfterConstruct() {}
 
 private:
 

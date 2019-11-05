@@ -16,7 +16,9 @@ class NihadVesselScenePartTreeItem : public FrgBaseSceneTreeItem
 
 private:
 
-	QList<FrgSharedPtr<NihadVesselPartTreeItem>> thePartsPointer_;
+	QList<NihadVesselPartTreeItem*> thePartsPointer_;
+
+	FrgBool theDiscreteParametersBool_;
 
 public:
 
@@ -29,7 +31,9 @@ public:
 		FrgBool discreteParameters = FrgTrue
 	);
 	
-	FrgGetMacro(QList<FrgSharedPtr<NihadVesselPartTreeItem>>, PartsPointer, thePartsPointer_);
+	FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartsPointer, thePartsPointer_);
+
+	void DoAfterConstruct() override;
 
 public slots:
 

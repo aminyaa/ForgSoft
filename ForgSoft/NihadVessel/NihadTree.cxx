@@ -78,14 +78,14 @@ void ForgBaseLib::NihadTree::FormTree()
 	GetTreeItem(PlotsItem)->GetContextMenu()->AddItem(PlotsNewMenu);
 	connect(GetTreeItem(PlotsItem)->GetContextMenu()->GetItem(PlotsNewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(NewPlotClickedSlot(bool)));
 
-	connect(GetParentMainWindow()->GetTabWidget().get(), SIGNAL(tabBarClicked(int)), this, SLOT(TabBarClickedSlot(int)));
+	connect(GetParentMainWindow()->GetTabWidget(), SIGNAL(tabBarClicked(int)), this, SLOT(TabBarClickedSlot(int)));
 
 	connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(TreeItemDoubleClickedSlot(QTreeWidgetItem*, int)));
 }
 
 void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 {
-	theGeometryTreeItems_.push_back(FrgMakeSharedPtr(NihadVesselGeometryTreeItem)(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), "Nihad"), GetTreeItem("Geometry"), GetParentMainWindow()->GetTree(), GetParentMainWindow()));
+	theGeometryTreeItems_.push_back(FrgNew NihadVesselGeometryTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), "Nihad"), GetTreeItem("Geometry"), GetParentMainWindow()->GetTree(), GetParentMainWindow()));
 
 	//theNihadGeometryTreeItems_.at(theNihadGeometryTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew FrgBaseTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), "Nihad"), GetTreeItem("Geometry"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
@@ -93,7 +93,7 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 	//theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetPatch() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_BareHull)();
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_BareHull)();
 
-	FrgSharedPtr<FrgBaseTreeItem> NihadGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	FrgBaseTreeItem* NihadGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
 	FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	//AddItemToTree(NihadGeometryTreeItem);
@@ -199,7 +199,8 @@ void ForgBaseLib::NihadTree::NewGeometryClickedSlot(bool)
 
 void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 {
-	theSceneTreeItems_.push_back(FrgMakeSharedPtr(NihadVesselScenePartTreeItem)(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes"), GetParentMainWindow()->GetTree(), GetParentMainWindow()));
+	theSceneTreeItems_.push_back(FrgNew NihadVesselScenePartTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes"), GetParentMainWindow()->GetTree(), GetParentMainWindow()));
+	theSceneTreeItems_.at(theSceneTreeItems_.size() - 1)->DoAfterConstruct();
 
 	//theNihadSceneTreeItems_.at(theNihadSceneTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew NihadVesselSceneTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
@@ -337,7 +338,7 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 	for (int i = 0; i < theSceneTreeItems_.size(); i++)
 	{
-		auto previewScene = std::dynamic_pointer_cast<NihadVesselScenePreviewTreeItem>(theSceneTreeItems_.at(i));
+		auto previewScene = (NihadVesselScenePreviewTreeItem*)(theSceneTreeItems_.at(i));
 		if (previewScene)
 		{
 			((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PerformToPreview();
@@ -354,11 +355,11 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 {
 	thePartTreeItems_.push_back
-	(FrgMakeSharedPtr(NihadVesselPartTreeItem)
+	(FrgNew NihadVesselPartTreeItem
 		(
 			theLastRightClicked_->text(0),
 			GetTreeItem("Parts"), GetParentMainWindow()->GetTree(),
-			GetParentMainWindow(), theLastRightClicked_->shared_from_this()
+			GetParentMainWindow(), theLastRightClicked_
 			)
 	);
 
@@ -439,7 +440,7 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	GetParentMainWindow()->ParseInfoToConsole("\"" + theLastRightClicked_->text(0) + "\" saved successfully at\"" + fileName + "\"");
 }
 
-FrgSharedPtr<ForgBaseLib::NihadVesselGeometryTreeItem> ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgSharedPtr<FrgBaseTreeItem> item)
+ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)
 {
 	for (int i = 0; i < theGeometryTreeItems_.size(); i++)
 	{
@@ -448,7 +449,7 @@ FrgSharedPtr<ForgBaseLib::NihadVesselGeometryTreeItem> ForgBaseLib::NihadTree::G
 	}
 }
 
-FrgSharedPtr<ForgBaseLib::NihadVesselPartTreeItem> ForgBaseLib::NihadTree::GetPartTreeItem(FrgSharedPtr<FrgBaseTreeItem> item)
+ForgBaseLib::NihadVesselPartTreeItem* ForgBaseLib::NihadTree::GetPartTreeItem(FrgBaseTreeItem* item)
 {
 	for (int i = 0; i < thePartTreeItems_.size(); i++)
 	{
@@ -485,12 +486,12 @@ void ForgBaseLib::NihadTree::UpdateTree()
 
 void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> selectedItems)
 {
-	QList<FrgSharedPtr<NihadVesselPartTreeItem>> output;
+	QList<NihadVesselPartTreeItem*> output;
 	for (int i = 0; i < thePartTreeItems_.size(); i++)
 	{
 		for (int j = 0; j < selectedItems.size(); j++)
 		{
-			if (thePartTreeItems_.at(i).get() == selectedItems.at(j))
+			if (thePartTreeItems_.at(i) == selectedItems.at(j))
 			{
 				output.push_back(thePartTreeItems_.at(i));
 			}
@@ -507,10 +508,11 @@ void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 	auto shape = ((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PreviewEntity();
 	
 
-	theSceneTreeItems_.push_back(FrgMakeSharedPtr(NihadVesselScenePreviewTreeItem)(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Preview"), theLastRightClicked_, this, GetParentMainWindow()));
+	theSceneTreeItems_.push_back(FrgNew NihadVesselScenePreviewTreeItem(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Preview"), theLastRightClicked_, this, GetParentMainWindow()));
 
-	FrgSharedPtr<NihadVesselScenePreviewTreeItem> NihadPreviewScene = 
-		std::dynamic_pointer_cast<NihadVesselScenePreviewTreeItem>(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
+	NihadVesselScenePreviewTreeItem* NihadPreviewScene = 
+		(NihadVesselScenePreviewTreeItem*)(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
+	NihadPreviewScene->DoAfterConstruct();
 
 	NihadPreviewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewUnMergedPatchCurves(shape, NbSegments_U, NbSegments_V);
 
@@ -519,7 +521,7 @@ void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 
 void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
 {
-	thePlotsItems_.push_back(FrgMakeSharedPtr(FrgBasePlot2D)(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Plot"), theLastRightClicked_, this, GetParentMainWindow()));
+	thePlotsItems_.push_back(FrgNew FrgBasePlot2D(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Plot"), theLastRightClicked_, this, GetParentMainWindow()));
 }
 
 void ForgBaseLib::NihadTree::TabBarClickedSlot(int index)

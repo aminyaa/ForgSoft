@@ -15,7 +15,7 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 	FrgBaseTreeItem* parent,
 	FrgBaseTree* parentTree,
 	FrgBaseMainWindow* parentMainwindow,
-	FrgSharedPtr<FrgBaseTreeItem> parentGeometry
+	FrgBaseTreeItem* parentGeometry
 )
 	: FrgBaseTreeItem(title, parent, parentTree, parentMainwindow)
 {
