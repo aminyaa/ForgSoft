@@ -1,12 +1,12 @@
 #include <NihadTree.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseMenu.hxx>
-#include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBasePlot2D.hxx>
 #include <FrgBaseTabWidget.hxx>
 #include <qtpropertybrowser.h>
 
+#include <NihadMainWindow.hxx>
 #include <NihadVesselGeometryTreeItem.hxx>
 #include <NihadVesselPartTreeItem.hxx>
 #include <NihadVesselScenePartTreeItem.hxx>
@@ -27,9 +27,7 @@
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QPushButton>
 
-#include <qtpropertymanager.h>
-#include <SelectObjectsPropertyFactory.hxx>
-#include <SelectObjectsPropertyManager.hxx>
+#include <FrgBaseGlobalsThread.hxx>
 
 #define NbNetColumnsID 222
 #define NbNetRowsID 223
@@ -354,22 +352,23 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 {
-	thePartTreeItems_.push_back
-	(FrgNew NihadVesselPartTreeItem
-		(
-			theLastRightClicked_->text(0),
-			GetTreeItem("Parts"), GetParentMainWindow()->GetTree(),
-			GetParentMainWindow(), theLastRightClicked_
-			)
-	);
 
 	std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
 
 	//auto surfaces = AutLib::TModel_Tools::GetSurfaces(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape());
 	//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
-	
+
 	auto solid = AutLib::Cad3d_TModel::MakeSolid(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape(), 1.0e-6);
 	thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetTModel() = solid;
+
+	thePartTreeItems_.push_back
+	(FrgNew NihadVesselPartTreeItem
+		(
+			theLastRightClicked_->text(0),
+			GetTreeItem("Parts"), GetParentMainWindow()->GetTree(),
+			GetParentMainWindow(), solid
+			)
+	);
 
 	//theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_ =
 	//	FrgNew FrgBaseTreeItem(theLastRightClicked_->text(0), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow());

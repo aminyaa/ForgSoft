@@ -12,6 +12,8 @@ namespace AutLib
 
 BeginFrgBaseLib
 
+class NihadPartSurfacesEntity;
+
 //class NihadVesselGeometryTreeItem;
 
 class NihadVesselPartTreeItem : public QObject, public FrgBaseTreeItem
@@ -21,9 +23,9 @@ class NihadVesselPartTreeItem : public QObject, public FrgBaseTreeItem
 
 private:
 
-	//FrgSharedPtr<NihadVesselGeometryTreeItem> theGeometryPointer_ = FrgNullPtr;
-
 	FrgSharedPtr<AutLib::Cad3d_TModel> theTModel_ = FrgNullPtr;
+
+	NihadPartSurfacesEntity* theSurfaces_ = FrgNullPtr;
 
 public:
 
@@ -33,11 +35,12 @@ public:
 		FrgBaseTreeItem* parent = FrgNullPtr,
 		FrgBaseTree* parentTree = FrgNullPtr,
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr,
-		FrgBaseTreeItem* parentGeometry = FrgNullPtr
+		FrgSharedPtr<AutLib::Cad3d_TModel> TModel = FrgNullPtr
 	);
 
-	//FrgGetMacro(FrgSharedPtr<NihadVesselGeometryTreeItem>, GeometryPointer, theGeometryPointer_);
 	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, TModel, theTModel_);
+
+	FrgGetMacro(NihadPartSurfacesEntity*, Surfaces, theSurfaces_);
 };
 
 EndFrgBaseLib

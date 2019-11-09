@@ -1,8 +1,6 @@
 #include <NihadVesselGeometryTreeItem.hxx>
 #include <Leg_Model_Entity.hxx>
 
-//#include <Leg_Vessel_Nihad2.hxx>
-
 ForgBaseLib::NihadVesselGeometryTreeItem::NihadVesselGeometryTreeItem
 (
 	const FrgString& title,

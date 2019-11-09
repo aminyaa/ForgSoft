@@ -35,6 +35,21 @@
     <Filter Include="NihadVessel\CustomPropertyType\SelectObjectsProperty">
       <UniqueIdentifier>{a5f2ecb3-1650-42a0-97d3-8bd952ac4474}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\NihadVTKEntities">
+      <UniqueIdentifier>{3aff688f-fb53-4547-8d0e-c27b05e2828b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\NihadVTKEntities\NihadVTKActor">
+      <UniqueIdentifier>{c2ab73fa-c0f6-4e06-967c-de5c73bc3812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\NihadEntities">
+      <UniqueIdentifier>{4e97463b-ce30-42ed-a747-847dc39321fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity">
+      <UniqueIdentifier>{697f687e-a75d-4ba6-b23c-fc4ecd08a686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\NihadEntities\NihadPartCurveEntity">
+      <UniqueIdentifier>{7420ed10-8289-4e37-a47a-212afdcda919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -70,10 +85,25 @@
     <ClCompile Include="NihadVessel\NihadVesselScenePartTreeItem.cxx">
       <Filter>NihadVessel</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\NihadVTKEntities\NihadVTKActor\NihadVTKActor.cxx">
+      <Filter>NihadVessel\NihadVTKEntities\NihadVTKActor</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.cxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
       <Filter>NihadVessel</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\NihadVTKEntities\NihadVTKActor\NihadVTKActor.hxx">
+      <Filter>NihadVessel\NihadVTKEntities\NihadVTKActor</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.hxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

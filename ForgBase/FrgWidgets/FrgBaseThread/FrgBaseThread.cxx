@@ -19,7 +19,8 @@ void ForgBaseLib::FrgBaseThread::run()
 		theMutex_->unlock();
 	}
 	else
-		theParentMainWindow_->ParseWarningToConsole("Running process in non mutex form!");
+		if (theParentMainWindow_)
+			theParentMainWindow_->ParseWarningToConsole("Running process in non mutex form!");
 
 	(*theFunction_)();
 }

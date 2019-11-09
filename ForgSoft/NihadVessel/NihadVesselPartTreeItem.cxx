@@ -4,6 +4,7 @@
 
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseMainWindow.hxx>
+#include <NihadPartSurfaceEntity.hxx>
 
 //#include <Leg_Vessel_Nihad2.hxx>
 //#include <TModel_Surface.hxx>
@@ -15,9 +16,10 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 	FrgBaseTreeItem* parent,
 	FrgBaseTree* parentTree,
 	FrgBaseMainWindow* parentMainwindow,
-	FrgBaseTreeItem* parentGeometry
+	FrgSharedPtr<AutLib::Cad3d_TModel> TModel
 )
 	: FrgBaseTreeItem(title, parent, parentTree, parentMainwindow)
+	, theTModel_(TModel)
 {
 	FrgString ExportPartString = "&Export";
 	this->GetContextMenu()->AddItem(ExportPartString);
@@ -29,17 +31,8 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 		, SLOT(ExportPartSlot(bool))
 	);
 
-	/*GetGeometryPointer() = std::dynamic_pointer_cast<NihadVesselGeometryTreeItem>(parentGeometry);
-
-	if (GetGeometryPointer())
-	{
-		this->GetGeometryPointer()->GetPatch()->Perform();
-	}
-
-	if (GetTModel())
-	{
-		
-	}*/
+	if(TModel)
+		theSurfaces_ = FrgNew NihadPartSurfacesEntity("Surfaces", this, GetParentTree(), GetParentMainWindow());
 
 	GetParentMainWindow()->ParseInfoToConsole("\"" + this->text(0) + "\" part successfully created.");
 }

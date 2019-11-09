@@ -62,6 +62,8 @@ void ForgBaseLib::SelectObjectsDlg::setupLayout()
 
 void ForgBaseLib::SelectObjectsDlg::onOK()
 {
+	accept();
+
 	QList<QTreeWidgetItem*> selectedItems = theTree_->selectedItems();
 
 	for (int i = 0; i < selectedItems.size(); i++)
@@ -73,8 +75,6 @@ void ForgBaseLib::SelectObjectsDlg::onOK()
 	{
 		emit ObjectsSelectedUpdate(theSelectedObjects_);
 	}
-
-	accept();
 }
 
 void ForgBaseLib::SelectObjectsDlg::keyPressEvent(QKeyEvent* event)

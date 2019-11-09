@@ -14,6 +14,8 @@ class TopoDS_Shape;
 
 BeginFrgBaseLib
 
+typedef AutLib::Leg_Model_Entity ModelEntity;
+
 class NihadVesselGeometryTreeItem : public QObject, public FrgBaseTreeItem
 {
 
@@ -21,8 +23,7 @@ class NihadVesselGeometryTreeItem : public QObject, public FrgBaseTreeItem
 
 private:
 
-	//FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> thePatch_ = FrgNullPtr;
-	FrgSharedPtr<AutLib::Leg_Model_Entity> theEntity_ = FrgNullPtr;
+	FrgSharedPtr<ModelEntity> theEntity_ = FrgNullPtr;
 
 public:
 
@@ -34,7 +35,6 @@ public:
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
 	);
 
-	//FrgGetMacro(FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch>, Patch, thePatch_);
 	FrgGetMacro(FrgSharedPtr<AutLib::Leg_Model_Entity>, Entity, theEntity_);
 
 	const TopoDS_Shape& GetTopoDS_Shape();

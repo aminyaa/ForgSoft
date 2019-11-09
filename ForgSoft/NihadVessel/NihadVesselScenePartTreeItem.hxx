@@ -5,6 +5,11 @@
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseSceneTreeItem.hxx>
 
+namespace AutLib
+{
+	class TModel_Entity;
+}
+
 BeginFrgBaseLib
 
 class NihadVesselPartTreeItem;
@@ -19,6 +24,8 @@ private:
 	QList<NihadVesselPartTreeItem*> thePartsPointer_;
 
 	FrgBool theDiscreteParametersBool_;
+
+	QMap<vtkSmartPointer<vtkActor>, FrgSharedPtr<AutLib::TModel_Entity>> theActorToTModelEntity_;
 
 public:
 

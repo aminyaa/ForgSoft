@@ -73,11 +73,11 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 			(
 				FrgNew NihadVesselPartTreeItem
 				(
-					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), GetTree(), this
+					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), GetTree(), this, solid
 					)
 			);
 
-			((NihadTree*)GetTree())->GetPartTreeItems().at(((NihadTree*)GetTree())->GetPartTreeItems().size() - 1)->GetTModel() = solid;
+			//((NihadTree*)GetTree())->GetPartTreeItems().at(((NihadTree*)GetTree())->GetPartTreeItems().size() - 1)->GetTModel() = solid;
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{}
