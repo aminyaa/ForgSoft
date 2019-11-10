@@ -4,6 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseTreeItem.hxx>
+#include <NihadPartFeature.hxx>
 
 namespace AutLib
 {
@@ -12,12 +13,18 @@ namespace AutLib
 
 BeginFrgBaseLib
 
-class NihadPartSurfaceEntity : public FrgBaseTreeItem
+class NihadVesselScenePartTreeItem;
+
+class NihadPartSurfaceEntity : public NihadPartFeature, public FrgBaseTreeItem
 {
+
+	Q_OBJECT
 
 private:
 
 	FrgSharedPtr<AutLib::TModel_Surface> theTModelSurface_;
+
+	NihadVesselScenePartTreeItem* thePointerToScene_ = FrgNullPtr;
 
 public:
 
@@ -30,6 +37,7 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<AutLib::TModel_Surface>, TModelSurface, theTModelSurface_);
+	FrgGetMacro(NihadVesselScenePartTreeItem*, PointerToScene, thePointerToScene_);
 };
 
 class NihadPartSurfacesEntity : public FrgBaseTreeItem
@@ -48,6 +56,8 @@ public:
 		FrgBaseTree* parentTree = FrgNullPtr,
 		FrgBaseMainWindow* parentMainWindow = FrgNullPtr
 	);
+
+	FrgGetMacro(QList<NihadPartSurfaceEntity*>, SurfacesEntity, theSurfaces_);
 };
 
 EndFrgBaseLib

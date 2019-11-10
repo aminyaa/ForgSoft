@@ -5,6 +5,7 @@
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseMainWindow.hxx>
 #include <NihadPartSurfaceEntity.hxx>
+#include <NihadPartCurveEntity.hxx>
 
 //#include <Leg_Vessel_Nihad2.hxx>
 //#include <TModel_Surface.hxx>
@@ -31,8 +32,11 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 		, SLOT(ExportPartSlot(bool))
 	);
 
-	if(TModel)
+	if (TModel)
+	{
 		theSurfaces_ = FrgNew NihadPartSurfacesEntity("Surfaces", this, GetParentTree(), GetParentMainWindow());
+		theCurves_ = FrgNew NihadPartCurvesEntity("Curves", this, GetParentTree(), GetParentMainWindow());
+	}
 
 	GetParentMainWindow()->ParseInfoToConsole("\"" + this->text(0) + "\" part successfully created.");
 }

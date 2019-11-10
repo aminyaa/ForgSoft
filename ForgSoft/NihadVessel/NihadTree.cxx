@@ -359,14 +359,16 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 	//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
 
 	auto solid = AutLib::Cad3d_TModel::MakeSolid(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape(), 1.0e-6);
-	thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetTModel() = solid;
+	//thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetTModel() = solid;
 
 	thePartTreeItems_.push_back
 	(FrgNew NihadVesselPartTreeItem
 		(
 			theLastRightClicked_->text(0),
-			GetTreeItem("Parts"), GetParentMainWindow()->GetTree(),
-			GetParentMainWindow(), solid
+			GetTreeItem("Parts"),
+			GetParentMainWindow()->GetTree(),
+			GetParentMainWindow(),
+			solid
 			)
 	);
 

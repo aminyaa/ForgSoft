@@ -4,6 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseTreeItem.hxx>
+#include <NihadPartFeature.hxx>
 
 namespace AutLib
 {
@@ -12,16 +13,22 @@ namespace AutLib
 
 BeginFrgBaseLib
 
-class NihadPartSurfaceEntity : public FrgBaseTreeItem
+class NihadVesselScenePartTreeItem;
+
+class NihadPartCurveEntity : public NihadPartFeature, public FrgBaseTreeItem
 {
+
+	Q_OBJECT
 
 private:
 
 	FrgSharedPtr<AutLib::TModel_Paired> theTModelCurve_ = FrgNullPtr;
 
+	NihadVesselScenePartTreeItem* thePointerToScene_ = FrgNullPtr;
+
 public:
 
-	NihadPartSurfaceEntity
+	NihadPartCurveEntity
 	(
 		const FrgString& itemName,
 		FrgBaseTreeItem* parentItem = FrgNullPtr,
@@ -30,6 +37,27 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<AutLib::TModel_Paired>, TModelCurve, theTModelCurve_);
+	FrgGetMacro(NihadVesselScenePartTreeItem*, PointerToScene, thePointerToScene_);
+};
+
+class NihadPartCurvesEntity : public FrgBaseTreeItem
+{
+
+private:
+
+	QList<NihadPartCurveEntity*> theCurves_;
+
+public:
+
+	NihadPartCurvesEntity
+	(
+		const FrgString& itemName,
+		FrgBaseTreeItem* parentItem = FrgNullPtr,
+		FrgBaseTree* parentTree = FrgNullPtr,
+		FrgBaseMainWindow* parentMainWindow = FrgNullPtr
+	);
+
+	FrgGetMacro(QList<NihadPartCurveEntity*>, CurvesEntity, theCurves_);
 };
 
 EndFrgBaseLib

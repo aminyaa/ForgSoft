@@ -13,6 +13,7 @@ namespace AutLib
 BeginFrgBaseLib
 
 class NihadPartSurfacesEntity;
+class NihadPartCurvesEntity;
 
 //class NihadVesselGeometryTreeItem;
 
@@ -26,6 +27,7 @@ private:
 	FrgSharedPtr<AutLib::Cad3d_TModel> theTModel_ = FrgNullPtr;
 
 	NihadPartSurfacesEntity* theSurfaces_ = FrgNullPtr;
+	NihadPartCurvesEntity* theCurves_ = FrgNullPtr;
 
 public:
 
@@ -41,6 +43,7 @@ public:
 	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, TModel, theTModel_);
 
 	FrgGetMacro(NihadPartSurfacesEntity*, Surfaces, theSurfaces_);
+	FrgGetMacro(NihadPartCurvesEntity*, Curves, theCurves_);
 };
 
 EndFrgBaseLib

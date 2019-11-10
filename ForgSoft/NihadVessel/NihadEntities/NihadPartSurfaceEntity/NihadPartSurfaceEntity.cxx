@@ -13,7 +13,7 @@ ForgBaseLib::NihadPartSurfaceEntity::NihadPartSurfaceEntity
 )
 	: FrgBaseTreeItem(itemName, parentItem, parentTree, parentMainWindow)
 {
-	
+	this->setIcon(0, QIcon(":/Icons/TreeStyle/Surface.png"));
 }
 
 ForgBaseLib::NihadPartSurfacesEntity::NihadPartSurfacesEntity
@@ -27,14 +27,17 @@ ForgBaseLib::NihadPartSurfacesEntity::NihadPartSurfacesEntity
 {
 	if ((NihadVesselPartTreeItem*)parentTree)
 	{
-		auto model = ((NihadVesselPartTreeItem*)(parentTree))->GetTModel();
+		auto model = ((NihadVesselPartTreeItem*)(parentItem))->GetTModel();
+
+		if (!model)
+			return;
 
 		std::vector<std::shared_ptr<AutLib::TModel_Surface>> TModelSurfaces;
 		model->RetrieveFacesTo(TModelSurfaces);
 
-		for (int i = 0; i < i < model->NbFaces(); i++)
+		for (int i = 0; i < TModelSurfaces.size(); i++)
 		{
-			theSurfaces_.push_back(FrgNew NihadPartSurfaceEntity(CorrectName<FrgBaseTreeItem>(this, "Surface "), parentItem, parentTree, parentMainWindow));
+			theSurfaces_.push_back(FrgNew NihadPartSurfaceEntity(CorrectName<FrgBaseTreeItem>(this, "Surface "), this, parentTree, parentMainWindow));
 			theSurfaces_.at(i)->GetTModelSurface() = TModelSurfaces.at(i);
 		}
 	}

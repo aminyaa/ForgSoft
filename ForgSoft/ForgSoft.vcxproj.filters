@@ -91,6 +91,9 @@
     <ClCompile Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.cxx">
       <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.cxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -99,11 +102,8 @@
     <ClInclude Include="NihadVessel\NihadVTKEntities\NihadVTKActor\NihadVTKActor.hxx">
       <Filter>NihadVessel\NihadVTKEntities\NihadVTKActor</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.hxx">
-      <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
-    </ClInclude>
-    <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
-      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
+    <ClInclude Include="NihadVessel\NihadEntities\NihadPartFeature.hxx">
+      <Filter>NihadVessel\NihadEntities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +133,12 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx">
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.hxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

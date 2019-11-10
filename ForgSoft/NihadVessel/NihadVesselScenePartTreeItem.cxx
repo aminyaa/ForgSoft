@@ -6,6 +6,9 @@
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseInteractorStyle.hxx>
 #include <NihadTree.hxx>
+#include <NihadPartFeature.hxx>
+#include <NihadPartSurfaceEntity.hxx>
+#include <NihadPartCurveEntity.hxx>
 
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTabWidget.hxx>
@@ -142,12 +145,16 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 			auto model = ((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetTModel();
 
 			std::vector<std::shared_ptr<AutLib::TModel_Surface>> TModelSurfaces;
+			std::vector<std::shared_ptr<AutLib::TModel_Paired>> TModelCurves;
 			model->RetrieveFacesTo(TModelSurfaces);
+			model->RetrieveSegmentsTo(TModelCurves);
 
 			AutLib::FastDiscrete::Triangulation(model->Shape(), *(FrgFastParameters));
 			std::vector<Handle(Poly_Triangulation)> Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(model->Shape());
 
-			for (int iSurface = 0; iSurface < Triangulation.size(); iSurface++)
+			auto part = thePartsPointer_.at(iParts);
+
+			for (int iSurface = 0; iSurface < TModelSurfaces.size(); iSurface++)
 			{
 				vtkNew<vtkPolyData> Hull;
 				vtkNew<vtkPoints> points;
@@ -214,9 +221,31 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 
 				AddActorToTheRenderer(actor);
 
-				theActorToTModelEntity_.insert(actor, TModelSurfaces.at(iSurface));
+				for (int i = 0; i < part->GetSurfaces()->GetSurfacesEntity().size(); i++)
+				{
+					if (part->GetSurfaces()->GetSurfacesEntity().at(i)->GetTModelSurface() == TModelSurfaces.at(iSurface))
+					{
+						theActorToPartFeature_.insert(actor, part->GetSurfaces()->GetSurfacesEntity().at(i));
+						thePartFeatureToActor_.insert(part->GetSurfaces()->GetSurfacesEntity().at(i), actor);
+						part->GetSurfaces()->GetSurfacesEntity().at(i)->GetPointerToScene() = this;
+					}
+				}
+			}
 
-				std::cout << TModelSurfaces.at(iSurface)->Index() << std::endl;
+			for (int iCurve = 0; iCurve < TModelCurves.size(); iCurve++)
+			{
+
+				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+
+				for (int i = 0; i < part->GetCurves()->GetCurvesEntity().size(); i++)
+				{
+					if (part->GetCurves()->GetCurvesEntity().at(i)->GetTModelCurve() == TModelCurves.at(iCurve))
+					{
+						theActorToPartFeature_.insert(actor, part->GetCurves()->GetCurvesEntity().at(i));
+						thePartFeatureToActor_.insert(part->GetCurves()->GetCurvesEntity().at(i), actor);
+						part->GetCurves()->GetCurvesEntity().at(i)->GetPointerToScene() = this;
+					}
+				}
 			}
 		}
 	}

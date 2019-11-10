@@ -5,14 +5,13 @@
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseSceneTreeItem.hxx>
 
-namespace AutLib
-{
-	class TModel_Entity;
-}
-
 BeginFrgBaseLib
 
 class NihadVesselPartTreeItem;
+class NihadPartFeature;
+
+typedef QMap<vtkSmartPointer<vtkActor>, NihadPartFeature*> QMapActorToPartFeature;
+typedef QMap<NihadPartFeature*, vtkSmartPointer<vtkActor>> QMapPartFeatureToActor;
 
 class NihadVesselScenePartTreeItem : public FrgBaseSceneTreeItem
 {
@@ -25,7 +24,8 @@ private:
 
 	FrgBool theDiscreteParametersBool_;
 
-	QMap<vtkSmartPointer<vtkActor>, FrgSharedPtr<AutLib::TModel_Entity>> theActorToTModelEntity_;
+	QMap<vtkSmartPointer<vtkActor>, NihadPartFeature*> theActorToPartFeature_;
+	QMap<NihadPartFeature*, vtkSmartPointer<vtkActor>> thePartFeatureToActor_;
 
 public:
 
@@ -39,6 +39,8 @@ public:
 	);
 	
 	FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartsPointer, thePartsPointer_);
+	FrgGetMacro(QMapActorToPartFeature, ActorToPartFeature, theActorToPartFeature_);
+	FrgGetMacro(QMapPartFeatureToActor, PartFeatureToActor, thePartFeatureToActor_);
 
 	void DoAfterConstruct() override;
 
