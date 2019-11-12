@@ -33,10 +33,6 @@ private:
 
 	FrgBaseMenu* theContextMenu_ = FrgNullPtr;
 
-	/*QtTreePropertyBrowser* theProperty_;
-	QtVariantPropertyManager* theVariantPropertyManager_;
-	QtVariantEditorFactory* theVariantEditorFactory_;*/
-
 public:
 
 	FrgBaseTreeItem
@@ -50,7 +46,6 @@ public:
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgString, ObjectName, theObjectName_);
-	//FrgGetMacro(QtTreePropertyBrowser*, Property, theProperty_);
 
 	FrgGetMacro(FrgBaseTreeItemProperties*, Properties, theProperties_);
 
@@ -61,6 +56,7 @@ public:
 private:
 
 	void CreateProperties();
+
 };
 
 EndFrgBaseLib

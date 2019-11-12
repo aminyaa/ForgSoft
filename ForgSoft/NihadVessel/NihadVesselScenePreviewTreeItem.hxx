@@ -28,9 +28,7 @@ public:
 	NihadVesselScenePreviewTreeItem
 	(
 		const FrgString& title,
-		FrgBaseTreeItem* parent = FrgNullPtr,
-		FrgBaseTree* parentTree = FrgNullPtr,
-		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
+		FrgBaseTreeItem* parent
 	);
 
 	FrgGetMacro(FrgVector<FrgSharedPtr<AutLib::Entity3d_Triangulation>>, EntitiesTriangulation, theEntitiesTriangulation_);

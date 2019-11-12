@@ -33,8 +33,8 @@
     <ClInclude Include="NihadVessel\NihadVTKEntities\NihadVTKActor\NihadVTKActor.hxx" />
     <QtMoc Include="NihadVessel\NihadVesselScenePartTreeItem.hxx" />
     <QtMoc Include="NihadVessel\NihadVesselScenePreviewTreeItem.hxx" />
-    <QtMoc Include="NihadVessel\NihadVesselPartTreeItem.hxx" />
-    <QtMoc Include="NihadVessel\NihadVesselGeometryTreeItem.hxx" />
+    <ClInclude Include="NihadVessel\NihadVesselPartTreeItem.hxx" />
+    <ClInclude Include="NihadVessel\NihadVesselGeometryTreeItem.hxx" />
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.hxx" />
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyManager.hxx" />
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyFactory.hxx" />

@@ -47,6 +47,7 @@ ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	this->setStyleSheet(style);
 
 	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
+	connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -161,6 +162,11 @@ void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, int column
 
 		theLastLeftClicked_ = (FrgBaseTreeItem*)item;
 	}
+}
+
+void ForgBaseLib::FrgBaseTree::itemDoubleClickedSlot(QTreeWidgetItem* item, int column)
+{
+
 }
 
 ForgBaseLib::FrgBaseTreeItem* ForgBaseLib::FrgBaseTree::GetTreeItem(const FrgString& title)

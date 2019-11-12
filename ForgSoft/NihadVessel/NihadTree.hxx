@@ -18,7 +18,8 @@ BeginFrgBaseLib
 class FrgBaseMenu;
 class NihadVesselGeometryTreeItem;
 class NihadVesselPartTreeItem;
-class FrgBaseSceneTreeItem;
+//class FrgBaseSceneTreeItem;
+class FrgBaseCADScene;
 class FrgBasePlot2D;
 
 //struct NihadGeometryTreeItemStruct
@@ -48,7 +49,7 @@ private:
 
 	QList<NihadVesselGeometryTreeItem*> theGeometryTreeItems_;
 	QList<NihadVesselPartTreeItem*> thePartTreeItems_;
-	QList<FrgBaseSceneTreeItem*> theSceneTreeItems_;
+	QList<FrgBaseCADScene*> theSceneTreeItems_;
 	QList<FrgBasePlot2D*> thePlotsItems_;
 
 public:
@@ -62,6 +63,10 @@ public:
 
 	NihadVesselGeometryTreeItem* GetGeometryTreeItem(FrgBaseTreeItem* item);
 	NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
+
+protected Q_SLOTS:
+
+	virtual void itemClickedSlot(QTreeWidgetItem* item, int column) override;
 
 public slots:
 

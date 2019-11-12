@@ -59,11 +59,9 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 (
 	const FrgString& title,
 	FrgBaseTreeItem* parent,
-	FrgBaseTree* parentTree,
-	FrgBaseMainWindow* parentMainwindow,
 	FrgBool discreteParameters
 )
-	: FrgBaseSceneTreeItem(title, parent, parentTree, parentMainwindow)
+	: FrgBaseCADScene(title, parent)
 	, theDiscreteParametersBool_(discreteParameters)
 {
 
@@ -99,7 +97,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::DoAfterConstruct()
 	((QtTreePropertyBrowser*)(GetProperties()->GetPropertyBrowser()))->setFactoryForManager(undecoratedManager, undecoratedFactory);
 	((QtTreePropertyBrowser*)(GetProperties()->GetPropertyBrowser()))->addProperty(undecoratedProperty);*/
 
-	connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
+	QObject::connect(factory, SIGNAL(ObjectsSelectedUpdate(QList<QTreeWidgetItem*>)),
 		(GetParentTree()), SLOT(ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>)));
 
 	if (theDiscreteParametersBool_)
@@ -140,9 +138,9 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 
 	for (int iParts = 0; iParts < thePartsPointer_.size(); iParts++)
 	{
-		if (((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetTModel())
+		if (((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetModel())
 		{
-			auto model = ((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetTModel();
+			auto model = ((NihadVesselPartTreeItem*)(thePartsPointer_.at(iParts)))->GetModel();
 
 			std::vector<std::shared_ptr<AutLib::TModel_Surface>> TModelSurfaces;
 			std::vector<std::shared_ptr<AutLib::TModel_Paired>> TModelCurves;
@@ -221,13 +219,13 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 
 				AddActorToTheRenderer(actor);
 
-				for (int i = 0; i < part->GetSurfaces()->GetSurfacesEntity().size(); i++)
+				for (int i = 0; i < part->GetSurfaces().size(); i++)
 				{
-					if (part->GetSurfaces()->GetSurfacesEntity().at(i)->GetTModelSurface() == TModelSurfaces.at(iSurface))
+					if (part->GetSurfaces().at(i) == TModelSurfaces.at(iSurface))
 					{
-						theActorToPartFeature_.insert(actor, part->GetSurfaces()->GetSurfacesEntity().at(i));
-						thePartFeatureToActor_.insert(part->GetSurfaces()->GetSurfacesEntity().at(i), actor);
-						part->GetSurfaces()->GetSurfacesEntity().at(i)->GetPointerToScene() = this;
+						theActorToPartFeature_.insert(actor, (FrgBaseCADPartFeatureEntity<AutLib::TModel_Entity>*)(part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(i)));
+						thePartFeatureToActor_.insert((FrgBaseCADPartFeatureEntity<AutLib::TModel_Entity>*)(part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(i)), actor);
+						part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(i)->GetPointerToScene() = this;
 					}
 				}
 			}
@@ -237,13 +235,13 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 
 				vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 
-				for (int i = 0; i < part->GetCurves()->GetCurvesEntity().size(); i++)
+				for (int i = 0; i < part->GetCurves().size(); i++)
 				{
-					if (part->GetCurves()->GetCurvesEntity().at(i)->GetTModelCurve() == TModelCurves.at(iCurve))
+					if (part->GetCurves().at(i) == TModelCurves.at(iCurve))
 					{
-						theActorToPartFeature_.insert(actor, part->GetCurves()->GetCurvesEntity().at(i));
-						thePartFeatureToActor_.insert(part->GetCurves()->GetCurvesEntity().at(i), actor);
-						part->GetCurves()->GetCurvesEntity().at(i)->GetPointerToScene() = this;
+						theActorToPartFeature_.insert(actor, (FrgBaseCADPartFeatureEntity<AutLib::TModel_Entity>*)(part->GetFeatures()->GetCurvesEntity()->GetFeatureEntity(i)));
+						thePartFeatureToActor_.insert((FrgBaseCADPartFeatureEntity<AutLib::TModel_Entity>*)(part->GetFeatures()->GetCurvesEntity()->GetFeatureEntity(i)), actor);
+						part->GetFeatures()->GetCurvesEntity()->GetFeatureEntity(i)->GetPointerToScene() = this;
 					}
 				}
 			}

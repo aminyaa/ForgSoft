@@ -3,7 +3,8 @@
 #define _NihadVesselGeometryTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgBaseTreeItem.hxx>
+//#include <FrgBaseTreeItem.hxx>
+#include <FrgBaseCADGeometry.hxx>
 
 namespace AutLib
 {
@@ -16,10 +17,28 @@ BeginFrgBaseLib
 
 typedef AutLib::Leg_Model_Entity ModelEntity;
 
-class NihadVesselGeometryTreeItem : public QObject, public FrgBaseTreeItem
+class NihadVesselGeometryTreeItem : public FrgBaseCADGeometry<ModelEntity>
 {
 
-	Q_OBJECT
+public:
+
+	NihadVesselGeometryTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent
+	);
+
+	NihadVesselGeometryTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree
+	);
+
+	const TopoDS_Shape& GetTopoDS_Shape();
+};
+
+/*class NihadVesselGeometryTreeItem : public FrgBaseTreeItem
+{
 
 private:
 
@@ -39,7 +58,7 @@ public:
 
 	const TopoDS_Shape& GetTopoDS_Shape();
 
-};
+};*/
 
 EndFrgBaseLib
 

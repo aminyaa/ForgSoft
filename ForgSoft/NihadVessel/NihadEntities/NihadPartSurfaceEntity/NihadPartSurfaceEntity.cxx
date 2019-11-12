@@ -27,7 +27,7 @@ ForgBaseLib::NihadPartSurfacesEntity::NihadPartSurfacesEntity
 {
 	if ((NihadVesselPartTreeItem*)parentTree)
 	{
-		auto model = ((NihadVesselPartTreeItem*)(parentItem))->GetTModel();
+		auto model = ((NihadVesselPartTreeItem*)(parentItem))->GetModel();
 
 		if (!model)
 			return;

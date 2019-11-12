@@ -5,7 +5,7 @@
 #include <FrgBaseDlgNewSim.hxx>
 #include <FrgBaseDlgLoadSim.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
-#include <FrgBaseSceneTreeItem.hxx>
+//#include <FrgBaseSceneTreeItem.hxx>
 #include <FrgBaseTabWidget.hxx>
 
 #include <QtWidgets/QDockWidget>

@@ -105,6 +105,12 @@
     <ClInclude Include="NihadVessel\NihadEntities\NihadPartFeature.hxx">
       <Filter>NihadVessel\NihadEntities</Filter>
     </ClInclude>
+    <ClInclude Include="NihadVessel\NihadVesselGeometryTreeItem.hxx">
+      <Filter>NihadVessel</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\NihadVesselPartTreeItem.hxx">
+      <Filter>NihadVessel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NihadVessel\NihadTree.hxx">
@@ -118,12 +124,6 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomPropertyType\SelectObjectsProperty\SelectObjectsPropertyWidget.hxx">
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsProperty</Filter>
-    </QtMoc>
-    <QtMoc Include="NihadVessel\NihadVesselGeometryTreeItem.hxx">
-      <Filter>NihadVessel</Filter>
-    </QtMoc>
-    <QtMoc Include="NihadVessel\NihadVesselPartTreeItem.hxx">
-      <Filter>NihadVessel</Filter>
     </QtMoc>
     <QtMoc Include="NihadVessel\NihadVesselScenePreviewTreeItem.hxx">
       <Filter>NihadVessel</Filter>

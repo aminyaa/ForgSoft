@@ -7,11 +7,46 @@
 #include <NihadPartSurfaceEntity.hxx>
 #include <NihadPartCurveEntity.hxx>
 
-//#include <Leg_Vessel_Nihad2.hxx>
-//#include <TModel_Surface.hxx>
-//#include <Cad3d_TModel.hxx>
+#include <Cad3d_TModel.hxx>
 
 ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
+(
+	const FrgString& title,
+	FrgBaseTreeItem* parent,
+	FrgSharedPtr<AutLib::Cad3d_TModel> model
+)
+	: FrgBaseCADPart(title, parent)
+	, theModel_(model)
+{
+	DoAfterConstruct();
+}
+
+ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
+(
+	const FrgString& title,
+	FrgBaseTree* parentTree,
+	FrgSharedPtr<AutLib::Cad3d_TModel> model
+)
+	: FrgBaseCADPart(title, parentTree)
+	, theModel_(model)
+{
+	DoAfterConstruct();
+}
+
+void ForgBaseLib::NihadVesselPartTreeItem::DoAfterConstruct()
+{
+	std::vector<std::shared_ptr<AutLib::TModel_Surface>> TModelSurfaces;
+	std::vector<std::shared_ptr<AutLib::TModel_Paired>> TModelCurves;
+	theModel_->RetrieveFacesTo(TModelSurfaces);
+	theModel_->RetrieveSegmentsTo(TModelCurves);
+
+	GetSurfaces() = TModelSurfaces;
+	GetCurves() = TModelCurves;
+
+	FrgBaseCADPart::DoAfterConstruct();
+}
+
+/*ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 (
 	const FrgString& title,
 	FrgBaseTreeItem* parent,
@@ -24,7 +59,7 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 {
 	FrgString ExportPartString = "&Export";
 	this->GetContextMenu()->AddItem(ExportPartString);
-	connect
+	QObject::connect
 	(
 		this->GetContextMenu()->GetItem(ExportPartString.remove('&'))
 		, SIGNAL(triggered(bool))
@@ -39,4 +74,4 @@ ForgBaseLib::NihadVesselPartTreeItem::NihadVesselPartTreeItem
 	}
 
 	GetParentMainWindow()->ParseInfoToConsole("\"" + this->text(0) + "\" part successfully created.");
-}
+}*/

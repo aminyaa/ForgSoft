@@ -73,7 +73,7 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 			(
 				FrgNew NihadVesselPartTreeItem
 				(
-					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), GetTree(), this, solid
+					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
 					)
 			);
 

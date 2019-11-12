@@ -3,24 +3,54 @@
 #define _NihadVesselPartTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgBaseTreeItem.hxx>
+//#include <FrgBaseTreeItem.hxx>
+#include <FrgBaseCADPart.hxx>
 
 namespace AutLib
 {
 	class Cad3d_TModel;
+	class TModel_Surface;
+	class TModel_Paired;
 }
 
 BeginFrgBaseLib
 
-class NihadPartSurfacesEntity;
+class NihadVesselPartTreeItem : public FrgBaseCADPart<AutLib::TModel_Surface, AutLib::TModel_Paired>
+{
+
+private:
+
+	FrgSharedPtr<AutLib::Cad3d_TModel> theModel_ = FrgNullPtr;
+
+public:
+
+	NihadVesselPartTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent,
+		FrgSharedPtr<AutLib::Cad3d_TModel> model
+	);
+
+	NihadVesselPartTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree,
+		FrgSharedPtr<AutLib::Cad3d_TModel> model
+	);
+
+	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, Model, theModel_);
+
+	virtual void DoAfterConstruct() override;
+
+};
+
+/*class NihadPartSurfacesEntity;
 class NihadPartCurvesEntity;
 
 //class NihadVesselGeometryTreeItem;
 
-class NihadVesselPartTreeItem : public QObject, public FrgBaseTreeItem
+class NihadVesselPartTreeItem : public FrgBaseTreeItem
 {
-
-	Q_OBJECT
 
 private:
 
@@ -44,7 +74,7 @@ public:
 
 	FrgGetMacro(NihadPartSurfacesEntity*, Surfaces, theSurfaces_);
 	FrgGetMacro(NihadPartCurvesEntity*, Curves, theCurves_);
-};
+};*/
 
 EndFrgBaseLib
 
