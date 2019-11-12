@@ -3,27 +3,61 @@
 #define _NihadVesselPartTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgBaseTreeItem.hxx>
+//#include <FrgBaseTreeItem.hxx>
+#include <FrgBaseCADPart.hxx>
 
 namespace AutLib
 {
 	class Cad3d_TModel;
+	class TModel_Surface;
+	class TModel_Paired;
 }
 
 BeginFrgBaseLib
 
-//class NihadVesselGeometryTreeItem;
-
-class NihadVesselPartTreeItem : public QObject, public FrgBaseTreeItem
+class NihadVesselPartTreeItem : public FrgBaseCADPart<AutLib::TModel_Surface, AutLib::TModel_Paired>
 {
-
-	Q_OBJECT
 
 private:
 
-	//FrgSharedPtr<NihadVesselGeometryTreeItem> theGeometryPointer_ = FrgNullPtr;
+	FrgSharedPtr<AutLib::Cad3d_TModel> theModel_ = FrgNullPtr;
+
+public:
+
+	NihadVesselPartTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent,
+		FrgSharedPtr<AutLib::Cad3d_TModel> model
+	);
+
+	NihadVesselPartTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree,
+		FrgSharedPtr<AutLib::Cad3d_TModel> model
+	);
+
+	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, Model, theModel_);
+
+	virtual void DoAfterConstruct() override;
+
+};
+
+/*class NihadPartSurfacesEntity;
+class NihadPartCurvesEntity;
+
+//class NihadVesselGeometryTreeItem;
+
+class NihadVesselPartTreeItem : public FrgBaseTreeItem
+{
+
+private:
 
 	FrgSharedPtr<AutLib::Cad3d_TModel> theTModel_ = FrgNullPtr;
+
+	NihadPartSurfacesEntity* theSurfaces_ = FrgNullPtr;
+	NihadPartCurvesEntity* theCurves_ = FrgNullPtr;
 
 public:
 
@@ -33,12 +67,14 @@ public:
 		FrgBaseTreeItem* parent = FrgNullPtr,
 		FrgBaseTree* parentTree = FrgNullPtr,
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr,
-		FrgSharedPtr<FrgBaseTreeItem> parentGeometry = FrgNullPtr
+		FrgSharedPtr<AutLib::Cad3d_TModel> TModel = FrgNullPtr
 	);
 
-	//FrgGetMacro(FrgSharedPtr<NihadVesselGeometryTreeItem>, GeometryPointer, theGeometryPointer_);
 	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, TModel, theTModel_);
-};
+
+	FrgGetMacro(NihadPartSurfacesEntity*, Surfaces, theSurfaces_);
+	FrgGetMacro(NihadPartCurvesEntity*, Curves, theCurves_);
+};*/
 
 EndFrgBaseLib
 

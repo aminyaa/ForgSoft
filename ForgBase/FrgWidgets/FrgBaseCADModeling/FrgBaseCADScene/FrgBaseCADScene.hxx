@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgBaseSceneTreeItem_Header
-#define _FrgBaseSceneTreeItem_Header
+#ifndef _FrgBaseCADScene_Header
+#define _FrgBaseCADScene_Header
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseTreeItem.hxx>
@@ -19,8 +19,10 @@ class FrgBaseTreeItem;
 class FrgBaseTree;
 class FrgBaseInteractorStyle;
 
-class FORGBASE_EXPORT FrgBaseSceneTreeItem : public QVTKOpenGLNativeWidget, public FrgBaseTreeItem
+class FORGBASE_EXPORT FrgBaseCADScene : public QVTKOpenGLNativeWidget, public FrgBaseTreeItem
 {
+
+	Q_OBJECT
 
 private:
 
@@ -43,12 +45,10 @@ private:
 
 public:
 
-	FrgBaseSceneTreeItem
+	FrgBaseCADScene
 	(
 		const FrgString& title,
-		FrgBaseTreeItem* parent = FrgNullPtr,
-		FrgBaseTree* parentTree = FrgNullPtr,
-		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
+		FrgBaseTreeItem* parent
 	);
 
 	void StartScene();
@@ -66,4 +66,4 @@ public:
 
 EndFrgBaseLib
 
-#endif // !_FrgBaseSceneTreeItem_Header
+#endif // !_FrgBaseCADScene_Header

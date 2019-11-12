@@ -1,6 +1,7 @@
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseTree.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
+#include <FrgBaseGlobalsICONS.hxx>
 
 #include <FrgBaseMenu.hxx>
 
@@ -20,7 +21,7 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem
 {
 
 	this->setText(0, itemName);
-	this->setIcon(0, QIcon(":/Icons/Menus/File/Load.png"));
+	this->setIcon(0, QIcon(FrgICONFileLoad));
 
 	FrgString str = itemName;
 	str = str.simplified();
@@ -46,24 +47,5 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem
 
 void ForgBaseLib::FrgBaseTreeItem::CreateProperties()
 {
-	/*theProperty_ = FrgNew QtTreePropertyBrowser;
-
-	theVariantPropertyManager_ = FrgNew QtVariantPropertyManager;
-	theVariantEditorFactory_ = FrgNew QtVariantEditorFactory;
-
-	theProperty_->setFactoryForManager(theVariantPropertyManager_, theVariantEditorFactory_);
-
-	QtProperty* topItem = theVariantPropertyManager_->addProperty(QtVariantPropertyManager::groupTypeId(), QLatin1String("Properties"));
-
-	QtVariantProperty* item = theVariantPropertyManager_->addProperty(QVariant::String, QLatin1String("Name"));
-	item->setValue(this->text(0));
-	item->setPropertyId(item->propertyName());
-	item->setEnabled(FrgFalse);
-	topItem->addSubProperty(item);
-
-	theProperty_->addProperty(topItem);
-	theProperty_->setPropertiesWithoutValueMarked(FrgTrue);
-	theProperty_->setRootIsDecorated(FrgFalse);*/
-
 	theProperties_ = FrgNew FrgBaseTreeItemProperties(this);
 }

@@ -8,7 +8,7 @@
 int main(int argc, char** argv)
 {
 	QApplication app(argc, argv);
-	FrgSharedPtr<ForgBaseLib::NihadMainWindow> w = FrgMakeSharedPtr(ForgBaseLib::NihadMainWindow)();
+	ForgBaseLib::NihadMainWindow* w = FrgNew ForgBaseLib::NihadMainWindow();
 
 	w->show();
 	app.exec();

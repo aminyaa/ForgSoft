@@ -60,17 +60,17 @@ auto functionName = fnptr<void()>([&]{function;});
 
 #define FrgExecuteFunctionInMultiProcess(parentMainWindow, N, function)\
 FrgDefineProcessFunction(MAKE_UNIQUE(func), function); \
-FrgVector<FrgSharedPtr<FrgBaseThread>> MAKE_UNIQUE(thread);\
+FrgVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(FrgMakeSharedPtr(FrgBaseThread)(parentMainWindow, MAKE_UNIQUE(func)));\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func)));\
 MAKE_UNIQUE(thread).at(i)->start();\
 }\
-FrgVector<FrgSharedPtr<QEventLoop>> MAKE_UNIQUE(eventLoop);\
+FrgVector<QEventLoop*> MAKE_UNIQUE(eventLoop);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(eventLoop).push_back(FrgMakeSharedPtr(QEventLoop)());\
-QObject::connect(MAKE_UNIQUE(thread).at(i).get(), SIGNAL(finished()), MAKE_UNIQUE(eventLoop).at(i).get(), SLOT(quit())); \
+MAKE_UNIQUE(eventLoop).push_back(FrgNew QEventLoop());\
+QObject::connect(MAKE_UNIQUE(thread).at(i), SIGNAL(finished()), MAKE_UNIQUE(eventLoop).at(i), SLOT(quit())); \
 if (!MAKE_UNIQUE(thread).at(i)->isFinished())\
 MAKE_UNIQUE(eventLoop).at(i)->exec();\
 }

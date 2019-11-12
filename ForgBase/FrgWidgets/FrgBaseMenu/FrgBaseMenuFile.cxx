@@ -1,5 +1,6 @@
 #include <FrgBaseMenuFile.hxx>
 #include <FrgBaseMainWindow.hxx>
+#include <FrgBaseGlobalsICONS.hxx>
 
 #include <QtWidgets/QMenuBar>
 
@@ -11,13 +12,13 @@ Action->setStatusTip(QMainWindow::tr(StatusTip));
 ForgBaseLib::FrgBaseMenuFile::FrgBaseMenuFile(FrgBaseMainWindow* parentMainWindow)
 	: FrgBaseMenu("&File", parentMainWindow)
 {
-	AddItem(":/Icons/Menus/File/New.png", "&New", "Ctrl+N");
-	AddItem(":/Icons/Menus/File/Load.png", "&Load", "Ctrl+L");
-	AddItem(":/Icons/Menus/File/Save.png", "&Save", "Ctrl+S");
-	AddItem(":/Icons/Menus/File/SaveAs.png", "Save As...", "Ctrl+Shift+S");
+	AddItem(FrgICONFileNew, "&New", "Ctrl+N");
+	AddItem(FrgICONFileLoad, "&Load", "Ctrl+L");
+	AddItem(FrgICONFileSave, "&Save", "Ctrl+S");
+	AddItem(FrgICONFileSaveAs, "Save As...", "Ctrl+Shift+S");
 
-	AddItem(":/Icons/Menus/File/Import.png", "Import", "Ctrl+I", FrgFalse);
-	AddItem(":/Icons/Menus/File/Exit.png", "E&xit", "Ctrl+Q", FrgFalse);
+	AddItem(FrgICONFileImport, "Import", "Ctrl+I", FrgFalse);
+	AddItem(FrgICONFileExit, "E&xit", "Ctrl+Q", FrgFalse);
 
 	SetEnabledItem("Save", FrgFalse);
 	SetEnabledItem("Save As...", FrgFalse);

@@ -24,11 +24,9 @@
 ForgBaseLib::NihadVesselScenePreviewTreeItem::NihadVesselScenePreviewTreeItem
 (
 	const FrgString& title,
-	FrgBaseTreeItem* parent,
-	FrgBaseTree* parentTree,
-	FrgBaseMainWindow* parentMainwindow
+	FrgBaseTreeItem* parent
 )
-	: NihadVesselScenePartTreeItem(title, parent, parentTree, parentMainwindow, FrgFalse)
+	: NihadVesselScenePartTreeItem(title, parent, FrgFalse)
 {
 	
 }

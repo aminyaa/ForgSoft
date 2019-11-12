@@ -43,9 +43,6 @@
     <Filter Include="FrgWidgets\FrgBaseTreeItem">
       <UniqueIdentifier>{a2a1295c-1a67-4404-9fdc-12a0fa1aeacd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrgWidgets\FrgBaseSceneTreeItem">
-      <UniqueIdentifier>{c96c7ca1-d890-41ab-baf0-f7c5d7125d95}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrgWidgets\FrgBaseVTKEntities">
       <UniqueIdentifier>{e2cb6e25-d84a-48be-a6b2-48b33920fe49}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,21 @@
     </Filter>
     <Filter Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis">
       <UniqueIdentifier>{c015cdea-40f6-44f2-afcf-27657e9fe209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling">
+      <UniqueIdentifier>{343ed39e-26a7-4bd7-8ace-deca6188520f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry">
+      <UniqueIdentifier>{0621626c-c327-4d33-a881-4b45f43d6099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart">
+      <UniqueIdentifier>{92460382-51b5-4dff-a561-a7357d39b23e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene">
+      <UniqueIdentifier>{a1a7d96f-0b74-492c-ae99-0ebc46ea3080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx">
+      <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +105,6 @@
     <ClCompile Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.cxx">
       <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
     </ClCompile>
-    <ClCompile Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.cxx">
-      <Filter>FrgWidgets\FrgBaseSceneTreeItem</Filter>
-    </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.cxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClCompile>
@@ -113,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis\FrgBaseVTKAxis.cxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBaseCADScene.cxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,12 +149,6 @@
     <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgBaseMenuFile.hxx">
       <Filter>FrgWidgets\FrgBaseMenu</Filter>
     </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx">
-      <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
-    </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseSceneTreeItem\FrgBaseSceneTreeItem.hxx">
-      <Filter>FrgWidgets\FrgBaseSceneTreeItem</Filter>
-    </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle</Filter>
     </ClInclude>
@@ -151,6 +157,30 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis\FrgBaseVTKAxis.hxx">
       <Filter>FrgWidgets\FrgBaseVTKEntities\FrgBaseVTKAxis</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgBaseGlobals\FrgBaseGlobalsICONS.hxx">
+      <Filter>FrgBaseGlobals</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseTreeItem\FrgBaseTreeItem.hxx">
+      <Filter>FrgWidgets\FrgBaseTreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry\FrgBaseCADGeometry.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry\FrgBaseCADGeometryI.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPart.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartI.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeaturesI.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +204,9 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBaseTabBar\FrgBaseTabBar.hxx">
       <Filter>FrgWidgets\FrgBaseTabBar</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBaseCADScene.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

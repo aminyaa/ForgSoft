@@ -40,16 +40,16 @@ private:
 		QtAbstractPropertyBrowser* theProperty_ = FrgNullPtr;
 	};
 
-	FrgSharedPtr<TreeWidgetStruct> theTreeWidget_ = FrgNullPtr;
+	TreeWidgetStruct* theTreeWidget_ = FrgNullPtr;
 
 	//FrgSharedPtr<FrgMenus> theMenus_ = FrgNullPtr;
-	FrgSharedPtr<FrgBaseMenuFile> theFileMenu_ = FrgNullPtr;
+	FrgBaseMenuFile* theFileMenu_ = FrgNullPtr;
 
-	FrgSharedPtr<ConsoleWidgetStruct> theConsoleWidget_ = FrgNullPtr;
+	ConsoleWidgetStruct* theConsoleWidget_ = FrgNullPtr;
 
-	FrgSharedPtr<PropertiesWidgetStruct> thePropertyWidget_ = FrgNullPtr;
+	PropertiesWidgetStruct* thePropertyWidget_ = FrgNullPtr;
 
-	FrgSharedPtr<FrgBaseTabWidget> theTabWidget_ = FrgNullPtr;
+	FrgBaseTabWidget* theTabWidget_ = FrgNullPtr;
 
 public:
 
@@ -61,8 +61,8 @@ public:
 
 	//FrgGetMacro(FrgSharedPtr<FrgMenus>, Menus, theMenus_);
 	FrgGetMacro(FrgBaseTree*, Tree, theTreeWidget_->theTree_);
-	FrgGetMacro(FrgSharedPtr<PropertiesWidgetStruct>, PropertyWidget, thePropertyWidget_);
-	FrgGetMacro(FrgSharedPtr<FrgBaseTabWidget>, TabWidget, theTabWidget_);
+	FrgGetMacro(PropertiesWidgetStruct*, PropertyWidget, thePropertyWidget_);
+	FrgGetMacro(FrgBaseTabWidget*, TabWidget, theTabWidget_);
 
 protected slots:
 

@@ -46,7 +46,9 @@ public:
 
 protected Q_SLOTS:
 
-	void itemClickedSlot(QTreeWidgetItem* item, int column);
+	virtual void itemClickedSlot(QTreeWidgetItem* item, int column);
+
+	void itemDoubleClickedSlot(QTreeWidgetItem* item, int column);
 
 public Q_SLOTS:
 

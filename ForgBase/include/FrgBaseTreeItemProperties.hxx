@@ -50,7 +50,7 @@ private:
 	QtAbstractPropertyBrowser* thePropertyBrowser_ = FrgNullPtr;
 
 	QtAbstractPropertyManager* theAbstractPropertyManager_ = FrgNullPtr;
-	QtAbstractEditorFactory<QtAbstractPropertyManager>* theAbstractEditorFactory_ = FrgNullPtr;
+	QtAbstractEditorFactoryBase* theAbstractEditorFactory_ = FrgNullPtr;
 
 	QtVariantPropertyManager* theVariantPropertyManager_ = FrgNullPtr;
 	QtVariantEditorFactory* theVariantEditorFactory_ = FrgNullPtr;
@@ -127,7 +127,7 @@ public:
 	FrgGetMacro(QtVariantPropertyManager*, PropertyManager, theVariantPropertyManager_);
 	FrgGetMacro(FrgBaseTreeItem*, ParentTreeItem, theParentTreeItem_);
 	FrgGetMacro(QtAbstractPropertyManager*, AbstractPropertyManager, theAbstractPropertyManager_);
-	FrgGetMacro(QtAbstractEditorFactory<QtAbstractPropertyManager>*, AbstractEditorFactory, theAbstractEditorFactory_);
+	FrgGetMacro(QtAbstractEditorFactoryBase*, AbstractEditorFactory, theAbstractEditorFactory_);
 
 	MACROAddProperty(Int);
 	MACROAddProperty(Double);
@@ -142,7 +142,7 @@ public:
 	template<class PropertyManager>
 	void AddProperty(const FrgString& title, PropertyManager* manager, QtAbstractEditorFactory<PropertyManager>* factory)
 	{
-		thePropertyBrowser_->setFactoryForManager<PropertyManager>(manager, factory);
+		thePropertyBrowser_->setFactoryForManager(manager, factory);
 
 		QtProperty* item = manager->addProperty(title);
 		thePropertyBrowser_->addProperty(item);

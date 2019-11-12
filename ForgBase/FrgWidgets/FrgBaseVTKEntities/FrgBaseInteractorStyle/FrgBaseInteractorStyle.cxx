@@ -1,5 +1,6 @@
 #include <FrgBaseInteractorStyle.hxx>
-#include <FrgBaseSceneTreeItem.hxx>
+//#include <FrgBaseSceneTreeItem.hxx>
+#include <FrgBaseCADScene.hxx>
 
 #include <QtGui/QColor>
 

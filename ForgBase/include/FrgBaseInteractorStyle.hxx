@@ -14,7 +14,7 @@ class vtkProperty;
 
 BeginFrgBaseLib
 
-class FrgBaseSceneTreeItem;
+class FrgBaseCADScene;
 
 class FORGBASE_EXPORT FrgBaseInteractorStyle : public vtkInteractorStyleTrackballCamera
 {
@@ -30,7 +30,7 @@ private:
 
 	QList<FrgBaseActor*> theHiddenActors_;
 
-	FrgBaseSceneTreeItem* theParent_ = nullptr;
+	FrgBaseCADScene* theParent_ = nullptr;
 
 	int PreviousPosition[2];
 	int ResetPixelDistance;
@@ -43,7 +43,7 @@ public:
 
 	static FrgBaseInteractorStyle* New();
 
-	void SetParent(FrgBaseSceneTreeItem* parent)
+	void SetParent(FrgBaseCADScene* parent)
 	{
 		theParent_ = parent;
 	}

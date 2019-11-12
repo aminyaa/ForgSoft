@@ -3,7 +3,8 @@
 #define _NihadVesselGeometryTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgBaseTreeItem.hxx>
+//#include <FrgBaseTreeItem.hxx>
+#include <FrgBaseCADGeometry.hxx>
 
 namespace AutLib
 {
@@ -14,15 +15,34 @@ class TopoDS_Shape;
 
 BeginFrgBaseLib
 
-class NihadVesselGeometryTreeItem : public QObject, public FrgBaseTreeItem
+typedef AutLib::Leg_Model_Entity ModelEntity;
+
+class NihadVesselGeometryTreeItem : public FrgBaseCADGeometry<ModelEntity>
 {
 
-	Q_OBJECT
+public:
+
+	NihadVesselGeometryTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent
+	);
+
+	NihadVesselGeometryTreeItem
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree
+	);
+
+	const TopoDS_Shape& GetTopoDS_Shape();
+};
+
+/*class NihadVesselGeometryTreeItem : public FrgBaseTreeItem
+{
 
 private:
 
-	//FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch> thePatch_ = FrgNullPtr;
-	FrgSharedPtr<AutLib::Leg_Model_Entity> theEntity_ = FrgNullPtr;
+	FrgSharedPtr<ModelEntity> theEntity_ = FrgNullPtr;
 
 public:
 
@@ -34,12 +54,11 @@ public:
 		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
 	);
 
-	//FrgGetMacro(FrgSharedPtr<AutLib::Leg_Nihad2_HullPatch>, Patch, thePatch_);
 	FrgGetMacro(FrgSharedPtr<AutLib::Leg_Model_Entity>, Entity, theEntity_);
 
 	const TopoDS_Shape& GetTopoDS_Shape();
 
-};
+};*/
 
 EndFrgBaseLib
 

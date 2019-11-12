@@ -5,7 +5,7 @@
 #include <FrgBaseDlgNewSim.hxx>
 #include <FrgBaseDlgLoadSim.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
-#include <FrgBaseSceneTreeItem.hxx>
+//#include <FrgBaseSceneTreeItem.hxx>
 #include <FrgBaseTabWidget.hxx>
 
 #include <QtWidgets/QDockWidget>
@@ -31,7 +31,7 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	this->window()->setWindowIcon(QIcon(":/Icons/Forg Logo.png"));
 
 	//theMenus_ = FrgMakeSharedPtr(FrgMenus)(this);
-	theFileMenu_ = FrgMakeSharedPtr(FrgBaseMenuFile)(this);
+	theFileMenu_ = FrgNew FrgBaseMenuFile(this);
 
 	this->setCentralWidget(FrgNew QWidget);
 
@@ -143,7 +143,7 @@ void ForgBaseLib::FrgBaseMainWindow::CreateConsoleOutput()
 	Log->toggleConsoleEngine(true);
 	Log->toggleQtMsgEngine(false);
 
-	theConsoleWidget_ = FrgMakeSharedPtr(ConsoleWidgetStruct)();
+	theConsoleWidget_ = FrgNew ConsoleWidgetStruct();
 
 	theConsoleWidget_->theEngineName_ = "Output Dock Widget";
 	FrgString xml_example = QCoreApplication::applicationDirPath() + "/XML_Log.xml";
@@ -228,13 +228,13 @@ void ForgBaseLib::FrgBaseMainWindow::CreateProperties()
 
 void ForgBaseLib::FrgBaseMainWindow::InitFrgMainWindow()
 {
-	theTreeWidget_ = FrgMakeSharedPtr(TreeWidgetStruct)();
+	theTreeWidget_ = FrgNew TreeWidgetStruct();
 	theTreeWidget_->theDockWidget_ = FrgNew QDockWidget("Simulation Tree", this);
 	theTreeWidget_->theDockWidget_->setTitleBarWidget(FrgNew QWidget);
 
 	this->addDockWidget(Qt::LeftDockWidgetArea, theTreeWidget_->theDockWidget_);
 
-	thePropertyWidget_ = FrgMakeSharedPtr(PropertiesWidgetStruct)();
+	thePropertyWidget_ = FrgNew PropertiesWidgetStruct();
 	thePropertyWidget_->theDockWidget_ = FrgNew QDockWidget("Properties Window", this);
 	thePropertyWidget_->theDockWidget_->setTitleBarWidget(FrgNew QWidget);
 
@@ -243,6 +243,6 @@ void ForgBaseLib::FrgBaseMainWindow::InitFrgMainWindow()
 	theTreeWidget_->theDockWidget_->setMinimumWidth(200);
 	thePropertyWidget_->theDockWidget_->setMinimumWidth(200);
 
-	theTabWidget_ = FrgMakeSharedPtr(FrgBaseTabWidget)(this);
-	this->setCentralWidget(theTabWidget_.get());
+	theTabWidget_ = FrgNew FrgBaseTabWidget(this);
+	this->setCentralWidget(theTabWidget_);
 }
