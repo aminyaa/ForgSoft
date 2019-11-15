@@ -25,5 +25,10 @@
 	const PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) const {return the##PARAM_NAME##s_[theIndex];}									\
 	PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) {return the##PARAM_NAME##s_[theIndex];}
 
+#define GLOBAL_ACCESS_VECTOR_INDEX_1(PARAM_TYPE, PARAM_NAME)																						\
+	void Set##PARAM_NAME(const Standard_Integer theIndex, const PARAM_TYPE& the##PARAM_NAME) {the##PARAM_NAME##_[theIndex] = the##PARAM_NAME;}	\
+	const PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) const {return the##PARAM_NAME##_[theIndex];}									\
+	PARAM_TYPE& PARAM_NAME(const Standard_Integer theIndex) {return the##PARAM_NAME##_[theIndex];}
+
 
 #endif // !_Global_AccessMethod_Header

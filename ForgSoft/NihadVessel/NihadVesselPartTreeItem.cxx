@@ -43,6 +43,16 @@ void ForgBaseLib::NihadVesselPartTreeItem::DoAfterConstruct()
 	GetSurfaces() = TModelSurfaces;
 	GetCurves() = TModelCurves;
 
+	FrgString ExportPartString = "&Export";
+	this->GetContextMenu()->AddItem(ExportPartString);
+	QObject::connect
+	(
+		this->GetContextMenu()->GetItem(ExportPartString.remove('&'))
+		, SIGNAL(triggered(bool))
+		, this->GetParentTree()
+		, SLOT(ExportPartSlot(bool))
+	);
+
 	FrgBaseCADPart::DoAfterConstruct();
 }
 
