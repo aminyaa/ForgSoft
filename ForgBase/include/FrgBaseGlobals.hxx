@@ -68,4 +68,15 @@ else \
 return output;\
 }
 
+#define FreePointer(ptr)\
+if(ptr)\
+{\
+delete ptr;\
+ptr = FrgNullPtr;\
+}
+
+#define FreeVectorOfPointers(vec)\
+for(int iPointer=0; iPointer < vec.size(); iPointer++)\
+FreePointer(vec[iPointer]);
+
 #endif // !_FrgBaseGlobals_Header

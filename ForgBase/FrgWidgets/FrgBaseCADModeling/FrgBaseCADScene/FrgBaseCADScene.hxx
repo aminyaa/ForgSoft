@@ -18,6 +18,10 @@ class FrgBaseMainWindow;
 class FrgBaseTreeItem;
 class FrgBaseTree;
 class FrgBaseInteractorStyle;
+class FrgBaseCADPartFeatureBase;
+
+typedef QMap<vtkSmartPointer<vtkActor>, FrgBaseCADPartFeatureBase*> QMapActorToPartFeature;
+typedef QMap<FrgBaseCADPartFeatureBase*, vtkSmartPointer<vtkActor>> QMapPartFeatureToActor;
 
 class FORGBASE_EXPORT FrgBaseCADScene : public QVTKOpenGLNativeWidget, public FrgBaseTreeItem
 {
@@ -40,6 +44,9 @@ private:
 
 	QList<vtkSmartPointer<vtkActor>> theActors_;
 
+	QMapActorToPartFeature theActorToPartFeature_;
+	QMapPartFeatureToActor thePartFeatureToActor_;
+
 	void Init();
 
 
@@ -60,6 +67,8 @@ public:
 	FrgGetMacro(vtkSmartPointer<vtkTextActor>, LogoActor, theLogoActor_);
 	FrgGetMacro(vtkSmartPointer<vtkGenericOpenGLRenderWindow>, FrgBaseRenderWindow, theRenderWindow_);
 	FrgGetMacro(QList<vtkSmartPointer<vtkActor>>, Actors, theActors_);
+	FrgGetMacro(QMapActorToPartFeature, ActorToPartFeature, theActorToPartFeature_);
+	FrgGetMacro(QMapPartFeatureToActor, PartFeatureToActor, thePartFeatureToActor_);
 
 	void Render();
 };

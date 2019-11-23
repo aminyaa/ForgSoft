@@ -43,6 +43,8 @@ public:
 		FrgBaseMainWindow* parentMainWindow = FrgNullPtr
 	);
 
+	~FrgBaseTreeItem();
+
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgString, ObjectName, theObjectName_);

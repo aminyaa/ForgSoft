@@ -5,6 +5,7 @@
 #include <Leg_Model_PointList.hxx>
 
 #include <TColgp_Array2OfPnt.hxx>
+#include <TColStd_Array2OfReal.hxx>
 
 #include <memory>
 #include <vector>
@@ -84,6 +85,9 @@ namespace AutLib
 
 		typedef TColgp_Array2OfPnt ctrlNet;
 		typedef std::shared_ptr<TColgp_Array2OfPnt> ctrlNet_ptr;
+
+		typedef TColStd_Array2OfReal weightNet;
+		typedef std::shared_ptr<TColStd_Array2OfReal> weightNet_ptr;
 	}
 }
 

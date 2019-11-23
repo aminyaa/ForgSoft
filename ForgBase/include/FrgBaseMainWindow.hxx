@@ -26,18 +26,34 @@ private:
 	{
 		QDockWidget* theDockWidget_ = FrgNullPtr;
 		FrgString theEngineName_;
+
+		~ConsoleWidgetStruct()
+		{
+			FreePointer(theDockWidget_);
+		}
 	};
 
 	struct TreeWidgetStruct
 	{
 		QDockWidget* theDockWidget_ = FrgNullPtr;
 		FrgBaseTree* theTree_;
+
+		~TreeWidgetStruct()
+		{
+			FreePointer(theDockWidget_);
+		}
 	};
 
 	struct PropertiesWidgetStruct
 	{
 		QDockWidget* theDockWidget_ = FrgNullPtr;
 		QtAbstractPropertyBrowser* theProperty_ = FrgNullPtr;
+
+		~PropertiesWidgetStruct()
+		{
+			FreePointer(theDockWidget_);
+			FreePointer(theProperty_);
+		}
 	};
 
 	TreeWidgetStruct* theTreeWidget_ = FrgNullPtr;
@@ -54,6 +70,8 @@ private:
 public:
 
 	FrgBaseMainWindow(QWidget* parent = FrgNullPtr);
+
+	~FrgBaseMainWindow();
 
 	void ParseInfoToConsole(const FrgString& info);
 	void ParseWarningToConsole(const FrgString& info);

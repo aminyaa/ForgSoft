@@ -53,6 +53,12 @@ inline ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::FrgBaseCADPart
 }
 
 template<class SurfaceEntity, class CurveEntity>
+inline ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::~FrgBaseCADPart()
+{
+	FreePointer(theFeatures_);
+}
+
+template<class SurfaceEntity, class CurveEntity>
 inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterConstruct()
 {
 	theFeatures_ = FrgNew FrgBaseCADPartFeatures<SurfaceEntity, CurveEntity>("Features", (FrgBaseTreeItem*)this);

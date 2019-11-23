@@ -4,6 +4,8 @@
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBasePlot2D.hxx>
 #include <FrgBaseTabWidget.hxx>
+#include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBaseTreeItem.hxx>
 #include <qtpropertybrowser.h>
 
 #include <NihadMainWindow.hxx>
@@ -18,6 +20,8 @@
 #include <Leg_Vessel_Nihad2.hxx>
 #include <Leg_Model_PropNo1.hxx>
 #include <Leg_PropNo1_Parameters.hxx>
+#include <Leg_Model_DuctNo1.hxx>
+#include <Leg_DuctNo1_Parameters.hxx>
 #include <Cad_Tools.hxx>
 #include <IO_IGES.hxx>
 #include <TModel_Tools.hxx>
@@ -42,18 +46,22 @@
 #define NbSegments_U 35
 #define NbSegments_V 35
 
-#define NihadName FrgString(" Nihad")
-#define PropellerName FrgString(" Propeller")
+#define NihadName FrgString("Ship")
+#define PropellerName FrgString("Propeller")
 
 #define PropellerNbBladesID 1222
 #define PropellerNbNSectionsID 1223
 #define PropellerNbSpansID 1224
 #define PropellerRemoveHubApex 1225
 
+#define DuctName FrgString("Duct")
+
+#define DuctNBSectionsID 2222
+
 ForgBaseLib::NihadTree::NihadTree(FrgBaseMainWindow* parent)
 	: FrgBaseTree(parent)
 {
-
+	connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
 }
 
 void ForgBaseLib::NihadTree::FormTree()
@@ -74,13 +82,17 @@ void ForgBaseLib::NihadTree::FormTree()
 
 	FrgNew FrgBaseTreeItem(PlotsItem, FrgNullPtr, this, GetParentMainWindow());
 
-	FrgString GeometryNewMenu = "New" + NihadName;
+	FrgString GeometryNewMenu = "New " + NihadName;
 	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
 	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryNihadClickedSlot(bool)));
 
-	GeometryNewMenu = "New" + PropellerName;
+	GeometryNewMenu = "New " + PropellerName;
 	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
 	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryPropellerClickedSlot(bool)));
+
+	GeometryNewMenu = "New " + DuctName;
+	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
+	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryDuctClickedSlot(bool)));
 
 	FrgString ScenesNewMenu = "&New Scene";
 	GetTreeItem(ScenesItem)->GetContextMenu()->AddItem(ScenesNewMenu);
@@ -102,18 +114,26 @@ void ForgBaseLib::NihadTree::FormTree()
 void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 {
 	FrgBaseTree::itemClickedSlot(item, column);
-
-	std::cout << item->text(0).toStdString() << std::endl;
-	//auto feature = (FrgBaseCADPartFeatureEntity<AutLib::TModel_Entity>*)item;
-	auto feature = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::TModel_Surface>*>(item);
-	std::cout << feature << std::endl;
-
-	if (feature)
+	auto& SelectedItems = this->selectedItems();
+	for (int iItem = 0; iItem < SelectedItems.size(); iItem++)
 	{
-		auto feature = (FrgBaseCADPartFeatureEntity<AutLib::TModel_Entity>*)item;
-		auto scene = ((NihadVesselScenePartTreeItem*)(feature->GetPointerToScene()));
-		auto actor = scene->GetPartFeatureToActor().value(feature);
-		scene->GetInteractorStyle()->AddActorToSelectedActors(actor);
+		auto feature = dynamic_cast<FrgBaseCADPartFeatureBase*>(SelectedItems[iItem]);
+
+		if (feature)
+		{
+			auto scenes = feature->GetPointerToScenes();
+			if (!scenes.isEmpty())
+			{
+				for (int iScene = 0; iScene < scenes.size(); iScene++)
+				{
+					auto actor = dynamic_cast<NihadVesselScenePartTreeItem*>(scenes.at(iScene))->GetPartFeatureToActor().value(feature);
+					if (SelectedItems.size() > 1)
+						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
+					else
+						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 0, FrgTrue);
+				}
+			}
+		}
 	}
 }
 
@@ -242,53 +262,51 @@ void ForgBaseLib::NihadTree::NewGeometryPropellerClickedSlot(bool b)
 	PropellerProperties->AddProperty<int>("Main Parameters", "Number of spans", patch->Parameters()->NbSpans(), FrgString::number(PropellerNbSpansID), 5, 35);
 	PropellerProperties->AddProperty<double>("Main Parameters", "Diameter", patch->Parameters()->Diameter()->Value(), FrgString::number(patch->Parameters()->Diameter()->Index()), 0.1, 25.0, 0.05);
 	PropellerProperties->AddProperty<double>("Main Parameters", "Hub radius", patch->Parameters()->HubRadius()->Value(), FrgString::number(patch->Parameters()->HubRadius()->Index()), 0.1, 25.0, 0.05);
-	PropellerProperties->AddProperty<double>("Main Parameters", "Tip gap", patch->Parameters()->TipGap()->Value(), FrgString::number(patch->Parameters()->TipGap()->Index()), 0.1, 25.0, 0.01);
-	PropellerProperties->AddProperty<double>("Main Parameters", "Trailing edge gap", patch->Parameters()->TEGap()->Value(), FrgString::number(patch->Parameters()->TEGap()->Index()), 0.1, 25.0, 0.01);
 	PropellerProperties->AddProperty<bool>("Main Parameters", "Remove hub apex?", patch->Parameters()->RemoveHubApex(), FrgString::number(PropellerRemoveHubApex));
 
 	PropellerProperties->AddTopProperty("Blade Parameters");
 	PropellerProperties->AddTopProperty("Pitch form", "Blade Parameters");
-	PropellerProperties->AddProperty<double>("Pitch form", "Root pitch", patch->Parameters()->Blade().Pitch().RootPitch()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().RootPitch()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Pitch form", "Root steep", patch->Parameters()->Blade().Pitch().RootSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().RootSteep()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Pitch form", "Tip pitch", patch->Parameters()->Blade().Pitch().TipPitch()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().TipPitch()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Pitch form", "Tip steep", patch->Parameters()->Blade().Pitch().TipSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().TipSteep()->Index()), 0.0, 1.0, 0.05);
+	PropellerProperties->AddProperty<double>("Pitch form", "Root pitch", patch->Parameters()->Blade().Pitch().RootPitch()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().RootPitch()->Index()), 0.0, 90.0, 1.0);
+	PropellerProperties->AddProperty<double>("Pitch form", "Root steep", patch->Parameters()->Blade().Pitch().RootSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().RootSteep()->Index()));
+	PropellerProperties->AddProperty<double>("Pitch form", "Tip pitch", patch->Parameters()->Blade().Pitch().TipPitch()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().TipPitch()->Index()), 0.0, 90.0, 1.0);
+	PropellerProperties->AddProperty<double>("Pitch form", "Tip steep", patch->Parameters()->Blade().Pitch().TipSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Pitch().TipSteep()->Index()));
 
 	PropellerProperties->AddTopProperty("Chord form", "Blade Parameters");
-	PropellerProperties->AddProperty<double>("Chord form", "Root chord", patch->Parameters()->Blade().Chord().RootChord()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().RootChord()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Chord form", "Tip chord", patch->Parameters()->Blade().Chord().TipChord()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().TipChord()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Chord form", "Maximum chord", patch->Parameters()->Blade().Chord().MaxChord()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().MaxChord()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Chord form", "Maximum chord location", patch->Parameters()->Blade().Chord().MaxChordLocation()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().MaxChordLocation()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Chord form", "Root weight", patch->Parameters()->Blade().Chord().RootWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().RootWeight()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Chord form", "Tip weight", patch->Parameters()->Blade().Chord().TipWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().TipWeight()->Index()), 0.0, 1.0, 0.05);
+	PropellerProperties->AddProperty<double>("Chord form", "Root chord", patch->Parameters()->Blade().Chord().RootChord()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().RootChord()->Index()), 0.1, 100.0, 0.05);
+	PropellerProperties->AddProperty<double>("Chord form", "Tip chord", patch->Parameters()->Blade().Chord().TipChord()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().TipChord()->Index()), 0.0, 100.0, 0.05);
+	PropellerProperties->AddProperty<double>("Chord form", "Maximum chord", patch->Parameters()->Blade().Chord().MaxChord()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().MaxChord()->Index()), 0.0, 100.0, 0.05);
+	PropellerProperties->AddProperty<double>("Chord form", "Maximum chord location", patch->Parameters()->Blade().Chord().MaxChordLocation()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().MaxChordLocation()->Index()));
+	PropellerProperties->AddProperty<double>("Chord form", "Root weight", patch->Parameters()->Blade().Chord().RootWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().RootWeight()->Index()));
+	PropellerProperties->AddProperty<double>("Chord form", "Tip weight", patch->Parameters()->Blade().Chord().TipWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Chord().TipWeight()->Index()));
 
 	PropellerProperties->AddTopProperty("Camber form", "Blade Parameters");
-	PropellerProperties->AddProperty<double>("Camber form", "Root camber", patch->Parameters()->Blade().Camber().RootCamber()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().RootCamber()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Camber form", "Tip camber", patch->Parameters()->Blade().Camber().TipCamber()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().TipCamber()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Camber form", "Max camber", patch->Parameters()->Blade().Camber().MaxCamber()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().MaxCamber()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Camber form", "Max camber location", patch->Parameters()->Blade().Camber().MaxCamberLocation()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().MaxCamberLocation()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Camber form", "Root weight", patch->Parameters()->Blade().Camber().RootWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().RootWeight()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Camber form", "Tip weight", patch->Parameters()->Blade().Camber().TipWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().TipWeight()->Index()), 0.0, 1.0, 0.05);
+	PropellerProperties->AddProperty<double>("Camber form", "Root camber", patch->Parameters()->Blade().Camber().RootCamber()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().RootCamber()->Index()), 0.0, 0.1, 0.005);
+	PropellerProperties->AddProperty<double>("Camber form", "Tip camber", patch->Parameters()->Blade().Camber().TipCamber()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().TipCamber()->Index()), 0.0, 0.1, 0.005);
+	PropellerProperties->AddProperty<double>("Camber form", "Max camber", patch->Parameters()->Blade().Camber().MaxCamber()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().MaxCamber()->Index()), 0.0, 0.1, 0.005);
+	PropellerProperties->AddProperty<double>("Camber form", "Max camber location", patch->Parameters()->Blade().Camber().MaxCamberLocation()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().MaxCamberLocation()->Index()));
+	PropellerProperties->AddProperty<double>("Camber form", "Root weight", patch->Parameters()->Blade().Camber().RootWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().RootWeight()->Index()));
+	PropellerProperties->AddProperty<double>("Camber form", "Tip weight", patch->Parameters()->Blade().Camber().TipWeight()->Value(), FrgString::number(patch->Parameters()->Blade().Camber().TipWeight()->Index()));
 
 	PropellerProperties->AddTopProperty("Skew form", "Blade Parameters");
-	PropellerProperties->AddProperty<double>("Skew form", "Tip skew", patch->Parameters()->Blade().Skew().TipSkew()->Value(), FrgString::number(patch->Parameters()->Blade().Skew().TipSkew()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Skew form", "Tip steep", patch->Parameters()->Blade().Skew().TipSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Skew().TipSteep()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Skew form", "Root steep", patch->Parameters()->Blade().Skew().RootSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Skew().RootSteep()->Index()), 0.0, 1.0, 0.05);
+	PropellerProperties->AddProperty<double>("Skew form", "Tip skew", patch->Parameters()->Blade().Skew().TipSkew()->Value(), FrgString::number(patch->Parameters()->Blade().Skew().TipSkew()->Index()), 0.0, 100.0, 1.0);
+	PropellerProperties->AddProperty<double>("Skew form", "Tip steep", patch->Parameters()->Blade().Skew().TipSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Skew().TipSteep()->Index()));
+	PropellerProperties->AddProperty<double>("Skew form", "Root steep", patch->Parameters()->Blade().Skew().RootSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Skew().RootSteep()->Index()));
 
 	PropellerProperties->AddTopProperty("Thickness form", "Blade Parameters");
-	PropellerProperties->AddProperty<double>("Thickness form", "Root thickness", patch->Parameters()->Blade().Thickness().RootThickness()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().RootThickness()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Thickness form", "Tip thickness", patch->Parameters()->Blade().Thickness().TipThickness()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().TipThickness()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Thickness form", "Root steep", patch->Parameters()->Blade().Thickness().RootSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().RootSteep()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Thickness form", "Tip steep", patch->Parameters()->Blade().Thickness().TipSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().TipSteep()->Index()), 0.0, 1.0, 0.05);
+	PropellerProperties->AddProperty<double>("Thickness form", "Root thickness", patch->Parameters()->Blade().Thickness().RootThickness()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().RootThickness()->Index()), 0.0, 10.0, 0.05);
+	PropellerProperties->AddProperty<double>("Thickness form", "Tip thickness", patch->Parameters()->Blade().Thickness().TipThickness()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().TipThickness()->Index()), 0.0, 10.0, 0.05);
+	PropellerProperties->AddProperty<double>("Thickness form", "Root steep", patch->Parameters()->Blade().Thickness().RootSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().RootSteep()->Index()));
+	PropellerProperties->AddProperty<double>("Thickness form", "Tip steep", patch->Parameters()->Blade().Thickness().TipSteep()->Value(), FrgString::number(patch->Parameters()->Blade().Thickness().TipSteep()->Index()));
 
 	PropellerProperties->AddTopProperty("Rake form", "Blade Parameters");
 	PropellerProperties->AddProperty<double>("Rake form", "Tip rake", patch->Parameters()->Blade().Rake().TipRake()->Value(), FrgString::number(patch->Parameters()->Blade().Rake().TipRake()->Index()), 0.0, 30.0, 1.0);
 
 	PropellerProperties->AddTopProperty("Hub Parameters");
-	PropellerProperties->AddProperty<double>("Hub Parameters", "Hub length", patch->Parameters()->Hub().HubLength()->Value(), FrgString::number(patch->Parameters()->Hub().HubLength()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Hub Parameters", "Hub weight", patch->Parameters()->Hub().HubWeight()->Value(), FrgString::number(patch->Parameters()->Hub().HubWeight()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Hub Parameters", "Shaft radius", patch->Parameters()->Hub().ShaftRadius()->Value(), FrgString::number(patch->Parameters()->Hub().ShaftRadius()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Hub Parameters", "Shaft offset", patch->Parameters()->Hub().ShaftOffset()->Value(), FrgString::number(patch->Parameters()->Hub().ShaftOffset()->Index()), 0.0, 1.0, 0.05);
-	PropellerProperties->AddProperty<double>("Hub Parameters", "Shaft length", patch->Parameters()->Hub().ShaftLength()->Value(), FrgString::number(patch->Parameters()->Hub().ShaftLength()->Index()), 0.0, 1.0, 0.05);
+	PropellerProperties->AddProperty<double>("Hub Parameters", "Hub length", patch->Parameters()->Hub().HubLength()->Value(), FrgString::number(patch->Parameters()->Hub().HubLength()->Index()), 0.0, 200.0, 0.1);
+	PropellerProperties->AddProperty<double>("Hub Parameters", "Hub weight", patch->Parameters()->Hub().HubWeight()->Value(), FrgString::number(patch->Parameters()->Hub().HubWeight()->Index()));
+	PropellerProperties->AddProperty<double>("Hub Parameters", "Shaft radius", patch->Parameters()->Hub().ShaftRadius()->Value(), FrgString::number(patch->Parameters()->Hub().ShaftRadius()->Index()), 0.0, 20.0, 0.05);
+	PropellerProperties->AddProperty<double>("Hub Parameters", "Shaft offset", patch->Parameters()->Hub().ShaftOffset()->Value(), FrgString::number(patch->Parameters()->Hub().ShaftOffset()->Index()), 0.0, 20.0, 0.05);
+	PropellerProperties->AddProperty<double>("Hub Parameters", "Shaft length", patch->Parameters()->Hub().ShaftLength()->Value(), FrgString::number(patch->Parameters()->Hub().ShaftLength()->Index()), 0.0, 20.0, 0.05);
 
 	PropellerProperties->SetExpanded("Pitch form", FrgFalse);
 	PropellerProperties->SetExpanded("Chord form", FrgFalse);
@@ -322,6 +340,106 @@ void ForgBaseLib::NihadTree::NewGeometryPropellerClickedSlot(bool b)
 	connect(GetTreeItem(PropellerGeometryTreeItem->text(0))->GetContextMenu()->GetItem(GeometryPreviewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(PreviewGeometryClickedSlot(bool)));
 }
 
+void ForgBaseLib::NihadTree::NewGeometryDuctClickedSlot(bool b)
+{
+	theGeometryTreeItems_.push_back(FrgNew NihadVesselGeometryTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), "Duct"), GetTreeItem("Geometry")));
+
+	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Model_DuctNo1)();
+
+	FrgBaseTreeItem* DuctGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	FrgSharedPtr<AutLib::Leg_Model_DuctNo1> patch = std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
+
+	auto DuctProperties = DuctGeometryTreeItem->GetProperties();
+
+	DuctProperties->AddTopProperty("Dimensions");
+	const auto& dimensions = patch->Parameters()->Dimensions();
+	DuctProperties->AddProperty<double>("Dimensions", "Height outlet", dimensions.HeightAtOutlet()->Value(), FrgString::number(dimensions.HeightAtOutlet()->Index()), 0.0, 50.0, 0.5);
+	DuctProperties->AddProperty<double>("Dimensions", "Overal length", dimensions.OveralLength()->Value(), FrgString::number(dimensions.OveralLength()->Index()), 0.0, 200.0, 1.0);
+	DuctProperties->AddProperty<double>("Dimensions", "Breadth at inlet", dimensions.BreadthAtInlet()->Value(), FrgString::number(dimensions.BreadthAtInlet()->Index()), 0.0, 50.0, 0.5);
+	DuctProperties->AddProperty<double>("Dimensions", "Breadth at outlet", dimensions.BreadthAtOutlet()->Value(), FrgString::number(dimensions.BreadthAtOutlet()->Index()), 0.0, 50.0, 0.5);
+	DuctProperties->AddProperty<double>("Dimensions", "Depth at inlet", dimensions.DepthAtInlet()->Value(), FrgString::number(dimensions.DepthAtInlet()->Index()), 0.0, 50.0, 0.5);
+	DuctProperties->AddProperty<double>("Dimensions", "Depth at outlet", dimensions.DepthAtOutlet()->Value(), FrgString::number(dimensions.DepthAtOutlet()->Index()), 0.0, 50.0, 0.5);
+	DuctProperties->AddProperty<int>("Dimensions", "Number of sections", dimensions.NbSections(), FrgString::number(DuctNBSectionsID), 3, 40);
+
+	DuctProperties->AddTopProperty("Hull Parameters");
+	const auto& hull = patch->Parameters()->Hull();
+	DuctProperties->AddTopProperty("Inlet", "Hull Parameters");
+	DuctProperties->AddProperty<double>("Inlet", "Side slope", hull.Inlet().SideSlope()->Value(), FrgString::number(hull.Inlet().SideSlope()->Index()));
+	DuctProperties->AddProperty<double>("Inlet", "Upper tightness", hull.Inlet().UpperTightness()->Value(), FrgString::number(hull.Inlet().UpperTightness()->Index()));
+	DuctProperties->AddProperty<double>("Inlet", "Lower tightness", hull.Inlet().LowerTightness()->Value(), FrgString::number(hull.Inlet().LowerTightness()->Index()));
+	DuctProperties->AddProperty<double>("Inlet", "Width", hull.Inlet().Width()->Value(), FrgString::number(hull.Inlet().Width()->Index()));
+	DuctProperties->SetExpanded("Inlet", FrgFalse);
+
+	DuctProperties->AddTopProperty("Middle", "Hull Parameters");
+	DuctProperties->AddProperty<double>("Middle", "Side slope", hull.Mid().SideSlope()->Value(), FrgString::number(hull.Mid().SideSlope()->Index()));
+	DuctProperties->AddProperty<double>("Middle", "Upper tightness", hull.Mid().UpperTightness()->Value(), FrgString::number(hull.Mid().UpperTightness()->Index()));
+	DuctProperties->AddProperty<double>("Middle", "Lower tightness", hull.Mid().LowerTightness()->Value(), FrgString::number(hull.Mid().LowerTightness()->Index()));
+	DuctProperties->AddProperty<double>("Middle", "Width", hull.Mid().Width()->Value(), FrgString::number(hull.Mid().Width()->Index()));
+	DuctProperties->SetExpanded("Middle", FrgFalse);
+
+	DuctProperties->AddTopProperty("Outlet", "Hull Parameters");
+	DuctProperties->AddProperty<double>("Outlet", "Side slope", hull.Outlet().SideSlope()->Value(), FrgString::number(hull.Outlet().SideSlope()->Index()));
+	DuctProperties->AddProperty<double>("Outlet", "Upper tightness", hull.Outlet().UpperTightness()->Value(), FrgString::number(hull.Outlet().UpperTightness()->Index()));
+	DuctProperties->AddProperty<double>("Outlet", "Lower tightness", hull.Outlet().LowerTightness()->Value(), FrgString::number(hull.Outlet().LowerTightness()->Index()));
+	DuctProperties->AddProperty<double>("Outlet", "Width", hull.Outlet().Width()->Value(), FrgString::number(hull.Outlet().Width()->Index()));
+	DuctProperties->SetExpanded("Outlet", FrgFalse);
+
+	DuctProperties->AddProperty<double>("Hull Parameters", "Middle location", hull.MidLocation()->Value(), FrgString::number(hull.MidLocation()->Index()));
+
+	DuctProperties->AddTopProperty("Generator Parameters");
+	const auto& generator = patch->Parameters()->Generator();
+	DuctProperties->AddProperty<double>("Generator Parameters", "Position", generator.Position()->Value(), FrgString::number(generator.Position()->Index()));
+	DuctProperties->AddProperty<double>("Generator Parameters", "Rise point", generator.RisePoint()->Value(), FrgString::number(generator.RisePoint()->Index()));
+	DuctProperties->AddProperty<double>("Generator Parameters", "Rise tangent", generator.RiseTangent()->Value(), FrgString::number(generator.RiseTangent()->Index()));
+	DuctProperties->AddProperty<double>("Generator Parameters", "Outlet tangent", generator.OutletTangent()->Value(), FrgString::number(generator.OutletTangent()->Index()));
+
+	DuctProperties->AddTopProperty("Breadth Parameters");
+	const auto& breadth = patch->Parameters()->Breadth();
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Middle width", breadth.MidWidth()->Value(), FrgString::number(breadth.MidWidth()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Middle offset", breadth.MidOffset()->Value(), FrgString::number(breadth.MidOffset()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Inlet offset", breadth.InletOffset()->Value(), FrgString::number(breadth.InletOffset()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Outlet offset", breadth.OutletOffset()->Value(), FrgString::number(breadth.OutletOffset()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Left turning position", breadth.LeftTurningPosition()->Value(), FrgString::number(breadth.LeftTurningPosition()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Right turning position", breadth.RightTurningPosition()->Value(), FrgString::number(breadth.RightTurningPosition()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Inlet rise weight", breadth.InletRiseWeight()->Value(), FrgString::number(breadth.InletRiseWeight()->Index()));
+	DuctProperties->AddProperty<double>("Breadth Parameters", "Outlet rise weight", breadth.OutletRiseWeight()->Value(), FrgString::number(breadth.OutletRiseWeight()->Index()));
+
+	DuctProperties->AddTopProperty("Depth Parameters");
+	const auto& depth = patch->Parameters()->Depth();
+	DuctProperties->AddProperty<double>("Depth Parameters", "Middle width", depth.MidWidth()->Value(), FrgString::number(depth.MidWidth()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Middle offset", depth.MidOffset()->Value(), FrgString::number(depth.MidOffset()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Inlet offset", depth.InletOffset()->Value(), FrgString::number(depth.InletOffset()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Outlet offset", depth.OutletOffset()->Value(), FrgString::number(depth.OutletOffset()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Left turning position", depth.LeftTurningPosition()->Value(), FrgString::number(depth.LeftTurningPosition()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Right turning position", depth.RightTurningPosition()->Value(), FrgString::number(depth.RightTurningPosition()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Inlet rise weight", depth.InletRiseWeight()->Value(), FrgString::number(depth.InletRiseWeight()->Index()));
+	DuctProperties->AddProperty<double>("Depth Parameters", "Outlet rise weight", depth.OutletRiseWeight()->Value(), FrgString::number(depth.OutletRiseWeight()->Index()));
+
+	connect
+	(
+		DuctGeometryTreeItem->GetProperties()->GetPropertyManager()
+		, SIGNAL(valueChanged(QtProperty*, const QVariant&))
+		, this
+		, SLOT(GeometryPropertyValueChangedSlot(QtProperty*, const QVariant&))
+	);
+
+	FrgString CreatePartFromGeometryMenu = "&Create Part from Geometry";
+	GetTreeItem(DuctGeometryTreeItem->text(0))->GetContextMenu()->AddItem(CreatePartFromGeometryMenu);
+	connect
+	(
+		GetTreeItem(DuctGeometryTreeItem->text(0))->GetContextMenu()->GetItem(CreatePartFromGeometryMenu.remove('&'))
+		, SIGNAL(triggered(bool))
+		, this
+		, SLOT(CreatePartFromGeometryClickedSlot(bool))
+	);
+
+	GetParentMainWindow()->ParseInfoToConsole("\"" + DuctGeometryTreeItem->text(0) + "\" geometry successfully created.");
+
+	FrgString GeometryPreviewMenu = "&Preview";
+	GetTreeItem(DuctGeometryTreeItem->text(0))->GetContextMenu()->AddItem(GeometryPreviewMenu);
+	connect(GetTreeItem(DuctGeometryTreeItem->text(0))->GetContextMenu()->GetItem(GeometryPreviewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(PreviewGeometryClickedSlot(bool)));
+}
+
 void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 {
 	theSceneTreeItems_.push_back(FrgNew NihadVesselScenePartTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes")));
@@ -343,9 +461,9 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 	{
 		if (theGeometryTreeItems_.at(i)->GetProperties() == ((FrgBaseTreeItem*)theLastLeftClicked_)->GetProperties())
 		{
-			//FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = theGeometryTreeItems_.at(i)->GetPatch();
 			FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patchNihad = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(theGeometryTreeItems_.at(i)->GetEntity());
 			FrgSharedPtr<AutLib::Leg_Model_PropNo1> patchPropeller = std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(theGeometryTreeItems_.at(i)->GetEntity());
+			FrgSharedPtr<AutLib::Leg_Model_DuctNo1> patchDuct = std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(theGeometryTreeItems_.at(i)->GetEntity());
 
 			if (patchNihad)
 			{
@@ -449,31 +567,62 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 				SetNihadParametersWithProperty(patchPropeller, Parameters()->Hub().ShaftLength(), property->propertyId(), value);
 
 			}
-		}
-	}
 
-	for (int i = 0; i < theSceneTreeItems_.size(); i++)
-	{
-		if (theSceneTreeItems_.at(i)->GetProperties() == ((FrgBaseTreeItem*)theLastLeftClicked_)->GetProperties())
-		{
-			if (FrgString::number(PartsListID) == property->propertyId())
+			if (patchDuct)
 			{
-				GetParentMainWindow()->ParseErrorToConsole(value.toString());
+				if (FrgString::number(DuctNBSectionsID) == property->propertyId())
+					patchDuct->Parameters()->Dimensions().SetNbSections(value.toInt());
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Dimensions().HeightAtOutlet(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Dimensions().OveralLength(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Dimensions().BreadthAtInlet(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Dimensions().BreadthAtOutlet(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Dimensions().DepthAtInlet(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Dimensions().DepthAtOutlet(), property->propertyId(), value);
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Inlet().SideSlope(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Inlet().UpperTightness(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Inlet().LowerTightness(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Inlet().Width(), property->propertyId(), value);
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Mid().SideSlope(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Mid().UpperTightness(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Mid().LowerTightness(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Mid().Width(), property->propertyId(), value);
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Outlet().SideSlope(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Outlet().UpperTightness(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Outlet().LowerTightness(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().Outlet().Width(), property->propertyId(), value);
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Hull().MidLocation(), property->propertyId(), value);
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Generator().Position(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Generator().RisePoint(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Generator().RiseTangent(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Generator().OutletTangent(), property->propertyId(), value);
+
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().MidWidth(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().MidOffset(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().InletOffset(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().OutletOffset(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().LeftTurningPosition(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().RightTurningPosition(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().InletRiseWeight(), property->propertyId(), value);
+				SetNihadParametersWithProperty(patchDuct, Parameters()->Breadth().OutletRiseWeight(), property->propertyId(), value);
 			}
 		}
 	}
 
-	for (int i = 0; i < theSceneTreeItems_.size(); i++)
+	auto geometry = dynamic_cast<NihadVesselGeometryTreeItem*>(theLastLeftClicked_);
+	if (geometry)
 	{
-		auto previewScene = (NihadVesselScenePreviewTreeItem*)(theSceneTreeItems_.at(i));
+		auto previewScene = dynamic_cast<NihadVesselScenePreviewTreeItem*>(geometry->GetPointerToPreview());
 		if (previewScene)
 		{
-			((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PerformToPreview();
-
-			auto shape = ((NihadVesselGeometryTreeItem*)theLastLeftClicked_)->GetEntity()->PreviewEntity();
-
+			geometry->GetEntity()->PerformToPreview();
+			auto shape = geometry->GetEntity()->PreviewEntity();
 			previewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewUnMergedPatchCurves(shape, NbSegments_U, NbSegments_V);
-
 			previewScene->RenderSceneSlot();
 		}
 	}
@@ -487,11 +636,10 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 	if (std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
 		std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
 
-	//auto surfaces = AutLib::TModel_Tools::GetSurfaces(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape());
-	//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
+	if (std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
+		std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
 
-	auto solid = AutLib::Cad3d_TModel::MakeSolid(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetTopoDS_Shape(), 1.0e-6);
-	//thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetTModel() = solid;
+	auto solid = AutLib::Cad3d_TModel::MakeSolid((dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_))->GetTopoDS_Shape(), 1.0e-6);
 
 	thePartTreeItems_.push_back
 	(FrgNew NihadVesselPartTreeItem
@@ -501,23 +649,6 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 		solid
 	)
 	);
-
-	//theNihadPartTreeItems_.at(theNihadPartTreeItems_.size() - 1)->theTreeItem_ =
-	//	FrgNew FrgBaseTreeItem(theLastRightClicked_->text(0), GetTreeItem("Parts"), GetParentMainWindow()->GetTree(), GetParentMainWindow());
-
-	//FrgSharedPtr<FrgBaseTreeItem> NihadPartTreeItem = thePartTreeItems_.at(thePartTreeItems_.size() - 1);
-
-	//thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetGeometryPointer() = GetGeometryTreeItem(theLastRightClicked_->shared_from_this());
-
-	//AddItemToTree(NihadPartTreeItem);
-
-	//thePartTreeItems_.at(thePartTreeItems_.size() - 1)->GetGeometryPointer()->GetPatch()->Perform();
-
-	//thePartsNamesList_ << NihadPartTreeItem->text(0);
-
-	//UpdateTree();
-
-	//GetParentMainWindow()->ParseInfoToConsole("\"" + NihadPartTreeItem->text(0) + "\" part successfully created.");
 }
 
 void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
@@ -546,25 +677,15 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	{
 		if (*ext == "IGES (*.igs)")
 		{
-			AutLib::Cad_Tools::ExportToIGES("M", ((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
-
-			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::IGES);
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
+			AutLib::Cad_Tools::ExportToIGES("MM", ((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{
 			AutLib::Cad_Tools::ExportToSTEP(((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
-
-			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::STEP);
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
 		}
 		else if (*ext == "Tecplot (*.plt)")
 		{
-			/*GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileName(fileName.toStdString());
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->SetFileFormat(AutLib::Leg_EntityIO_Format::TecPlot);
-			GetPartTreeItem(theLastRightClicked_->shared_from_this())->GetGeometryPointer()->GetPatch()->ExportToFile();*/
+
 		}
 	}
 
@@ -597,57 +718,41 @@ void ForgBaseLib::NihadTree::UpdateTree()
 			GetItems().at(i)->setExpanded(FrgTrue);
 	}
 	FrgBaseTreeItem* item = GetTreeItem("Scenes");
-
-	/*if (item)
-	{
-		for (int i = 0; i < item->childCount(); i++)
-		{
-			FrgBaseTreeItemProperties* itemProperties = ((FrgBaseTreeItem*)(item->child(i)))->GetProperties();
-			itemProperties->GetPropertyManager()->setAttribute(itemProperties->GetProperty("Parts List"), "flagNames", thePartsNamesList_);
-		}
-	}*/
 }
-
-//void ForgBaseLib::NihadTree::AddItemToTree(FrgBaseTreeItem* item)
-//{
-//	GetItems().push_back(item);
-//
-//	UpdateTree();
-//}
 
 void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> selectedItems)
 {
 	QList<NihadVesselPartTreeItem*> output;
-	for (int i = 0; i < thePartTreeItems_.size(); i++)
-	{
-		for (int j = 0; j < selectedItems.size(); j++)
-		{
-			if (thePartTreeItems_.at(i) == selectedItems.at(j))
-			{
-				output.push_back(thePartTreeItems_.at(i));
-			}
-		}
-	}
-	((NihadVesselScenePartTreeItem*)theLastLeftClicked_)->GetPartsPointer() = output;
 
-	((NihadVesselScenePartTreeItem*)theLastLeftClicked_)->RenderSceneSlot();
+	for (int i = 0; i < selectedItems.size(); i++)
+	{
+		output.push_back(dynamic_cast<NihadVesselPartTreeItem*>(selectedItems.at(i)));
+	}
+
+	(dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_))->GetPartsPointer() = output;
+
+	(dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_))->RenderSceneSlot();
 }
 
 void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 {
-	((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PerformToPreview();
-	auto shape = ((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()->PreviewEntity();
+	auto geometry = dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_);
+	geometry->GetEntity()->PerformToPreview();
+	auto shape = geometry->GetEntity()->PreviewEntity();
+	geometry->GetPointerToPreview() = FrgNew NihadVesselScenePreviewTreeItem(theLastRightClicked_->text(0) + " Preview", theLastRightClicked_);
+	geometry->GetContextMenu()->GetItem("Preview")->setDisabled(FrgTrue);
 
 
-	theSceneTreeItems_.push_back(FrgNew NihadVesselScenePreviewTreeItem(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Preview"), theLastRightClicked_));
-
-	NihadVesselScenePreviewTreeItem* NihadPreviewScene =
-		(NihadVesselScenePreviewTreeItem*)(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
-	NihadPreviewScene->DoAfterConstruct();
+	NihadVesselScenePreviewTreeItem* NihadPreviewScene = geometry->GetPointerToPreview();
 
 	NihadPreviewScene->GetEntitiesTriangulation() = AutLib::Cad_Tools::PreviewUnMergedPatchCurves(shape, NbSegments_U, NbSegments_V);
 
 	NihadPreviewScene->RenderSceneSlot();
+
+	NihadPreviewScene->Render();
+
+	GetParentMainWindow()->GetTabWidget()->addTab(NihadPreviewScene, NihadPreviewScene->text(0));
+	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(NihadPreviewScene);
 }
 
 void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
@@ -658,4 +763,18 @@ void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
 void ForgBaseLib::NihadTree::TabBarClickedSlot(int index)
 {
 	//scrollTo(this->indexFromItem((FrgBaseTreeItem*)(GetParentMainWindow()->GetTabWidget()->widget(index)), 0));
+}
+
+void ForgBaseLib::NihadTree::itemDoubleClickedSlot(QTreeWidgetItem* item, int column)
+{
+	if (dynamic_cast<FrgBaseCADScene*>(item))
+	{
+		auto& tab = GetParentMainWindow()->GetTabWidget();
+		tab->setCurrentIndex(tab->indexOf(dynamic_cast<FrgBaseCADScene*>(item)));
+	}
+	if (dynamic_cast<FrgBasePlot2D*>(item))
+	{
+		auto& tab = GetParentMainWindow()->GetTabWidget();
+		tab->setCurrentIndex(tab->indexOf(dynamic_cast<FrgBasePlot2D*>(item)));
+	}
 }

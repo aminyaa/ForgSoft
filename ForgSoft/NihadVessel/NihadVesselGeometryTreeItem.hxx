@@ -3,7 +3,6 @@
 #define _NihadVesselGeometryTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-//#include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADGeometry.hxx>
 
 namespace AutLib
@@ -15,10 +14,16 @@ class TopoDS_Shape;
 
 BeginFrgBaseLib
 
+class NihadVesselScenePreviewTreeItem;
+
 typedef AutLib::Leg_Model_Entity ModelEntity;
 
 class NihadVesselGeometryTreeItem : public FrgBaseCADGeometry<ModelEntity>
 {
+
+private:
+
+	NihadVesselScenePreviewTreeItem* thePointerToPreview_ = FrgNullPtr;
 
 public:
 
@@ -34,31 +39,12 @@ public:
 		FrgBaseTree* parentTree
 	);
 
+	~NihadVesselGeometryTreeItem();
+
 	const TopoDS_Shape& GetTopoDS_Shape();
+
+	FrgGetMacro(NihadVesselScenePreviewTreeItem*, PointerToPreview, thePointerToPreview_);
 };
-
-/*class NihadVesselGeometryTreeItem : public FrgBaseTreeItem
-{
-
-private:
-
-	FrgSharedPtr<ModelEntity> theEntity_ = FrgNullPtr;
-
-public:
-
-	NihadVesselGeometryTreeItem
-	(
-		const FrgString& title,
-		FrgBaseTreeItem* parent = FrgNullPtr,
-		FrgBaseTree* parentTree = FrgNullPtr,
-		FrgBaseMainWindow* parentMainwindow = FrgNullPtr
-	);
-
-	FrgGetMacro(FrgSharedPtr<AutLib::Leg_Model_Entity>, Entity, theEntity_);
-
-	const TopoDS_Shape& GetTopoDS_Shape();
-
-};*/
 
 EndFrgBaseLib
 

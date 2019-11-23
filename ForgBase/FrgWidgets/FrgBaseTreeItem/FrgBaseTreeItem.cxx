@@ -45,6 +45,21 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem
 	parentTree->GetItems().push_back(this);
 }
 
+ForgBaseLib::FrgBaseTreeItem::~FrgBaseTreeItem()
+{
+	if (theProperties_)
+	{
+		delete theProperties_;
+		theProperties_ = FrgNullPtr;
+	}
+
+	/*if (theContextMenu_)
+	{
+		delete theContextMenu_;
+		theContextMenu_ = FrgNullPtr;
+	}*/
+}
+
 void ForgBaseLib::FrgBaseTreeItem::CreateProperties()
 {
 	theProperties_ = FrgNew FrgBaseTreeItemProperties(this);

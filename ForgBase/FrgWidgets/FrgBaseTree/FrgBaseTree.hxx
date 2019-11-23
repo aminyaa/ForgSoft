@@ -15,6 +15,12 @@ struct FrgBaseTreeCache
 {
 	FrgBaseTreeItem* theLastLeftClicked_;
 	FrgBaseTreeItem* theLastRightClicked_;
+
+	~FrgBaseTreeCache()
+	{
+		FreePointer(theLastLeftClicked_);
+		FreePointer(theLastRightClicked_);
+	}
 };
 
 class FORGBASE_EXPORT FrgBaseTree 
@@ -26,7 +32,7 @@ class FORGBASE_EXPORT FrgBaseTree
 
 private:
 
-	FrgVector<FrgBaseTreeItem*> theItems_;
+	QList<FrgBaseTreeItem*> theItems_;
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
 	
 	void keyPressEvent(QKeyEvent* event);
@@ -35,7 +41,9 @@ public:
 
 	FrgBaseTree(FrgBaseMainWindow* parent = FrgNullPtr);
 
-	FrgGetMacro(FrgVector<FrgBaseTreeItem*>, Items, theItems_);
+	~FrgBaseTree();
+
+	FrgGetMacro(QList<FrgBaseTreeItem*>, Items, theItems_);
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
 
 	virtual void FormTree();
@@ -43,6 +51,7 @@ public:
 	void ClearTree();
 
 	FrgBaseTreeItem* GetTreeItem(const FrgString& title);
+	FrgBaseTreeItem*& GetTreeItemFromList(FrgBaseTreeItem* item);
 
 protected Q_SLOTS:
 
@@ -55,6 +64,8 @@ public Q_SLOTS:
 	void onCustomContextMenuRequested(const QPoint& pos);
 
 	void showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos);
+
+	void DeleteTreeItemSlot(bool);
 };
 
 EndFrgBaseLib

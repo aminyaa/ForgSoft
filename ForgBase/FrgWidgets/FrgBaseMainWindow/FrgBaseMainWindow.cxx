@@ -40,6 +40,43 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	SetMainWindowStyleSheet();
 
 	InitFrgMainWindow();
+
+	FrgBaseMenu* EditMenu = new FrgBaseMenu("Edit", this);
+	EditMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* ToolsMenu = new FrgBaseMenu("Tools", this);
+	ToolsMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* ModelsMenu = new FrgBaseMenu("Models", this);
+	ModelsMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* WindowMenu = new FrgBaseMenu("Window", this);
+	WindowMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* HelpMenu = new FrgBaseMenu("Help", this);
+	HelpMenu->GetToolBar()->setHidden(true);
+
+	this->menuBar()->addMenu(EditMenu);
+	this->menuBar()->addMenu(ToolsMenu);
+	this->menuBar()->addMenu(ModelsMenu);
+	this->menuBar()->addMenu(WindowMenu);
+	this->menuBar()->addMenu(HelpMenu);
+
+	QAction* shipAction = new QAction(QIcon(":/Icons/Models/Ship.png"), "New Ship");
+	QAction* propellerAction = new QAction(QIcon(":/Icons/Models/Propeller.png"), "New Propeller");
+	QAction* ductAction = new QAction(QIcon(":/Icons/Models/Duct.png"), "New Duct");
+
+	QToolBar* ModelsToolbar = new QToolBar();
+	ModelsToolbar->addAction(shipAction);
+	ModelsToolbar->addAction(propellerAction);
+	ModelsToolbar->addAction(ductAction);
+
+	this->addToolBar(ModelsToolbar);
+}
+
+ForgBaseLib::FrgBaseMainWindow::~FrgBaseMainWindow()
+{
+	FreePointer(theTreeWidget_);
+	FreePointer(theFileMenu_);
+	FreePointer(theConsoleWidget_);
+	FreePointer(thePropertyWidget_);
+	FreePointer(theTabWidget_);
 }
 
 void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()

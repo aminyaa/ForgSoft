@@ -18,27 +18,8 @@ BeginFrgBaseLib
 class FrgBaseMenu;
 class NihadVesselGeometryTreeItem;
 class NihadVesselPartTreeItem;
-//class FrgBaseSceneTreeItem;
 class FrgBaseCADScene;
 class FrgBasePlot2D;
-
-//struct NihadGeometryTreeItemStruct
-//{
-//	FrgBaseTreeItem* theTreeItem_ = FrgNullPtr;
-//	AutLib::Leg_Nihad2_HullPatch* thePatch_ = FrgNullPtr;
-//};
-
-//struct NihadPartTreeItemStruct
-//{
-//	FrgBaseTreeItem* theTreeItem_ = FrgNullPtr;
-//	NihadVesselGeometryTreeItem* theGeometryPointer_ = FrgNullPtr;
-//};
-
-//struct NihadSceneTreeItemStruct
-//{
-//	NihadVesselSceneTreeItem* theTreeItem_ = FrgNullPtr;
-//	NihadVesselPartTreeItem* thePartPointer_ = FrgNullPtr;
-//};
 
 class NihadTree : public FrgBaseTree
 {
@@ -72,6 +53,7 @@ public slots:
 
 	void NewGeometryNihadClickedSlot(bool b);
 	void NewGeometryPropellerClickedSlot(bool b);
+	void NewGeometryDuctClickedSlot(bool b);
 
 	void NewSceneClickedSlot(bool b);
 
@@ -89,9 +71,9 @@ public slots:
 
 	void TabBarClickedSlot(int index);
 
-private:
+	void itemDoubleClickedSlot(QTreeWidgetItem*, int);
 
-	//void AddItemToTree(FrgBaseTreeItem* item);
+private:
 
 	void UpdateTree();
 

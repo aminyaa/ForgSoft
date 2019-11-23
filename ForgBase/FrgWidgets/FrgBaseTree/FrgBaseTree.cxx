@@ -7,6 +7,7 @@
 #include <QtWidgets/QDockWidget>
 #include <FrgBaseMenu.hxx>
 #include <QKeyEvent>
+#include <QtCore/QMutableListIterator>
 
 ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	: QTreeWidget(parent)
@@ -54,6 +55,11 @@ ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	connect(this,
 		SIGNAL(customContextMenuRequested(const QPoint&)),
 		SLOT(onCustomContextMenuRequested(const QPoint&)));
+}
+
+ForgBaseLib::FrgBaseTree::~FrgBaseTree()
+{
+	FreeVectorOfPointers(theItems_);
 }
 
 void ForgBaseLib::FrgBaseTree::FormTree()
@@ -157,10 +163,10 @@ void ForgBaseLib::FrgBaseTree::itemClickedSlot(QTreeWidgetItem* item, int column
 {
 	if (theParentMainWindow_->GetPropertyWidget())
 	{
-		theParentMainWindow_->GetPropertyWidget()->theProperty_ = ((FrgBaseTreeItem*)item)->GetProperties()->GetPropertyBrowser();
-		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget(((FrgBaseTreeItem*)item)->GetProperties()->GetPropertyBrowser());
+		theParentMainWindow_->GetPropertyWidget()->theProperty_ = (dynamic_cast<FrgBaseTreeItem*>(item))->GetProperties()->GetPropertyBrowser();
+		theParentMainWindow_->GetPropertyWidget()->theDockWidget_->setWidget((dynamic_cast<FrgBaseTreeItem*>(item))->GetProperties()->GetPropertyBrowser());
 
-		theLastLeftClicked_ = (FrgBaseTreeItem*)item;
+		theLastLeftClicked_ = dynamic_cast<FrgBaseTreeItem*>(item);
 	}
 }
 
@@ -182,7 +188,7 @@ ForgBaseLib::FrgBaseTreeItem* ForgBaseLib::FrgBaseTree::GetTreeItem(const FrgStr
 
 void ForgBaseLib::FrgBaseTree::onCustomContextMenuRequested(const QPoint& pos)
 {
-	FrgBaseTreeItem* item = (ForgBaseLib::FrgBaseTreeItem*) this->itemAt(pos);
+	FrgBaseTreeItem* item = dynamic_cast<FrgBaseTreeItem*>(this->itemAt(pos));
 
 	if (item)
 	{
@@ -194,6 +200,35 @@ void ForgBaseLib::FrgBaseTree::onCustomContextMenuRequested(const QPoint& pos)
 
 void ForgBaseLib::FrgBaseTree::showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos)
 {
-	theLastRightClicked_ = item;
-	item->GetContextMenu()->exec(globalPos);
+	if (item)
+	{
+		theLastRightClicked_ = item;
+		if(item->GetContextMenu())
+			item->GetContextMenu()->exec(globalPos);
+	}
+}
+
+void ForgBaseLib::FrgBaseTree::DeleteTreeItemSlot(bool)
+{
+	FrgBaseTreeItem* tmpItem = this->GetTreeItemFromList(theLastRightClicked_);
+	if (tmpItem)
+		theItems_.removeOne(tmpItem);
+
+	FreePointer(theLastRightClicked_);
+	theLastLeftClicked_ = FrgNullPtr;
+}
+
+ForgBaseLib::FrgBaseTreeItem*& ForgBaseLib::FrgBaseTree::GetTreeItemFromList(FrgBaseTreeItem* item)
+{
+	FrgBaseTreeItem* output;
+	for (int i = 0; i < theItems_.size(); i++)
+	{
+		if (theItems_.at(i) == item)
+		{
+			output = theItems_.at(i);
+			break;
+		}
+	}
+
+	return output;
 }

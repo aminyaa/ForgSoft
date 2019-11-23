@@ -1,5 +1,15 @@
-#include "FrgBaseCADPartFeatures.hxx"
 #pragma once
+//#include <FrgBaseCADPartFeatures.hxx>
+
+//ForgBaseLib::CADPartFeatureBase::CADPartFeatureBase
+//(
+//	const FrgString& title,
+//	FrgBaseTreeItem* parentItem
+//)
+//	: FrgBaseTreeItem(title, parentItem, parentItem->GetParentTree(), parentItem->GetParentMainWindow())
+//{
+//
+//}
 
 template<class Entity>
 inline ForgBaseLib::FrgBaseCADPartFeatureEntity<Entity>::FrgBaseCADPartFeatureEntity
@@ -7,7 +17,7 @@ inline ForgBaseLib::FrgBaseCADPartFeatureEntity<Entity>::FrgBaseCADPartFeatureEn
 	const FrgString& title,
 	FrgBaseTreeItem* parentItem
 )
-	: FrgBaseTreeItem(title, parentItem, parentItem->GetParentTree(), parentItem->GetParentMainWindow())
+	: FrgBaseCADPartFeatureBase(title, parentItem)
 {
 
 }
@@ -23,6 +33,12 @@ inline ForgBaseLib::FrgBaseCADPartFeaturesEntity<Entity>::FrgBaseCADPartFeatures
 
 }
 
+template<class Entity>
+inline ForgBaseLib::FrgBaseCADPartFeaturesEntity<Entity>::~FrgBaseCADPartFeaturesEntity()
+{
+	FreeVectorOfPointers(theFeatureEntities_);
+}
+
 template<class SurfaceEntity, class CurveEntity>
 inline ForgBaseLib::FrgBaseCADPartFeatures<SurfaceEntity, CurveEntity>::FrgBaseCADPartFeatures
 (
@@ -32,4 +48,11 @@ inline ForgBaseLib::FrgBaseCADPartFeatures<SurfaceEntity, CurveEntity>::FrgBaseC
 {
 	theSurfacesEntity_ = FrgNew FrgBaseCADPartFeaturesEntity<SurfaceEntity>("Surfaces", parentItem);
 	theCurvesEntity_ = FrgNew FrgBaseCADPartFeaturesEntity<CurveEntity>("Curves", parentItem);
+}
+
+template<class SurfaceEntity, class CurveEntity>
+inline ForgBaseLib::FrgBaseCADPartFeatures<SurfaceEntity, CurveEntity>::~FrgBaseCADPartFeatures()
+{
+	FreePointer(theSurfacesEntity_);
+	FreePointer(theCurvesEntity_);
 }

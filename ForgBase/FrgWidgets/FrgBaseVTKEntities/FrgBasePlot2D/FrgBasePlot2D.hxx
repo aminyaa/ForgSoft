@@ -11,6 +11,7 @@
 class vtkTable;
 class vtkContextView;
 class vtkFloatArray;
+class vtkChartXY;
 
 BeginFrgBaseLib
 
@@ -20,11 +21,11 @@ class FORGBASE_EXPORT FrgBasePlot2D : public QVTKOpenGLNativeWidget, public FrgB
 	Q_OBJECT
 
 private:
-
-	vtkSmartPointer<vtkTable> theTable_;
 	vtkSmartPointer<vtkContextView> theView_;
-
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> theRenderWindow_;
+	QList<vtkSmartPointer<vtkTable>> theTables_;
+
+	vtkSmartPointer<vtkChartXY> theChart_;
 
 public:
 
@@ -36,7 +37,16 @@ public:
 		FrgBaseMainWindow* parentMainWindow = FrgNullPtr
 	);
 
+	void AddChart(QList<double>& x, QList<double>& y, FrgString xTitle = "x", FrgString yTitle = "y");
+
+	FrgGetMacro(QList<vtkSmartPointer<vtkTable>>, Tables, theTables_);
+
 	//void AddColumn(vtkSmartPointer<vtkFloatArray> array);
+
+public slots:
+
+	void NewSineClickedSlot(bool);
+	void NewCosineClickedSlot(bool);
 
 
 };

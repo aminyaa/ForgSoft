@@ -28,7 +28,7 @@ ForgBaseLib::NihadVesselScenePreviewTreeItem::NihadVesselScenePreviewTreeItem
 )
 	: NihadVesselScenePartTreeItem(title, parent, FrgFalse)
 {
-	
+	NihadVesselScenePartTreeItem::DoAfterConstruct();
 }
 
 void ForgBaseLib::NihadVesselScenePreviewTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
@@ -106,14 +106,6 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 		actor->GetProperty()->EdgeVisibilityOn();
 		actor->GetProperty()->SetLineWidth(2.0);
 
-		/*if (GetRenderer()->GetActors()->GetNumberOfItems() != 0)
-		{
-			GetRenderer()->RemoveActor(GetActors().at(0));
-			GetActors().removeAt(0);
-		}*/
-
-		/*GetActors().insert(0, actor);
-		GetActors().at(0)->SetMapper(HullMapper);*/
 		actor->SetMapper(HullMapper);
 		actors.push_back(actor);
 
@@ -129,17 +121,6 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 		GetRenderer()->RemoveActor(thePreviewActors_.at(i));
 	}
 
-	/*for (int iPreviewActor = 0; iPreviewActor < thePreviewActors_.size(); iPreviewActor++)
-	{
-		GetParentMainWindow()->ParseInfoToConsole("index = " + FrgString::number(GetActors().indexOf(thePreviewActors_.at(iPreviewActor))));
-		GetActors().removeAt(GetActors().indexOf(thePreviewActors_.at(iPreviewActor)));
-	}*/
-
-	/*for (int iPreviewActor = 0; iPreviewActor < thePreviewActors_.size(); iPreviewActor++)
-	{
-		GetActors().push_back(thePreviewActors_.at(iPreviewActor));
-	}*/
-
 	thePreviewActors_ = actors;
 
 	for (int i = 0; i < thePreviewActors_.size(); i++)
@@ -150,24 +131,9 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 
 void ForgBaseLib::NihadVesselScenePreviewTreeItem::RenderSceneSlot()
 {
-	static int i = 0;
-	//StartScene();
-
 	CreateActor();
 
 	GetLogoActor()->SetInput("Tonb");
-	if (i == 0)
-	{
-		Render();
 
-		GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
-		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(this);
-		i++;
-	}
-	else
-	{
-		//GetRenderer()->ResetCamera();
-		GetRenderer()->ResetCameraClippingRange();
-		GetRenderWindow()->Render();
-	}
+	GetRenderWindow()->Render();
 }

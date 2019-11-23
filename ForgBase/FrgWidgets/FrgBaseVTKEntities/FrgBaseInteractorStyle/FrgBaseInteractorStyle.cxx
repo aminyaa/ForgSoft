@@ -1,6 +1,8 @@
 #include <FrgBaseInteractorStyle.hxx>
 //#include <FrgBaseSceneTreeItem.hxx>
 #include <FrgBaseCADScene.hxx>
+#include <FrgBaseTree.hxx>
+#include <FrgBaseCADPartFeatures.hxx>
 
 #include <QtGui/QColor>
 
@@ -14,6 +16,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkAssemblyPath.h>
 #include <vtkPropPicker.h>
+#include<vtkCamera.h>
 
 QColor ForgBaseLib::FrgBaseInteractorStyle::GeometryColorRGB = QColor(0.753 * 255, 0.753 * 255, 0.753 * 255);
 QColor ForgBaseLib::FrgBaseInteractorStyle::GeometrySelectedColorRGB = QColor(1.0 * 255, 0.0 * 255, 1.0 * 255);
@@ -118,52 +121,58 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnLeftButtonUp()
 			vtkSmartPointer<vtkPropPicker>::New();
 		picker->Pick(clickPos[0], clickPos[1], 0, this->CurrentRenderer);
 
-		for (int i = 0; i < theSelectedActors_.size(); i++)
-		{
-			// If we picked something before, reset its property
-			if (this->theSelectedActors_[i]->theActor_)
-			{
-				this->theSelectedActors_[i]->theActor_->GetProperty()->DeepCopy(this->theSelectedActors_[i]->theProperty_);
-			}
-		}
+		//for (int i = 0; i < theSelectedActors_.size(); i++)
+		//{
+		//	// If we picked something before, reset its property
+		//	if (this->theSelectedActors_[i]->theActor_)
+		//	{
+		//		this->theSelectedActors_[i]->theActor_->GetProperty()->DeepCopy(this->theSelectedActors_[i]->theProperty_);
+		//	}
+		//}
 
-		SetGeometriesOpacity(0.5);
+		//SetGeometriesOpacity(0.5);
 
-		if (picker->GetActor())
-		{
-			if (this->Interactor->GetControlKey())
-				AddActorToSelectedActors(picker->GetActor());
-			else
-			{
-				theSelectedActors_.clear();
-				AddActorToSelectedActors(picker->GetActor());
-			}
-		}
+		SelectActor(picker->GetActor(), this->Interactor->GetControlKey());
 
-		else
-		{
-			theSelectedActors_.clear();
-			SetGeometriesOpacity(1.0);
-		}
+		//if (picker->GetActor())
+		//{
+		//	/*std::vector<vtkActor*> actors;
+		//	actors.push_back(picker->GetActor());
+		//	SelectActors(actors, this->Interactor->GetControlKey());*/
 
-		for (int i = 0; i < theSelectedActors_.size(); i++)
-		{
-			if (this->theSelectedActors_[i]->theActor_)
-			{
-				// Save the property of the picked actor so that we can restore it next time
-				this->theSelectedActors_[i]->theProperty_->DeepCopy(this->theSelectedActors_[i]->theActor_->GetProperty());
-				// Highlight the picked actor by changing its properties
-				this->theSelectedActors_[i]->theActor_->GetProperty()->SetColor
-				(GeometrySelectedColorRGB.redF(), GeometrySelectedColorRGB.greenF(), GeometrySelectedColorRGB.blueF());
-				this->theSelectedActors_[i]->theActor_->GetProperty()->SetDiffuse(1.0);
-				this->theSelectedActors_[i]->theActor_->GetProperty()->SetSpecular(0.0);
-				//this->theSelectedActors_[i]->theActor_->GetProperty()->EdgeVisibilityOn();
+		//	//SelectActor(picker->GetActor(), this->Interactor->GetControlKey());
 
-				theSelectedActors_[i]->theActor_->GetProperty()->SetOpacity(1.0);
-			}
-		}
+		//	/*if (this->Interactor->GetControlKey())
+		//		AddActorToSelectedActors(picker->GetActor());
+		//	else
+		//	{
+		//		theSelectedActors_.clear();
+		//		AddActorToSelectedActors(picker->GetActor());
+		//	}*/
+		//}
 
-		this->Interactor->Render();
+		//else
+		//{
+		//	theSelectedActors_.clear();
+		//	SetGeometriesOpacity(1.0);
+		//}
+
+		//for (int i = 0; i < theSelectedActors_.size(); i++)
+		//{
+		//	if (this->theSelectedActors_[i]->theActor_)
+		//	{
+		//		// Save the property of the picked actor so that we can restore it next time
+		//		this->theSelectedActors_[i]->theProperty_->DeepCopy(this->theSelectedActors_[i]->theActor_->GetProperty());
+		//		// Highlight the picked actor by changing its properties
+		//		this->theSelectedActors_[i]->theActor_->GetProperty()->SetColor
+		//		(GeometrySelectedColorRGB.redF(), GeometrySelectedColorRGB.greenF(), GeometrySelectedColorRGB.blueF());
+		//		this->theSelectedActors_[i]->theActor_->GetProperty()->SetDiffuse(1.0);
+		//		this->theSelectedActors_[i]->theActor_->GetProperty()->SetSpecular(0.0);
+		//		//this->theSelectedActors_[i]->theActor_->GetProperty()->EdgeVisibilityOn();
+
+		//		theSelectedActors_[i]->theActor_->GetProperty()->SetOpacity(1.0);
+		//	}
+		//}
 
 		vtkInteractorStyleTrackballCamera::OnLeftButtonUp();
 
@@ -246,62 +255,223 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnChar()
 	}
 
 	// Handle w key
-	if (key == "w" || key == "W")
+	if (key == "m" || key == "M")
 	{
-		vtkRenderWindowInteractor* rwi = this->Interactor;
-		vtkActorCollection* ac;
-		vtkActor* anActor, * aPart;
-		vtkAssemblyPath* path;
-		this->FindPokedRenderer(rwi->GetEventPosition()[0],
-			rwi->GetEventPosition()[1]);
-		if (this->CurrentRenderer != nullptr)
+		static int iForM = 1;
+
+		if (iForM == 1)
 		{
-			ac = this->CurrentRenderer->GetActors();
-			vtkCollectionSimpleIterator ait;
-			for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
+			vtkRenderWindowInteractor* rwi = this->Interactor;
+			vtkActorCollection* ac;
+			vtkActor* anActor, * aPart;
+			vtkAssemblyPath* path;
+			this->FindPokedRenderer(rwi->GetEventPosition()[0],
+				rwi->GetEventPosition()[1]);
+			if (this->CurrentRenderer != nullptr)
 			{
-				for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
+				ac = this->CurrentRenderer->GetActors();
+				vtkCollectionSimpleIterator ait;
+				for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
 				{
-					aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
-					//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
-					aPart->GetProperty()->EdgeVisibilityOn();
+					for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
+					{
+						aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
+						//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
+						aPart->GetProperty()->EdgeVisibilityOn();
+					}
 				}
 			}
+			else
+			{
+				vtkWarningMacro(<< "no current renderer on the interactor style.");
+			}
+			rwi->Render();
 		}
-		else
+		else if (iForM == -1)
 		{
-			vtkWarningMacro(<< "no current renderer on the interactor style.");
+			vtkRenderWindowInteractor* rwi = this->Interactor;
+			vtkActorCollection* ac;
+			vtkActor* anActor, * aPart;
+			vtkAssemblyPath* path;
+			this->FindPokedRenderer(rwi->GetEventPosition()[0],
+				rwi->GetEventPosition()[1]);
+			if (this->CurrentRenderer != nullptr)
+			{
+				ac = this->CurrentRenderer->GetActors();
+				vtkCollectionSimpleIterator ait;
+				for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
+				{
+					for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
+					{
+						aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
+						//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
+						aPart->GetProperty()->EdgeVisibilityOff();
+					}
+				}
+			}
+			else
+			{
+				vtkWarningMacro(<< "no current renderer on the interactor style.");
+			}
+			rwi->Render();
 		}
-		rwi->Render();
+
+		iForM *= -1;
 	}
 
 	if (key == "s" || key == "S")
 	{
-		vtkRenderWindowInteractor* rwi = this->Interactor;
-		vtkActorCollection* ac;
-		vtkActor* anActor, * aPart;
-		vtkAssemblyPath* path;
-		this->FindPokedRenderer(rwi->GetEventPosition()[0],
-			rwi->GetEventPosition()[1]);
-		if (this->CurrentRenderer != nullptr)
-		{
-			ac = this->CurrentRenderer->GetActors();
-			vtkCollectionSimpleIterator ait;
-			for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
-			{
-				for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
-				{
-					aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
-					//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
-					aPart->GetProperty()->EdgeVisibilityOff();
-				}
-			}
-		}
-		else
-		{
-			vtkWarningMacro(<< "no current renderer on the interactor style.");
-		}
-		rwi->Render();
+		auto camera = GetParentScene()->GetFrgBaseCamera();
+
+		static int iPosForS = 1;
+
+		camera->SetPosition(0, iPosForS, 0);
+		camera->SetFocalPoint(0, 0, 0);
+		camera->SetViewUp(0, 0, 1);
+		camera->Azimuth(-180);
+
+		iPosForS *= -1;
+
+		const auto& bounds = GetParentScene()->GetRenderer()->ComputeVisiblePropBounds();
+		std::cout << "xmin = " << bounds[0] << ", xmax = " << bounds[1] << ", ymin = " << bounds[2] << ", ymax = " << bounds[3] << ", zmin = " << bounds[4] << ", zmax = " << bounds[5] << std::endl;
+
+		GetParentScene()->GetRenderer()->ResetCamera(GetParentScene()->GetRenderer()->ComputeVisiblePropBounds());
+		GetParentScene()->GetRenderer()->ResetCameraClippingRange(GetParentScene()->GetRenderer()->ComputeVisiblePropBounds());
+		GetParentScene()->GetRenderWindow()->Render();
 	}
 
+	if (key == "f" || key == "F")
+	{
+		auto camera = GetParentScene()->GetFrgBaseCamera();
+
+		static int iPosForS = 1;
+
+		camera->SetPosition(iPosForS, 0, 0);
+		camera->SetFocalPoint(0, 0, 0);
+		camera->SetViewUp(0, 0, 1);
+		camera->Azimuth(-180);
+
+		iPosForS *= -1;
+
+		GetParentScene()->GetRenderer()->ResetCamera();
+		GetParentScene()->GetRenderWindow()->Render();
+	}
+
+	if (key == "t" || key == "T")
+	{
+		auto camera = GetParentScene()->GetFrgBaseCamera();
+
+		static int iPosForT = -1;
+
+		camera->SetPosition(0, 0, iPosForT);
+		camera->SetFocalPoint(0, 0, 0);
+		camera->SetViewUp(0, -iPosForT, 0);
+		camera->Azimuth(-180);
+
+		iPosForT *= -1;
+
+		GetParentScene()->GetRenderer()->ResetCamera();
+		GetParentScene()->GetRenderWindow()->Render();
+	}
+
+	if (key == "p" || key == "P")
+	{
+		auto camera = GetParentScene()->GetFrgBaseCamera();
+
+		static int iForP = 1;
+		if (iForP == 1)
+			camera->ParallelProjectionOn();
+		else if (iForP == -1)
+			camera->ParallelProjectionOff();
+
+		GetParentScene()->GetRenderWindow()->Render();
+		iForP *= -1;
+	}
+
+	if (key == "d" || key == "D")
+	{
+		auto camera = GetParentScene()->GetFrgBaseCamera();
+
+		camera->Yaw(5.0);
+		GetParentScene()->GetRenderer()->ResetCamera();
+		GetParentScene()->GetRenderWindow()->Render();
+	}
+
+	if (key == "a" || key == "A")
+	{
+		auto camera = GetParentScene()->GetFrgBaseCamera();
+
+		camera->Yaw(-5.0);
+		GetParentScene()->GetRenderer()->ResetCamera();
+		GetParentScene()->GetRenderWindow()->Render();
+	}
+
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree)
+{
+	if(!isFromTree)
+		theParent_->GetParentTree()->clearSelection();
+
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		// If we picked something before, reset its property
+		if (this->theSelectedActors_[i]->theActor_)
+		{
+			this->theSelectedActors_[i]->theActor_->GetProperty()->DeepCopy(this->theSelectedActors_[i]->theProperty_);
+		}
+	}
+
+	if (actor == FrgNullPtr && !isControlKeyPressed)
+	{
+		for (int i = 0; i < theParent_->GetActors().size(); i++)
+		{
+			theParent_->GetActors()[i]->GetProperty()->SetOpacity(1.0);
+		}
+		theSelectedActors_.clear();
+
+		return;
+	}
+
+	if (!isControlKeyPressed)
+	{
+		theSelectedActors_.clear();
+		AddActorToSelectedActors(actor);
+	}
+	else
+	{
+		AddActorToSelectedActors(actor);
+	}
+
+	for (int i = 0; i < theParent_->GetActors().size(); i++)
+	{
+		theParent_->GetActors().at(i)->GetProperty()->SetOpacity(0.5);
+	}
+
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		if (this->theSelectedActors_[i]->theActor_)
+		{
+			// Save the property of the picked actor so that we can restore it next time
+			this->theSelectedActors_[i]->theProperty_->DeepCopy(this->theSelectedActors_[i]->theActor_->GetProperty());
+			// Highlight the picked actor by changing its properties
+			this->theSelectedActors_[i]->theActor_->GetProperty()->SetColor
+			(GeometrySelectedColorRGB.redF(), GeometrySelectedColorRGB.greenF(), GeometrySelectedColorRGB.blueF());
+			this->theSelectedActors_[i]->theActor_->GetProperty()->SetDiffuse(1.0);
+			this->theSelectedActors_[i]->theActor_->GetProperty()->SetSpecular(0.0);
+			//this->theSelectedActors_[i]->theActor_->GetProperty()->EdgeVisibilityOn();
+
+			theSelectedActors_[i]->theActor_->GetProperty()->SetOpacity(1.0);
+		}
+
+		if (!isFromTree)
+		{
+			theParent_->GetParentTree()->scrollToItem(theParent_->GetActorToPartFeature().value(theSelectedActors_[i]->theActor_));
+			theParent_->GetParentTree()->setItemSelected(theParent_->GetActorToPartFeature().value(theSelectedActors_[i]->theActor_), true);
+			//theParent_->GetParentTree()->setCurrentItem(theParent_->GetActorToPartFeature().value(theSelectedActors_[i]->theActor_));
+			theParent_->GetParentTree()->setFocus();
+		}
+	}
+
+	this->Interactor->Render();
 }

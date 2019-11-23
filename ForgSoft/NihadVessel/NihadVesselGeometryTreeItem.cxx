@@ -21,6 +21,11 @@ ForgBaseLib::NihadVesselGeometryTreeItem::NihadVesselGeometryTreeItem
 {
 }
 
+ForgBaseLib::NihadVesselGeometryTreeItem::~NihadVesselGeometryTreeItem()
+{
+
+}
+
 const TopoDS_Shape& ForgBaseLib::NihadVesselGeometryTreeItem::GetTopoDS_Shape()
 {
 	return GetEntity()->Entity();

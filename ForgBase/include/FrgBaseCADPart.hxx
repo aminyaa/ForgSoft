@@ -17,7 +17,7 @@ private:
 
 	std::vector<std::shared_ptr<SurfaceEntity>> theSurfaces_;
 	std::vector<std::shared_ptr<CurveEntity>> theCurves_;
-	FrgBaseCADPartFeatures<SurfaceEntity, CurveEntity>* theFeatures_ = FrgNullPtr;
+	CADPartFeatures* theFeatures_ = FrgNullPtr;
 
 public:
 
@@ -48,6 +48,8 @@ public:
 		std::vector<std::shared_ptr<SurfaceEntity>> surfaces,
 		std::vector<std::shared_ptr<CurveEntity>> curves
 	);
+
+	~FrgBaseCADPart();
 
 	virtual void DoAfterConstruct() override;
 

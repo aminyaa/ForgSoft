@@ -2,6 +2,7 @@
 
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTabWidget.hxx>
+#include <FrgBaseMenu.hxx>
 
 #include <vtkRenderer.h>
 #include <vtkRenderWindowInteractor.h>
@@ -18,8 +19,12 @@
 #include <vtkTextProperty.h>
 #include <vtkAxis.h>
 #include <vtkGenericOpenGLRenderWindow.h>
+#include <vtkContextMouseEvent.h>
+#include<vtkPlotPoints.h>
 
 #include <vtkAutoInit.h>
+
+#include <time.h>
 
 VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
 VTK_MODULE_INIT(vtkRenderingOpenGL2)
@@ -35,88 +40,124 @@ ForgBaseLib::FrgBasePlot2D::FrgBasePlot2D
 )
 	: FrgBaseTreeItem(itemName, parentItem, parentTree, parentMainWindow)
 {
-	// Create a table with some points in it
-	theTable_ =	vtkSmartPointer<vtkTable>::New();
-
-	vtkSmartPointer<vtkFloatArray> arrX =
-		vtkSmartPointer<vtkFloatArray>::New();
-	arrX->SetName("X Axis");
-	theTable_->AddColumn(arrX);
-
-	vtkSmartPointer<vtkFloatArray> arrC =
-		vtkSmartPointer<vtkFloatArray>::New();
-	arrC->SetName("Cosine");
-	theTable_->AddColumn(arrC);
-
-	vtkSmartPointer<vtkFloatArray> arrS =
-		vtkSmartPointer<vtkFloatArray>::New();
-	arrS->SetName("Sine");
-	theTable_->AddColumn(arrS);
-
-	// Fill in the table with some example values
-	int numPoints = 69;
-	float inc = 7.5 / ((float)numPoints - 1);
-	theTable_->SetNumberOfRows(numPoints);
-	for (int i = 0; i < numPoints; ++i)
-	{
-		theTable_->SetValue(i, 0, i * inc);
-		theTable_->SetValue(i, 1, cos(i * inc));
-		theTable_->SetValue(i, 2, sin(i * inc));
-	}
-
 	// Set up the view
 	theView_ = vtkSmartPointer<vtkContextView>::New();
 	theView_->GetRenderer()->SetBackground(1.0, 1.0, 1.0);
 
+	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+
+	this->SetRenderWindow(theRenderWindow_);
+
+	theView_->SetRenderWindow(theRenderWindow_);
+
+	theView_->GetInteractor()->Initialize();
+	theView_->Render();
+
+	GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
+
+	FrgString NewString = "New Sin(x)";
+	GetContextMenu()->AddItem(NewString);
+	connect(GetContextMenu()->GetItem(NewString), SIGNAL(triggered(bool)), this, SLOT(NewSineClickedSlot(bool)));
+
+	NewString = "New Cos(x)";
+	GetContextMenu()->AddItem(NewString);
+	connect(GetContextMenu()->GetItem(NewString), SIGNAL(triggered(bool)), this, SLOT(NewCosineClickedSlot(bool)));
+}
+
+void ForgBaseLib::FrgBasePlot2D::AddChart(QList<double>& x, QList<double>& y, FrgString xTitle, FrgString yTitle)
+{
+	theTables_.push_back(vtkSmartPointer<vtkTable>::New());
+	auto& table = theTables_.last();
+
+	vtkSmartPointer<vtkFloatArray> arrX =
+		vtkSmartPointer<vtkFloatArray>::New();
+	arrX->SetName(xTitle.toStdString().c_str());
+	table->AddColumn(arrX);
+
+	vtkSmartPointer<vtkFloatArray> arrY =
+		vtkSmartPointer<vtkFloatArray>::New();
+	arrY->SetName(yTitle.toStdString().c_str());
+	table->AddColumn(arrY);
+
+	table->SetNumberOfRows(x.size());
+	for (int i = 0; i < x.size(); i++)
+	{
+		table->SetValue(i, 0, x.at(i));
+		table->SetValue(i, 1, y.at(i));
+	}
+
 	// Add multiple line plots, setting the colors etc
-	vtkSmartPointer<vtkChartXY> chart =
-		vtkSmartPointer<vtkChartXY>::New();
+	if (theChart_ == FrgNullPtr)
+		theChart_ = vtkSmartPointer<vtkChartXY>::New();
 
-	chart->SetShowLegend(true);
-	chart->GetLegend()->SetInline(false);
-	chart->GetLegend()->GetLabelProperties()->SetFontFamilyToTimes();
+	theChart_->SetShowLegend(true);
+	theChart_->GetLegend()->SetInline(false);
+	theChart_->GetLegend()->GetLabelProperties()->SetFontFamilyToTimes();
+	//theChart_->GetAxis(vtkAxis::BOTTOM)->SetTitle("x");
 
-	theView_->GetScene()->AddItem(chart);
-	vtkPlot *line = chart->AddPlot(vtkChart::LINE);
-	line->SetInputData(theTable_, 0, 1);
-	line->SetColor(0, 255, 0, 255);
+	theView_->GetScene()->AddItem(theChart_);
+	vtkPlot* line = theChart_->AddPlot(vtkChart::LINE);
+
+	int high = 255;
+	int low = 0;
+
+	line->SetInputData(table, 0, 1);
+
+	std::srand(time(NULL));
+	int rand0 = low + int((high - low + 1) * rand() / int(RAND_MAX + 1.0));
+	int rand1 = low + int((high - low + 1) * rand() / int(RAND_MAX + 1.0));
+	int rand2 = low + int((high - low + 1) * rand() / int(RAND_MAX + 1.0));
+
+	line->SetColor(rand0, rand1, rand2, 255);
 	line->SetWidth(1.0);
 	line->SetTooltipLabelFormat("%l: (%x, %y)");
 	line->GetXAxis()->GetLabelProperties()->SetFontFamilyToTimes();
 	line->GetXAxis()->GetLabelProperties()->BoldOn();
 	line->GetXAxis()->GetLabelProperties()->SetFontSize(15);
-	line = chart->AddPlot(vtkChart::LINE);
-	line->SetInputData(theTable_, 0, 2);
-	line->SetColor(255, 0, 0, 255);
-	line->SetWidth(5.0);
+	line->GetPen()->SetLineType(vtkPen::SOLID_LINE);
 
-	// For dotted line, the line type can be from 2 to 5 for different dash/dot
-	// patterns (see enum in vtkPen containing DASH_LINE, value 2):
-#ifndef WIN32
-	line->GetPen()->SetLineType(vtkPen::DASH_LINE);
-#endif
-	// (ifdef-ed out on Windows because DASH_LINE does not work on Windows
-	//  machines with built-in Intel HD graphics card...)
+	//dynamic_cast<vtkPlotPoints*>(line)->SetMarkerStyle(vtkPlotPoints::SQUARE);
 
-	//view->GetRenderWindow()->SetMultiSamples(0);
+	theChart_->SetActionToButton(vtkChart::PAN, vtkContextMouseEvent::RIGHT_BUTTON);
+	theChart_->SetActionToButton(vtkChart::SELECT, vtkContextMouseEvent::LEFT_BUTTON);
 
-	// Start interactor
-	//theView_->GetRenderWindow()->Render();
-	//theView_->GetInteractor()->Initialize();
+	//theChart_->SetSelectionMode(vtkContextScene::SELECTION_ADDITION);
 
-	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+	theView_->Render();
+}
 
-	theView_->GetInteractor()->SetRenderWindow(theRenderWindow_);
-	theRenderWindow_->SetInteractor(theView_->GetInteractor());
+void ForgBaseLib::FrgBasePlot2D::NewSineClickedSlot(bool)
+{
+	QList<double>x, y;
 
-	theView_->SetRenderWindow(theRenderWindow_);
-	theRenderWindow_->AddRenderer(theView_->GetRenderer());
+	int nbPts = 200;
+	double dx = 2.0 * 3.1415 / (double)nbPts;
 
-	this->SetRenderWindow(theRenderWindow_);
-	theView_->GetInteractor()->Initialize();
-	//theView_->GetInteractor()->Start();
-	theRenderWindow_->Render();
+	for (int i = 0; i <= nbPts; i++)
+	{
+		double xi = (double)i * dx;
 
+		x.push_back(xi);
+		y.push_back(sin(xi));
+	}
 
-	GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
+	AddChart(x, y, "x", "Sin(x)");
+}
+
+void ForgBaseLib::FrgBasePlot2D::NewCosineClickedSlot(bool)
+{
+	QList<double>x, y;
+
+	int nbPts = 200;
+	double dx = 2.0 * 3.1415 / (double)nbPts;
+
+	for (int i = 0; i <= nbPts; i++)
+	{
+		double xi = (double)i * dx;
+
+		x.push_back(xi);
+		y.push_back(cos(xi));
+	}
+
+	AddChart(x, y, "x", "Cos(x)");
 }

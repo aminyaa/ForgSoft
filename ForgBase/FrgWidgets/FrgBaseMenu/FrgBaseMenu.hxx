@@ -31,6 +31,8 @@ public:
 
 	FrgBaseMenu(FrgBaseMainWindow* parentMainWindow = FrgNullPtr);
 
+	~FrgBaseMenu();
+
 	void AddItem(const FrgString& title);
 
 	void AddItem(const FrgString& iconAddress, const FrgString& title);

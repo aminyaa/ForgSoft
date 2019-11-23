@@ -30,6 +30,8 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<Entity>, Entity, theEntity_);
+
+	virtual void DoAfterConstruct();
 };
 
 EndFrgBaseLib

@@ -3,7 +3,6 @@
 #define _NihadVesselPartTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-//#include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADPart.hxx>
 
 namespace AutLib
@@ -22,6 +21,8 @@ private:
 
 	FrgSharedPtr<AutLib::Cad3d_TModel> theModel_ = FrgNullPtr;
 
+	FrgBool theIsTriangulated_ = FrgFalse;
+
 public:
 
 	NihadVesselPartTreeItem
@@ -39,42 +40,11 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, Model, theModel_);
+	FrgGetMacro(FrgBool, IsTriangulated, theIsTriangulated_);
 
 	virtual void DoAfterConstruct() override;
 
 };
-
-/*class NihadPartSurfacesEntity;
-class NihadPartCurvesEntity;
-
-//class NihadVesselGeometryTreeItem;
-
-class NihadVesselPartTreeItem : public FrgBaseTreeItem
-{
-
-private:
-
-	FrgSharedPtr<AutLib::Cad3d_TModel> theTModel_ = FrgNullPtr;
-
-	NihadPartSurfacesEntity* theSurfaces_ = FrgNullPtr;
-	NihadPartCurvesEntity* theCurves_ = FrgNullPtr;
-
-public:
-
-	NihadVesselPartTreeItem
-	(
-		const FrgString& title,
-		FrgBaseTreeItem* parent = FrgNullPtr,
-		FrgBaseTree* parentTree = FrgNullPtr,
-		FrgBaseMainWindow* parentMainwindow = FrgNullPtr,
-		FrgSharedPtr<AutLib::Cad3d_TModel> TModel = FrgNullPtr
-	);
-
-	FrgGetMacro(FrgSharedPtr<AutLib::Cad3d_TModel>, TModel, theTModel_);
-
-	FrgGetMacro(NihadPartSurfacesEntity*, Surfaces, theSurfaces_);
-	FrgGetMacro(NihadPartCurvesEntity*, Curves, theCurves_);
-};*/
 
 EndFrgBaseLib
 

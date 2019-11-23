@@ -52,17 +52,8 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 		{
 			AutLib::IO_IGES reader(AutLib::gl_fast_discrete_parameters);
 			reader.Verbose() = 1;
-			//reader.FastDiscreteParams()->Deflection = 0.1;
-			//reader.FastDiscreteParams()->InParallel = true;
-			//reader.FastDiscreteParams()->Angle = 3;
-			//reader.SetToDiscrete();
 
 			FrgExecuteFunctionInProcess(this, reader.ReadFile(fileName.toStdString()););
-
-			//reader.ReadFile(fileName.toStdString());
-
-			//auto surfaces = AutLib::TModel_Tools::GetSurfaces(reader.Shape());
-			//auto solid = AutLib::Cad3d_TModel::MakeSolid(surfaces, 1.0e-6);
 			
 			auto solid = AutLib::Cad3d_TModel::MakeSolid(reader.Shape(), 1.0e-6);
 			QString bareFileName = QFileInfo(fileName).fileName();
@@ -76,8 +67,6 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
 					)
 			);
-
-			//((NihadTree*)GetTree())->GetPartTreeItems().at(((NihadTree*)GetTree())->GetPartTreeItems().size() - 1)->GetTModel() = solid;
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{}

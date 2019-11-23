@@ -37,6 +37,12 @@ private:
 
 	vtkTypeMacro(FrgBaseInteractorStyle, vtkInteractorStyleTrackballCamera);
 
+private:
+
+	void SetSelectedActorColor(QColor color);
+
+	void AddActorToSelectedActors(vtkActor* actor);
+
 public:
 
 	FrgBaseInteractorStyle();
@@ -47,10 +53,6 @@ public:
 	{
 		theParent_ = parent;
 	}
-
-	void SetSelectedActorColor(QColor color);
-
-	void AddActorToSelectedActors(vtkActor* actor);
 
 	void HideSelectedActors();
 
@@ -74,7 +76,10 @@ public:
 
 	virtual void OnChar() override;
 
+	void SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree = FrgFalse);
+
 	FrgGetMacro(QList<FrgBaseActor*>, SelectedActors, theSelectedActors_);
+	FrgGetMacro(FrgBaseCADScene*, ParentScene, theParent_);
 
 	static QColor GeometryColorRGB;
 	static QColor GeometrySelectedColorRGB;

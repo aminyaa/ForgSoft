@@ -9,15 +9,42 @@ BeginFrgBaseLib
 
 class FrgBaseCADScene;
 
+class FrgBaseCADPartFeatureBase : public FrgBaseTreeItem
+{
+
+private:
+
+	QList<FrgBaseCADScene*> thePointerToScenes_;
+
+public:
+
+	FrgBaseCADPartFeatureBase
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parentItem
+	)
+		: FrgBaseTreeItem(title, parentItem, parentItem->GetParentTree(), parentItem->GetParentMainWindow())
+	{}
+
+	~FrgBaseCADPartFeatureBase()
+	{
+		for (int i = 0; i < thePointerToScenes_.size(); i++)
+		{
+			if (thePointerToScenes_[i])
+				thePointerToScenes_[i] = FrgNullPtr;
+		}
+	}
+
+	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
+};
+
 template <class Entity>
-class FrgBaseCADPartFeatureEntity : public FrgBaseTreeItem
+class FrgBaseCADPartFeatureEntity : public FrgBaseCADPartFeatureBase
 {
 
 private:
 
 	FrgSharedPtr<Entity> theEntity_ = FrgNullPtr;
-
-	FrgBaseCADScene* thePointerToScene_ = FrgNullPtr;
 
 public:
 
@@ -28,7 +55,6 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<Entity>, Entity, theEntity_);
-	FrgGetMacro(FrgBaseCADScene*, PointerToScene, thePointerToScene_);
 };
 
 template<class Entity>
@@ -47,8 +73,10 @@ public:
 		FrgBaseTreeItem* parentItem
 	);
 
-	const FrgBaseCADPartFeatureEntity<Entity>*& GetFeatureEntity(int index) const { return theFeatureEntities_.at(index); }
-	FrgBaseCADPartFeatureEntity<Entity>* GetFeatureEntity(int index) { return theFeatureEntities_.at(index); }
+	~FrgBaseCADPartFeaturesEntity();
+
+	const FrgBaseCADPartFeatureEntity<Entity>*& GetFeatureEntity(int index) const { return theFeatureEntities_[index]; }
+	FrgBaseCADPartFeatureEntity<Entity>*& GetFeatureEntity(int index) { return theFeatureEntities_[index]; }
 
 	FrgGetMacro(QList<FrgBaseCADPartFeatureEntity<Entity>*>, FeatureListEntity, theFeatureEntities_);
 };
@@ -69,6 +97,8 @@ public:
 		const FrgString& title,
 		FrgBaseTreeItem* parentItem
 	);
+
+	~FrgBaseCADPartFeatures();
 
 	FrgGetMacro(FrgBaseCADPartFeaturesEntity<SurfaceEntity>*, SurfacesEntity, theSurfacesEntity_);
 	FrgGetMacro(FrgBaseCADPartFeaturesEntity<CurveEntity>*, CurvesEntity, theCurvesEntity_);

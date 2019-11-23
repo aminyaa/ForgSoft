@@ -41,6 +41,23 @@ ForgBaseLib::FrgBaseTreeItemProperties::FrgBaseTreeItemProperties(FrgBaseTreeIte
 	);
 }
 
+ForgBaseLib::FrgBaseTreeItemProperties::~FrgBaseTreeItemProperties()
+{
+	FreePointer(thePropertyBrowser_);
+	FreePointer(theVariantEditorFactory_);
+	FreePointer(theVariantPropertyManager_);
+	FreePointer(theAbstractEditorFactory_);
+	FreePointer(theAbstractPropertyManager_);
+
+	for (int i = 0; i < theTopProperties_.size(); i++)
+	{
+		if (theTopProperties_[i])
+			theTopProperties_.removeAt(i);
+	}
+
+	//FreeVectorOfPointers(theTopProperties_);
+}
+
 QtProperty* ForgBaseLib::FrgBaseTreeItemProperties::GetTopProperty(const FrgString& name)
 {
 	for (int i = 0; i < theTopProperties_.size(); i++)

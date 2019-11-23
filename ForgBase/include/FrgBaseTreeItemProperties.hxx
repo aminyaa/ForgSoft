@@ -55,7 +55,7 @@ private:
 	QtVariantPropertyManager* theVariantPropertyManager_ = FrgNullPtr;
 	QtVariantEditorFactory* theVariantEditorFactory_ = FrgNullPtr;
 
-	FrgVector<QtProperty*> theTopProperties_;
+	QList<QtProperty*> theTopProperties_;
 
 	FrgBaseTreeItem* theParentTreeItem_ = FrgNullPtr;
 
@@ -63,7 +63,9 @@ public:
 
 	FrgBaseTreeItemProperties(FrgBaseTreeItem* parent);
 
-	FrgGetMacro(FrgVector<QtProperty*>, Properties, theTopProperties_);
+	~FrgBaseTreeItemProperties();
+
+	FrgGetMacro(QList<QtProperty*>, Properties, theTopProperties_);
 
 	QtProperty* GetTopProperty(const FrgString& name);
 

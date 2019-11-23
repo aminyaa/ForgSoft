@@ -19,6 +19,12 @@ ForgBaseLib::FrgBaseMenu::FrgBaseMenu(FrgBaseMainWindow* parentMainWindow)
 {
 }
 
+ForgBaseLib::FrgBaseMenu::~FrgBaseMenu()
+{
+	FreeVectorOfPointers(theItems_);
+	FreePointer(theToolBar_);
+}
+
 void ForgBaseLib::FrgBaseMenu::AddItem(const FrgString& title)
 {
 	FrgString str = title;
