@@ -58,6 +58,9 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	this->menuBar()->addMenu(WindowMenu);
 	this->menuBar()->addMenu(HelpMenu);
 
+	QAction* copyAction = new QAction(QIcon(":/Icons/Menus/File/Copy.png"), "Copy");
+	QAction* pasteAction = new QAction(QIcon(":/Icons/Menus/File/Paste.png"), "Paste");
+
 	QAction* shipAction = new QAction(QIcon(":/Icons/Models/Ship.png"), "New Ship");
 	QAction* propellerAction = new QAction(QIcon(":/Icons/Models/Propeller.png"), "New Propeller");
 	QAction* ductAction = new QAction(QIcon(":/Icons/Models/Duct.png"), "New Duct");
@@ -71,6 +74,17 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	QAction* genVlmMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Generate Volume Mesh.png"), "Generate Volume Mesh");
 	QAction* clcGenMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Clear Generated Mesh.png"), "Clear Generated Mesh");
 	QAction* initializeMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Initialize Meshing.png"), "Initialize Meshing");
+
+	QAction* CursorSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/Cursor.png"), "Cursor");
+	QAction* MoveSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/Move.png"), "Move");
+	QAction* RotateXSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/RotateX.png"), "RotateX");
+	QAction* RotateYSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/RotateY.png"), "RotateY");
+	QAction* RotateZSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/RotateZ.png"), "RotateZ");
+	QAction* RotateXYZSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/RotateXYZ.png"), "RotateXYZ");
+
+	QToolBar* EditToolbar = new QToolBar("Edit");
+	EditToolbar->addAction(copyAction);
+	EditToolbar->addAction(pasteAction);
 
 	QToolBar* ModelsToolbar = new QToolBar("Models");
 	ModelsToolbar->addAction(shipAction);
@@ -89,9 +103,19 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	MeshToolbar->addAction(clcGenMeshAction);
 	MeshToolbar->addAction(initializeMeshAction);
 
+	QToolBar* SceneToolbar = new QToolBar("Scene");
+	SceneToolbar->addAction(CursorSceneAction);
+	SceneToolbar->addAction(MoveSceneAction);
+	SceneToolbar->addAction(RotateXSceneAction);
+	SceneToolbar->addAction(RotateYSceneAction);
+	SceneToolbar->addAction(RotateZSceneAction);
+	SceneToolbar->addAction(RotateXYZSceneAction);
+
+	this->addToolBar(EditToolbar);
 	this->addToolBar(ModelsToolbar);
 	this->addToolBar(MeshToolbar);
 	this->addToolBar(SolutionToolbar);
+	this->addToolBar(SceneToolbar);
 }
 
 ForgBaseLib::FrgBaseMainWindow::~FrgBaseMainWindow()

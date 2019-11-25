@@ -29,5 +29,13 @@
         <file>Icons/Menus/Mesh/Generate Surface Mesh.png</file>
         <file>Icons/Menus/Mesh/Generate Volume Mesh.png</file>
         <file>Icons/Menus/Mesh/Initialize Meshing.png</file>
+        <file>Icons/Menus/File/Copy.png</file>
+        <file>Icons/Menus/File/Paste.png</file>
+        <file>Icons/Menus/Scene/Cursor.png</file>
+        <file>Icons/Menus/Scene/Move.png</file>
+        <file>Icons/Menus/Scene/RotateX.png</file>
+        <file>Icons/Menus/Scene/RotateXYZ.png</file>
+        <file>Icons/Menus/Scene/RotateY.png</file>
+        <file>Icons/Menus/Scene/RotateZ.png</file>
     </qresource>
 </RCC>

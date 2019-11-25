@@ -763,6 +763,8 @@ void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
 {
 	thePlotsItems_.push_back(FrgNew FrgBasePlot2D(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Plot"), theLastRightClicked_, this, GetParentMainWindow()));
+	FrgBasePlot2D* lastPlotAdded = thePlotsItems_.last();
+	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(lastPlotAdded);
 }
 
 void ForgBaseLib::NihadTree::TabBarClickedSlot(int index)
@@ -772,10 +774,10 @@ void ForgBaseLib::NihadTree::TabBarClickedSlot(int index)
 
 void ForgBaseLib::NihadTree::itemDoubleClickedSlot(QTreeWidgetItem* item, int column)
 {
-	if (dynamic_cast<FrgBaseCADScene*>(item))
+	if (dynamic_cast<NihadVesselScenePartTreeItem*>(item))
 	{
 		auto& tab = GetParentMainWindow()->GetTabWidget();
-		tab->setCurrentIndex(tab->indexOf(dynamic_cast<FrgBaseCADScene*>(item)));
+		tab->setCurrentIndex(tab->indexOf(dynamic_cast<NihadVesselScenePartTreeItem*>(item)->GetViewPorts()));
 	}
 	if (dynamic_cast<FrgBasePlot2D*>(item))
 	{
