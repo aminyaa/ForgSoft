@@ -50,6 +50,12 @@
     <Filter Include="NihadVessel\NihadEntities\NihadPartCurveEntity">
       <UniqueIdentifier>{7420ed10-8289-4e37-a47a-212afdcda919}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\ViewPorts">
+      <UniqueIdentifier>{ea661588-03c7-448d-9975-c026b18057b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\CADScene">
+      <UniqueIdentifier>{4e3b7988-fa1f-43ef-9df2-c32c90acc452}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -94,6 +100,12 @@
     <ClCompile Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.cxx">
       <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\ViewPorts\ViewPorts.cxx">
+      <Filter>NihadVessel\ViewPorts</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CADScene\CADScene.cxx">
+      <Filter>NihadVessel\CADScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -110,6 +122,12 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\NihadVesselPartTreeItem.hxx">
       <Filter>NihadVessel</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\ViewPorts\ViewPorts.hxx">
+      <Filter>NihadVessel\ViewPorts</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CADScene\CADScene.hxx">
+      <Filter>NihadVessel\CADScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

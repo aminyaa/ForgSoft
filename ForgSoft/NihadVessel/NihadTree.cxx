@@ -6,6 +6,8 @@
 #include <FrgBaseTabWidget.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
 #include <FrgBaseTreeItem.hxx>
+#include <FrgBaseCADScene.hxx>
+#include <ViewPorts.hxx>
 #include <qtpropertybrowser.h>
 
 #include <NihadMainWindow.hxx>
@@ -126,7 +128,7 @@ void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 			{
 				for (int iScene = 0; iScene < scenes.size(); iScene++)
 				{
-					auto actor = dynamic_cast<NihadVesselScenePartTreeItem*>(scenes.at(iScene))->GetPartFeatureToActor().value(feature);
+					auto actor = (scenes.at(iScene))->GetPartFeatureToActor().value(feature);
 					if (SelectedItems.size() > 1)
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
 					else
@@ -749,10 +751,13 @@ void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 
 	NihadPreviewScene->RenderSceneSlot();
 
-	NihadPreviewScene->Render();
+	NihadPreviewScene->GetViewPorts()->RenderScenes();
 
-	GetParentMainWindow()->GetTabWidget()->addTab(NihadPreviewScene, NihadPreviewScene->text(0));
-	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(NihadPreviewScene);
+	GetParentMainWindow()->GetTabWidget()->addTab(NihadPreviewScene->GetViewPorts(), NihadPreviewScene->text(0));
+	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(NihadPreviewScene->GetViewPorts());
+
+	/*GetParentMainWindow()->GetTabWidget()->addTab(NihadPreviewScene, NihadPreviewScene->text(0));
+	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(NihadPreviewScene);*/
 }
 
 void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)

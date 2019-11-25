@@ -18,7 +18,7 @@ BeginFrgBaseLib
 class FrgBaseMenu;
 class NihadVesselGeometryTreeItem;
 class NihadVesselPartTreeItem;
-class FrgBaseCADScene;
+class FrgBase_CADScene_TreeItem;
 class FrgBasePlot2D;
 
 class NihadTree : public FrgBaseTree
@@ -30,7 +30,7 @@ private:
 
 	QList<NihadVesselGeometryTreeItem*> theGeometryTreeItems_;
 	QList<NihadVesselPartTreeItem*> thePartTreeItems_;
-	QList<FrgBaseCADScene*> theSceneTreeItems_;
+	QList<FrgBase_CADScene_TreeItem*> theSceneTreeItems_;
 	QList<FrgBasePlot2D*> thePlotsItems_;
 
 public:

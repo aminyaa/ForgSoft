@@ -411,7 +411,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnChar()
 void ForgBaseLib::FrgBaseInteractorStyle::SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree)
 {
 	if(!isFromTree)
-		theParent_->GetParentTree()->clearSelection();
+		theParent_-> GetParentTree()->clearSelection();
 
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{

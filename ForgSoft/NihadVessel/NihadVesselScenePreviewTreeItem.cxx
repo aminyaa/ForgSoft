@@ -1,6 +1,8 @@
 #include <NihadVesselScenePreviewTreeItem.hxx>
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTabWidget.hxx>
+#include <ViewPorts.hxx>
+#include <CADScene.hxx>
 
 #include <Entity3d_Triangulation.hxx>
 
@@ -31,10 +33,10 @@ ForgBaseLib::NihadVesselScenePreviewTreeItem::NihadVesselScenePreviewTreeItem
 	NihadVesselScenePartTreeItem::DoAfterConstruct();
 }
 
-void ForgBaseLib::NihadVesselScenePreviewTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
-{
-	GetRenderer()->AddActor(actor);
-}
+//void ForgBaseLib::NihadVesselScenePreviewTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
+//{
+//	GetRenderer()->AddActor(actor);
+//}
 
 void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 {
@@ -109,23 +111,32 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::CreateActor()
 		actor->SetMapper(HullMapper);
 		actors.push_back(actor);
 
-		for (int iActor = 0; iActor < GetActors().size(); iActor++)
+		for (auto scene : GetViewPorts()->GetScenes())
 		{
-			GetActors().at(iActor)->GetProperty()->SetOpacity(0.5);
+			for (int iActor = 0; iActor < scene->GetActors().size(); iActor++)
+			{
+				scene->GetActors().at(iActor)->GetProperty()->SetOpacity(0.5);
+			}
 		}
 
 	}
 
-	for (int i = 0; i < thePreviewActors_.size(); i++)
+	for (auto scene : GetViewPorts()->GetScenes())
 	{
-		GetRenderer()->RemoveActor(thePreviewActors_.at(i));
+		for (int i = 0; i < thePreviewActors_.size(); i++)
+		{
+			scene->GetRenderer()->RemoveActor(thePreviewActors_.at(i));
+		}
 	}
 
 	thePreviewActors_ = actors;
 
-	for (int i = 0; i < thePreviewActors_.size(); i++)
+	for (auto scene : GetViewPorts()->GetScenes())
 	{
-		AddActorToTheRenderer(thePreviewActors_.at(i));
+		for (int i = 0; i < thePreviewActors_.size(); i++)
+		{
+			scene->AddActorToTheRenderer(thePreviewActors_.at(i));
+		}
 	}
 }
 
@@ -133,7 +144,12 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::RenderSceneSlot()
 {
 	CreateActor();
 
-	GetLogoActor()->SetInput("Tonb");
+	GetViewPorts()->SetLogoText("Tonb");
 
-	GetRenderWindow()->Render();
+	for (auto scene : GetViewPorts()->GetScenes())
+	{
+		scene->GetRenderWindow()->Render();
+	}
+
+	//GetViewPorts()->RenderScenes();
 }

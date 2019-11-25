@@ -1,8 +1,7 @@
 #include <FrgBaseCADScene.hxx>
 
+#include <FrgBaseTree.hxx>
 #include <FrgBaseMainWindow.hxx>
-#include <FrgBaseTreeItem.hxx>
-#include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseInteractorStyle.hxx>
 #include <FrgBasePlot2D.hxx>
 
@@ -21,6 +20,10 @@
 #include <vtkUnstructuredGrid.h>
 #include <vtkDataSetMapper.h>
 #include <vtkCellType.h>
+#include <vtkDoubleArray.h>
+#include <vtkRectilinearGrid.h>
+#include <vtkRectilinearGridGeometryFilter.h>
+#include <vtkPolyDataMapper.h>
 
 #include <vtkAutoInit.h>
 
@@ -29,18 +32,10 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2)
 VTK_MODULE_INIT(vtkInteractionStyle)
 VTK_MODULE_INIT(vtkRenderingFreeType)
 
-ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene
-(
-	const FrgString& title,
-	FrgBaseTreeItem* parent
-)
-	: FrgBaseTreeItem(title, parent, parent->GetParentTree(), parent->GetParentMainWindow())
-	, QVTKOpenGLNativeWidget(parent->GetParentMainWindow())
+ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene(FrgBaseTree* parentTree)
+	: QVTKOpenGLNativeWidget(parentTree->GetParentMainWindow())
+	, theParentTree_(parentTree)
 {
-	setIcon(0, QIcon(":/Icons/Scenes/Geometry_Scene_Icon.png"));
-
-	GetProperties()->SetEnabled("Name", FrgTrue);
-
 	Init();
 }
 
@@ -120,4 +115,61 @@ void ForgBaseLib::FrgBaseCADScene::Render()
 void ForgBaseLib::FrgBaseCADScene::StartScene()
 {
 
+}
+
+void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nX, int nY)
+{
+	const auto& bounds = GetRenderer()->ComputeVisiblePropBounds();
+	double Xmin = bounds[0], Xmax = bounds[1];
+	double Ymin = bounds[2], Ymax = bounds[3];
+	double MaxDiff = (Xmax - Xmin) > (Ymax - Ymin) ? (Xmax - Xmin) : (Ymax - Ymin);
+	double dX = (Xmax - Xmin) / ((double)(nX - 1));
+	double dY = (Ymax - Ymin) / ((double)(nY - 1));
+
+	dX = dY = dX > dY ? dX : dY;
+
+	vtkSmartPointer<vtkDoubleArray> xCoords =
+		vtkSmartPointer<vtkDoubleArray>::New();
+	for (int i = 0; i < nX; i++)
+	{
+		xCoords->InsertNextValue(i*dX - (MaxDiff / 2.0));
+	}
+	vtkSmartPointer<vtkDoubleArray> yCoords =
+		vtkSmartPointer<vtkDoubleArray>::New();
+	for (int i = 0; i < nY; i++)
+	{
+		yCoords->InsertNextValue(i*dY - (MaxDiff / 2.0));
+	}
+	vtkSmartPointer<vtkDoubleArray> zCoords =
+		vtkSmartPointer<vtkDoubleArray>::New();
+	for (int i = 0; i < 1; i++)
+	{
+		zCoords->InsertNextValue(0.0);
+	}
+
+	// The coordinates are assigned to the rectilinear grid. Make sure that
+  // the number of values in each of the XCoordinates, YCoordinates,
+  // and ZCoordinates is equal to what is defined in SetDimensions().
+	vtkSmartPointer<vtkRectilinearGrid> rgrid =
+		vtkSmartPointer<vtkRectilinearGrid>::New();
+	rgrid->SetDimensions(nX, nY, 1);
+	rgrid->SetXCoordinates(xCoords);
+	rgrid->SetYCoordinates(yCoords);
+	rgrid->SetZCoordinates(zCoords);
+
+	vtkSmartPointer<vtkDataSetMapper> rgridMapper =
+		vtkSmartPointer<vtkDataSetMapper>::New();
+	//rgridMapper->SetInputConnection(plane->GetOutputPort());
+	rgridMapper->SetInputData(rgrid);
+
+	vtkSmartPointer<vtkNamedColors> colors =
+		vtkSmartPointer<vtkNamedColors>::New();
+
+	vtkSmartPointer<vtkActor> wireActor =
+		vtkSmartPointer<vtkActor>::New();
+	wireActor->SetMapper(rgridMapper);
+	wireActor->GetProperty()->SetColor(colors->GetColor3d("alice_blue").GetData());
+	wireActor->GetProperty()->EdgeVisibilityOn();
+
+	GetRenderer()->AddActor(wireActor);
 }

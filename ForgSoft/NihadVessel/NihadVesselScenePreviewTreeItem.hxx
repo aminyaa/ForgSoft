@@ -39,7 +39,7 @@ public slots:
 
 private:
 
-	void AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor);
+	//void AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor);
 
 	void CreateActor();
 };

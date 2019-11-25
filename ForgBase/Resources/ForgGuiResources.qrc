@@ -18,5 +18,16 @@
         <file>Icons/Scenes/Geometry_Scene_Icon.png</file>
         <file>Icons/TreeStyle/Curve.png</file>
         <file>Icons/TreeStyle/Surface.png</file>
+        <file>Icons/Models/Duct.png</file>
+        <file>Icons/Models/Propeller.png</file>
+        <file>Icons/Models/Ship.png</file>
+        <file>Icons/Menus/Solution/Initialize Solution.png</file>
+        <file>Icons/Menus/Solution/Run.png</file>
+        <file>Icons/Menus/Solution/Step.png</file>
+        <file>Icons/Menus/Solution/Stop.png</file>
+        <file>Icons/Menus/Mesh/Clear Generated Mesh.png</file>
+        <file>Icons/Menus/Mesh/Generate Surface Mesh.png</file>
+        <file>Icons/Menus/Mesh/Generate Volume Mesh.png</file>
+        <file>Icons/Menus/Mesh/Initialize Meshing.png</file>
     </qresource>
 </RCC>

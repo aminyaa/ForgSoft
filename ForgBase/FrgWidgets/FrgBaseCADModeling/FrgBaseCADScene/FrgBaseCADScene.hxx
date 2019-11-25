@@ -15,15 +15,13 @@ class vtkTextActor;
 BeginFrgBaseLib
 
 class FrgBaseMainWindow;
-class FrgBaseTreeItem;
-class FrgBaseTree;
 class FrgBaseInteractorStyle;
 class FrgBaseCADPartFeatureBase;
 
 typedef QMap<vtkSmartPointer<vtkActor>, FrgBaseCADPartFeatureBase*> QMapActorToPartFeature;
 typedef QMap<FrgBaseCADPartFeatureBase*, vtkSmartPointer<vtkActor>> QMapPartFeatureToActor;
 
-class FORGBASE_EXPORT FrgBaseCADScene : public QVTKOpenGLNativeWidget, public FrgBaseTreeItem
+class FORGBASE_EXPORT FrgBaseCADScene : public QVTKOpenGLNativeWidget
 {
 
 	Q_OBJECT
@@ -47,16 +45,14 @@ private:
 	QMapActorToPartFeature theActorToPartFeature_;
 	QMapPartFeatureToActor thePartFeatureToActor_;
 
+	FrgBaseTree* theParentTree_;
+
 	void Init();
 
 
 public:
 
-	FrgBaseCADScene
-	(
-		const FrgString& title,
-		FrgBaseTreeItem* parent
-	);
+	FrgBaseCADScene(FrgBaseTree* parentTree);
 
 	void StartScene();
 
@@ -71,6 +67,10 @@ public:
 	FrgGetMacro(QMapPartFeatureToActor, PartFeatureToActor, thePartFeatureToActor_);
 
 	void Render();
+
+	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
+
+	void DrawGrid(int nX, int nY);
 };
 
 EndFrgBaseLib

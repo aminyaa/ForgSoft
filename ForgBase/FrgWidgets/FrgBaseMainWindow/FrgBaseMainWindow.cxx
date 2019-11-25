@@ -62,12 +62,36 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	QAction* propellerAction = new QAction(QIcon(":/Icons/Models/Propeller.png"), "New Propeller");
 	QAction* ductAction = new QAction(QIcon(":/Icons/Models/Duct.png"), "New Duct");
 
-	QToolBar* ModelsToolbar = new QToolBar();
+	QAction* initializeSolutionAction = new QAction(QIcon(":/Icons/Menus/Solution/Initialize Solution.png"), "Initialize Solution");
+	QAction* runAction = new QAction(QIcon(":/Icons/Menus/Solution/Run.png"), "Run");
+	QAction* stepAction = new QAction(QIcon(":/Icons/Menus/Solution/Step.png"), "Step");
+	QAction* stopAction = new QAction(QIcon(":/Icons/Menus/Solution/Stop.png"), "Stop");
+
+	QAction* genSrfMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Generate Surface Mesh.png"), "Generate Surface Mesh");
+	QAction* genVlmMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Generate Volume Mesh.png"), "Generate Volume Mesh");
+	QAction* clcGenMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Clear Generated Mesh.png"), "Clear Generated Mesh");
+	QAction* initializeMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Initialize Meshing.png"), "Initialize Meshing");
+
+	QToolBar* ModelsToolbar = new QToolBar("Models");
 	ModelsToolbar->addAction(shipAction);
 	ModelsToolbar->addAction(propellerAction);
 	ModelsToolbar->addAction(ductAction);
 
+	QToolBar* SolutionToolbar = new QToolBar("Solution");
+	SolutionToolbar->addAction(initializeSolutionAction);
+	SolutionToolbar->addAction(runAction);
+	SolutionToolbar->addAction(stepAction);
+	SolutionToolbar->addAction(stopAction);
+
+	QToolBar* MeshToolbar = new QToolBar("Mesh");
+	MeshToolbar->addAction(genSrfMeshAction);
+	MeshToolbar->addAction(genVlmMeshAction);
+	MeshToolbar->addAction(clcGenMeshAction);
+	MeshToolbar->addAction(initializeMeshAction);
+
 	this->addToolBar(ModelsToolbar);
+	this->addToolBar(MeshToolbar);
+	this->addToolBar(SolutionToolbar);
 }
 
 ForgBaseLib::FrgBaseMainWindow::~FrgBaseMainWindow()

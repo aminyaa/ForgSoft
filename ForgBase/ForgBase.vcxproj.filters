@@ -126,6 +126,9 @@
     <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBaseCADScene.cxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.cxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeaturesI.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

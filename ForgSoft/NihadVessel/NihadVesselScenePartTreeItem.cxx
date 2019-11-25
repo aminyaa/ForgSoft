@@ -8,6 +8,7 @@
 #include <FrgBaseCADPartFeatures.hxx>
 #include <NihadTree.hxx>
 #include <FrgBaseGlobalsThread.hxx>
+#include <CADScene.hxx>
 
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTabWidget.hxx>
@@ -28,6 +29,7 @@
 #include <vtkCamera.h>
 #include <vtkTextActor.h>
 #include <vtkProperty.h>
+#include <vtkRenderWindow.h>
 
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
@@ -41,6 +43,8 @@
 
 #include <QtDoublePropertyManager>
 #include <QtDoubleSpinBoxFactory>
+#include <ViewPorts.hxx>
+#include <QtWidgets/QMdiSubWindow>
 
 std::shared_ptr<AutLib::FastDiscrete_Params> FrgFastParameters = std::make_shared<AutLib::FastDiscrete_Params>();
 
@@ -59,10 +63,40 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 	FrgBaseTreeItem* parent,
 	FrgBool discreteParameters
 )
-	: FrgBaseCADScene(title, parent)
+	: FrgBase_CADScene_TreeItem(title, parent)
 	, theDiscreteParametersBool_(discreteParameters)
 {
+	theViewPorts_ = FrgNew ViewPorts(GetParentMainWindow());
+	theViewPorts_->SetLogoText("Tonb");
 
+	if (theDiscreteParametersBool_)
+	{
+		CADScene* scene01 = new CADScene(GetParentTree());
+		CADScene* scene02 = new CADScene(GetParentTree());
+		CADScene* scene03 = new CADScene(GetParentTree());
+		CADScene* scene04 = new CADScene(GetParentTree());
+
+		theViewPorts_->AddScene(scene01, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene02, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene03, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene04, Qt::WindowMaximizeButtonHint);
+
+		theViewPorts_->tileSubWindows();
+
+		GetParentMainWindow()->GetTabWidget()->addTab(theViewPorts_, this->text(0));
+		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(theViewPorts_);
+	}
+	else
+	{
+		CADScene* scene01 = new CADScene(GetParentTree());
+
+		theViewPorts_->AddScene(scene01, Qt::FramelessWindowHint);
+
+		theViewPorts_->tileSubWindows();
+
+		GetParentMainWindow()->GetTabWidget()->addTab(theViewPorts_, this->text(0));
+		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(theViewPorts_);
+	}
 }
 
 void ForgBaseLib::NihadVesselScenePartTreeItem::DoAfterConstruct()
@@ -117,33 +151,49 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
 
 	CreateActor();
 
-	GetLogoActor()->SetInput("Tonb");
+	theViewPorts_->SetLogoText("Tonb");
 
-	Render();
+	theViewPorts_->RenderScenes();
 
-	GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
-	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(this);
+	auto scene = theViewPorts_->GetScenes()[0];
+	auto camera = scene->GetFrgBaseCamera();
+	camera->SetPosition(1, 0, 1);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 0, 1);
+	camera->Azimuth(-50);
+	scene->GetRenderer()->ResetCamera();
+	scene->GetRenderWindow()->Render();
+
+	scene = theViewPorts_->GetScenes()[1];
+	camera = scene->GetFrgBaseCamera();
+	camera->SetPosition(1, 0, 0);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, 0, 1);
+	camera->Azimuth(-180);
+	scene->GetRenderer()->ResetCamera();
+	scene->GetRenderWindow()->Render();
+
+	scene = theViewPorts_->GetScenes()[2];
+	camera = scene->GetFrgBaseCamera();
+	camera->SetPosition(0, 0, -1);
+	camera->SetFocalPoint(0, 0, 0);
+	camera->SetViewUp(0, -1, 0);
+	camera->Azimuth(-180);
+	scene->GetRenderer()->ResetCamera();
+	scene->GetRenderWindow()->Render();
+
+	//GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
+	//GetParentMainWindow()->GetTabWidget()->setCurrentWidget(this);
 }
 
-void ForgBaseLib::NihadVesselScenePartTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
-{
-	GetRenderer()->AddActor(actor);
-}
-
-#include <BRepMesh_FastDiscret.hxx>
-#include <BRepBndLib.hxx>
-#include <Bnd_Box.hxx>
+//void ForgBaseLib::NihadVesselScenePartTreeItem::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
+//{
+//	GetRenderer()->AddActor(actor);
+//}
 
 void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 {
-	if (GetActors().size() != 0)
-	{
-		for (int iActor = 0; iActor < GetActors().size(); iActor++)
-		{
-			GetRenderer()->RemoveActor(GetActors().at(iActor));
-		}
-		GetActors().clear();
-	}
+	theViewPorts_->ClearScenes();
 
 	//FrgFastParameters->Angle = 0.2;
 	//FrgFastParameters->Deflection = 0.01;
@@ -152,7 +202,10 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 	for (int iParts = 0; iParts < thePartsPointer_.size(); iParts++)
 	{
 		const auto& part = dynamic_cast<NihadVesselPartTreeItem*>(thePartsPointer_.at(iParts));
-		if (part->GetModel())
+
+		theViewPorts_->CreateActor(part);
+
+		/*if (part->GetModel())
 		{
 			const auto& model = part->GetModel();
 
@@ -213,8 +266,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 						bounds[5] - bounds[4]);
 
 				auto userTransform = vtkSmartPointer<vtkTransform>::New();
-				/*userTransform->Translate(-center[0], -center[1], -center[2]);
-				userTransform->Scale(1.0 / maxBound, 1.0 / maxBound, 1.0 / maxBound);*/
+
 				auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
 				transform->SetTransform(userTransform);
 				transform->SetInputData(Hull);
@@ -283,6 +335,6 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 					}
 				}
 			}
-		}
+		}*/
 	}
 }

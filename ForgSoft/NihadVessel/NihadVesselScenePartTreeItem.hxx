@@ -3,14 +3,15 @@
 #define _NihadVesselScenePartTreeItem_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <FrgBaseCADScene.hxx>
+#include <FrgBase_CADScene_TreeItem.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
 
 BeginFrgBaseLib
 
 class NihadVesselPartTreeItem;
+class ViewPorts;
 
-class NihadVesselScenePartTreeItem : public FrgBaseCADScene
+class NihadVesselScenePartTreeItem : public QObject, public FrgBase_CADScene_TreeItem
 {
 
 	Q_OBJECT
@@ -18,6 +19,7 @@ class NihadVesselScenePartTreeItem : public FrgBaseCADScene
 private:
 
 	QList<NihadVesselPartTreeItem*> thePartsPointer_;
+	ViewPorts* theViewPorts_ = FrgNullPtr;
 
 	FrgBool theDiscreteParametersBool_;
 
@@ -31,6 +33,7 @@ public:
 	);
 	
 	FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartsPointer, thePartsPointer_);
+	FrgGetMacro(ViewPorts*, ViewPorts, theViewPorts_);
 
 	void DoAfterConstruct() override;
 
@@ -40,7 +43,7 @@ public slots:
 
 private:
 
-	void AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor);
+	//void AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor);
 
 	void CreateActor();
 };
