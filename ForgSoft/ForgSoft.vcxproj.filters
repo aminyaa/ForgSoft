@@ -56,6 +56,9 @@
     <Filter Include="NihadVessel\CADScene">
       <UniqueIdentifier>{4e3b7988-fa1f-43ef-9df2-c32c90acc452}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\CustomWindowType">
+      <UniqueIdentifier>{e51dd308-aa98-480e-b94a-f65333fce277}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -63,9 +66,6 @@
     </ClCompile>
     <ClCompile Include="NihadVessel\NihadTree.cxx">
       <Filter>NihadVessel</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cxx">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NihadVessel\CustomPropertyType\SelectObjectsDlg\SelectObjectsDlg.cxx">
       <Filter>NihadVessel\CustomPropertyType\SelectObjectsDlg</Filter>
@@ -105,6 +105,18 @@
     </ClCompile>
     <ClCompile Include="NihadVessel\CADScene\CADScene.cxx">
       <Filter>NihadVessel\CADScene</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomWindowType\WindowTitleBar.cxx">
+      <Filter>NihadVessel\CustomWindowType</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomWindowType\CustomWindow.cxx">
+      <Filter>NihadVessel\CustomWindowType</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\CustomWindowType\WindowButton.cxx">
+      <Filter>NihadVessel\CustomWindowType</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +169,15 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
       <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomWindowType\WindowTitleBar.hxx">
+      <Filter>NihadVessel\CustomWindowType</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomWindowType\CustomWindow.hxx">
+      <Filter>NihadVessel\CustomWindowType</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CustomWindowType\WindowButton.hxx">
+      <Filter>NihadVessel\CustomWindowType</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

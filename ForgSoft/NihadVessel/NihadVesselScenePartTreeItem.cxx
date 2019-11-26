@@ -76,10 +76,10 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 		CADScene* scene03 = new CADScene(GetParentTree());
 		CADScene* scene04 = new CADScene(GetParentTree());
 
-		theViewPorts_->AddScene(scene01, Qt::WindowMaximizeButtonHint);
-		theViewPorts_->AddScene(scene02, Qt::WindowMaximizeButtonHint);
-		theViewPorts_->AddScene(scene03, Qt::WindowMaximizeButtonHint);
-		theViewPorts_->AddScene(scene04, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene01, Qt::FramelessWindowHint);
+		theViewPorts_->AddScene(scene02, Qt::FramelessWindowHint);
+		theViewPorts_->AddScene(scene03, Qt::FramelessWindowHint);
+		theViewPorts_->AddScene(scene04, Qt::FramelessWindowHint);
 
 		theViewPorts_->tileSubWindows();
 
