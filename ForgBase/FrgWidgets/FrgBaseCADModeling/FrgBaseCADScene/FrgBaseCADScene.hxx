@@ -49,6 +49,8 @@ private:
 
 	void Init();
 
+	void DrawGrid(int nbDivision, FrgBool isMajor, double* bounds);
+
 
 public:
 
@@ -70,7 +72,7 @@ public:
 
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 
-	void DrawGrid(int nX, int nY);
+	void DrawGrid(int nbDivision, int nbMinorDivision);
 };
 
 EndFrgBaseLib

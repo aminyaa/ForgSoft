@@ -9,6 +9,7 @@ BeginFrgBaseLib
 
 class CADScene;
 class NihadVesselPartTreeItem;
+class FrgBaseMainWindow;
 
 class ViewPorts : public QMdiArea
 {
@@ -17,9 +18,11 @@ private:
 
 	QList<CADScene*> theScenes_;
 
+	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
+
 public:
 
-	ViewPorts(QWidget* parent = FrgNullPtr);
+	ViewPorts(FrgBaseMainWindow* parent = FrgNullPtr);
 
 	FrgGetMacro(QList<CADScene*>, Scenes, theScenes_);
 

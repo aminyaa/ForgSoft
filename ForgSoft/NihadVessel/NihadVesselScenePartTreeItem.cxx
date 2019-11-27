@@ -69,25 +69,30 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 	theViewPorts_ = FrgNew ViewPorts(GetParentMainWindow());
 	theViewPorts_->SetLogoText("Tonb");
 
-	if (theDiscreteParametersBool_)
+	/*if (theDiscreteParametersBool_)
 	{
 		CADScene* scene01 = new CADScene(GetParentTree());
 		CADScene* scene02 = new CADScene(GetParentTree());
 		CADScene* scene03 = new CADScene(GetParentTree());
 		CADScene* scene04 = new CADScene(GetParentTree());
 
-		theViewPorts_->AddScene(scene01, Qt::FramelessWindowHint);
-		theViewPorts_->AddScene(scene02, Qt::FramelessWindowHint);
-		theViewPorts_->AddScene(scene03, Qt::FramelessWindowHint);
-		theViewPorts_->AddScene(scene04, Qt::FramelessWindowHint);
+		theViewPorts_->AddScene(scene01, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene02, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene03, Qt::WindowMaximizeButtonHint);
+		theViewPorts_->AddScene(scene04, Qt::WindowMaximizeButtonHint);
 
 		theViewPorts_->tileSubWindows();
 
 		GetParentMainWindow()->GetTabWidget()->addTab(theViewPorts_, this->text(0));
 		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(theViewPorts_);
-	}
-	else
-	{
+
+		theViewPorts_->subWindowList()[0]->setWindowTitle("Perspective");
+		theViewPorts_->subWindowList()[1]->setWindowTitle("Front");
+		theViewPorts_->subWindowList()[2]->setWindowTitle("Top");
+		theViewPorts_->subWindowList()[3]->setWindowTitle("Side");
+	}*/
+	//else
+	//{
 		CADScene* scene01 = new CADScene(GetParentTree());
 
 		theViewPorts_->AddScene(scene01, Qt::FramelessWindowHint);
@@ -96,7 +101,7 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 
 		GetParentMainWindow()->GetTabWidget()->addTab(theViewPorts_, this->text(0));
 		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(theViewPorts_);
-	}
+	//}
 }
 
 void ForgBaseLib::NihadVesselScenePartTreeItem::DoAfterConstruct()
@@ -155,32 +160,39 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
 
 	theViewPorts_->RenderScenes();
 
-	auto scene = theViewPorts_->GetScenes()[0];
-	auto camera = scene->GetFrgBaseCamera();
-	camera->SetPosition(1, 0, 1);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 0, 1);
-	camera->Azimuth(-50);
-	scene->GetRenderer()->ResetCamera();
-	scene->GetRenderWindow()->Render();
+	if (theViewPorts_->GetScenes().size() > 1)
+	{
+		auto scene = theViewPorts_->GetScenes()[0];
+		auto camera = scene->GetFrgBaseCamera();
+		camera->SetPosition(1, 0, 1);
+		camera->SetFocalPoint(0, 0, 0);
+		camera->SetViewUp(0, 0, 1);
+		camera->Azimuth(-50);
+		scene->GetRenderer()->ResetCamera();
+		scene->GetRenderWindow()->Render();
 
-	scene = theViewPorts_->GetScenes()[1];
-	camera = scene->GetFrgBaseCamera();
-	camera->SetPosition(1, 0, 0);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, 0, 1);
-	camera->Azimuth(-180);
-	scene->GetRenderer()->ResetCamera();
-	scene->GetRenderWindow()->Render();
+		scene = theViewPorts_->GetScenes()[1];
+		camera = scene->GetFrgBaseCamera();
+		camera->SetPosition(1, 0, 0);
+		camera->SetFocalPoint(0, 0, 0);
+		camera->SetViewUp(0, 0, 1);
+		camera->Azimuth(-180);
+		camera->ParallelProjectionOn();
+		scene->GetRenderer()->ResetCamera();
+		scene->GetRenderWindow()->Render();
 
-	scene = theViewPorts_->GetScenes()[2];
-	camera = scene->GetFrgBaseCamera();
-	camera->SetPosition(0, 0, -1);
-	camera->SetFocalPoint(0, 0, 0);
-	camera->SetViewUp(0, -1, 0);
-	camera->Azimuth(-180);
-	scene->GetRenderer()->ResetCamera();
-	scene->GetRenderWindow()->Render();
+		scene = theViewPorts_->GetScenes()[2];
+		camera = scene->GetFrgBaseCamera();
+		camera->SetPosition(0, 0, -1);
+		camera->SetFocalPoint(0, 0, 0);
+		camera->SetViewUp(0, -1, 0);
+		camera->Azimuth(-180);
+		camera->ParallelProjectionOn();
+		scene->GetRenderer()->ResetCamera();
+		scene->GetRenderWindow()->Render();
+
+		theViewPorts_->GetScenes()[3]->GetFrgBaseCamera()->ParallelProjectionOn();
+	}
 
 	//GetParentMainWindow()->GetTabWidget()->addTab(this, this->text(0));
 	//GetParentMainWindow()->GetTabWidget()->setCurrentWidget(this);

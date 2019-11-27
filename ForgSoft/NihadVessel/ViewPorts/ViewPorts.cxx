@@ -1,9 +1,11 @@
 #include <ViewPorts.hxx>
 #include <CADScene.hxx>
 #include <vtkTextActor.h>
+#include <FrgBaseMainWindow.hxx>
 
-ForgBaseLib::ViewPorts::ViewPorts(QWidget* parent)
+ForgBaseLib::ViewPorts::ViewPorts(FrgBaseMainWindow* parent)
 	: QMdiArea(parent)
+	, theParentMainWindow_(parent)
 {
 
 }
@@ -31,8 +33,12 @@ void ForgBaseLib::ViewPorts::RenderScenes()
 	for (auto scene : theScenes_)
 		scene->Render();
 
-	for (auto window : subWindowList())
-		activateNextSubWindow();
+	for (int i = 0; i < subWindowList().size(); i++)
+	{
+		this->subWindowActivated(subWindowList()[i]);
+
+		theParentMainWindow_->ParseErrorToConsole("Activated!");
+	}
 }
 
 void ForgBaseLib::ViewPorts::AddScene(CADScene * scene, Qt::WindowFlags flags)

@@ -179,7 +179,7 @@ void ForgBaseLib::CADScene::CreateActor(NihadVesselPartTreeItem* part)
 		}
 	}
 
-	DrawGrid(20, 20);
+	DrawGrid(10, 5);
 }
 
 void ForgBaseLib::CADScene::ClearScene()

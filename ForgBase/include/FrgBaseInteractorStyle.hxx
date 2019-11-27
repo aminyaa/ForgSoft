@@ -74,6 +74,8 @@ public:
 
 	virtual void OnRightButtonUp() override;
 
+	virtual void OnMouseMove() override;
+
 	virtual void OnChar() override;
 
 	void SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree = FrgFalse);

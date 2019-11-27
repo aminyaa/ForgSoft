@@ -3,8 +3,10 @@
 #include <FrgBaseCADScene.hxx>
 #include <FrgBaseTree.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBaseMainWindow.hxx>
 
 #include <QtGui/QColor>
+#include <QApplication>
 
 #include <vtkSetGet.h>
 #include <vtkSmartPointer.h>
@@ -178,6 +180,8 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnLeftButtonUp()
 
 		//theParent_->UpdateExportContextMenu();
 	}
+
+	theParent_->GetParentTree()->GetParentMainWindow()->setCursor(QCursor());
 }
 
 void ForgBaseLib::FrgBaseInteractorStyle::OnLeftButtonDown()
@@ -207,6 +211,9 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnMiddleButtonDown()
 
 void ForgBaseLib::FrgBaseInteractorStyle::OnRightButtonDown()
 {
+	QPixmap cursor_pixmap = QPixmap(":/Icons/Menus/Scene/Move.png");
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->GetParentTree()->GetParentMainWindow()->setCursor(cursor_default);
 	int pickPosition[2];
 	this->GetInteractor()->GetEventPosition(pickPosition);
 
@@ -219,6 +226,8 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnRightButtonDown()
 
 void ForgBaseLib::FrgBaseInteractorStyle::OnRightButtonUp()
 {
+	theParent_->GetParentTree()->GetParentMainWindow()->setCursor(QCursor());
+
 	int pickPosition[2];
 	this->GetInteractor()->GetEventPosition(pickPosition);
 
@@ -237,6 +246,18 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnRightButtonUp()
 
 		vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
 	}
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::OnMouseMove()
+{
+	if (this->State == VTKIS_ROTATE)
+	{
+		QPixmap cursor_pixmap = QPixmap(":/Icons/Menus/Scene/RotateXYZ.png");
+		QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+		theParent_->GetParentTree()->GetParentMainWindow()->setCursor(cursor_default);
+	}
+
+	vtkInteractorStyleTrackballCamera::OnMouseMove();
 }
 
 void ForgBaseLib::FrgBaseInteractorStyle::OnChar()
@@ -378,14 +399,13 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnChar()
 	{
 		auto camera = GetParentScene()->GetFrgBaseCamera();
 
-		static int iForP = 1;
-		if (iForP == 1)
-			camera->ParallelProjectionOn();
-		else if (iForP == -1)
+		if (camera->GetParallelProjection())
 			camera->ParallelProjectionOff();
+		else
+			camera->ParallelProjectionOn();
 
+		GetParentScene()->GetRenderer()->ResetCamera();
 		GetParentScene()->GetRenderWindow()->Render();
-		iForP *= -1;
 	}
 
 	if (key == "d" || key == "D")

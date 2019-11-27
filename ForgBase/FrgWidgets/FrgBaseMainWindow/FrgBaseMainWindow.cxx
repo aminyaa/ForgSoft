@@ -43,37 +43,74 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 
 	FrgBaseMenu* EditMenu = new FrgBaseMenu("Edit", this);
 	EditMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* MeshMenu = new FrgBaseMenu("Mesh", this);
+	MeshMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* SolutionMenu = new FrgBaseMenu("Solution", this);
+	SolutionMenu->GetToolBar()->setHidden(true);
 	FrgBaseMenu* ToolsMenu = new FrgBaseMenu("Tools", this);
 	ToolsMenu->GetToolBar()->setHidden(true);
 	FrgBaseMenu* ModelsMenu = new FrgBaseMenu("Models", this);
 	ModelsMenu->GetToolBar()->setHidden(true);
+	FrgBaseMenu* ViewMenu = new FrgBaseMenu("View", this);
+	ViewMenu->GetToolBar()->setHidden(true);
 	FrgBaseMenu* WindowMenu = new FrgBaseMenu("Window", this);
 	WindowMenu->GetToolBar()->setHidden(true);
 	FrgBaseMenu* HelpMenu = new FrgBaseMenu("Help", this);
 	HelpMenu->GetToolBar()->setHidden(true);
 
 	this->menuBar()->addMenu(EditMenu);
+	this->menuBar()->addMenu(MeshMenu);
+	this->menuBar()->addMenu(SolutionMenu);
 	this->menuBar()->addMenu(ToolsMenu);
 	this->menuBar()->addMenu(ModelsMenu);
+	this->menuBar()->addMenu(ViewMenu);
 	this->menuBar()->addMenu(WindowMenu);
 	this->menuBar()->addMenu(HelpMenu);
 
+	QAction* undoAction = new QAction(QIcon(":/Icons/Menus/File/Undo.png"), "Undo");
+	QAction* redoAction = new QAction(QIcon(":/Icons/Menus/File/Redo.png"), "Redo");
+	QAction* cutAction = new QAction(QIcon(":/Icons/Menus/File/Cut.png"), "Cut");
 	QAction* copyAction = new QAction(QIcon(":/Icons/Menus/File/Copy.png"), "Copy");
 	QAction* pasteAction = new QAction(QIcon(":/Icons/Menus/File/Paste.png"), "Paste");
+	QAction* deleteAction = new QAction(QIcon(":/Icons/Menus/File/Delete.png"), "Delete");
+	QAction* selectAllAction = new QAction(QIcon(":/Icons/Menus/File/SelectAll.png"), "SelectAll");
+
+	EditMenu->addAction(undoAction);
+	EditMenu->addAction(redoAction);
+	EditMenu->addSeparator();
+	EditMenu->addAction(cutAction);
+	EditMenu->addAction(copyAction);
+	EditMenu->addAction(pasteAction);
+	EditMenu->addAction(deleteAction);
+	EditMenu->addAction(selectAllAction);
 
 	QAction* shipAction = new QAction(QIcon(":/Icons/Models/Ship.png"), "New Ship");
 	QAction* propellerAction = new QAction(QIcon(":/Icons/Models/Propeller.png"), "New Propeller");
 	QAction* ductAction = new QAction(QIcon(":/Icons/Models/Duct.png"), "New Duct");
+
+	ModelsMenu->addAction(shipAction);
+	ModelsMenu->addAction(propellerAction);
+	ModelsMenu->addAction(ductAction);
 
 	QAction* initializeSolutionAction = new QAction(QIcon(":/Icons/Menus/Solution/Initialize Solution.png"), "Initialize Solution");
 	QAction* runAction = new QAction(QIcon(":/Icons/Menus/Solution/Run.png"), "Run");
 	QAction* stepAction = new QAction(QIcon(":/Icons/Menus/Solution/Step.png"), "Step");
 	QAction* stopAction = new QAction(QIcon(":/Icons/Menus/Solution/Stop.png"), "Stop");
 
+	SolutionMenu->addAction(initializeSolutionAction);
+	SolutionMenu->addAction(runAction);
+	SolutionMenu->addAction(stepAction);
+	SolutionMenu->addAction(stopAction);
+
 	QAction* genSrfMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Generate Surface Mesh.png"), "Generate Surface Mesh");
 	QAction* genVlmMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Generate Volume Mesh.png"), "Generate Volume Mesh");
 	QAction* clcGenMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Clear Generated Mesh.png"), "Clear Generated Mesh");
 	QAction* initializeMeshAction = new QAction(QIcon(":/Icons/Menus/Mesh/Initialize Meshing.png"), "Initialize Meshing");
+
+	MeshMenu->addAction(genSrfMeshAction);
+	MeshMenu->addAction(genVlmMeshAction);
+	MeshMenu->addAction(clcGenMeshAction);
+	MeshMenu->addAction(initializeMeshAction);
 
 	QAction* CursorSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/Cursor.png"), "Cursor");
 	QAction* MoveSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/Move.png"), "Move");
@@ -82,9 +119,21 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	QAction* RotateZSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/RotateZ.png"), "RotateZ");
 	QAction* RotateXYZSceneAction = new QAction(QIcon(":/Icons/Menus/Scene/RotateXYZ.png"), "RotateXYZ");
 
+	ViewMenu->addAction(CursorSceneAction);
+	ViewMenu->addAction(MoveSceneAction);
+	ViewMenu->addAction(RotateXSceneAction);
+	ViewMenu->addAction(RotateYSceneAction);
+	ViewMenu->addAction(RotateZSceneAction);
+	ViewMenu->addAction(RotateXYZSceneAction);
+
 	QToolBar* EditToolbar = new QToolBar("Edit");
+	EditToolbar->addAction(undoAction);
+	EditToolbar->addAction(redoAction);
+	EditToolbar->addAction(cutAction);
 	EditToolbar->addAction(copyAction);
 	EditToolbar->addAction(pasteAction);
+	EditToolbar->addAction(deleteAction);
+	EditToolbar->addAction(selectAllAction);
 
 	QToolBar* ModelsToolbar = new QToolBar("Models");
 	ModelsToolbar->addAction(shipAction);
@@ -110,6 +159,14 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	SceneToolbar->addAction(RotateYSceneAction);
 	SceneToolbar->addAction(RotateZSceneAction);
 	SceneToolbar->addAction(RotateXYZSceneAction);
+
+	QToolBar* ViewToolbar = new QToolBar("View");
+	ViewToolbar->addAction(CursorSceneAction);
+	ViewToolbar->addAction(MoveSceneAction);
+	ViewToolbar->addAction(RotateXSceneAction);
+	ViewToolbar->addAction(RotateYSceneAction);
+	ViewToolbar->addAction(RotateZSceneAction);
+	ViewToolbar->addAction(RotateXYZSceneAction);
 
 	this->addToolBar(EditToolbar);
 	this->addToolBar(ModelsToolbar);
