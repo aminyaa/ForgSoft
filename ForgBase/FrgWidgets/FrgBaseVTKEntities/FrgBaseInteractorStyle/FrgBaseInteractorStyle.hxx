@@ -12,6 +12,16 @@ class QColor;
 class vtkActor;
 class vtkProperty;
 
+enum SelectedIconFromScene
+{
+	Cursor = 0,
+	Move = 1,
+	RotateX = 2,
+	RotateY = 3,
+	RotateZ = 4,
+	RotateXYZ = 5
+};
+
 BeginFrgBaseLib
 
 class FrgBaseCADScene;
@@ -26,11 +36,15 @@ class FORGBASE_EXPORT FrgBaseInteractorStyle : public vtkInteractorStyleTrackbal
 
 private:
 
+	FrgBool theRotationEnabled_ = FrgTrue;
+
 	QList<FrgBaseActor*> theSelectedActors_;
 
 	QList<FrgBaseActor*> theHiddenActors_;
 
 	FrgBaseCADScene* theParent_ = nullptr;
+
+	SelectedIconFromScene theSelectedIconFromScene_ = Cursor;
 
 	int PreviousPosition[2];
 	int ResetPixelDistance;
@@ -82,9 +96,18 @@ public:
 
 	FrgGetMacro(QList<FrgBaseActor*>, SelectedActors, theSelectedActors_);
 	FrgGetMacro(FrgBaseCADScene*, ParentScene, theParent_);
+	FrgGetMacro(FrgBool, RotationEnabled, theRotationEnabled_);
+	FrgGetMacro(SelectedIconFromScene, SelectedIconFromScene, theSelectedIconFromScene_);
 
 	static QColor GeometryColorRGB;
 	static QColor GeometrySelectedColorRGB;
+
+public:
+
+	void SetViewToXYPlane();
+	void SetViewToXZPlane();
+	void SetViewToYZPlane();
+	void SetViewToXYZ();
 };
 
 EndFrgBaseLib

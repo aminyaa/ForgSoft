@@ -192,4 +192,6 @@ void ForgBaseLib::CADScene::ClearScene()
 		}
 		GetActors().clear();
 	}
+
+	ClearGrid();
 }

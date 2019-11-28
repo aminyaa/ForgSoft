@@ -3,7 +3,12 @@
 #define _ViewPorts_Header
 
 #include <FrgBaseGlobals.hxx>
-#include <QtWidgets/QMdiArea>
+
+#include <QtWidgets/QMainWindow>
+
+class QMdiArea;
+class QToolBar;
+class QToolButton;
 
 BeginFrgBaseLib
 
@@ -11,10 +16,14 @@ class CADScene;
 class NihadVesselPartTreeItem;
 class FrgBaseMainWindow;
 
-class ViewPorts : public QMdiArea
+class ViewPorts : public QMainWindow
 {
 
 private:
+
+	QMdiArea* theMdiArea_ = FrgNullPtr;
+	QToolBar* theToolBar_ = FrgNullPtr;
+	QList<QToolButton*> theToolButtons_;
 
 	QList<CADScene*> theScenes_;
 
@@ -25,6 +34,9 @@ public:
 	ViewPorts(FrgBaseMainWindow* parent = FrgNullPtr);
 
 	FrgGetMacro(QList<CADScene*>, Scenes, theScenes_);
+	FrgGetMacro(QMdiArea*, MdiArea, theMdiArea_);
+	FrgGetMacro(QToolBar*, ToolBar, theToolBar_);
+	FrgGetMacro(QList<QToolButton*>, ToolButtons, theToolButtons_);
 
 	void SetLogoText(FrgString text);
 
@@ -35,6 +47,10 @@ public:
 	void RenderScenes();
 
 	void AddScene(CADScene* scene, Qt::WindowFlags flags = Qt::WindowFlags());
+
+	void TileSubWindows();
+
+	void SetToolBar();
 
 };
 

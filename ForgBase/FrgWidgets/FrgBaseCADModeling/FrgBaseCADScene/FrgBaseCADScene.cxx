@@ -4,6 +4,11 @@
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseInteractorStyle.hxx>
 #include <FrgBasePlot2D.hxx>
+#include <FrgBaseMenu.hxx>
+#include <FrgMenu_View.hxx>
+#include <FrgBaseGlobalsICONS.hxx>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QToolBar>
 
 #include <vtkRenderer.h>
 #include <vtkNamedColors.h>
@@ -40,6 +45,8 @@ ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene(FrgBaseTree* parentTree)
 	, theParentTree_(parentTree)
 {
 	Init();
+	CreateMenus();
+	CreateContextMenuInScene();
 }
 
 void ForgBaseLib::FrgBaseCADScene::Init()
@@ -47,7 +54,7 @@ void ForgBaseLib::FrgBaseCADScene::Init()
 	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
 	//theRenderer_->SetBackground(0.95, 0.95, 0.95); // (Gainsboro) Color
 	theRenderer_->SetBackground(1.0, 1.0, 1.0);
-	theRenderer_->SetBackground2(0.8, 0.8, 0.8);
+	theRenderer_->SetBackground2(0.7, 0.7, 0.7);
 	theRenderer_->SetGradientBackground(true);
 
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
@@ -123,14 +130,20 @@ void ForgBaseLib::FrgBaseCADScene::StartScene()
 
 }
 
-void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nbMajorDivision, int nbMinorDivision)
+void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nbMajorDivision, int nbMinorDivision, GridDrawPlane plane)
 {
+	theGridActor_ = FrgNew GridActor;
+	theGridActor_->theNbMajorDivision_ = nbMajorDivision;
+	theGridActor_->theNbMinorDivision_ = nbMinorDivision;
+	theGridActor_->theMajorActor_ = vtkSmartPointer<vtkActor>::New();
+	theGridActor_->theMinorActor_ = vtkSmartPointer<vtkActor>::New();
+
 	const auto& bounds = GetRenderer()->ComputeVisiblePropBounds();
-	DrawGrid(nbMajorDivision, FrgTrue, bounds);
-	DrawGrid(nbMajorDivision*nbMinorDivision, FrgFalse, bounds);
+	DrawGrid(theGridActor_->theMajorActor_, nbMajorDivision, FrgTrue, bounds, plane);
+	DrawGrid(theGridActor_->theMinorActor_, nbMajorDivision*nbMinorDivision, FrgFalse, bounds, plane);
 }
 
-void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nbDivision, FrgBool isMajor, double* bounds)
+void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int nbDivision, FrgBool isMajor, double* bounds, GridDrawPlane plane)
 {
 	double Xmin = bounds[0], Xmax = bounds[1];
 	double Ymin = bounds[2], Ymax = bounds[3];
@@ -158,30 +171,237 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nbDivision, FrgBool isMajor, dou
 
 	vtkSmartPointer<vtkRectilinearGrid> rgrid =
 		vtkSmartPointer<vtkRectilinearGrid>::New();
-	rgrid->SetDimensions(nbDivision + 1, nbDivision + 1, 1);
-	rgrid->SetXCoordinates(xCoords);
-	rgrid->SetYCoordinates(yCoords);
-	rgrid->SetZCoordinates(zCoords);
+
+	if (plane == XY)
+	{
+		rgrid->SetDimensions(nbDivision + 1, nbDivision + 1, 1);
+		rgrid->SetXCoordinates(xCoords);
+		rgrid->SetYCoordinates(yCoords);
+		rgrid->SetZCoordinates(zCoords);
+	}
+	else if (plane == XZ)
+	{
+		rgrid->SetDimensions(nbDivision + 1, 1, nbDivision + 1);
+		rgrid->SetXCoordinates(xCoords);
+		rgrid->SetYCoordinates(zCoords);
+		rgrid->SetZCoordinates(yCoords);
+	}
+	else if (plane == YZ)
+	{
+		rgrid->SetDimensions(1, nbDivision + 1, nbDivision + 1);
+		rgrid->SetXCoordinates(zCoords);
+		rgrid->SetYCoordinates(xCoords);
+		rgrid->SetZCoordinates(yCoords);
+	}
 
 	vtkSmartPointer<vtkDataSetMapper> rgridMapper =
 		vtkSmartPointer<vtkDataSetMapper>::New();
 	rgridMapper->SetInputData(rgrid);
 
-	vtkSmartPointer<vtkActor> wireActor =
-		vtkSmartPointer<vtkActor>::New();
-	wireActor->SetMapper(rgridMapper);
-	wireActor->GetProperty()->SetRepresentationToWireframe();
+	actor->SetMapper(rgridMapper);
+	actor->GetProperty()->SetRepresentationToWireframe();
 	if(isMajor)
-		wireActor->GetProperty()->SetLineWidth(2.0);
+		actor->GetProperty()->SetLineWidth(2.0);
 	else
-		wireActor->GetProperty()->SetLineWidth(1.0);
-	wireActor->GetProperty()->EdgeVisibilityOn();
-	wireActor->GetProperty()->SetEdgeColor(1.0, 0.0, 0.0);
-	wireActor->GetProperty()->SetRenderLinesAsTubes(true);
-	wireActor->GetProperty()->SetAmbient(0.0);
-	wireActor->GetProperty()->SetDiffuse(0.0);
-	wireActor->GetProperty()->SetSpecular(0.0);
+		actor->GetProperty()->SetLineWidth(1.0);
+	actor->GetProperty()->EdgeVisibilityOn();
+	actor->GetProperty()->SetEdgeColor(1.0, 0.0, 0.0);
+	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	actor->GetProperty()->SetAmbient(0.0);
+	actor->GetProperty()->SetDiffuse(0.0);
+	actor->GetProperty()->SetSpecular(0.0);
 
-	GetRenderer()->AddActor(wireActor);
-	GetActors().push_back(wireActor);
+	GetRenderer()->AddActor(actor);
+}
+
+void ForgBaseLib::FrgBaseCADScene::customContextMenuRequestedSlot(const QPoint& pos)
+{
+	theContextMenuInScene_->exec(this->mapToGlobal(pos));
+}
+
+void ForgBaseLib::FrgBaseCADScene::CreateContextMenuInScene()
+{
+	//FrgMenu_View* viewMenu = FrgNew FrgMenu_View(GetParentTree()->GetParentMainWindow());
+
+	theContextMenuInScene_ = FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow());
+
+	for (int i = 0; i < theMenus_.size(); i++)
+	{
+		theContextMenuInScene_->addActions(theMenus_[i]->actions());
+		theContextMenuInScene_->addSeparator();
+	}
+	
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(customContextMenuRequestedSlot(const QPoint&)));
+}
+
+void ForgBaseLib::FrgBaseCADScene::CreateMenus()
+{
+	theMenus_.push_back(FrgNew FrgMenu_View(GetParentTree()->GetParentMainWindow()));
+	connect(theMenus_.last()->GetItem("Set View to XY Plane"), SIGNAL(triggered(bool)), this, SLOT(SetViewToXYPlaneSlot(bool)));
+	connect(theMenus_.last()->GetItem("Set View to XZ Plane"), SIGNAL(triggered(bool)), this, SLOT(SetViewToXZPlaneSlot(bool)));
+	connect(theMenus_.last()->GetItem("Set View to YZ Plane"), SIGNAL(triggered(bool)), this, SLOT(SetViewToYZPlaneSlot(bool)));
+	connect(theMenus_.last()->GetItem("Set View to XYZ"), SIGNAL(triggered(bool)), this, SLOT(SetViewToXYZSlot(bool)));
+
+	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
+	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
+	theMenus_.last()->AddItem(FrgICON_Menu_View_Grid, "Draw Grid");
+	theMenus_.last()->GetItem("Draw Grid")->setCheckable(FrgTrue);
+	theMenus_.last()->GetItem("Draw Grid")->setChecked(FrgTrue);
+
+	connect(theMenus_.last()->GetItem("Draw Grid"), SIGNAL(triggered(bool)), this, SLOT(DrawGridSlot(bool)));
+}
+
+void ForgBaseLib::FrgBaseCADScene::ClearGrid()
+{
+	if (theGridActor_)
+	{
+		theRenderer_->RemoveActor(theGridActor_->theMajorActor_);
+		theRenderer_->RemoveActor(theGridActor_->theMinorActor_);
+
+		delete theGridActor_;
+		theGridActor_ = FrgNullPtr;
+	}
+}
+
+void ForgBaseLib::FrgBaseCADScene::SetViewToXYPlaneSlot(bool)
+{
+	if (theGridActor_)
+	{
+		double opacity = theGridActor_->theMajorActor_->GetProperty()->GetOpacity();
+		int nbMajorDivision = theGridActor_->theNbMajorDivision_;
+		int nbMinorDivision = theGridActor_->theNbMinorDivision_;
+
+		ClearGrid();
+
+		DrawGrid(nbMajorDivision, nbMinorDivision, XY);
+
+		GridOpacityChangedSlot(opacity * 100);
+
+		for (int i = 0; i < theContextMenuInScene_->actions().size(); i++)
+			if (theContextMenuInScene_->actions()[i]->text() == "Draw Grid")
+				DrawGridSlot(theContextMenuInScene_->actions()[i]->isChecked());
+	}
+	theInteractorStyle_->SetViewToXYPlane();
+}
+
+void ForgBaseLib::FrgBaseCADScene::SetViewToXZPlaneSlot(bool)
+{
+	if (theGridActor_)
+	{
+		double opacity = theGridActor_->theMajorActor_->GetProperty()->GetOpacity();
+		int nbMajorDivision = theGridActor_->theNbMajorDivision_;
+		int nbMinorDivision = theGridActor_->theNbMinorDivision_;
+
+		ClearGrid();
+
+		DrawGrid(nbMajorDivision, nbMinorDivision, XZ);
+
+		GridOpacityChangedSlot(opacity * 100);
+
+		for (int i = 0; i < theContextMenuInScene_->actions().size(); i++)
+			if (theContextMenuInScene_->actions()[i]->text() == "Draw Grid")
+				DrawGridSlot(theContextMenuInScene_->actions()[i]->isChecked());
+	}
+	theInteractorStyle_->SetViewToXZPlane();
+}
+
+void ForgBaseLib::FrgBaseCADScene::SetViewToYZPlaneSlot(bool)
+{
+	if (theGridActor_)
+	{
+		double opacity = theGridActor_->theMajorActor_->GetProperty()->GetOpacity();
+		int nbMajorDivision = theGridActor_->theNbMajorDivision_;
+		int nbMinorDivision = theGridActor_->theNbMinorDivision_;
+
+		ClearGrid();
+
+		DrawGrid(nbMajorDivision, nbMinorDivision, YZ);
+
+		GridOpacityChangedSlot(opacity * 100);
+
+		for (int i = 0; i < theContextMenuInScene_->actions().size(); i++)
+			if (theContextMenuInScene_->actions()[i]->text() == "Draw Grid")
+				DrawGridSlot(theContextMenuInScene_->actions()[i]->isChecked());
+	}
+	theInteractorStyle_->SetViewToYZPlane();
+}
+
+void ForgBaseLib::FrgBaseCADScene::SetViewToXYZSlot(bool)
+{
+	if (theGridActor_)
+	{
+		double opacity = theGridActor_->theMajorActor_->GetProperty()->GetOpacity();
+		int nbMajorDivision = theGridActor_->theNbMajorDivision_;
+		int nbMinorDivision = theGridActor_->theNbMinorDivision_;
+
+		ClearGrid();
+
+		DrawGrid(nbMajorDivision, nbMinorDivision, XY);
+
+		GridOpacityChangedSlot(opacity * 100);
+
+		for (int i = 0; i < theContextMenuInScene_->actions().size(); i++)
+			if (theContextMenuInScene_->actions()[i]->text() == "Draw Grid")
+				DrawGridSlot(theContextMenuInScene_->actions()[i]->isChecked());
+	}
+	theInteractorStyle_->SetViewToXYZ();
+}
+
+void ForgBaseLib::FrgBaseCADScene::GridOpacityChangedSlot(int val)
+{
+	if (theGridActor_)
+	{
+		theGridActor_->theMajorActor_->GetProperty()->SetOpacity((double)val / 100.0);
+		theGridActor_->theMinorActor_->GetProperty()->SetOpacity((double)val / 100.0);
+
+		theRenderWindow_->Render();
+	}
+}
+
+void ForgBaseLib::FrgBaseCADScene::DrawGridSlot(bool checked)
+{
+	if (theGridActor_)
+	{
+		theGridActor_->theMajorActor_->SetVisibility(checked);
+		theGridActor_->theMinorActor_->SetVisibility(checked);
+
+		theRenderWindow_->Render();
+	}
+}
+
+void ForgBaseLib::FrgBaseCADScene::SelectIconSelectedSlot(bool)
+{
+	GetParentTree()->GetParentMainWindow()->setCursor(QCursor());
+
+	theInteractorStyle_->GetSelectedIconFromScene() = Cursor;
+}
+
+void ForgBaseLib::FrgBaseCADScene::MoveIconSelectedSlot(bool)
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_Move);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	GetParentTree()->GetParentMainWindow()->setCursor(cursor_default);
+
+	theInteractorStyle_->GetSelectedIconFromScene() = Move;
+}
+
+void ForgBaseLib::FrgBaseCADScene::RotateXIconSelectedSlot(bool)
+{
+}
+
+void ForgBaseLib::FrgBaseCADScene::RotateYIconSelectedSlot(bool)
+{
+}
+
+void ForgBaseLib::FrgBaseCADScene::RotateZIconSelectedSlot(bool)
+{
+}
+
+void ForgBaseLib::FrgBaseCADScene::RotateXYZIconSelectedSlot(bool)
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	GetParentTree()->GetParentMainWindow()->setCursor(cursor_default);
+
+	theInteractorStyle_->GetSelectedIconFromScene() = RotateXYZ;
 }

@@ -110,8 +110,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <AdditionalIncludeDirectories>$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\ForgGlobals;$(MSBuildProjectDirectory)\NihadVessel;$(SolutionDir)ForgBase\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsDlg;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsProperty;$(MSBuildProjectDirectory)\NihadVessel\NihadVTKEntities;$(MSBuildProjectDirectory)\NihadVessel\NihadVTKEntities\NihadVTKActor;$(MSBuildProjectDirectory)\NihadVessel\NihadEntities\NihadPartSurfaceEntity;$(MSBuildProjectDirectory)\NihadVessel\NihadEntities\NihadPartCurveEntity;$(MSBuildProjectDirectory)\NihadVessel\NihadEntities;$(MSBuildProjectDirectory)\NihadVessel\CustomWindowType;$(QTDIR)\include;$(OPENCASCADE_INCLUDEDIR);$(MSBuildProjectDirectory)/ThirdParties/AutMarine/include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(MSBuildProjectDirectory)\NihadVessel\ViewPorts;$(MSBuildProjectDirectory)\NihadVessel\CADScene;$(Qt_INCLUDEPATH_);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>
-      </AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>1</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,8 +127,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <AdditionalIncludeDirectories>$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory);$(MSBuildProjectDirectory)\ForgGlobals;$(MSBuildProjectDirectory)\NihadVessel;$(SolutionDir)ForgBase\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsDlg;$(MSBuildProjectDirectory)\NihadVessel\CustomPropertyType\SelectObjectsProperty;$(MSBuildProjectDirectory)\NihadVessel\NihadVTKEntities;$(MSBuildProjectDirectory)\NihadVessel\NihadVTKEntities\NihadVTKActor;$(MSBuildProjectDirectory)\NihadVessel\NihadEntities\NihadPartSurfaceEntity;$(MSBuildProjectDirectory)\NihadVessel\NihadEntities\NihadPartCurveEntity;$(MSBuildProjectDirectory)\NihadVessel\NihadEntities;$(MSBuildProjectDirectory)\NihadVessel\CustomWindowType;$(OPENCASCADE_INCLUDEDIR);$(MSBuildProjectDirectory)/ThirdParties/AutMarine/include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(Qt_INCLUDEPATH_);$(MSBuildProjectDirectory)\NihadVessel\ViewPorts;$(MSBuildProjectDirectory)\NihadVessel\CADScene;$(QTDIR)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>
-      </AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>1</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

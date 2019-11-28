@@ -7,6 +7,7 @@
 #include <FrgBaseCADPartFeatures.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADScene.hxx>
+#include <FrgMenu_Models.hxx>
 #include <ViewPorts.hxx>
 #include <qtpropertybrowser.h>
 
@@ -86,15 +87,18 @@ void ForgBaseLib::NihadTree::FormTree()
 
 	FrgString GeometryNewMenu = "New " + NihadName;
 	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
-	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryNihadClickedSlot(bool)));
+	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryShipClickedSlot(bool)));
+	connect(GetParentMainWindow()->GetModelsMenu()->GetItem("New Ship"), SIGNAL(triggered(bool)), this, SLOT(NewGeometryShipClickedSlot(bool)));
 
 	GeometryNewMenu = "New " + PropellerName;
 	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
 	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryPropellerClickedSlot(bool)));
+	connect(GetParentMainWindow()->GetModelsMenu()->GetItem("New Propeller"), SIGNAL(triggered(bool)), this, SLOT(NewGeometryPropellerClickedSlot(bool)));
 
 	GeometryNewMenu = "New " + DuctName;
 	GetTreeItem(GeometryItem)->GetContextMenu()->AddItem(GeometryNewMenu);
 	connect(GetTreeItem(GeometryItem)->GetContextMenu()->GetItem(GeometryNewMenu), SIGNAL(triggered(bool)), this, SLOT(NewGeometryDuctClickedSlot(bool)));
+	connect(GetParentMainWindow()->GetModelsMenu()->GetItem("New Duct"), SIGNAL(triggered(bool)), this, SLOT(NewGeometryDuctClickedSlot(bool)));
 
 	FrgString ScenesNewMenu = "&New Scene";
 	GetTreeItem(ScenesItem)->GetContextMenu()->AddItem(ScenesNewMenu);
@@ -139,7 +143,7 @@ void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 	}
 }
 
-void ForgBaseLib::NihadTree::NewGeometryNihadClickedSlot(bool)
+void ForgBaseLib::NihadTree::NewGeometryShipClickedSlot(bool)
 {
 	theGeometryTreeItems_.push_back(FrgNew NihadVesselGeometryTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Geometry"), NihadName), GetTreeItem("Geometry")));
 
@@ -245,6 +249,8 @@ void ForgBaseLib::NihadTree::NewGeometryNihadClickedSlot(bool)
 	FrgString GeometryPreviewMenu = "&Preview";
 	GetTreeItem(NihadGeometryTreeItem->text(0))->GetContextMenu()->AddItem(GeometryPreviewMenu);
 	connect(GetTreeItem(NihadGeometryTreeItem->text(0))->GetContextMenu()->GetItem(GeometryPreviewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(PreviewGeometryClickedSlot(bool)));
+
+	ScrollToItem(NihadGeometryTreeItem);
 }
 
 void ForgBaseLib::NihadTree::NewGeometryPropellerClickedSlot(bool b)
@@ -340,6 +346,8 @@ void ForgBaseLib::NihadTree::NewGeometryPropellerClickedSlot(bool b)
 	FrgString GeometryPreviewMenu = "&Preview";
 	GetTreeItem(PropellerGeometryTreeItem->text(0))->GetContextMenu()->AddItem(GeometryPreviewMenu);
 	connect(GetTreeItem(PropellerGeometryTreeItem->text(0))->GetContextMenu()->GetItem(GeometryPreviewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(PreviewGeometryClickedSlot(bool)));
+
+	ScrollToItem(PropellerGeometryTreeItem);
 }
 
 void ForgBaseLib::NihadTree::NewGeometryDuctClickedSlot(bool b)
@@ -440,12 +448,16 @@ void ForgBaseLib::NihadTree::NewGeometryDuctClickedSlot(bool b)
 	FrgString GeometryPreviewMenu = "&Preview";
 	GetTreeItem(DuctGeometryTreeItem->text(0))->GetContextMenu()->AddItem(GeometryPreviewMenu);
 	connect(GetTreeItem(DuctGeometryTreeItem->text(0))->GetContextMenu()->GetItem(GeometryPreviewMenu.remove('&')), SIGNAL(triggered(bool)), this, SLOT(PreviewGeometryClickedSlot(bool)));
+
+	ScrollToItem(DuctGeometryTreeItem);
 }
 
 void ForgBaseLib::NihadTree::NewSceneClickedSlot(bool b)
 {
 	theSceneTreeItems_.push_back(FrgNew NihadVesselScenePartTreeItem(CorrectName<FrgBaseTreeItem>(GetTreeItem("Scenes"), "Scene"), GetTreeItem("Scenes")));
 	theSceneTreeItems_.at(theSceneTreeItems_.size() - 1)->DoAfterConstruct();
+
+	ScrollToItem(theSceneTreeItems_.at(theSceneTreeItems_.size() - 1));
 }
 
 #define SetNihadParametersWithProperty(patch, parameter, ID, value)\
@@ -651,6 +663,8 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 		solid
 	)
 	);
+
+	ScrollToItem(thePartTreeItems_.at(thePartTreeItems_.size() - 1));
 }
 
 void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
@@ -731,9 +745,16 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 		output.push_back(dynamic_cast<NihadVesselPartTreeItem*>(selectedItems.at(i)));
 	}
 
-	(dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_))->GetPartsPointer() = output;
+	auto scene = (dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_));
 
-	(dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_))->RenderSceneSlot();
+	if (scene)
+	{
+		scene->GetPartsPointer() = output;
+		scene->RenderSceneSlot();
+
+		GetParentMainWindow()->GetTabWidget()->addTab(scene->GetViewPorts(), scene->text(0));
+		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(scene->GetViewPorts());
+	}
 }
 
 void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
@@ -765,6 +786,8 @@ void ForgBaseLib::NihadTree::NewPlotClickedSlot(bool)
 	thePlotsItems_.push_back(FrgNew FrgBasePlot2D(CorrectName<FrgBaseTreeItem>(theLastRightClicked_, "Plot"), theLastRightClicked_, this, GetParentMainWindow()));
 	FrgBasePlot2D* lastPlotAdded = thePlotsItems_.last();
 	GetParentMainWindow()->GetTabWidget()->setCurrentWidget(lastPlotAdded);
+
+	ScrollToItem(lastPlotAdded);
 }
 
 void ForgBaseLib::NihadTree::TabBarClickedSlot(int index)

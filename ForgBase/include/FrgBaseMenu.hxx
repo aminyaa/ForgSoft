@@ -19,7 +19,7 @@ private:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
 
-	FrgVector<QAction*> theItems_;
+	QList<QAction*> theItems_;
 
 	QToolBar* theToolBar_ = FrgNullPtr;
 
@@ -44,8 +44,8 @@ public:
 	QAction* GetItem(const FrgString& title);
 
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
-
 	FrgGetMacro(QToolBar*, ToolBar, theToolBar_);
+	FrgGetMacro(QList<QAction*>, Items, theItems_);
 };
 
 EndFrgBaseLib

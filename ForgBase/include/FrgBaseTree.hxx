@@ -53,6 +53,9 @@ public:
 	FrgBaseTreeItem* GetTreeItem(const FrgString& title);
 	FrgBaseTreeItem*& GetTreeItemFromList(FrgBaseTreeItem* item);
 
+	void ScrollToItem(FrgBaseTreeItem* item);
+	void ScrollToItems(QList<FrgBaseTreeItem*> items);
+
 protected Q_SLOTS:
 
 	virtual void itemClickedSlot(QTreeWidgetItem* item, int column);

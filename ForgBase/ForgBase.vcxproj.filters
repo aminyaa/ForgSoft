@@ -79,6 +79,27 @@
     <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx">
       <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_File">
+      <UniqueIdentifier>{60e62489-50a4-4a52-be50-f5482c595cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Edit">
+      <UniqueIdentifier>{d1c04cb6-2bdf-4f14-ac73-0cf82b9dc8ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Models">
+      <UniqueIdentifier>{e9ad0161-7293-4872-a039-170e4c858122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Solution">
+      <UniqueIdentifier>{d612a8b5-415f-46a7-9380-21a2159db610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Mesh">
+      <UniqueIdentifier>{03cb2113-c366-4aca-8c2e-26b60de172e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_View">
+      <UniqueIdentifier>{78bd6130-e6af-448a-b549-4769ef66a942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help">
+      <UniqueIdentifier>{4485987f-3a00-48c7-9e7f-a10d91189d01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -94,9 +115,6 @@
       <Filter>FrgWidgets\FrgBaseMainWindow</Filter>
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgBaseMenu.cxx">
-      <Filter>FrgWidgets\FrgBaseMenu</Filter>
-    </ClCompile>
-    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgBaseMenuFile.cxx">
       <Filter>FrgWidgets\FrgBaseMenu</Filter>
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseTree\FrgBaseTree.cxx">
@@ -129,6 +147,27 @@
     <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.cxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_File\FrgMenu_File.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_File</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Edit\FrgMenu_Edit.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Models\FrgMenu_Models.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Models</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Solution\FrgMenu_Solution.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Solution</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Mesh\FrgMenu_Mesh.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_View\FrgMenu_View.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_View</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help\FrgMenu_Help.cxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Help</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -147,9 +186,6 @@
       <Filter>FrgWidgets\FrgBaseThread</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgBaseMenu.hxx">
-      <Filter>FrgWidgets\FrgBaseMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgBaseMenuFile.hxx">
       <Filter>FrgWidgets\FrgBaseMenu</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseVTKEntities\FrgBaseInteractorStyle\FrgBaseInteractorStyle.hxx">
@@ -187,6 +223,30 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_File\FrgMenu_File.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_File</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Globals.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Edit\FrgMenu_Edit.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Models\FrgMenu_Models.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Models</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Solution\FrgMenu_Solution.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Solution</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Mesh\FrgMenu_Mesh.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_View\FrgMenu_View.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_View</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help\FrgMenu_Help.hxx">
+      <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Help</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

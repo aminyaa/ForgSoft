@@ -51,7 +51,7 @@ protected Q_SLOTS:
 
 public slots:
 
-	void NewGeometryNihadClickedSlot(bool b);
+	void NewGeometryShipClickedSlot(bool b);
 	void NewGeometryPropellerClickedSlot(bool b);
 	void NewGeometryDuctClickedSlot(bool b);
 

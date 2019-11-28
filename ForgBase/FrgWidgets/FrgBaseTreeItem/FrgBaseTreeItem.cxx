@@ -21,7 +21,7 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem
 {
 
 	this->setText(0, itemName);
-	this->setIcon(0, QIcon(FrgICONFileLoad));
+	this->setIcon(0, QIcon(FrgICON_Menu_File_Load));
 
 	FrgString str = itemName;
 	str = str.simplified();

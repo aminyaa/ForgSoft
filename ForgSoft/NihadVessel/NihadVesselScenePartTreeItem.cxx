@@ -93,14 +93,9 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 	}*/
 	//else
 	//{
-		CADScene* scene01 = new CADScene(GetParentTree());
 
-		theViewPorts_->AddScene(scene01, Qt::FramelessWindowHint);
-
-		theViewPorts_->tileSubWindows();
-
-		GetParentMainWindow()->GetTabWidget()->addTab(theViewPorts_, this->text(0));
-		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(theViewPorts_);
+		/*GetParentMainWindow()->GetTabWidget()->addTab(theViewPorts_, this->text(0));
+		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(theViewPorts_);*/
 	//}
 }
 

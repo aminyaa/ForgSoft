@@ -1,12 +1,18 @@
 #include <FrgBaseMainWindow.hxx>
 #include <FrgBaseTree.hxx>
 #include <FrgBaseTreeItem.hxx>
-#include <FrgBaseMenuFile.hxx>
 #include <FrgBaseDlgNewSim.hxx>
 #include <FrgBaseDlgLoadSim.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
-//#include <FrgBaseSceneTreeItem.hxx>
 #include <FrgBaseTabWidget.hxx>
+
+#include <FrgMenu_File.hxx>
+#include <FrgMenu_Edit.hxx>
+#include <FrgMenu_Models.hxx>
+#include <FrgMenu_Mesh.hxx>
+#include <FrgMenu_Solution.hxx>
+#include <FrgMenu_View.hxx>
+#include <FrgMenu_Help.hxx>
 
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QMenu>
@@ -30,8 +36,15 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 
 	this->window()->setWindowIcon(QIcon(":/Icons/Forg Logo.png"));
 
-	//theMenus_ = FrgMakeSharedPtr(FrgMenus)(this);
-	theFileMenu_ = FrgNew FrgBaseMenuFile(this);
+	theFileMenu_ = FrgNew FrgMenu_File(this);
+	theEditMenu_ = FrgNew FrgMenu_Edit(this);
+	theModelsMenu_ = FrgNew FrgMenu_Models(this);
+	theMeshMenu_ = FrgNew FrgMenu_Mesh(this);
+	theSolutionMenu_ = FrgNew FrgMenu_Solution(this);
+	//theViewMenu_ = FrgNew FrgMenu_View(this);
+	theHelpMenu_ = FrgNew FrgMenu_Help(this);
+
+	connect(theHelpMenu_->GetItem("About Us"), SIGNAL(triggered(bool)), this, SLOT(AboutUsClickedSlot(bool)));
 
 	this->setCentralWidget(FrgNew QWidget);
 
@@ -41,7 +54,7 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 
 	InitFrgMainWindow();
 
-	FrgBaseMenu* EditMenu = new FrgBaseMenu("Edit", this);
+	/*FrgBaseMenu* EditMenu = new FrgBaseMenu("Edit", this);
 	EditMenu->GetToolBar()->setHidden(true);
 	FrgBaseMenu* MeshMenu = new FrgBaseMenu("Mesh", this);
 	MeshMenu->GetToolBar()->setHidden(true);
@@ -67,13 +80,13 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	this->menuBar()->addMenu(WindowMenu);
 	this->menuBar()->addMenu(HelpMenu);
 
-	QAction* undoAction = new QAction(QIcon(":/Icons/Menus/File/Undo.png"), "Undo");
-	QAction* redoAction = new QAction(QIcon(":/Icons/Menus/File/Redo.png"), "Redo");
-	QAction* cutAction = new QAction(QIcon(":/Icons/Menus/File/Cut.png"), "Cut");
-	QAction* copyAction = new QAction(QIcon(":/Icons/Menus/File/Copy.png"), "Copy");
-	QAction* pasteAction = new QAction(QIcon(":/Icons/Menus/File/Paste.png"), "Paste");
-	QAction* deleteAction = new QAction(QIcon(":/Icons/Menus/File/Delete.png"), "Delete");
-	QAction* selectAllAction = new QAction(QIcon(":/Icons/Menus/File/SelectAll.png"), "SelectAll");
+	QAction* undoAction = new QAction(QIcon(":/Icons/Menus/Edit/Undo.png"), "Undo");
+	QAction* redoAction = new QAction(QIcon(":/Icons/Menus/Edit/Redo.png"), "Redo");
+	QAction* cutAction = new QAction(QIcon(":/Icons/Menus/Edit/Cut.png"), "Cut");
+	QAction* copyAction = new QAction(QIcon(":/Icons/Menus/Edit/Copy.png"), "Copy");
+	QAction* pasteAction = new QAction(QIcon(":/Icons/Menus/Edit/Paste.png"), "Paste");
+	QAction* deleteAction = new QAction(QIcon(":/Icons/Menus/Edit/Delete.png"), "Delete");
+	QAction* selectAllAction = new QAction(QIcon(":/Icons/Menus/Edit/SelectAll.png"), "SelectAll");
 
 	EditMenu->addAction(undoAction);
 	EditMenu->addAction(redoAction);
@@ -126,6 +139,10 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	ViewMenu->addAction(RotateZSceneAction);
 	ViewMenu->addAction(RotateXYZSceneAction);
 
+	QAction* AboutHelpAction = new QAction(QIcon(":/Icons/Menus/Help/About.png"), "About");
+
+	HelpMenu->addAction(AboutHelpAction);
+
 	QToolBar* EditToolbar = new QToolBar("Edit");
 	EditToolbar->addAction(undoAction);
 	EditToolbar->addAction(redoAction);
@@ -172,7 +189,7 @@ ForgBaseLib::FrgBaseMainWindow::FrgBaseMainWindow(QWidget* parent)
 	this->addToolBar(ModelsToolbar);
 	this->addToolBar(MeshToolbar);
 	this->addToolBar(SolutionToolbar);
-	this->addToolBar(SceneToolbar);
+	this->addToolBar(SceneToolbar);*/
 }
 
 ForgBaseLib::FrgBaseMainWindow::~FrgBaseMainWindow()
@@ -192,6 +209,10 @@ void ForgBaseLib::FrgBaseMainWindow::FileNewActionSlot()
 	{
 		theFileMenu_->SetEnabledItem("Save", FrgTrue);
 		theFileMenu_->SetEnabledItem("Save As...", FrgTrue);
+
+		theModelsMenu_->SetEnabledItem("New Ship", FrgTrue);
+		theModelsMenu_->SetEnabledItem("New Propeller", FrgTrue);
+		theModelsMenu_->SetEnabledItem("New Duct", FrgTrue);
 
 		CreateTree();
 		theTreeWidget_->theTree_->FormTree();
@@ -274,6 +295,13 @@ void ForgBaseLib::FrgBaseMainWindow::FileExportActionSlot()
 void ForgBaseLib::FrgBaseMainWindow::FileExitActionSlot()
 {
 	ParseInfoToConsole("Exit was clicked!");
+}
+
+void ForgBaseLib::FrgBaseMainWindow::AboutUsClickedSlot(bool)
+{
+	FrgString text = QString::fromLocal8Bit("Tonb Application 1.0.0\n© 2019 Tonb Open Source Application");
+
+	QMessageBox::information(this, "About Us", text, QMessageBox::Ok);
 }
 
 void ForgBaseLib::FrgBaseMainWindow::CreateConsoleOutput()

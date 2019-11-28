@@ -232,3 +232,32 @@ ForgBaseLib::FrgBaseTreeItem*& ForgBaseLib::FrgBaseTree::GetTreeItemFromList(Frg
 
 	return output;
 }
+
+void ForgBaseLib::FrgBaseTree::ScrollToItem(FrgBaseTreeItem* item)
+{
+	clearSelection();
+	scrollToItem(item);
+	setItemSelected(item, true);
+	this->setCurrentItem(item);
+
+	emit itemClickedSlot(item, 0);
+
+	setFocus();
+}
+
+void ForgBaseLib::FrgBaseTree::ScrollToItems(QList<FrgBaseTreeItem*> items)
+{
+	if (items.isEmpty())
+		return;
+
+	clearSelection();
+	for (int i = 0; i < items.size(); i++)
+		setItemSelected(items[i], true);
+
+	scrollToItem(items.last());
+	//this->setCurrentItem(items.last());
+	//emit itemClickedSlot(items.last(), 0);
+
+	setFocus();
+
+}
