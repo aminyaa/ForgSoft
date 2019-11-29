@@ -344,4 +344,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 			}
 		}*/
 	}
+
+	for(auto scene :theViewPorts_->GetScenes())
+		scene->DrawGrid(10, 5);
 }

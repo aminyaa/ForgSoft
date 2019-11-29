@@ -36,14 +36,6 @@ void ForgBaseLib::CADScene::AddActorToTheRenderer(vtkSmartPointer<vtkActor> acto
 
 void ForgBaseLib::CADScene::CreateActor(NihadVesselPartTreeItem* part)
 {
-	if (GetActors().size() != 0)
-	{
-		for (int iActor = 0; iActor < GetActors().size(); iActor++)
-		{
-			GetRenderer()->RemoveActor(GetActors().at(iActor));
-		}
-		GetActors().clear();
-	}
 
 	//FrgFastParameters->Angle = 0.2;
 	//FrgFastParameters->Deflection = 0.01;
@@ -178,8 +170,6 @@ void ForgBaseLib::CADScene::CreateActor(NihadVesselPartTreeItem* part)
 			}
 		}
 	}
-
-	DrawGrid(10, 5);
 }
 
 void ForgBaseLib::CADScene::ClearScene()

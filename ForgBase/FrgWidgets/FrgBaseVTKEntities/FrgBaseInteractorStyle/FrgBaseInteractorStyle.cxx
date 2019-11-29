@@ -8,6 +8,7 @@
 
 #include <QtGui/QColor>
 #include <QApplication>
+#include <QtWidgets/QStatusBar>
 
 #include <vtkSetGet.h>
 #include <vtkSmartPointer.h>
@@ -21,6 +22,8 @@
 #include <vtkPropPicker.h>
 #include <vtkCamera.h>
 #include <vtkCallbackCommand.h>
+#include <vtkCoordinate.h>
+#include <vtkRendererCollection.h>
 
 QColor ForgBaseLib::FrgBaseInteractorStyle::GeometryColorRGB = QColor(0.753 * 255, 0.753 * 255, 0.753 * 255);
 QColor ForgBaseLib::FrgBaseInteractorStyle::GeometrySelectedColorRGB = QColor(1.0 * 255, 0.0 * 255, 1.0 * 255);
@@ -134,7 +137,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnLeftButtonUp()
 			//theParent_->UpdateExportContextMenu();
 		}
 
-		theParent_->GetParentTree()->GetParentMainWindow()->setCursor(QCursor());
+		SetCursorShapeToDefault();
 	}
 	else
 	{
@@ -200,7 +203,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnRightButtonDown()
 
 void ForgBaseLib::FrgBaseInteractorStyle::OnRightButtonUp()
 {
-	theParent_->GetParentTree()->GetParentMainWindow()->setCursor(QCursor());
+	SetCursorShapeToDefault();
 
 	int pickPosition[2];
 	this->GetInteractor()->GetEventPosition(pickPosition);
@@ -229,15 +232,50 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnMouseMove()
 
 	if (this->State == VTKIS_ROTATE)
 	{
-		QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
-		QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
-		theParent_->GetParentTree()->GetParentMainWindow()->setCursor(cursor_default);
+		SetCursorShapeToRotateXYZ();
 	}
 	else if (this->State == VTKIS_PAN)
 	{
-		QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_Move);
-		QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
-		theParent_->GetParentTree()->GetParentMainWindow()->setCursor(cursor_default);
+		SetCursorShapeToMove();
+	}
+
+	if (theRotationEnabled_ == FrgFalse && thePlaneView_ != PlaneXYZ)
+	{
+		int pickPosition[2];
+		this->GetInteractor()->GetEventPosition(pickPosition);
+
+		vtkSmartPointer<vtkCoordinate> coordinate =
+			vtkSmartPointer<vtkCoordinate>::New();
+		coordinate->SetCoordinateSystemToDisplay();
+		coordinate->SetValue(pickPosition[0], pickPosition[1], 0);
+
+		double* world = coordinate->GetComputedWorldValue(theParent_->GetRenderWindow()->GetRenderers()->GetFirstRenderer());
+		FrgString axis1 = "", axis2 = "";
+		double axis1Value = 0.0, axis2Value = 0.0;
+
+		if (thePlaneView_ == PlaneXY)
+		{
+			axis1 = "x";
+			axis2 = "y";
+			axis1Value = world[0];
+			axis2Value = world[1];
+		}
+		else if (thePlaneView_ == PlaneXZ)
+		{
+			axis1 = "x";
+			axis2 = "z";
+			axis1Value = world[0];
+			axis2Value = world[2];
+		}
+		else if (thePlaneView_ == PlaneYZ)
+		{
+			axis1 = "y";
+			axis2 = "z";
+			axis1Value = world[1];
+			axis2Value = world[2];
+		}
+
+		theParent_->GetParentTree()->GetParentMainWindow()->statusBar()->showMessage(axis1 + " = " + QString::number(world[0]) + "\t " + axis2 + " = " + QString::number(world[1]));
 	}
 
 	vtkInteractorStyleTrackballCamera::OnMouseMove();
@@ -327,14 +365,16 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnChar()
 	{
 		if (key == "s" || key == "S")
 		{
+			double* bounds = theParent_->GetRenderer()->ComputeVisiblePropBounds();
 			auto camera = GetParentScene()->GetFrgBaseCamera();
 
 			static int iPosForS = 1;
 
 			camera->SetPosition(0, iPosForS, 0);
-			camera->SetFocalPoint(0, 0, 0);
+			//camera->SetFocalPoint((bounds[1] + bounds[0]) / 2.0, 0(bounds[3] + bounds[2]) / 2.0, (bounds[5] + bounds[4]) / 2.0);
+			camera->SetFocalPoint(0.0, 0.0, 0.0);
 			camera->SetViewUp(0, 0, 1);
-			camera->Azimuth(-180);
+			//camera->Azimuth(-180);
 
 			iPosForS *= -1;
 
@@ -490,6 +530,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetViewToXYPlane()
 	camera->SetViewUp(0, 1, 0);
 	//camera->Azimuth(-180);
 	camera->ParallelProjectionOn();
+	thePlaneView_ = PlaneXY;
 
 	GetParentScene()->GetRenderer()->ResetCamera();
 	GetParentScene()->GetRenderWindow()->Render();
@@ -505,6 +546,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetViewToXZPlane()
 	camera->SetViewUp(0, 0, 1);
 	camera->Azimuth(-180);
 	camera->ParallelProjectionOn();
+	thePlaneView_ = PlaneXZ;
 
 	GetParentScene()->GetRenderer()->ResetCamera();
 	GetParentScene()->GetRenderWindow()->Render();
@@ -520,6 +562,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetViewToYZPlane()
 	camera->SetViewUp(0, 0, 1);
 	camera->Azimuth(-180);
 	camera->ParallelProjectionOn();
+	thePlaneView_ = PlaneYZ;
 
 	GetParentScene()->GetRenderer()->ResetCamera();
 	GetParentScene()->GetRenderWindow()->Render();
@@ -535,7 +578,27 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetViewToXYZ()
 	camera->SetViewUp(0, 0, 1);
 	camera->Azimuth(-50);
 	camera->ParallelProjectionOff();
+	thePlaneView_ = PlaneXYZ;
 
 	GetParentScene()->GetRenderer()->ResetCamera();
 	GetParentScene()->GetRenderWindow()->Render();
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToDefault()
+{
+	theParent_->setCursor(QCursor());
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToMove()
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_Move);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->setCursor(cursor_default);
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToRotateXYZ()
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->setCursor(cursor_default);
 }

@@ -69,6 +69,9 @@ public Q_SLOTS:
 	void showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos);
 
 	void DeleteTreeItemSlot(bool);
+
+	void TreeItemNameChangedSlot(bool);
+	void TreeItemNameChangedSlot(QTreeWidgetItem *item, int column);
 };
 
 EndFrgBaseLib

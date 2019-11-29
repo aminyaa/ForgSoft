@@ -13,6 +13,8 @@ class vtkGenericOpenGLRenderWindow;
 class vtkTextActor;
 class QPoint;
 
+BeginFrgBaseLib
+
 enum GridDrawPlane
 {
 	XY = 0,
@@ -27,9 +29,9 @@ struct GridActor
 
 	int theNbMajorDivision_;
 	int theNbMinorDivision_;
-};
 
-BeginFrgBaseLib
+	GridActor(int nbMajorDivision, int nbMinorDivision, double MajorColor[3], double MinorColor[3]);
+};
 
 class FrgBaseMainWindow;
 class FrgBaseInteractorStyle;

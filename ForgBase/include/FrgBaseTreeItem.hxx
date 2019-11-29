@@ -27,7 +27,7 @@ private:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
 	FrgBaseTree* theParentTree_ = FrgNullPtr;
-	FrgString theObjectName_;
+	FrgString theObjectName_ = "";
 
 	FrgBaseTreeItemProperties* theProperties_ = FrgNullPtr;
 
@@ -48,10 +48,11 @@ public:
 	FrgGetMacro(FrgBaseMainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgString, ObjectName, theObjectName_);
-
 	FrgGetMacro(FrgBaseTreeItemProperties*, Properties, theProperties_);
-
 	FrgGetMacro(FrgBaseMenu*, ContextMenu, theContextMenu_);
+
+	void SetTreeItemName(FrgString name);
+	void RenameTreeItemName(FrgString name);
 
 	virtual void DoAfterConstruct() {}
 

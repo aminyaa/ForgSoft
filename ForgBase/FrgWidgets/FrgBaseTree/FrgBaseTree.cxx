@@ -8,6 +8,7 @@
 #include <FrgBaseMenu.hxx>
 #include <QKeyEvent>
 #include <QtCore/QMutableListIterator>
+#include <QtCore/QFlags>
 
 ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	: QTreeWidget(parent)
@@ -260,4 +261,31 @@ void ForgBaseLib::FrgBaseTree::ScrollToItems(QList<FrgBaseTreeItem*> items)
 
 	setFocus();
 
+}
+
+void ForgBaseLib::FrgBaseTree::TreeItemNameChangedSlot(bool)
+{
+	auto castedItem = dynamic_cast<FrgBaseTreeItem*>(theLastRightClicked_);
+
+	if (castedItem)
+	{
+		disconnect(this, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(TreeItemNameChangedSlot(QTreeWidgetItem *, int)));
+		castedItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+
+		castedItem->setFlags(castedItem->flags() | Qt::ItemIsEditable);
+		editItem(castedItem, 0);
+		connect(this, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(TreeItemNameChangedSlot(QTreeWidgetItem *, int)));
+	}
+}
+
+void ForgBaseLib::FrgBaseTree::TreeItemNameChangedSlot(QTreeWidgetItem * item, int column)
+{
+	auto castedItem = dynamic_cast<FrgBaseTreeItem*>(item);
+
+	if (castedItem)
+	{
+		disconnect(this, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(TreeItemNameChangedSlot(QTreeWidgetItem *, int)));
+		castedItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled);
+		castedItem->RenameTreeItemName(castedItem->text(column));
+	}
 }

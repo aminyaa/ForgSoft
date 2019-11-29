@@ -22,6 +22,14 @@ enum SelectedIconFromScene
 	RotateXYZ = 5
 };
 
+enum PlaneView
+{
+	PlaneXY = 0,
+	PlaneXZ = 1,
+	PlaneYZ = 2,
+	PlaneXYZ = 3
+};
+
 BeginFrgBaseLib
 
 class FrgBaseCADScene;
@@ -45,6 +53,7 @@ private:
 	FrgBaseCADScene* theParent_ = nullptr;
 
 	SelectedIconFromScene theSelectedIconFromScene_ = Cursor;
+	PlaneView thePlaneView_ = PlaneXYZ;
 
 	int PreviousPosition[2];
 	int ResetPixelDistance;
@@ -56,6 +65,10 @@ private:
 	void SetSelectedActorColor(QColor color);
 
 	void AddActorToSelectedActors(vtkActor* actor);
+
+	void SetCursorShapeToDefault();
+	void SetCursorShapeToMove();
+	void SetCursorShapeToRotateXYZ();
 
 public:
 
@@ -98,6 +111,7 @@ public:
 	FrgGetMacro(FrgBaseCADScene*, ParentScene, theParent_);
 	FrgGetMacro(FrgBool, RotationEnabled, theRotationEnabled_);
 	FrgGetMacro(SelectedIconFromScene, SelectedIconFromScene, theSelectedIconFromScene_);
+	FrgGetMacro(PlaneView, PlaneView, thePlaneView_);
 
 	static QColor GeometryColorRGB;
 	static QColor GeometrySelectedColorRGB;

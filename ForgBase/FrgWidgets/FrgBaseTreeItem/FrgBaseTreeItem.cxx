@@ -2,8 +2,10 @@
 #include <FrgBaseTree.hxx>
 #include <FrgBaseTreeItemProperties.hxx>
 #include <FrgBaseGlobalsICONS.hxx>
-
 #include <FrgBaseMenu.hxx>
+#include <FrgBaseMainWindow.hxx>
+
+#include <QtWidgets/QToolBar>
 
 #include <qttreepropertybrowser.h>
 #include <qtvariantproperty.h>
@@ -19,30 +21,26 @@ ForgBaseLib::FrgBaseTreeItem::FrgBaseTreeItem
 	, theParentTree_(parentTree)
 	, theParentMainWindow_(parentMainWindow)
 {
-
-	this->setText(0, itemName);
-	this->setIcon(0, QIcon(FrgICON_Menu_File_Load));
-
-	FrgString str = itemName;
-	str = str.simplified();
-	str.replace(" ", "");
+	theContextMenu_ = FrgNew FrgBaseMenu();
+	theContextMenu_->GetToolBar()->setHidden(FrgTrue);
 
 	if (parentItem)
 	{
 		parentItem->addChild(this);
-		this->GetObjectName() = parentItem->GetObjectName() + "_" + str;
+		theContextMenu_->AddItem("Rename");
+
+		QObject::connect(theContextMenu_->GetItem("Rename"), SIGNAL(triggered(bool)), parentTree, SLOT(TreeItemNameChangedSlot(bool)));
 	}
 	else
-	{
 		parentTree->addTopLevelItem(this);
-		this->GetObjectName() = str;
-	}
+
+	SetTreeItemName(itemName);
 
 	CreateProperties();
 
-	theContextMenu_ = FrgNew FrgBaseMenu();
-
 	parentTree->GetItems().push_back(this);
+
+	this->setIcon(0, QIcon(FrgICON_Menu_File_Load));
 }
 
 ForgBaseLib::FrgBaseTreeItem::~FrgBaseTreeItem()
@@ -63,4 +61,47 @@ ForgBaseLib::FrgBaseTreeItem::~FrgBaseTreeItem()
 void ForgBaseLib::FrgBaseTreeItem::CreateProperties()
 {
 	theProperties_ = FrgNew FrgBaseTreeItemProperties(this);
+}
+
+void ForgBaseLib::FrgBaseTreeItem::SetTreeItemName(FrgString name)
+{
+	//name = name.simplified();
+	this->setText(0, name);
+
+	FrgString str = name;
+	str = str.simplified();
+	str.replace(" ", "");
+
+	if (parent())
+	{
+		for (int i = 0; i < parent()->childCount(); i++)
+		{
+			//GetParentMainWindow()->ParseErrorToConsole("1 - " + dynamic_cast<FrgBaseTreeItem*>(parent()->child(i))->GetObjectName());
+			//GetParentMainWindow()->ParseErrorToConsole("2 - " + dynamic_cast<FrgBaseTreeItem*>(parent())->GetObjectName() + "_" + str);
+			if (dynamic_cast<FrgBaseTreeItem*>(parent()->child(i))->GetObjectName() == dynamic_cast<FrgBaseTreeItem*>(parent())->GetObjectName() + "_" + str)
+			{
+				if (dynamic_cast<FrgBaseTreeItem*>(parent()->child(i)) == this)
+					continue;
+				str = str + "(Copy)";
+				this->setText(0, this->text(0) + " (Copy)");
+			}
+		}
+		this->GetObjectName() = dynamic_cast<FrgBaseTreeItem*>(parent())->GetObjectName() + "_" + str;
+		//GetParentMainWindow()->ParseErrorToConsole("1 - " + this->GetObjectName());
+	}
+	else
+		this->GetObjectName() = str;
+
+	emit theParentTree_->itemChanged(this, 0);
+}
+
+void ForgBaseLib::FrgBaseTreeItem::RenameTreeItemName(FrgString name)
+{
+	SetTreeItemName(name);
+
+	if (theProperties_)
+	{
+		theProperties_->GetPropertyManager()->setProperty("Name", name);
+		theProperties_->GetPropertyManager()->setValue(theProperties_->GetProperty("Name"), name);
+	}
 }

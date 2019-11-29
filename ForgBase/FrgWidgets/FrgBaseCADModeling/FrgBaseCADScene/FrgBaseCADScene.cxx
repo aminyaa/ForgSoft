@@ -49,6 +49,20 @@ ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene(FrgBaseTree* parentTree)
 	CreateContextMenuInScene();
 }
 
+ForgBaseLib::GridActor::GridActor(int nbMajorDivision, int nbMinorDivision, double MajorColor[3], double MinorColor[3])
+{
+	{
+			theNbMajorDivision_ = nbMajorDivision;
+			theNbMinorDivision_ = nbMinorDivision;
+
+			theMajorActor_ = vtkSmartPointer<vtkActor>::New();
+			theMinorActor_ = vtkSmartPointer<vtkActor>::New();
+
+			theMajorActor_->GetProperty()->SetColor(MajorColor);
+			theMinorActor_->GetProperty()->SetColor(MinorColor);
+		}
+}
+
 void ForgBaseLib::FrgBaseCADScene::Init()
 {
 	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
@@ -132,11 +146,9 @@ void ForgBaseLib::FrgBaseCADScene::StartScene()
 
 void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nbMajorDivision, int nbMinorDivision, GridDrawPlane plane)
 {
-	theGridActor_ = FrgNew GridActor;
-	theGridActor_->theNbMajorDivision_ = nbMajorDivision;
-	theGridActor_->theNbMinorDivision_ = nbMinorDivision;
-	theGridActor_->theMajorActor_ = vtkSmartPointer<vtkActor>::New();
-	theGridActor_->theMinorActor_ = vtkSmartPointer<vtkActor>::New();
+	double majorColor[3] = { 0.604, 0.635, 0.663 };
+	double minorColor[3] = { 0.467, 0.686, 0.902 };
+	theGridActor_ = FrgNew GridActor(nbMajorDivision, nbMinorDivision, majorColor, minorColor);
 
 	const auto& bounds = GetRenderer()->ComputeVisiblePropBounds();
 	DrawGrid(theGridActor_->theMajorActor_, nbMajorDivision, FrgTrue, bounds, plane);
@@ -205,11 +217,12 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int
 	else
 		actor->GetProperty()->SetLineWidth(1.0);
 	actor->GetProperty()->EdgeVisibilityOn();
-	actor->GetProperty()->SetEdgeColor(1.0, 0.0, 0.0);
+	//actor->GetProperty()->SetEdgeColor(1.0, 0.0, 0.0);
 	actor->GetProperty()->SetRenderLinesAsTubes(true);
 	actor->GetProperty()->SetAmbient(0.0);
-	actor->GetProperty()->SetDiffuse(0.0);
+	//actor->GetProperty()->SetDiffuse(0.0);
 	actor->GetProperty()->SetSpecular(0.0);
+	actor->GetProperty()->ShadingOn();
 
 	GetRenderer()->AddActor(actor);
 }
