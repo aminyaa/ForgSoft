@@ -17,7 +17,8 @@ BeginFrgBaseLib
 
 class FrgBaseMenu;
 class NihadVesselGeometryTreeItem;
-class NihadVesselPartTreeItem;
+//class NihadVesselPartTreeItem;
+class FrgBaseCADPart_Entity;
 class FrgBase_CADScene_TreeItem;
 class FrgBasePlot2D;
 
@@ -29,7 +30,8 @@ class NihadTree : public FrgBaseTree
 private:
 
 	QList<NihadVesselGeometryTreeItem*> theGeometryTreeItems_;
-	QList<NihadVesselPartTreeItem*> thePartTreeItems_;
+	QList<FrgBaseCADPart_Entity*> thePartTreeItems_;
+	//QList<NihadVesselPartTreeItem*> thePartTreeItems_;
 	QList<FrgBase_CADScene_TreeItem*> theSceneTreeItems_;
 	QList<FrgBasePlot2D*> thePlotsItems_;
 
@@ -40,10 +42,12 @@ public:
 	void FormTree() override;
 
 	FrgGetMacro(QList<NihadVesselGeometryTreeItem*>, GeometryTreeItems, theGeometryTreeItems_);
-	FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartTreeItems, thePartTreeItems_);
+	//FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartTreeItems, thePartTreeItems_);
+	FrgGetMacro(QList<FrgBaseCADPart_Entity*>, PartTreeItems, thePartTreeItems_);
 
 	NihadVesselGeometryTreeItem* GetGeometryTreeItem(FrgBaseTreeItem* item);
-	NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
+	//NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
+	FrgBaseCADPart_Entity* GetPartTreeItem(FrgBaseTreeItem* item);
 
 protected Q_SLOTS:
 

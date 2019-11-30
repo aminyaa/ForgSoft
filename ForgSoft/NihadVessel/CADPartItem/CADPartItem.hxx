@@ -1,22 +1,22 @@
 #pragma once
-#ifndef _NihadVesselPartTreeItem_Header
-#define _NihadVesselPartTreeItem_Header
+#ifndef _CADPartItem_Header
+#define _CADPartItem_Header
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseCADPart.hxx>
-#include <FrgBaseTree.hxx>
+#include <TModel_EntityManager.hxx>
 
 namespace AutLib
 {
+	//class TModel_EntityManager;
 	class Cad3d_TModel;
-	class TModel_Surface;
-	class TModel_Paired;
 }
 
 BeginFrgBaseLib
 
-class NihadVesselPartTreeItem : public FrgBaseCADPart<AutLib::TModel_Surface, AutLib::TModel_Paired>
+class CADPartItem : public FrgBaseCADPart<AutLib::TModel_EntityManager, AutLib::TModel_EntityManager>
 {
+
 
 private:
 
@@ -26,14 +26,14 @@ private:
 
 public:
 
-	NihadVesselPartTreeItem
+	CADPartItem
 	(
 		const FrgString& title,
 		FrgBaseTreeItem* parent,
 		FrgSharedPtr<AutLib::Cad3d_TModel> model
 	);
 
-	NihadVesselPartTreeItem
+	CADPartItem
 	(
 		const FrgString& title,
 		FrgBaseTree* parentTree,
@@ -49,4 +49,4 @@ public:
 
 EndFrgBaseLib
 
-#endif // !_NihadVesselPartTreeItem_Header
+#endif // !_CADPartItem_Header

@@ -4,6 +4,7 @@
 #include <NihadTree.hxx>
 #include <NihadVesselPartTreeItem.hxx>
 #include <FrgBaseGlobalsThread.hxx>
+#include <CADPartItem.hxx>
 
 #include <IO_IGES.hxx>
 #include <FastDiscrete_Params.hxx>
@@ -59,6 +60,14 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 			QString bareFileName = QFileInfo(fileName).fileName();
 			bareFileName.remove(".igs");
 			bareFileName.remove(".iges");
+
+			/*dynamic_cast<NihadTree*>(GetTree())->GetPartTreeItems().push_back
+			(
+			FrgNew CADPartItem
+			(
+				CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
+			)
+			);*/
 
 			((NihadTree*)GetTree())->GetPartTreeItems().push_back
 			(

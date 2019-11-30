@@ -8,6 +8,7 @@
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADScene.hxx>
 #include <FrgMenu_Models.hxx>
+#include <FrgBaseCADPart.hxx>
 #include <ViewPorts.hxx>
 #include <qtpropertybrowser.h>
 
@@ -717,7 +718,7 @@ ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTre
 	}
 }
 
-ForgBaseLib::NihadVesselPartTreeItem* ForgBaseLib::NihadTree::GetPartTreeItem(FrgBaseTreeItem* item)
+ForgBaseLib::FrgBaseCADPart_Entity* ForgBaseLib::NihadTree::GetPartTreeItem(FrgBaseTreeItem* item)
 {
 	for (int i = 0; i < thePartTreeItems_.size(); i++)
 	{

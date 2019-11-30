@@ -59,6 +59,9 @@
     <Filter Include="NihadVessel\CustomWindowType">
       <UniqueIdentifier>{e51dd308-aa98-480e-b94a-f65333fce277}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\CADPartItem">
+      <UniqueIdentifier>{fb570034-6f27-4676-a49d-c4065f17efe7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -118,6 +121,9 @@
     <ClCompile Include="NihadVessel\CustomWindowType\WindowButton.cxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\CADPartItem\CADPartItem.cxx">
+      <Filter>NihadVessel\CADPartItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -140,6 +146,12 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\CADScene\CADScene.hxx">
       <Filter>NihadVessel\CADScene</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx">
+      <Filter>NihadVessel\CADPartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,9 +178,6 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.hxx">
       <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
-    </QtMoc>
-    <QtMoc Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
-      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomWindowType\WindowTitleBar.hxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
