@@ -51,16 +51,14 @@ ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene(FrgBaseTree* parentTree)
 
 ForgBaseLib::GridActor::GridActor(int nbMajorDivision, int nbMinorDivision, double MajorColor[3], double MinorColor[3])
 {
-	{
-			theNbMajorDivision_ = nbMajorDivision;
-			theNbMinorDivision_ = nbMinorDivision;
+	theNbMajorDivision_ = nbMajorDivision;
+	theNbMinorDivision_ = nbMinorDivision;
 
-			theMajorActor_ = vtkSmartPointer<vtkActor>::New();
-			theMinorActor_ = vtkSmartPointer<vtkActor>::New();
+	theMajorActor_ = vtkSmartPointer<vtkActor>::New();
+	theMinorActor_ = vtkSmartPointer<vtkActor>::New();
 
-			theMajorActor_->GetProperty()->SetColor(MajorColor);
-			theMinorActor_->GetProperty()->SetColor(MinorColor);
-		}
+	theMajorActor_->GetProperty()->SetColor(MajorColor);
+	theMinorActor_->GetProperty()->SetColor(MinorColor);
 }
 
 void ForgBaseLib::FrgBaseCADScene::Init()
@@ -223,6 +221,7 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int
 	//actor->GetProperty()->SetDiffuse(0.0);
 	actor->GetProperty()->SetSpecular(0.0);
 	actor->GetProperty()->ShadingOn();
+	actor->PickableOff();
 
 	GetRenderer()->AddActor(actor);
 }
