@@ -18,7 +18,8 @@ namespace AutLib
 
 	public:
 
-		Leg_DuctNo1_BreadthForm();
+		Leg_DuctNo1_BreadthForm()
+		{}
 	};
 }
 

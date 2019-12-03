@@ -13,7 +13,8 @@ class QToolButton;
 BeginFrgBaseLib
 
 class CADScene;
-class NihadVesselPartTreeItem;
+//class NihadVesselPartTreeItem;
+class FrgBaseCADPart_Entity;
 class FrgBaseMainWindow;
 
 class ViewPorts : public QMainWindow
@@ -40,7 +41,7 @@ public:
 
 	void SetLogoText(FrgString text);
 
-	void CreateActor(NihadVesselPartTreeItem* part);
+	void CreateActor(FrgBaseCADPart_Entity* part);
 
 	void ClearScenes();
 

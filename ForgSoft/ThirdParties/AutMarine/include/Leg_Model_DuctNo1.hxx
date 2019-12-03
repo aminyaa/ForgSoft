@@ -49,7 +49,6 @@ namespace AutLib
 		: public Leg_DuctNo1_Profile
 		, public Leg_DuctNo1_Xparams
 		, public Leg_Model_CtrlNet
-		, public Leg_Model_WeightNet
 
 	{
 
@@ -68,13 +67,7 @@ namespace AutLib
 			return theSections_;
 		}
 
-		const Leg_Model::sectionCPtsList& Sections() const
-		{
-			return theSections_;
-		}
-
 	public:
-
 
 	};
 
@@ -138,12 +131,6 @@ namespace AutLib
 		void MakeFace();
 
 	public:
-
-		Leg_Model_DuctNo1();
-
-		void Perform();
-
-		void PerformToPreview() override;
 
 		//- Macros
 

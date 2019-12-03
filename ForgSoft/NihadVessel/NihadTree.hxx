@@ -66,6 +66,7 @@ public slots:
 	void CreatePartFromGeometryClickedSlot(bool b);
 
 	void ExportPartSlot(bool b);
+	void SplitByPatchPartSlot(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
 

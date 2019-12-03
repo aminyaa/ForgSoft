@@ -15,7 +15,7 @@ namespace AutLib
 		typedef void facetType;
 		typedef Aft2d_ElementSurface elementType;
 
-		static constexpr bool geomType = true;
+		static constexpr bool geomInfo = true;
 	};
 }
 

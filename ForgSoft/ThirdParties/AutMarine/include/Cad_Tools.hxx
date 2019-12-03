@@ -12,17 +12,38 @@ class Bnd_Box2d;
 class Bnd_Box;
 class Geom_Curve;
 class Geom_Surface;
+class Geom2d_Curve;
 class Poly_Triangulation;
 class TopoDS_Face;
 class TopoDS_Shape;
+class Geom2dAPI_InterCurveCurve;
 
 namespace AutLib
 {
+
+	// Forward Declaration
+	class Numeric_AdaptIntegrationInfo;
 
 	class Cad_Tools
 	{
 
 	public:
+
+		//- an exception will be thrown if the curve is not bounded
+		static std::shared_ptr<Geom2dAPI_InterCurveCurve> 
+			Intersection
+			(
+				const Handle(Geom2d_Curve)& theCurve0, 
+				const Handle(Geom2d_Curve)& theCurve1,
+				const Standard_Real theTol = 1.0E-6
+			);
+
+		static Handle(Geom2d_Curve)
+			ConvertToTrimmedCurve
+			(
+				const Handle(Geom2d_Curve)& theCurve,
+				const Standard_Real theU0,
+				const Standard_Real theU1);
 
 		static std::shared_ptr<Entity2d_Triangulation> 
 			ParametricTriangulation
@@ -60,6 +81,13 @@ namespace AutLib
 			ConvertToBSpline
 			(
 				const Handle(Geom_Surface)& theSurface
+			);
+
+		//- an exception will be thrown if the curve is not bounded
+		static Handle(Geom2d_Curve) 
+			ConvertToBSpline
+			(
+				const Handle(Geom2d_Curve)& theCurve
 			);
 
 		//- an exception will be thrown if the surface is not bspline
@@ -156,11 +184,33 @@ namespace AutLib
 			const Entity2d_Box& theParams
 		);
 
+		//- an exception will be thrown if the curve is not bounded
+		static Bnd_Box2d BoundingBox
+		(
+			const Handle(Geom2d_Curve)& theCurve
+		);
+
+		static Bnd_Box2d BoundingBox
+		(
+			const Handle(Geom2d_Curve)& theCurve,
+			const Standard_Real theU0, 
+			const Standard_Real theU1
+		);
+
 		static std::shared_ptr<Entity3d_Triangulation> 
 			Triangulation
 			(
 				const Poly_Triangulation& theTriangulation
 			);
+
+		//- an exception will be thrown if the curve is not bounded and the x exceeds the boundary
+		static void SplitCurve
+		(
+			const Handle(Geom2d_Curve)& theCurve,
+			const Standard_Real theX,
+			Handle(Geom2d_Curve)& theC0, 
+			Handle(Geom2d_Curve)& theC1
+		);
 
 		static void ExportToIGES
 		(
@@ -169,12 +219,22 @@ namespace AutLib
 			const fileName& name
 		);
 
+		Standard_Real CharLength(const Handle(Geom_Surface)& theSurface, const Pnt2d& theP0, const Pnt2d& theP1, Numeric_AdaptIntegrationInfo& theInfo);
+
+		template<class SurfType>
+		static std::shared_ptr<SurfType> ReParameterization(const SurfType& theSurface, const Standard_Real thsScale);
+
+		template<class SurfType>
+		static std::shared_ptr<SurfType> ReParameterization_uExpand(const SurfType& theSurface, const Standard_Real theMult);
+
+		template<class SurfType>
+		static std::shared_ptr<SurfType> ReParameterization_vExpand(const SurfType& theSurface, const Standard_Real theMult);
+      
 		static void ExportToSTEP
 		(
 			const TopoDS_Shape& theShape,
 			const fileName& name
 		);
-
 	};
 }
 

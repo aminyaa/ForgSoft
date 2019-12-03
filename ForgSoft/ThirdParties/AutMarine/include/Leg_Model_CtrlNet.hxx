@@ -12,11 +12,6 @@ namespace AutLib
 
 		Leg_Model::ctrlNet_ptr CtrlNet;
 	};
-
-	struct Leg_Model_WeightNet
-	{
-		Leg_Model::weightNet_ptr WeightNet;
-	};
 }
 
 #endif // !_Leg_Model_CtrlNet_Header

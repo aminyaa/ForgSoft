@@ -32,6 +32,9 @@
 #include <vtkCaptionActor2D.h>
 #include <vtkAxisActor2D.h>
 #include <vtkProperty2D.h>
+#include <vtkLine.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkCellData.h>
 
 #include <vtkAutoInit.h>
 
@@ -56,6 +59,7 @@ ForgBaseLib::GridActor::GridActor(int nbMajorDivision, int nbMinorDivision, doub
 
 	theMajorActor_ = vtkSmartPointer<vtkActor>::New();
 	theMinorActor_ = vtkSmartPointer<vtkActor>::New();
+	theMiddleLines_ = vtkSmartPointer<vtkActor>::New();
 
 	theMajorActor_->GetProperty()->SetColor(MajorColor);
 	theMinorActor_->GetProperty()->SetColor(MinorColor);
@@ -150,33 +154,58 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(int nbMajorDivision, int nbMinorDivi
 
 	const auto& bounds = GetRenderer()->ComputeVisiblePropBounds();
 	DrawGrid(theGridActor_->theMajorActor_, nbMajorDivision, FrgTrue, bounds, plane);
-	DrawGrid(theGridActor_->theMinorActor_, nbMajorDivision*nbMinorDivision, FrgFalse, bounds, plane);
+	DrawGrid(theGridActor_->theMinorActor_, nbMajorDivision * nbMinorDivision, FrgFalse, bounds, plane);
+
+	DrawGridMiddleLines(theGridActor_->theMiddleLines_, bounds, plane);
 }
 
 void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int nbDivision, FrgBool isMajor, double* bounds, GridDrawPlane plane)
 {
 	double Xmin = bounds[0], Xmax = bounds[1];
 	double Ymin = bounds[2], Ymax = bounds[3];
+	double Zmin = bounds[4], Zmax = bounds[5];
 
 	double LX = abs(Xmax - Xmin);
 	double LY = abs(Ymax - Ymin);
+	double LZ = abs(Zmax - Zmin);
 
-	double L = LX > LY ? LX : LY;
+	double L;
+
+	if (plane == XY)
+		L = LX > LY ? LX : LY;
+	else if (plane == XZ)
+		L = LX > LZ ? LX : LZ;
+	else if (plane == YZ)
+		L = LY > LZ ? LY : LZ;
 
 	double d = 2.0 * L / (double)nbDivision;
 
 	vtkSmartPointer<vtkDoubleArray> xCoords =
 		vtkSmartPointer<vtkDoubleArray>::New();
-	for (int i = 0; i <= nbDivision; i++)
-		xCoords->InsertNextValue(i * d + (Xmin + LX / 2.0) - L);
-
 	vtkSmartPointer<vtkDoubleArray> yCoords =
 		vtkSmartPointer<vtkDoubleArray>::New();
-	for (int i = 0; i <= nbDivision; i++)
-		yCoords->InsertNextValue(i * d + (Ymin + LY / 2.0) - L);
-
 	vtkSmartPointer<vtkDoubleArray> zCoords =
 		vtkSmartPointer<vtkDoubleArray>::New();
+
+	for (int i = 0; i <= nbDivision; i++)
+	{
+		if (plane == XY)
+		{
+			xCoords->InsertNextValue(i * d + (Xmin + LX / 2.0) - L);
+			yCoords->InsertNextValue(i * d + (Ymin + LY / 2.0) - L);
+		}
+		else if (plane == XZ)
+		{
+			xCoords->InsertNextValue(i * d + (Xmin + LX / 2.0) - L);
+			yCoords->InsertNextValue(i * d + (Zmin + LZ / 2.0) - L);
+		}
+		else if (plane == YZ)
+		{
+			xCoords->InsertNextValue(i * d + (Ymin + LY / 2.0) - L);
+			yCoords->InsertNextValue(i * d + (Zmin + LZ / 2.0) - L);
+		}
+	}
+
 	zCoords->InsertNextValue(0.0);
 
 	vtkSmartPointer<vtkRectilinearGrid> rgrid =
@@ -219,6 +248,144 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int
 	actor->GetProperty()->SetRenderLinesAsTubes(true);
 	actor->GetProperty()->SetAmbient(0.0);
 	//actor->GetProperty()->SetDiffuse(0.0);
+	actor->GetProperty()->SetSpecular(0.0);
+	actor->GetProperty()->ShadingOn();
+	actor->PickableOff();
+
+	GetRenderer()->AddActor(actor);
+}
+
+void ForgBaseLib::FrgBaseCADScene::DrawGridMiddleLines(vtkSmartPointer<vtkActor> actor, double* bounds, GridDrawPlane plane)
+{
+	double Xmin = bounds[0], Xmax = bounds[1];
+	double Ymin = bounds[2], Ymax = bounds[3];
+	double Zmin = bounds[4], Zmax = bounds[5];
+	
+	double LX = abs(Xmax - Xmin);
+	double LY = abs(Ymax - Ymin);
+	double LZ = abs(Zmax - Zmin);
+
+	double L = 0.0;
+	if (plane == XY)
+		L = LX > LY ? LX : LY;
+	else if (plane == XZ)
+		L = LX > LZ ? LX : LZ;
+	else if (plane == YZ)
+		L = LY > LZ ? LY : LZ;
+
+	// Create two colors - one for each line
+	unsigned char axis1Color[3];
+	unsigned char axis2Color[3];
+
+	vtkSmartPointer<vtkPolyData> linesPolyData =
+		vtkSmartPointer<vtkPolyData>::New();
+
+	double p0[3], p1[3], p2[3];
+	if (plane == XY)
+	{
+		p0[0] = Xmin + LX / 2.0;
+		p0[1] = Ymin + LY / 2.0;
+		p0[2] = 0.0;
+
+		p1[0] = p0[0] + L;
+		p1[1] = p0[1];
+		p1[2] = p0[2];
+
+		p2[0] = p0[0];
+		p2[1] = p0[1] + L;
+		p2[2] = p0[2];
+
+		axis1Color[0] = 255; axis1Color[1] = 0; axis1Color[2] = 0;
+		axis2Color[0] = 0; axis2Color[1] = 255; axis2Color[2] = 0;
+	}
+
+	else if (plane == XZ)
+	{
+		p0[0] = Xmin + LX / 2.0;
+		p0[1] = 0.0;
+		p0[2] = Zmin + LZ / 2.0;
+
+		p1[0] = p0[0] + L;
+		p1[1] = p0[1];
+		p1[2] = p0[2];
+
+		p2[0] = p0[0];
+		p2[1] = p0[1];
+		p2[2] = p0[2] + L;
+
+		axis1Color[0] = 255; axis1Color[1] = 0; axis1Color[2] = 0;
+		axis2Color[0] = 0; axis2Color[1] = 0; axis2Color[2] = 255;
+	}
+
+	else if (plane == YZ)
+	{
+		p0[0] = Xmin + LX / 2.0;
+		p0[1] = 0.0;
+		p0[2] = Zmin + LZ / 2.0;
+
+		p1[0] = p0[0];
+		p1[1] = p0[1] + L;
+		p1[2] = p0[2];
+
+		p2[0] = p0[0];
+		p2[1] = p0[1];
+		p2[2] = p0[2] + L;
+
+		axis1Color[0] = 0; axis1Color[1] = 255; axis1Color[2] = 0;
+		axis2Color[0] = 0; axis2Color[1] = 0; axis2Color[2] = 255;
+	}
+
+	// Create a vtkPoints container and store the points in it
+	vtkSmartPointer<vtkPoints> pts =
+		vtkSmartPointer<vtkPoints>::New();
+	pts->InsertNextPoint(p0);
+	pts->InsertNextPoint(p1);
+	pts->InsertNextPoint(p2);
+
+	// Add the points to the polydata container
+	linesPolyData->SetPoints(pts);
+
+	// Create the first line (between Origin and P0)
+	vtkSmartPointer<vtkLine> line0 =
+		vtkSmartPointer<vtkLine>::New();
+	line0->GetPointIds()->SetId(0, 0); // the second 0 is the index of the Origin in linesPolyData's points
+	line0->GetPointIds()->SetId(1, 1); // the second 1 is the index of P0 in linesPolyData's points
+
+	// Create the second line (between Origin and P1)
+	vtkSmartPointer<vtkLine> line1 =
+		vtkSmartPointer<vtkLine>::New();
+	line1->GetPointIds()->SetId(0, 0); // the second 0 is the index of the Origin in linesPolyData's points
+	line1->GetPointIds()->SetId(1, 2); // 2 is the index of P1 in linesPolyData's points
+
+	// Create a vtkCellArray container and store the lines in it
+	vtkSmartPointer<vtkCellArray> lines =
+		vtkSmartPointer<vtkCellArray>::New();
+	lines->InsertNextCell(line0);
+	lines->InsertNextCell(line1);
+
+	// Add the lines to the polydata container
+	linesPolyData->SetLines(lines);
+
+	// Create a vtkUnsignedCharArray container and store the colors in it
+	vtkSmartPointer<vtkUnsignedCharArray> colors =
+		vtkSmartPointer<vtkUnsignedCharArray>::New();
+	colors->SetNumberOfComponents(3);
+	colors->InsertNextTypedTuple(axis1Color);
+	colors->InsertNextTypedTuple(axis2Color);
+
+	// Color the lines
+	linesPolyData->GetCellData()->SetScalars(colors);
+
+	// Setup the visualization pipeline
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+		vtkSmartPointer<vtkPolyDataMapper>::New();
+
+	mapper->SetInputData(linesPolyData);
+
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetLineWidth(3.0);
+	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	actor->GetProperty()->SetAmbient(0.0);
 	actor->GetProperty()->SetSpecular(0.0);
 	actor->GetProperty()->ShadingOn();
 	actor->PickableOff();
@@ -269,6 +436,7 @@ void ForgBaseLib::FrgBaseCADScene::ClearGrid()
 	{
 		theRenderer_->RemoveActor(theGridActor_->theMajorActor_);
 		theRenderer_->RemoveActor(theGridActor_->theMinorActor_);
+		theRenderer_->RemoveActor(theGridActor_->theMiddleLines_);
 
 		delete theGridActor_;
 		theGridActor_ = FrgNullPtr;
@@ -365,6 +533,7 @@ void ForgBaseLib::FrgBaseCADScene::GridOpacityChangedSlot(int val)
 	{
 		theGridActor_->theMajorActor_->GetProperty()->SetOpacity((double)val / 100.0);
 		theGridActor_->theMinorActor_->GetProperty()->SetOpacity((double)val / 100.0);
+		theGridActor_->theMiddleLines_->GetProperty()->SetOpacity((double)val / 100.0);
 
 		theRenderWindow_->Render();
 	}
@@ -376,6 +545,7 @@ void ForgBaseLib::FrgBaseCADScene::DrawGridSlot(bool checked)
 	{
 		theGridActor_->theMajorActor_->SetVisibility(checked);
 		theGridActor_->theMinorActor_->SetVisibility(checked);
+		theGridActor_->theMiddleLines_->SetVisibility(checked);
 
 		theRenderWindow_->Render();
 	}

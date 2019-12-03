@@ -8,7 +8,7 @@
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADScene.hxx>
 #include <FrgMenu_Models.hxx>
-#include <FrgBaseCADPart.hxx>
+#include <CADPartItem.hxx>
 #include <ViewPorts.hxx>
 #include <qtpropertybrowser.h>
 
@@ -31,6 +31,9 @@
 #include <TModel_Tools.hxx>
 #include <Cad3d_TModel.hxx>
 #include <Cad_Tools.hxx>
+#include <Cad_BlockEntity.hxx>
+#include <TModel_Surface.hxx>
+#include <TModel_Paired.hxx>
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
@@ -656,8 +659,17 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 
 	auto solid = AutLib::Cad3d_TModel::MakeSolid((dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_))->GetTopoDS_Shape(), 1.0e-6);
 
-	thePartTreeItems_.push_back
+	/*thePartTreeItems_.push_back
 	(FrgNew NihadVesselPartTreeItem
+	(
+		theLastRightClicked_->text(0),
+		GetTreeItem("Parts"),
+		solid
+	)
+	);*/
+
+	thePartTreeItems_.push_back
+	(FrgNew CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
 	(
 		theLastRightClicked_->text(0),
 		GetTreeItem("Parts"),
@@ -709,6 +721,11 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	GetParentMainWindow()->ParseInfoToConsole("\"" + theLastRightClicked_->text(0) + "\" saved successfully at\"" + fileName + "\"");
 }
 
+void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
+{
+
+}
+
 ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)
 {
 	for (int i = 0; i < theGeometryTreeItems_.size(); i++)
@@ -739,11 +756,11 @@ void ForgBaseLib::NihadTree::UpdateTree()
 
 void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> selectedItems)
 {
-	QList<NihadVesselPartTreeItem*> output;
+	QList<FrgBaseCADPart_Entity*> output;
 
 	for (int i = 0; i < selectedItems.size(); i++)
 	{
-		output.push_back(dynamic_cast<NihadVesselPartTreeItem*>(selectedItems.at(i)));
+		output.push_back(dynamic_cast<FrgBaseCADPart_Entity*>(selectedItems.at(i)));
 	}
 
 	auto scene = (dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_));

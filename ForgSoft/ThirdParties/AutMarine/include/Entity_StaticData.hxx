@@ -2,7 +2,7 @@
 #ifndef _Entity_StaticData_Header
 #define _Entity_StaticData_Header
 
-#include <Traits.hxx>
+#include <Geo_Traits.hxx>
 #include <Standard_TypeDef.hxx>
 #include <OFstream.hxx>
 

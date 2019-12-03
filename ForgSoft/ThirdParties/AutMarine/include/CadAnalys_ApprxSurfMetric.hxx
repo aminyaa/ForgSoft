@@ -5,6 +5,7 @@
 #include <Global_Done.hxx>
 #include <Standard_Handle.hxx>
 #include <Entity2d_Box.hxx>
+#include <Geo2d_SizeFunctionFwd.hxx>
 #include <GeoMesh2d_MetricBackgroundFwd.hxx>
 #include <Pnt3d.hxx>
 
@@ -17,9 +18,6 @@ namespace AutLib
 
 	// Forward Declarations
 	class CadAnalys_ApprxSurfMetricInfo;
-
-	template<class Point>
-	class Geo_SizeFunction;
 
 	class CadAnalys_ApprxSurfMetricBase
 	{
@@ -75,7 +73,7 @@ namespace AutLib
 	{
 
 		typedef CadAnalys_ApprxSurfMetricInfo info;
-		typedef Geo_SizeFunction<Pnt3d> sizeFun;
+		typedef Geo2d_SizeFunction sizeFun;
 
 		/*Private Data*/
 
@@ -109,7 +107,10 @@ namespace AutLib
 			, theBoundingBox_(theDomain)
 		{}
 
-
+		const std::shared_ptr<sizeFun>& SizeFunction() const
+		{
+			return theSizeFun_;
+		}
 
 		const Handle(Geom_Surface)& Surface() const
 		{

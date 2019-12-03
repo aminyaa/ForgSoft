@@ -146,7 +146,7 @@ namespace AutLib
 
 		void Reverse(const Standard_Boolean ApplyToMesh = Standard_True);
 
-		void Approx(const info& theInfo) const;
+		void Approx(const std::shared_ptr<info>& theInfo) const;
 
 		void Split
 		(

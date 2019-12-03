@@ -4,6 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBaseTree.hxx>
 
 BeginFrgBaseLib
 

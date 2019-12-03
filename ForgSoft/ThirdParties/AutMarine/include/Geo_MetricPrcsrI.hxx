@@ -1,6 +1,43 @@
 #pragma once
+#include <error.hxx>
+#include <OSstream.hxx>
 namespace AutLib
 {
+
+	template<class SizeFun, class MetricFun>
+	Standard_Real Geo_MetricPrcsr<SizeFun, MetricFun>::CalcElementSize
+	(
+		const Point & theCoord
+	) const
+	{
+		Debug_Null_Pointer(theSizeFunction_);
+		return theSizeFunction_->Value(theCoord);
+	}
+
+	template<class SizeFun, class MetricFun>
+	typename Geo_MetricPrcsr<SizeFun, MetricFun>::metricType 
+		Geo_MetricPrcsr<SizeFun, MetricFun>::CalcMetric
+		(
+			const Point & theCoord
+		) const
+	{
+		Debug_Null_Pointer(theMetricFunction_);
+		auto m = theMetricFunction_->Value(theCoord);
+		currentMetric = m;
+		return std::move(m);
+	}
+
+	template<class SizeFun, class MetricFun>
+	Standard_Real
+		Geo_MetricPrcsr<SizeFun, MetricFun>::CalcSquareDistance
+		(
+			const Point& theP0,
+			const Point& theP1
+		) const
+	{
+		auto d = CalcDistance(theP0, theP1);
+		return d * d;
+	}
 
 	template<class SizeFun, class MetricFun>
 	Standard_Real Geo_MetricPrcsr<SizeFun, MetricFun>::Integrand
@@ -42,6 +79,16 @@ namespace AutLib
 	{
 		return sqrt(theVector.Dot(CalcMetric(thePoint).Multiplied(theVector)))
 			/ CalcElementSize(thePoint);
+	}
+
+	template<class SizeFun>
+	Standard_Real Geo_MetricPrcsr<SizeFun, void>::CalcElementSize
+	(
+		const Point & theCoord
+	) const
+	{
+		Debug_Null_Pointer(theSizeFunction_);
+		return theSizeFunction_->Value(theCoord);
 	}
 
 	template<class SizeFun>

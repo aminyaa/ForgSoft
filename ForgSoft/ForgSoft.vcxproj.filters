@@ -121,9 +121,6 @@
     <ClCompile Include="NihadVessel\CustomWindowType\WindowButton.cxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
     </ClCompile>
-    <ClCompile Include="NihadVessel\CADPartItem\CADPartItem.cxx">
-      <Filter>NihadVessel\CADPartItem</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -152,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
       <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CADPartItem\CADPartItemI.hxx">
+      <Filter>NihadVessel\CADPartItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

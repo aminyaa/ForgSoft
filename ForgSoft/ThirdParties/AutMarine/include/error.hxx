@@ -251,7 +251,7 @@ namespace AutLib
 
 	extern NonConvergency_Iteration_Failure IterFail;
 
-	// Convienient macros to add the file name and line number to the function name
+	// Convenient macros to add the file name and line number to the function name
 
 #define FatalErrorIn(fn) FatalError(fn, __FILE__, __LINE__)
 #define FatalIOErrorIn(fn, ios) FatalIOError(fn, __FILE__, __LINE__, ios)

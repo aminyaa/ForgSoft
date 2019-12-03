@@ -12,62 +12,83 @@ namespace AutLib
 	// Forward Declarations
 	class Numeric_NewtonSolverInfo;
 
-	template<class CurveType, class SizeMap>
-	class Mesh_CurveOptmPoint_Newton
-		: public Global_Done
+	class Mesh_CurveOptmPoint_Newton_Base
 	{
-
-		typedef Mesh_CurveEntity<CurveType, SizeMap> entity;
-		typedef Numeric_NewtonSolverInfo IterInfo;
-		typedef Numeric_AdaptIntegrationInfo IntgInfo;
 
 		/*Private Data*/
 
 		Standard_Real theU0_;
 		Standard_Real theStep_;
 
-		const entity& theCurve_;
-
 		Standard_Real theCorrected_;
 
-	public:
+	protected:
 
-		Mesh_CurveOptmPoint_Newton
+		Mesh_CurveOptmPoint_Newton_Base
 		(
 			const Standard_Real theU0,
-			const Standard_Real theStep,
-			const entity& theCurve
+			const Standard_Real theStep
 		)
 			: theU0_(theU0)
 			, theStep_(theStep)
-			, theCurve_(theCurve)
+			, theCorrected_(0)
 		{}
 
-		Standard_Real U0() const
+
+		Standard_Real& ChangeCorrected()
 		{
-			return theU0_;
+			return theCorrected_;
 		}
 
-		Standard_Real Step() const
-		{
-			return theStep_;
-		}
-
-		const entity& Curve() const
-		{
-			return theCurve_;
-		}
+	public:
 
 		Standard_Real Corrected() const
 		{
 			return theCorrected_;
 		}
 
+		//- Macros
+		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, U0)
+			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, Step)
+	};
+
+	template<class gCurveType, class MetricPrcsrType>
+	class Mesh_CurveOptmPoint_Newton
+		: public Global_Done
+		, public Mesh_CurveOptmPoint_Newton_Base
+	{
+
+		typedef Mesh_CurveEntity<gCurveType, MetricPrcsrType> entity;
+		typedef Numeric_NewtonSolverInfo iterInfo;
+		typedef Numeric_AdaptIntegrationInfo intgInfo;
+
+		/*Private Data*/
+
+		const entity& theEntity_;
+
+	public:
+
+		Mesh_CurveOptmPoint_Newton
+		(
+			const Standard_Real theU0, 
+			const Standard_Real theStep,
+			const entity& theEntity
+		)
+			: Mesh_CurveOptmPoint_Newton_Base(theU0, theStep)
+			, theEntity_(theEntity)
+		{}
+
+
+		const entity& Entity() const
+		{
+			return theEntity_;
+		}
+
 		void Perform
 		(
-			const Standard_Real theGuess,
-			IterInfo& theIterInfo,
-			IntgInfo& theIntgInfo
+			const Standard_Real theGuess, 
+			const std::shared_ptr<iterInfo>& theIter,
+			const std::shared_ptr<intgInfo>& theInteg
 		);
 	};
 }

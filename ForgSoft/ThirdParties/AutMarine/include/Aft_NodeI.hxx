@@ -3,7 +3,7 @@ namespace AutLib
 {
 
 	template<class NodeTraits>
-	std::vector<typename Aft_Node<NodeTraits>::Point> 
+	std::vector<typename Aft_Node<NodeTraits>::Point>
 		Aft_Node<NodeTraits>::RetrieveGeometry
 		(
 			const std::vector<std::shared_ptr<Aft_Node>>& theNodes

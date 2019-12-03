@@ -65,7 +65,7 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 
 	for (int iSurface = 0; iSurface < theSurfaces_.size(); iSurface++)
 	{
-		theFeatures_->GetSurfacesEntity()->GetFeatureListEntity().push_back(FrgNew FrgBaseCADPartFeatureEntity<SurfaceEntity>(CorrectName<FrgBaseTreeItem>(theFeatures_->GetSurfacesEntity(), "Surface "), theFeatures_->GetSurfacesEntity()));
+		theFeatures_->GetSurfacesEntity()->GetFeatureListEntity().push_back(FrgNew FrgBaseCADPartFeatureEntity<SurfaceEntity>(CorrectName<FrgBaseTreeItem>(theFeatures_->GetSurfacesEntity(), "Block Surface "), theFeatures_->GetSurfacesEntity()));
 		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface)->GetEntity() = theSurfaces_.at(iSurface);
 
 		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface)->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
@@ -73,7 +73,7 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 
 	for (int iCurve = 0; iCurve < theCurves_.size(); iCurve++)
 	{
-		theFeatures_->GetCurvesEntity()->GetFeatureListEntity().push_back(FrgNew FrgBaseCADPartFeatureEntity<CurveEntity>(CorrectName<FrgBaseTreeItem>(theFeatures_->GetCurvesEntity(), "Curve "), theFeatures_->GetCurvesEntity()));
+		theFeatures_->GetCurvesEntity()->GetFeatureListEntity().push_back(FrgNew FrgBaseCADPartFeatureEntity<CurveEntity>(CorrectName<FrgBaseTreeItem>(theFeatures_->GetCurvesEntity(), "Block Curve "), theFeatures_->GetCurvesEntity()));
 		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->GetEntity() = theCurves_.at(iCurve);
 
 		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->setIcon(0, QIcon(FrgICONTreeItemPartCurve));

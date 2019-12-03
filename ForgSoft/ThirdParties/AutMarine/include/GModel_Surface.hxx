@@ -48,6 +48,8 @@ namespace AutLib
 
 	public:
 
+		typedef GModel_parCurve parCurveType;
+
 		GModel_Surface
 		(
 			const Handle(Geom_Surface)& theGeom,

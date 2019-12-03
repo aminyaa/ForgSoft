@@ -22,6 +22,7 @@ namespace AutLib
 	class TModel_Edge;
 	class TModel_Wire;
 	class Entity2d_Metric1;
+	class TModel_parCurve;
 
 	class TModel_Surface
 		: public TModel_Entity
@@ -58,6 +59,8 @@ namespace AutLib
 		Entity3d_Box CalcBoundingBox() const;
 
 	public:
+
+		typedef TModel_parCurve parCurveType;
 
 		TModel_Surface
 		(

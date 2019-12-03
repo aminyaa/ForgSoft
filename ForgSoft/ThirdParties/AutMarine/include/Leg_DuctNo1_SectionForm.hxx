@@ -23,10 +23,11 @@ namespace AutLib
 		std::shared_ptr<parameter> theLowerTightness_;
 		std::shared_ptr<parameter> theWidth_;
 
+		void Defaults();
+
 	public:
 
-		Leg_DuctNo1_SectionForm()
-		{}
+		Leg_DuctNo1_SectionForm();
 
 		//- Macros
 

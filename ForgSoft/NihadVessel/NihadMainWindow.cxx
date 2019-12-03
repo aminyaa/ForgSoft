@@ -12,6 +12,8 @@
 #include <Cad3d_TModel.hxx>
 #include <Cad_EntityManager.hxx>
 #include <Cad_BlockEntity.hxx>
+#include <TModel_Surface.hxx>
+#include <TModel_Paired.hxx>
 
 #include <QtWidgets/QFileDialog>
 
@@ -61,21 +63,21 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 			bareFileName.remove(".igs");
 			bareFileName.remove(".iges");
 
-			/*dynamic_cast<NihadTree*>(GetTree())->GetPartTreeItems().push_back
+			dynamic_cast<NihadTree*>(GetTree())->GetPartTreeItems().push_back
 			(
-			FrgNew CADPartItem
-			(
-				CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
-			)
-			);*/
+				FrgNew CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+				(
+					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
+				)
+			);
 
-			((NihadTree*)GetTree())->GetPartTreeItems().push_back
+			/*((NihadTree*)GetTree())->GetPartTreeItems().push_back
 			(
 				FrgNew NihadVesselPartTreeItem
 				(
 					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
 					)
-			);
+			);*/
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{}

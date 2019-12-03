@@ -52,7 +52,7 @@ namespace AutLib
 
 		FastDiscrete_Params()
 			: Angle(0.1)
-			, Deflection(0.005)
+			, Deflection(0.001)
 			, MinSize(Precision::Confusion())
 			, InParallel(Standard_False)
 			, Relative(Standard_False)

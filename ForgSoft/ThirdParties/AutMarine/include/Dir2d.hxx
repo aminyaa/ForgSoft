@@ -11,6 +11,9 @@
 namespace AutLib
 {
 
+	// Forward Declarations
+	class Pnt2d;
+
 	class Dir2d
 		: public gp_Dir2d
 	{
@@ -53,6 +56,12 @@ namespace AutLib
 		)
 			: gp_Dir2d(Xv, Yv)
 		{}
+
+		Dir2d
+		(
+			const Pnt2d& theP0, 
+			const Pnt2d& theP1
+		);
 	};
 }
 

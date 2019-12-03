@@ -227,7 +227,7 @@ namespace AutLib
 	}
 
 	template<class CurveType, bool RandSamples>
-	void Geo_ApprxCurve<CurveType, RandSamples>::Perform(const info& theInfo)
+	void Geo_ApprxCurve<CurveType, RandSamples>::Perform()
 	{
 		if (NOT IsLoaded())
 		{
@@ -235,6 +235,9 @@ namespace AutLib
 				<< "the curve has not been loaded!" << endl
 				<< abort(FatalError);
 		}
+
+		Debug_Null_Pointer(Info());
+		const auto& theInfo = *Info();
 
 		GeoLib::segList Segments;
 		GeoLib::Subdivide<typename remove_pointer<CurveType>::type, RandSamples>

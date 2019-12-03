@@ -20,7 +20,7 @@ namespace AutLib
 		Leg_ParameterProfile Breadth;
 		Leg_ParameterProfile Depth;
 
-		//Leg_ParameterProfileList Section;
+		Leg_ParameterProfileList Section;
 	};
 
 	struct Leg_DuctNo1_Xparams

@@ -3,106 +3,57 @@
 #define _Mesh_CurveEntity_Header
 
 #include <Standard_TypeDef.hxx>
+#include <Geo_CascadeTraits.hxx>
+#include <Global_AccessMethod.hxx>
 
 namespace AutLib
 {
 
-	template<class CurveType, class SizeMap>
+	template<class gCurveType, class MetricPrcsrType>
 	class Mesh_CurveEntity
 	{
 
-		typedef typename CurveType::ptType Point;
+		typedef typename cascadeLib::pt_type_from_curve<gCurveType>::ptType Point;
 
 		/*Private Data*/
 
-		const CurveType& theCurve_;
+		const gCurveType& theCurve_;
 
-		const SizeMap& theSizeMap_;
+		const MetricPrcsrType& theSizeMap_;
 
-		Standard_Real theFirst_;
-		Standard_Real theLast_;
+		Standard_Real theFirstParameter_;
+		Standard_Real theLastParameter_;
 
 	public:
 
 		Mesh_CurveEntity
 		(
-			const CurveType& theCurve,
-			const SizeMap& theSizeMap,
+			const gCurveType& theCurve, 
+			const MetricPrcsrType& theSizeMap,
 			const Standard_Real theFirst,
 			const Standard_Real theLast
-		)
-			: theCurve_(theCurve)
-			, theSizeMap_(theSizeMap)
-			, theFirst_(theFirst)
-			, theLast_(theLast)
-		{}
+		);
 
-		const CurveType& Curve() const
-		{
-			return theCurve_;
-		}
+		Point Value(const Standard_Real x) const;
 
-		const SizeMap& SizeMap() const
-		{
-			return theSizeMap_;
-		}
 
-		Point Value(const Standard_Real x) const
-		{
-			return theCurve_.Value(x);
-		}
+		//- static members
 
-		Standard_Real FirstParameter() const
-		{
-			return theFirst_;
-		}
-
-		Standard_Real& FirstParameter()
-		{
-			return theFirst_;
-		}
-
-		Standard_Real LastParameter() const
-		{
-			return theLast_;
-		}
-
-		Standard_Real& LastParameter()
-		{
-			return theLast_;
-		}
-
-		void SetFirstParameter(const Standard_Real theFirst)
-		{
-			theFirst_ = theFirst;
-		}
-
-		void SetLastParameter(const Standard_Real theLast)
-		{
-			theLast_ = theLast;
-		}
-
-		//- Static members
 		static Standard_Real Integrand
 		(
-			const Standard_Real theParam,
+			const Standard_Real x, 
 			const Mesh_CurveEntity& theEntity
-		)
-		{
-			auto first = theEntity.FirstParameter();
-			auto last = theEntity.LastParameter();
+		);
 
-			auto param = theParam;
-			if (param < first) param = first;
-			if (param > last) param = last;
+		//- Macros
 
-			typename CurveType::ptType point;
-			typename CurveType::vtType vector;
-
-			theEntity.Curve().D1(param, point, vector);
-			return theEntity.SizeMap().IntegrandPerSize(point, vector);
-		}
+		GLOBAL_ACCESS_ONLY_SINGLE(gCurveType, Curve)
+			GLOBAL_ACCESS_ONLY_SINGLE(MetricPrcsrType, SizeMap)
+			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, FirstParameter)
+			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, LastParameter)
 	};
 }
+
+#include <Mesh_CurveEntityI.hxx>
 
 #endif // !_Mesh_CurveEntity_Header

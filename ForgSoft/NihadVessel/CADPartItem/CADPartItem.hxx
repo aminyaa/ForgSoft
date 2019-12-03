@@ -4,7 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseCADPart.hxx>
-#include <TModel_EntityManager.hxx>
+//#include <TModel_EntityManager.hxx>
 
 namespace AutLib
 {
@@ -14,7 +14,10 @@ namespace AutLib
 
 BeginFrgBaseLib
 
-class CADPartItem : public FrgBaseCADPart<AutLib::TModel_EntityManager, AutLib::TModel_EntityManager>
+class FrgBaseTree;
+
+template<class SurfaceEntity, class CurveEntity>
+class CADPartItem : public FrgBaseCADPart<SurfaceEntity, CurveEntity>
 {
 
 
@@ -48,5 +51,7 @@ public:
 };
 
 EndFrgBaseLib
+
+#include <CADPartItemI.hxx>
 
 #endif // !_CADPartItem_Header

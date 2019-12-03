@@ -26,6 +26,7 @@ struct GridActor
 {
 	vtkSmartPointer<vtkActor> theMajorActor_ = FrgNullPtr;
 	vtkSmartPointer<vtkActor> theMinorActor_ = FrgNullPtr;
+	vtkSmartPointer<vtkActor> theMiddleLines_ = FrgNullPtr;
 
 	int theNbMajorDivision_;
 	int theNbMinorDivision_;
@@ -74,6 +75,8 @@ private:
 	void Init();
 
 	void DrawGrid(vtkSmartPointer<vtkActor> actor, int nbDivision, FrgBool isMajor, double* bounds, GridDrawPlane plane = XY);
+
+	void DrawGridMiddleLines(vtkSmartPointer<vtkActor> actor, double* bounds, GridDrawPlane plane = XY);
 
 	void CreateContextMenuInScene();
 

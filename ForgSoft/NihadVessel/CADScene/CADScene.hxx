@@ -8,7 +8,8 @@
 BeginFrgBaseLib
 
 class FrgBaseTree;
-class NihadVesselPartTreeItem;
+//class NihadVesselPartTreeItem;
+class FrgBaseCADPart_Entity;
 
 class CADScene : public FrgBaseCADScene
 {
@@ -27,7 +28,7 @@ public:
 
 	void AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor);
 
-	void CreateActor(NihadVesselPartTreeItem* part);
+	void CreateActor(FrgBaseCADPart_Entity* part);
 
 	void ClearScene();
 

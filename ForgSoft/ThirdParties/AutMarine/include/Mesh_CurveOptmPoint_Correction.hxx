@@ -11,12 +11,9 @@
 namespace AutLib
 {
 
-	template<class CurveType, class SizeMap>
-	class Mesh_CurveOptmPoint_Correction
-		: public Global_Done
+	class Mesh_CurveOptmPoint_Correction_Base
 	{
 
-		typedef Mesh_CurveEntity<CurveType, SizeMap> entity;
 		typedef Mesh_CurveOptmPoint_CorrectionInfo info;
 
 		/*Private Data*/
@@ -24,35 +21,34 @@ namespace AutLib
 		Standard_Real theU0_;
 		Standard_Real theGuess_;
 
-		const entity& theCurve_;
+		Standard_Real theCorrected_;
 
 		const info& theInfo_;
 
-		Standard_Real theCorrected_;
+	protected:
 
-	public:
-
-		Mesh_CurveOptmPoint_Correction
+		Mesh_CurveOptmPoint_Correction_Base
 		(
 			const Standard_Real theU0,
-			const Standard_Real theGuess,
-			const entity& theCurve,
+			const Standard_Real theGuess, 
 			const info& theInfo
 		)
 			: theU0_(theU0)
 			, theGuess_(theGuess)
-			, theCurve_(theCurve)
 			, theInfo_(theInfo)
+			, theCorrected_(0)
 		{}
 
-		Standard_Real U0() const
+		Standard_Real& ChangeCorrected()
 		{
-			return theU0_;
+			return theCorrected_;
 		}
 
-		Standard_Real Guess() const
+	public:
+
+		const info& Info() const
 		{
-			return theGuess_;
+			return theInfo_;
 		}
 
 		Standard_Real Corrected() const
@@ -60,20 +56,45 @@ namespace AutLib
 			return theCorrected_;
 		}
 
-		const entity& Curve() const
+		//- macros
+
+		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, U0)
+			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, Guess)
+	};
+
+	template<class gCurveType, class MetricPrcsrType>
+	class Mesh_CurveOptmPoint_Correction
+		: public Global_Done
+		, public Mesh_CurveOptmPoint_Correction_Base
+	{
+
+		typedef Mesh_CurveEntity<gCurveType, MetricPrcsrType> entity;
+		typedef Mesh_CurveOptmPoint_CorrectionInfo info;
+
+		/*Private Data*/
+
+		const entity& theCurve_;
+
+	public:
+
+		Mesh_CurveOptmPoint_Correction
+		(
+			const Standard_Real theU0, 
+			const Standard_Real theGuess,
+			const entity& theCurve, 
+			const info& theInfo
+		)
+			: Mesh_CurveOptmPoint_Correction_Base(theU0, theGuess, theInfo)
+			, theCurve_(theCurve)
+		{}
+
+		const entity& Entity() const
 		{
 			return theCurve_;
 		}
 
-		const info& Info() const
-		{
-			return theInfo_;
-		}
-
 		void Perform();
 	};
-
-
 }
 
 #include <Mesh_CurveOptmPoint_CorrectionI.hxx>

@@ -10,6 +10,7 @@
 #include <QtWidgets/QLabel>
 #include <FrgMenu_View.hxx>
 #include <FrgBaseGlobalsICONS.hxx>
+#include <FrgBaseCADPart.hxx>
 
 class SliderWithTextWidget : public QWidget
 {
@@ -63,7 +64,7 @@ void ForgBaseLib::ViewPorts::SetLogoText(FrgString text)
 		scene->GetLogoActor()->SetInput(text.toStdString().c_str());
 }
 
-void ForgBaseLib::ViewPorts::CreateActor(NihadVesselPartTreeItem * part)
+void ForgBaseLib::ViewPorts::CreateActor(FrgBaseCADPart_Entity* part)
 {
 	for (auto scene : theScenes_)
 		scene->CreateActor(part);

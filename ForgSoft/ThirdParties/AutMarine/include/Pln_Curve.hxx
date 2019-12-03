@@ -29,6 +29,9 @@ namespace AutLib
 
 	public:
 
+		typedef info infoType;
+		typedef Geom2d_Curve geomType;
+
 		Pln_Curve(const std::shared_ptr<info>& theInfo)
 			: theInfo_(theInfo)
 		{}
