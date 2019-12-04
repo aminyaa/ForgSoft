@@ -17,6 +17,7 @@
 #include <NihadVesselPartTreeItem.hxx>
 #include <NihadVesselScenePartTreeItem.hxx>
 #include <NihadVesselScenePreviewTreeItem.hxx>
+#include <SplitTree.hxx>
 
 #include <Pnt2d.hxx>
 #include <Entity2d_Box.hxx>
@@ -39,6 +40,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QPushButton>
+#include <SplitWidget.hxx>
 
 #include <vtkActor.h>
 #include <FrgBaseInteractorStyle.hxx>
@@ -123,8 +125,41 @@ void ForgBaseLib::NihadTree::FormTree()
 
 void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 {
+	auto myItem = dynamic_cast<FrgBaseTreeItem*>(item);
+	if (!myItem)
+		return;
+
+	auto tree = dynamic_cast<NihadTree*>(myItem->GetParentTree());
+	if (!tree)
+		itemInSplitTreeClickedSlot(tree, item, column);
+
 	FrgBaseTree::itemClickedSlot(item, column);
 	auto& SelectedItems = this->selectedItems();
+	for (int iItem = 0; iItem < SelectedItems.size(); iItem++)
+	{
+		auto feature = dynamic_cast<FrgBaseCADPartFeatureBase*>(SelectedItems[iItem]);
+
+		if (feature)
+		{
+			auto scenes = feature->GetPointerToScenes();
+			if (!scenes.isEmpty())
+			{
+				for (int iScene = 0; iScene < scenes.size(); iScene++)
+				{
+					auto actor = (scenes.at(iScene))->GetPartFeatureToActor().value(feature);
+					if (SelectedItems.size() > 1)
+						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
+					else
+						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 0, FrgTrue);
+				}
+			}
+		}
+	}
+}
+
+void ForgBaseLib::NihadTree::itemInSplitTreeClickedSlot(FrgBaseTree* tree, QTreeWidgetItem* item, int column)
+{
+	auto& SelectedItems = tree->selectedItems();
 	for (int iItem = 0; iItem < SelectedItems.size(); iItem++)
 	{
 		auto feature = dynamic_cast<FrgBaseCADPartFeatureBase*>(SelectedItems[iItem]);
@@ -723,7 +758,16 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 
 void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 {
+	auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
+	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
 
+	SplitWidget* splitWidget = FrgNew SplitWidget
+	(
+		theLastRightClicked_->text(0),
+		GetParentMainWindow(), (surfaceItem ? surfaceItem->GetEntity() : FrgNullPtr),
+		(curveItem ? curveItem->GetEntity() : FrgNullPtr),
+		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes())
+	);
 }
 
 ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)

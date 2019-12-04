@@ -17,11 +17,32 @@ namespace AutLib
 
 	public:
 
-		Geo2d_Ellipse(const Pnt2d& theCentre, const Standard_Real theMajorRadius, const Standard_Real theMinorRadius);
+		Geo2d_Ellipse
+		(
+			const Pnt2d& theCentre, 
+			const Standard_Real theMajorRadius,
+			const Standard_Real theMinorRadius,
+			const Standard_Boolean theSense = Standard_True
+		);
 
-		Geo2d_Ellipse(const Pnt2d& theCentre, const Standard_Real theMajorRadius, const Standard_Real theMinorRadius, const Standard_Real theDeg0, const Standard_Real theDeg1);
+		Geo2d_Ellipse
+		(
+			const Pnt2d& theCentre,
+			const Standard_Real theMajorRadius,
+			const Standard_Real theMinorRadius, 
+			const Standard_Real theDeg,
+			const Standard_Boolean theSense = Standard_True
+		);
 
-		Geo2d_Ellipse(const Pnt2d& theCentre, const Dir2d& theDir, const Standard_Real theMajorRadius, const Standard_Real theMinorRadius, const Standard_Real theDeg0, const Standard_Real theDeg1);
+		Geo2d_Ellipse
+		(
+			const Pnt2d& theCentre,
+			const Dir2d& theDir, 
+			const Standard_Real theMajorRadius, 
+			const Standard_Real theMinorRadius, 
+			const Standard_Real theDeg, 
+			const Standard_Boolean theSense = Standard_True
+		);
 	};
 }
 

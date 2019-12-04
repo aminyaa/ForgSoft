@@ -82,6 +82,10 @@ private:
 
 	void UpdateTree();
 
+public slots:
+
+	void itemInSplitTreeClickedSlot(FrgBaseTree* tree, QTreeWidgetItem* item, int column);
+
 };
 
 EndFrgBaseLib

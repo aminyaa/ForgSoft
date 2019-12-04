@@ -48,7 +48,7 @@ namespace AutLib
 		: public Aft_OptNode_Calculator<FrontType, SizeFun, void>
 	{
 
-		typedef Aft_OptNode_Calculator<FrontType, SizeFun, MetricFun> base;
+		typedef Aft_OptNode_Calculator<FrontType, SizeFun, void> base;
 		typedef Aft_MetricPrcsr<FrontType, SizeFun, void>
 			metricMap;
 		typedef FrontType frontType;
@@ -74,7 +74,7 @@ namespace AutLib
 		: public Aft_OptNode_Calculator<FrontType, SizeFun, void>
 	{
 
-		typedef Aft_OptNode_Calculator<FrontType, SizeFun, MetricFun> base;
+		typedef Aft_OptNode_Calculator<FrontType, SizeFun, void> base;
 		typedef Aft_MetricPrcsr<FrontType, SizeFun, void>
 			metricMap;
 		typedef FrontType frontType;

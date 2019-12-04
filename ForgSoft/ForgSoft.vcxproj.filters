@@ -62,6 +62,12 @@
     <Filter Include="NihadVessel\CADPartItem">
       <UniqueIdentifier>{fb570034-6f27-4676-a49d-c4065f17efe7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\SplitTree">
+      <UniqueIdentifier>{42db662d-ac6a-4a80-9696-9c807791f02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitWidget">
+      <UniqueIdentifier>{f7af29d1-90cc-493f-91b2-121c9ccf6e4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -121,6 +127,12 @@
     <ClCompile Include="NihadVessel\CustomWindowType\WindowButton.cxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\SplitTree\SplitTree.cxx">
+      <Filter>NihadVessel\SplitTree</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\SplitWidget\SplitWidget.cxx">
+      <Filter>NihadVessel\SplitWidget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -152,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItemI.hxx">
       <Filter>NihadVessel\CADPartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitWidget\SplitWidget.hxx">
+      <Filter>NihadVessel\SplitWidget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +202,9 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomWindowType\WindowButton.hxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitTree\SplitTree.hxx">
+      <Filter>NihadVessel\SplitTree</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

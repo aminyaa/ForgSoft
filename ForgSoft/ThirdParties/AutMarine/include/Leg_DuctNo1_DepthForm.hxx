@@ -13,10 +13,11 @@ namespace AutLib
 
 		/*Private Data*/
 
+		void Defaults();
+
 	public:
 
-		Leg_DuctNo1_DepthForm()
-		{}
+		Leg_DuctNo1_DepthForm();
 	};
 }
 

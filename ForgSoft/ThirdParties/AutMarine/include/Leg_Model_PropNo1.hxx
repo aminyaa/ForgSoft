@@ -4,6 +4,7 @@
 
 #include <Global_AccessMethod.hxx>
 #include <Leg_Model_Propeller.hxx>
+#include <Pnt2d.hxx>
 
 class TopoDS_Shape;
 
@@ -16,6 +17,7 @@ namespace AutLib
 	struct Leg_PropNo1_Profile;
 	class Leg_Prop_PropView;
 	class Leg_Prop_BladeFace;
+	class Pnt2d;
 
 	class Leg_Model_PropNo1_Blade
 		: public Leg_Model_Propeller

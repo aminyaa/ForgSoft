@@ -1,6 +1,7 @@
 #pragma once
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseTree.hxx>
+#include <FrgBaseCADPartFeatures.hxx>
 
 #include <Cad3d_TModel.hxx>
 
@@ -34,8 +35,8 @@ inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::DoAfterConstru
 	//std::vector<std::shared_ptr<SurfaceEntity>> surfaceVector;
 	//std::vector<std::shared_ptr<CurveEntity>> curveVector;
 
-	std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Entity>>> blocksForSurfaces;
-	std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Entity>>> blocksForCurves;
+	std::vector<std::shared_ptr<SurfaceEntity>> blocksForSurfaces;
+	std::vector<std::shared_ptr<CurveEntity>> blocksForCurves;
 	theModel_->Faces()->RetrieveTo(blocksForSurfaces);
 	theModel_->Segments()->RetrieveTo(blocksForCurves);
 
@@ -46,8 +47,10 @@ inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::DoAfterConstru
 	for (int iCurve = 0; iCurve < blocksForCurves.size(); iCurve++)
 		GetCurves().push_back(std::dynamic_pointer_cast<CurveEntity>(blocksForCurves[iCurve]));*/
 
-	//GetSurfaces() = blocksForSurfaces;
-	//GetCurves() = blocksForCurves;
+	GetSurfaces() = blocksForSurfaces;
+	GetCurves() = blocksForCurves;
+
+	FrgBaseCADPart::DoAfterConstruct();
 
 	FrgString ExportPartString = "&Export";
 	this->GetContextMenu()->AddItem(ExportPartString);
@@ -59,15 +62,20 @@ inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::DoAfterConstru
 		, SLOT(ExportPartSlot(bool))
 	);
 
-	FrgString SplitByPatchPartString = "&Split By Patch";
-	this->GetContextMenu()->AddItem(SplitByPatchPartString);
-	QObject::connect
-	(
-		this->GetContextMenu()->GetItem(SplitByPatchPartString.remove('&'))
-		, SIGNAL(triggered(bool))
-		, this->GetParentTree()
-		, SLOT(SplitByPatchPartSlot(bool))
-	);
+	auto& surfacesList = this->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
 
-	FrgBaseCADPart::DoAfterConstruct();
+	for (int i = 0; i < surfacesList.size(); i++)
+	{
+		FrgString SplitByPatchPartString = "&Split By Patch";
+
+		auto& surfacesEntity = this->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(i);
+		surfacesEntity->GetContextMenu()->AddItem(SplitByPatchPartString);
+		QObject::connect
+		(
+			surfacesEntity->GetContextMenu()->GetItem(SplitByPatchPartString.remove('&'))
+			, SIGNAL(triggered(bool))
+			, this->GetParentTree()
+			, SLOT(SplitByPatchPartSlot(bool))
+		);
+	}
 }

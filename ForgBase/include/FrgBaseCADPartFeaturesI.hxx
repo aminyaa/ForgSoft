@@ -23,6 +23,16 @@ inline ForgBaseLib::FrgBaseCADPartFeatureEntity<Entity>::FrgBaseCADPartFeatureEn
 }
 
 template<class Entity>
+inline ForgBaseLib::FrgBaseCADPartFeatureEntity<Entity>::FrgBaseCADPartFeatureEntity
+(
+	const FrgString& title,
+	FrgBaseTree* parentTree
+)
+	: FrgBaseCADPartFeatureBase(title, parentTree)
+{
+}
+
+template<class Entity>
 inline ForgBaseLib::FrgBaseCADPartFeaturesEntity<Entity>::FrgBaseCADPartFeaturesEntity
 (
 	const FrgString& title,

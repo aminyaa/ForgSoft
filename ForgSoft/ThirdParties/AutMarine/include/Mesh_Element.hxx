@@ -6,10 +6,12 @@
 #include <Mesh_Entity.hxx>
 #include <Mesh_ElementAdaptor.hxx>
 #include <Mesh_ElementType.hxx>
+#include <Mesh_TypeTraits.hxx>
 #include <error.hxx>
 #include <OSstream.hxx>
 
 #include <memory>
+#include <array>
 
 namespace AutLib
 {
@@ -21,6 +23,11 @@ namespace AutLib
 	{
 
 	public:
+
+		typedef std::array<Standard_Real, 4>
+			array4;
+
+		typedef array4 arrayType;
 
 		typedef typename ElementTraits::nodeType nodeType;
 		typedef typename ElementTraits::edgeType edgeType;
@@ -45,7 +52,8 @@ namespace AutLib
 
 		enum
 		{
-			nbNodes = 4
+			nbNodes = 4,
+			rank = 3
 		};
 
 		Mesh_Element()
@@ -76,7 +84,7 @@ namespace AutLib
 
 		Point Centre() const
 		{
-			Point pt = 
+			Point pt =
 				(Node0()->Coord() + Node1()->Coord() + Node2()->Coord() + Node3()->Coord())
 				/ (Standard_Real)4.0;
 			return std::move(pt);
@@ -154,6 +162,45 @@ namespace AutLib
 			return nodeType::null_ptr;
 		}
 
+		template<int Sub>
+		const std::shared_ptr<typename sub_type<Mesh_Element, Sub>::type>& 
+			SubEntity
+			(
+				const Standard_Integer theIndex
+			) const;
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 0>::type>& 
+			SubEntity<0>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Node(theIndex);
+		}
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 1>::type>&
+			SubEntity<1>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Edge(theIndex);
+		}
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 2>::type>&
+			SubEntity<2>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Facet(theIndex);
+		}
+
+		array4 InterpWeights(const Point& theCoord) const;
+
 		//- Static function and operators
 
 		static Standard_Boolean
@@ -174,14 +221,14 @@ namespace AutLib
 		GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 0)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 1)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 2)
-			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 3)		
+			GLOBAL_ACCESS_VECTOR(std::shared_ptr<nodeType>, Node, 3)
 
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 0)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 1)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 2)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 3)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 4)
-			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 5)		
+			GLOBAL_ACCESS_VECTOR(std::shared_ptr<edgeType>, Edge, 5)
 
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<facetType>, Facet, 0)
 			GLOBAL_ACCESS_VECTOR(std::shared_ptr<facetType>, Facet, 1)
@@ -222,7 +269,8 @@ namespace AutLib
 
 		enum
 		{
-			nbNodes = 3
+			nbNodes = 3,
+			rank = 2
 		};
 
 		Mesh_Element()
@@ -251,12 +299,48 @@ namespace AutLib
 
 		Point Centre() const
 		{
-			Point pt = 
-				(Node0()->Coord() + Node1()->Coord() + Node2()->Coord()) 
+			Point pt =
+				(Node0()->Coord() + Node1()->Coord() + Node2()->Coord())
 				/ (Standard_Real)3.0;
 			return std::move(pt);
 		}
 
+		Standard_Real Oriented(const Point& theCoord) const;
+
+		Standard_Real CalcDistance(const Point& theCoord) const;
+
+		Standard_Real CalcSquareDistance(const Point& theCoord) const;
+
+		template<int Sub>
+		const std::shared_ptr<typename sub_type<Mesh_Element, Sub>::type>&
+			SubEntity
+			(
+				const Standard_Integer theIndex
+			) const;
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 0>::type>&
+			SubEntity<0>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Node(theIndex);
+		}
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 1>::type>&
+			SubEntity<1>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Edge(theIndex);
+		}
+
+		Standard_Boolean IsRightSide(const Point& theCoord) const;
+
+		Standard_Boolean IsLeftSide(const Point& theCoord) const;
 
 		//- Static function and operators
 
@@ -297,6 +381,11 @@ namespace AutLib
 
 	public:
 
+		typedef std::array<Standard_Real, 3>
+			array3;
+
+		typedef array3 arrayType;
+
 		typedef typename ElementTraits::nodeType nodeType;
 		typedef typename ElementTraits::edgeType edgeType;
 		typedef typename ElementTraits::facetType facetType;
@@ -319,7 +408,8 @@ namespace AutLib
 
 		enum
 		{
-			nbNodes = 3
+			nbNodes = 3,
+			rank = 2
 		};
 
 		Mesh_Element()
@@ -422,6 +512,34 @@ namespace AutLib
 			return nodeType::null_ptr;
 		}
 
+		template<int Sub>
+		const std::shared_ptr<typename sub_type<Mesh_Element, Sub>::type>&
+			SubEntity
+			(
+				const Standard_Integer theIndex
+			) const;
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 0>::type>&
+			SubEntity<0>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Node(theIndex);
+		}
+
+		template<>
+		const std::shared_ptr<typename sub_type<Mesh_Element, 1>::type>&
+			SubEntity<1>
+			(
+				const Standard_Integer theIndex
+				) const
+		{
+			return Edge(theIndex);
+		}
+
+		array3 InterpWeights(const Point& theCoord) const;
 
 		//- Static function and operators
 
@@ -454,7 +572,9 @@ namespace AutLib
 	};
 
 
-	
+
 }
+
+#include <Mesh_ElementI.hxx>
 
 #endif // !_Mesh_Element_Header

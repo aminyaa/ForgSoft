@@ -24,7 +24,7 @@ namespace AutLib
 
 		/*Private Data*/
 
-		Geom_AdTree<std::shared_ptr<Pln_Vertex>> theSearch_;
+		//Geom_AdTree<std::shared_ptr<Pln_Vertex>> theSearch_;
 
 		std::map<Standard_Integer, std::shared_ptr<Pln_Vertex>> theVertices_;
 		std::map<Standard_Integer, std::shared_ptr<Pln_Edge>> theEdges_;

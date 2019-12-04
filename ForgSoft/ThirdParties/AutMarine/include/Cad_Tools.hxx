@@ -29,6 +29,7 @@ namespace AutLib
 
 	public:
 
+
 		//- an exception will be thrown if the curve is not bounded
 		static std::shared_ptr<Geom2dAPI_InterCurveCurve> 
 			Intersection
@@ -67,6 +68,7 @@ namespace AutLib
 				const Handle(Geom_Surface)& theSurface,
 				const Standard_Integer theNx,
 				const Standard_Integer theNy
+
 			);
 
 		static Handle(Geom_Surface)
@@ -229,12 +231,13 @@ namespace AutLib
 
 		template<class SurfType>
 		static std::shared_ptr<SurfType> ReParameterization_vExpand(const SurfType& theSurface, const Standard_Real theMult);
-      
+
 		static void ExportToSTEP
 		(
 			const TopoDS_Shape& theShape,
 			const fileName& name
 		);
+
 	};
 }
 

@@ -8,8 +8,6 @@
 namespace AutLib
 {
 
-	// Forward Declarations
-
 	Mesh_EntityToEntityAdaptor(BndEdge, Surface, SurfType);
 
 	template<class CurveType>
@@ -48,6 +46,20 @@ namespace AutLib
 
 		Mesh_BndEdgeGeomAdaptor()
 		{}
+	};
+
+	template<class CurveType>
+	class Mesh_BndEdgeGeomAdaptor<CurveType, void, Mesh_BndEdge_Position_Segment>
+		: public Mesh_BndEdgeGeomAdaptorBase<CurveType>
+	{
+
+		/*Private Data*/
+
+	public:
+
+		Mesh_BndEdgeGeomAdaptor()
+		{}
+
 	};
 
 	template<class SurfType>

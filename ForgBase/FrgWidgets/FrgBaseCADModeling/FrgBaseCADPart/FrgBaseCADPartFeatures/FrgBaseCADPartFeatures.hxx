@@ -4,6 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseTreeItem.hxx>
+#include <FrgBaseTree.hxx>
 
 BeginFrgBaseLib
 
@@ -23,7 +24,15 @@ public:
 		const FrgString& title,
 		FrgBaseTreeItem* parentItem
 	)
-		: FrgBaseTreeItem(title, parentItem, parentItem->GetParentTree(), parentItem->GetParentMainWindow())
+		: FrgBaseTreeItem(title, parentItem, (parentItem ? parentItem->GetParentTree() : FrgNullPtr), (parentItem ? parentItem->GetParentMainWindow() : FrgNullPtr))
+	{}
+
+	FrgBaseCADPartFeatureBase
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree
+	)
+		: FrgBaseTreeItem(title, FrgNullPtr, parentTree, (parentTree ? parentTree->GetParentMainWindow() : FrgNullPtr))
 	{}
 
 	~FrgBaseCADPartFeatureBase()
@@ -52,6 +61,12 @@ public:
 	(
 		const FrgString& title,
 		FrgBaseTreeItem* parentItem
+	);
+
+	FrgBaseCADPartFeatureEntity
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree
 	);
 
 	FrgGetMacro(FrgSharedPtr<Entity>, Entity, theEntity_);

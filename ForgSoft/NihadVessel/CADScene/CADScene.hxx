@@ -5,11 +5,19 @@
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseCADScene.hxx>
 
+namespace AutLib
+{
+	class TModel_Surface;
+}
+
 BeginFrgBaseLib
 
 class FrgBaseTree;
 //class NihadVesselPartTreeItem;
 class FrgBaseCADPart_Entity;
+
+template<class Entity>
+class FrgBaseCADPartFeatureEntity;
 
 class CADScene : public FrgBaseCADScene
 {
@@ -29,6 +37,8 @@ public:
 	void AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor);
 
 	void CreateActor(FrgBaseCADPart_Entity* part);
+
+	void CreateActor(std::shared_ptr<AutLib::TModel_Surface> surface, FrgBaseCADPartFeatureEntity<AutLib::TModel_Surface>* item);
 
 	void ClearScene();
 
