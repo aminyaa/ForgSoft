@@ -9,11 +9,14 @@
 BeginFrgBaseLib
 
 class FrgBaseCADScene;
+class FrgBaseCADPart_Entity;
 
 class FrgBaseCADPartFeatureBase : public FrgBaseTreeItem
 {
 
 private:
+
+	FrgBaseCADPart_Entity* theParentPart_ = FrgNullPtr;
 
 	QList<FrgBaseCADScene*> thePointerToScenes_;
 
@@ -45,6 +48,7 @@ public:
 	}
 
 	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
+	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);
 };
 
 template <class Entity>

@@ -11,6 +11,7 @@ class vtkCamera;
 class vtkActor;
 class vtkGenericOpenGLRenderWindow;
 class vtkTextActor;
+class vtkProp;
 class QPoint;
 
 BeginFrgBaseLib
@@ -107,6 +108,8 @@ public:
 	void DrawGrid(int nbDivision, int nbMinorDivision, GridDrawPlane plane = XY);
 
 	void ClearGrid();
+
+	void RemoveActor(vtkProp* prop);
 
 public slots:
 

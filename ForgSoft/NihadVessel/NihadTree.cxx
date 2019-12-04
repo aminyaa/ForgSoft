@@ -131,7 +131,10 @@ void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 
 	auto tree = dynamic_cast<NihadTree*>(myItem->GetParentTree());
 	if (!tree)
+	{
 		itemInSplitTreeClickedSlot(tree, item, column);
+		return;
+	}
 
 	FrgBaseTree::itemClickedSlot(item, column);
 	auto& SelectedItems = this->selectedItems();
@@ -766,7 +769,8 @@ void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 		theLastRightClicked_->text(0),
 		GetParentMainWindow(), (surfaceItem ? surfaceItem->GetEntity() : FrgNullPtr),
 		(curveItem ? curveItem->GetEntity() : FrgNullPtr),
-		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes())
+		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes()),
+		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
 	);
 }
 

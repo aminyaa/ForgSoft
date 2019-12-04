@@ -16,7 +16,8 @@ ForgBaseLib::SplitWidget::SplitWidget
 	FrgBaseMainWindow* parenMainWindow,
 	SurfaceBlockPtr surfaceBlock,
 	CurveBlockPtr curveBlock,
-	QList<FrgBaseCADScene*> pointerToScenes
+	QList<FrgBaseCADScene*> pointerToScenes,
+	FrgBaseCADPart_Entity* parentPart
 )
 	: QWidget(parenMainWindow)
 	, theParentMainWindow_(parenMainWindow)
@@ -25,12 +26,12 @@ ForgBaseLib::SplitWidget::SplitWidget
 	QHBoxLayout* nameLayout = new QHBoxLayout();
 	QHBoxLayout* buttonsLayout = new QHBoxLayout();
 
-	theTree_ = FrgNew SplitTree(theParentMainWindow_, surfaceBlock, curveBlock, pointerToScenes);
+	theTree_ = FrgNew SplitTree(theParentMainWindow_, surfaceBlock, curveBlock, pointerToScenes, this, parentPart);
 
 	QLabel* nameLabel = new QLabel("Name");
-	QLineEdit* nameLineEdit = new QLineEdit();
+	theNameLineEdit_ = new QLineEdit();
 	nameLayout->addWidget(nameLabel);
-	nameLayout->addWidget(nameLineEdit);
+	nameLayout->addWidget(theNameLineEdit_);
 
 	QPushButton* createButton = new QPushButton("Create");
 	QPushButton* cancelButton = new QPushButton("Cancel");
@@ -55,4 +56,5 @@ ForgBaseLib::SplitWidget::SplitWidget
 	splitWidget->show();
 	splitWidget->raise();
 
+	connect(createButton, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
 }

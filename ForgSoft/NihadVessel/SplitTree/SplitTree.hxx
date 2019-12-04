@@ -19,6 +19,8 @@ BeginFrgBaseLib
 class FrgBaseCADPart_Entity;
 class FrgBaseMainWindow;
 class FrgBaseCADScene;
+class SplitWidget;
+class FrgBaseCADPart_Entity;
 
 typedef AutLib::Cad_BlockEntity<AutLib::TModel_Surface> SurfaceBlock;
 typedef std::shared_ptr<SurfaceBlock> SurfaceBlockPtr;
@@ -36,6 +38,8 @@ private:
 	CurveBlockPtr theCurveBlock_ = FrgNullPtr;
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
+	SplitWidget* theParentSplitWidget_ = FrgNullPtr;
+	FrgBaseCADPart_Entity* thePartParent_ = FrgNullPtr;
 
 	QList<FrgBaseCADScene*> thePointerToScenes_;
 
@@ -46,7 +50,9 @@ public:
 		FrgBaseMainWindow* parent,
 		SurfaceBlockPtr surfaceBlock,
 		CurveBlockPtr curveBlock,
-		QList<FrgBaseCADScene*> pointerToScenes
+		QList<FrgBaseCADScene*> pointerToScenes,
+		SplitWidget* parentSplitWidget,
+		FrgBaseCADPart_Entity* parentPart
 	);
 
 	virtual void FormTree() override;
@@ -54,6 +60,10 @@ public:
 private slots:
 
 	void itemInSplitTreeClickedSlot(QTreeWidgetItem*, int);
+
+private slots:
+
+	void CreateButtonClickedSlot();
 
 };
 

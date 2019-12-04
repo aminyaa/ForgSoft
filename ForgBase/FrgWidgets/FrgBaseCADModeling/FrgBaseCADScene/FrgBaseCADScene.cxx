@@ -443,6 +443,11 @@ void ForgBaseLib::FrgBaseCADScene::ClearGrid()
 	}
 }
 
+void ForgBaseLib::FrgBaseCADScene::RemoveActor(vtkProp* prop)
+{
+	theRenderer_->RemoveActor(prop);
+}
+
 void ForgBaseLib::FrgBaseCADScene::SetViewToXYPlaneSlot(bool)
 {
 	if (theGridActor_)

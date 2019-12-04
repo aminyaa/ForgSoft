@@ -6,6 +6,8 @@
 
 #include <QtWidgets/QWidget>
 
+class QLineEdit;
+
 namespace AutLib
 {
 	template <class Entity>
@@ -18,6 +20,7 @@ namespace AutLib
 BeginFrgBaseLib
 
 class FrgBaseMainWindow;
+class FrgBaseCADPart_Entity;
 
 typedef AutLib::Cad_BlockEntity<AutLib::TModel_Surface> SurfaceBlock;
 typedef std::shared_ptr<SurfaceBlock> SurfaceBlockPtr;
@@ -33,8 +36,9 @@ class SplitWidget : public QWidget
 private:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
-
 	SplitTree* theTree_ = FrgNullPtr;
+
+	QLineEdit* theNameLineEdit_ = FrgNullPtr;
 
 public:
 
@@ -44,7 +48,11 @@ public:
 		FrgBaseMainWindow* parenMainWindow,
 		SurfaceBlockPtr surfaceBlock,
 		CurveBlockPtr curveBlock,
-		QList<FrgBaseCADScene*> pointerToScenes);
+		QList<FrgBaseCADScene*> pointerToScenes,
+		FrgBaseCADPart_Entity* parentPart
+	);
+
+	FrgGetMacro(QLineEdit*, NameLineEdit, theNameLineEdit_);
 };
 
 EndFrgBaseLib
