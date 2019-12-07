@@ -76,9 +76,6 @@
     <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene">
       <UniqueIdentifier>{a1a7d96f-0b74-492c-ae99-0ebc46ea3080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx">
-      <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_File">
       <UniqueIdentifier>{60e62489-50a4-4a52-be50-f5482c595cd0}</UniqueIdentifier>
     </Filter>
@@ -99,6 +96,9 @@
     </Filter>
     <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help">
       <UniqueIdentifier>{4485987f-3a00-48c7-9e7f-a10d91189d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures">
+      <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -216,10 +216,10 @@
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.hxx">
-      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeaturesI.hxx">
-      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>

@@ -41,7 +41,7 @@
     <QtMoc Include="NihadVessel\CustomWindowType\CustomWindow.hxx" />
     <QtMoc Include="NihadVessel\CustomWindowType\WindowButton.hxx" />
     <QtMoc Include="NihadVessel\SplitTree\SplitTree.hxx" />
-    <ClInclude Include="NihadVessel\SplitWidget\SplitWidget.hxx" />
+    <QtMoc Include="NihadVessel\SplitWidget\SplitWidget.hxx" />
     <ClInclude Include="NihadVessel\ViewPorts\ViewPorts.hxx" />
     <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx" />
     <ClInclude Include="NihadVessel\NihadEntities\NihadPartFeature.hxx" />

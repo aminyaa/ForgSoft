@@ -165,9 +165,6 @@
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItemI.hxx">
       <Filter>NihadVessel\CADPartItem</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\SplitWidget\SplitWidget.hxx">
-      <Filter>NihadVessel\SplitWidget</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NihadVessel\NihadTree.hxx">
@@ -205,6 +202,9 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\SplitTree\SplitTree.hxx">
       <Filter>NihadVessel\SplitTree</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitWidget\SplitWidget.hxx">
+      <Filter>NihadVessel\SplitWidget</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

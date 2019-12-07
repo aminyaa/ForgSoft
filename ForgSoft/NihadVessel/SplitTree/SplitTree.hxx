@@ -39,7 +39,7 @@ private:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
 	SplitWidget* theParentSplitWidget_ = FrgNullPtr;
-	FrgBaseCADPart_Entity* thePartParent_ = FrgNullPtr;
+	FrgBaseCADPart_Entity* theParentPart_ = FrgNullPtr;
 
 	QList<FrgBaseCADScene*> thePointerToScenes_;
 
@@ -56,6 +56,10 @@ public:
 	);
 
 	virtual void FormTree() override;
+
+	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);
+	FrgGetMacro(SurfaceBlockPtr, SurfaceBlock, theSurfaceBlock_);
+	FrgGetMacro(CurveBlockPtr, CurveBlock, theCurveBlock_);
 
 private slots:
 

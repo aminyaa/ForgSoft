@@ -7,6 +7,7 @@
 #include <QtWidgets/QWidget>
 
 class QLineEdit;
+class QDockWidget;
 
 namespace AutLib
 {
@@ -33,12 +34,19 @@ class FrgBaseCADScene;
 class SplitWidget : public QWidget 
 {
 
+	Q_OBJECT
+
 private:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
 	SplitTree* theTree_ = FrgNullPtr;
+	QDockWidget* theDockWidget_ = FrgNullPtr;
 
 	QLineEdit* theNameLineEdit_ = FrgNullPtr;
+
+private slots:
+
+	void CancelButtonClickedSlot();
 
 public:
 

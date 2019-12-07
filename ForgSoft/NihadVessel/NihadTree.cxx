@@ -761,6 +761,17 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 
 void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 {
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>
+		(dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart());
+	if (!part)
+	{
+		std::cout << " Error! ==> The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in NihadTree::SplitByPatchPartSlot(bool)\n";
+		return;
+	}
+
+	/*part->GetFeatures()->GetSurfacesEntity()->get
+	part->GetModel()->Faces()->SelectBlockEntity("")*/
+
 	auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
 	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
 
@@ -772,6 +783,11 @@ void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes()),
 		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
 	);
+
+	if (surfaceItem)
+		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+	else if (curveItem)
+		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
 }
 
 ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)

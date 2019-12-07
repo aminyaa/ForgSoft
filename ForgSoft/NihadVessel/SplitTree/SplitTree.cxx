@@ -10,12 +10,14 @@
 #include <NihadTree.hxx>
 #include <SplitWidget.hxx>
 #include <FrgBaseCADPart.hxx>
+#include <CADPartItem.hxx>
 
 #include <vtkActor.h>
 #include <vtkRenderWindow.h>
 
 #include <QtGui/QIcon>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QDockWidget>
 
 ForgBaseLib::SplitTree::SplitTree
 (
@@ -32,6 +34,7 @@ ForgBaseLib::SplitTree::SplitTree
 	, theParentMainWindow_(parent)
 	, thePointerToScenes_(pointerToScenes)
 	, theParentSplitWidget_(parentSplitWidget)
+	, theParentPart_(parentPart)
 {
 	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemInSplitTreeClickedSlot(QTreeWidgetItem*, int)));
 
@@ -46,7 +49,7 @@ void ForgBaseLib::SplitTree::FormTree()
 	if (theSurfaceBlock_)
 		theSurfaceBlock_->RetrieveEntitiesTo(surfaces);
 
-	if(theCurveBlock_)
+	if (theCurveBlock_)
 		theCurveBlock_->RetrieveEntitiesTo(curves);
 
 	for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
@@ -63,7 +66,7 @@ void ForgBaseLib::SplitTree::FormTree()
 		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
 		{
 			auto scene = dynamic_cast<CADScene*>(thePointerToScenes_[iScene]);
-			if(!scene) continue;
+			if (!scene) continue;
 
 			scene->CreateActor(surfaces[iSurface], item);
 		}
@@ -88,58 +91,90 @@ void ForgBaseLib::SplitTree::itemInSplitTreeClickedSlot(QTreeWidgetItem* item, i
 
 void ForgBaseLib::SplitTree::CreateButtonClickedSlot()
 {
-	if (theParentSplitWidget_->GetNameLineEdit()->text().simplified() == "")
+	theParentSplitWidget_->GetNameLineEdit()->setText(theParentSplitWidget_->GetNameLineEdit()->text().simplified());
+	auto blockName = theParentSplitWidget_->GetNameLineEdit()->text().toStdString();
+
+	if (blockName == "")
 		return;
 
 	auto selected = this->selectedItems();
 
-	/*if(!selected.isEmpty())
-		part = selected[0]*/
-
-	if (theSurfaceBlock_)
+	if (!selected.isEmpty())
 	{
-		for (int iItem = 0; iItem < selected.size(); iItem++)
+		int nbTreeChildren = this->topLevelItemCount();
+		auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theParentPart_);
+		if (!part)
 		{
-			auto item = dynamic_cast<FrgBaseCADPartFeatureBase*>(selected[iItem]);
-			if (!item)
-				continue;
-
-			theSurfaceBlock_->SelectEntity(std::stoi(selected[iItem]->text(0).toStdString().c_str()));
-			GetItems().removeOne(item);
-			this->takeTopLevelItem(this->indexOfTopLevelItem(item));
-			//this->removeItemWidget(selected[iItem], 0);
+			std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CreateButtonClickedSlot()\n";
+			return;
 		}
-	}
 
-	else if (theCurveBlock_)
-	{
-		for (int iItem = 0; iItem < selected.size(); iItem++)
+		if (theSurfaceBlock_)
 		{
-			auto item = dynamic_cast<FrgBaseCADPartFeatureBase*>(selected[iItem]);
-			if (!item)
-				continue;
+			for (int iItem = 0; iItem < selected.size(); iItem++)
+			{
+				auto item = dynamic_cast<FrgBaseCADPartFeatureBase*>(selected[iItem]);
+				if (!item)
+					continue;
 
-			theCurveBlock_->SelectEntity(std::stoi(selected[iItem]->text(0).toStdString().c_str()));
-			GetItems().removeOne(item);
-			this->takeTopLevelItem(this->indexOfTopLevelItem(item));
-			//this->removeItemWidget(selected[iItem], 0);
+				theSurfaceBlock_->SelectEntity(std::stoi(selected[iItem]->text(0).toStdString().c_str()));
+				GetItems().removeOne(item);
+				this->takeTopLevelItem(this->indexOfTopLevelItem(item));
+				//this->removeItemWidget(selected[iItem], 0);
+			}
 		}
-	}
 
-	for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
-	{
-		for (int iItem = 0; iItem < selected.size(); iItem++)
+		else if (theCurveBlock_)
 		{
-			auto item = dynamic_cast<FrgBaseCADPartFeatureBase*>(selected[iItem]);
-			if (!item)
-				continue;
+			for (int iItem = 0; iItem < selected.size(); iItem++)
+			{
+				auto item = dynamic_cast<FrgBaseCADPartFeatureBase*>(selected[iItem]);
+				if (!item)
+					continue;
 
-			auto scene = dynamic_cast<CADScene*>(thePointerToScenes_[iScene]);
-			if (!scene)
-				continue;
+				theCurveBlock_->SelectEntity(std::stoi(selected[iItem]->text(0).toStdString().c_str()));
+				GetItems().removeOne(item);
+				this->takeTopLevelItem(this->indexOfTopLevelItem(item));
+				//this->removeItemWidget(selected[iItem], 0);
+			}
+		}
 
-			scene->RemoveActor(scene->GetPartFeatureToActor().value(item));
-			scene->GetRenderWindow()->Render();
+		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		{
+			for (int iItem = 0; iItem < selected.size(); iItem++)
+			{
+				auto item = dynamic_cast<FrgBaseCADPartFeatureBase*>(selected[iItem]);
+				if (!item)
+					continue;
+
+				auto scene = dynamic_cast<CADScene*>(thePointerToScenes_[iScene]);
+				if (!scene)
+					continue;
+
+				scene->RemoveActor(scene->GetPartFeatureToActor().value(item));
+				scene->GetRenderWindow()->Render();
+			}
+		}
+
+		if (theSurfaceBlock_)
+		{
+			if (selected.size() == nbTreeChildren)
+				part->GetModel()->Faces()->RenameBlock(blockName);
+			else
+			{
+				part->GetModel()->Faces()->Split(blockName);
+				part->GetModel()->Faces()->SelectBlockEntity(theSurfaceBlock_->Name());
+			}
+		}
+		else if (theCurveBlock_)
+		{
+			if(selected.size() == nbTreeChildren)
+				part->GetModel()->Segments()->RenameBlock(blockName);
+			else
+			{
+				part->GetModel()->Segments()->Split(blockName);
+				part->GetModel()->Segments()->SelectBlockEntity(theCurveBlock_->Name());
+			}
 		}
 	}
 
