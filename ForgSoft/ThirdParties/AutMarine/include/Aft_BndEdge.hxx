@@ -4,6 +4,9 @@
 
 #include <Mesh_EdgeAdaptor.hxx>
 
+#include <vector>
+#include <memory>
+
 namespace AutLib
 {
 
@@ -39,6 +42,20 @@ namespace AutLib
 		)
 			: edgeType(theIndex, theNode0, theNode1)
 		{}
+
+		//- Static functions and operators
+
+		static void
+			ActiveBoundaryEdges
+			(
+				const std::vector<std::shared_ptr<typename BndEdgeTraits::edgeType>>& theEdges
+			);
+
+		static std::vector<std::shared_ptr<typename BndEdgeTraits::edgeType>>
+			UpCast
+			(
+				const std::vector<std::shared_ptr<Aft_BndEdge>>& theEdges
+			);
 	};
 }
 

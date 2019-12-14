@@ -18,7 +18,7 @@ namespace AutLib
 		, public SingularZone_Line_Dangle_Base
 	{
 
-		typedef typename SurfPln::plnCurve plnCurve;
+		typedef typename SurfPln::parCurveType plnCurve;
 
 		/*Private Data*/
 
@@ -55,9 +55,9 @@ namespace AutLib
 			, theHorizon2_(theHorizon2)
 		{}
 
-		Mesh_SingularType Type() const override
+		Cad_SingularType Type() const override
 		{
-			return Mesh_SingularType::Line_Dangle;
+			return Cad_SingularType::Line_Dangle;
 		}
 
 		const word& TypeName() const override

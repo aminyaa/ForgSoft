@@ -839,6 +839,30 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 	}
 }
 
+void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> parts, QList<QTreeWidgetItem*> scenes)
+{
+	QList<FrgBaseCADPart_Entity*> output;
+
+	for (int i = 0; i < parts.size(); i++)
+	{
+		output.push_back(dynamic_cast<FrgBaseCADPart_Entity*>(parts.at(i)));
+	}
+
+	for (int iScene = 0; iScene < scenes.size(); iScene++)
+	{
+		auto scene = (dynamic_cast<NihadVesselScenePartTreeItem*>(scenes[iScene]));
+
+		if (scene)
+		{
+			scene->GetPartsPointer() = output;
+			scene->RenderSceneSlot();
+
+			GetParentMainWindow()->GetTabWidget()->addTab(scene->GetViewPorts(), scene->text(0));
+			GetParentMainWindow()->GetTabWidget()->setCurrentWidget(scene->GetViewPorts());
+		}
+	}
+}
+
 void ForgBaseLib::NihadTree::PreviewGeometryClickedSlot(bool)
 {
 	auto geometry = dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_);

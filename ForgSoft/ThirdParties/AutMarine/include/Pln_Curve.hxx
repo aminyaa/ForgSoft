@@ -31,6 +31,7 @@ namespace AutLib
 
 		typedef info infoType;
 		typedef Geom2d_Curve geomType;
+		typedef Cad_Curve<Geom2d_Curve> base;
 
 		Pln_Curve(const std::shared_ptr<info>& theInfo)
 			: theInfo_(theInfo)
@@ -42,10 +43,7 @@ namespace AutLib
 			const Standard_Real theLast,
 			const Handle(Geom2d_Curve)& theCurve,
 			const std::shared_ptr<info>& theInfo
-		)
-			: Cad_Curve<Geom2d_Curve>(theFirst, theLast, theCurve)
-			, theInfo_(theInfo)
-		{}
+		);
 
 		Pln_Curve
 		(
@@ -55,11 +53,14 @@ namespace AutLib
 			const Standard_Real theLast,
 			const Handle(Geom2d_Curve)& theCurve,
 			const std::shared_ptr<info>& theInfo
-		)
-			: Cad_Curve<Geom2d_Curve>(theFirst, theLast, theCurve)
-			, Pln_Entity(theIndex, theName)
-			, theInfo_(theInfo)
-		{}
+		);
+
+		void Init
+		(
+			const Standard_Real theFirst,
+			const Standard_Real theLast,
+			const Handle(Geom2d_Curve)& theCurve
+		);
 
 		const std::shared_ptr<info>& Info() const
 		{

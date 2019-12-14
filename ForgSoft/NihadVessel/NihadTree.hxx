@@ -69,6 +69,7 @@ public slots:
 	void SplitByPatchPartSlot(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
+	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<QTreeWidgetItem*> scenes);
 
 	void PreviewGeometryClickedSlot(bool);
 

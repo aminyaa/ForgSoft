@@ -2,7 +2,6 @@
 #ifndef _CadRepair_NormalizeMetric_Header
 #define _CadRepair_NormalizeMetric_Header
 
-#include <Global_Verbose.hxx>
 #include <Global_Done.hxx>
 #include <CadRepair_NormalizeMetric_Info.hxx>
 
@@ -15,7 +14,6 @@ namespace AutLib
 	template<class SurfType>
 	class CadRepair_NormalizeMetric
 		: public Global_Done
-		, public Global_Verbose
 	{
 
 		typedef CadRepair_NormalizeMetric_Info info;
@@ -30,7 +28,6 @@ namespace AutLib
 		std::shared_ptr<info> theInfo_;
 
 		Standard_Boolean Applied_;
-		Standard_Boolean toApply_;
 
 
 		std::shared_ptr<SurfType> theNormalized_;
@@ -68,7 +65,6 @@ namespace AutLib
 		)
 			: theInfo_(theInfo)
 			, Applied_(Standard_False)
-			, toApply_(Standard_False)
 		{}
 
 		CadRepair_NormalizeMetric
@@ -81,7 +77,6 @@ namespace AutLib
 			, theSurface_(theSurface)
 			, theMetric_(theMetric)
 			, Applied_(Standard_False)
-			, toApply_(Standard_False)
 		{}
 
 
@@ -110,11 +105,6 @@ namespace AutLib
 			return Applied_;
 		}
 
-		Standard_Boolean ToApply() const
-		{
-			return toApply_;
-		}
-
 		void Perform();
 
 		void LoadSurface
@@ -131,11 +121,6 @@ namespace AutLib
 		)
 		{
 			theMetric_ = theMetric;
-		}
-
-		void ToApply(const Standard_Boolean apply)
-		{
-			toApply_ = apply;
 		}
 	};
 }

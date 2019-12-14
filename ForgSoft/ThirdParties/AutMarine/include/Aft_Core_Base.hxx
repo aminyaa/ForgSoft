@@ -12,6 +12,10 @@
 #include <memory>
 #include <vector>
 
+//#include "Aft2d_OptNode_Calculator.hxx"
+//#include "Aft2d_FrontGlobalData.hxx"
+//#include "Aft2d_FrontInfo.hxx"
+
 namespace AutLib
 {
 
@@ -42,7 +46,7 @@ namespace AutLib
 		typedef FrontInfo frontInfo;
 		typedef FrontData frontData;
 
-		typedef Aft_MetricPrcsr<SizeFun, MetricFun> metricMap;
+		typedef Aft_MetricPrcsr<frontType, SizeFun, MetricFun> metricMap;
 
 	private:
 
@@ -241,6 +245,8 @@ namespace AutLib
 		(
 			const std::vector<std::shared_ptr<frontType>>& theEffectives
 		) const;
+
+		void CalcOptimumCoord();
 
 		void CalcElementSize();
 

@@ -3,10 +3,14 @@
 #define _Geo_Tools_Header
 
 #include <Standard_TypeDef.hxx>
+#include <Entity2d_BoxFwd.hxx>
 #include <Entity2d_PolygonFwd.hxx>
+#include <Entity2d_TriangulationFwd.hxx>
 
 class gp_Pnt;
 class Geom_Surface;
+
+#include <memory>
 
 namespace AutLib
 {
@@ -37,6 +41,11 @@ namespace AutLib
 		(
 			const Entity2d_Polygon& thePoly, 
 			const Geom_Surface& theSurface
+		);
+
+		static std::shared_ptr<Entity2d_Triangulation> Triangulation
+		(
+			const Entity2d_Box& theBox
 		);
 	};
 }

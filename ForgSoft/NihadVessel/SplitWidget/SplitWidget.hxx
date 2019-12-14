@@ -46,7 +46,7 @@ private:
 
 private slots:
 
-	void CancelButtonClickedSlot();
+	void CloseButtonClickedSlot();
 
 public:
 

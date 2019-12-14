@@ -12,7 +12,7 @@ namespace AutLib
 		class CurveType,
 		class SurfType,
 		class FacetType,
-		class AftMetricPrcsr,
+		class MetricPrcsr,
 		Mesh_BndEdge_Position POS = Mesh_BndEdge_Position_Segment
 		>
 		class Aft_BndEdgeAdaptor
@@ -40,8 +40,8 @@ namespace AutLib
 		{}
 	};
 
-	template<class CurveType, class AftMetricPrcsr>
-	class Aft_BndEdgeAdaptor<CurveType, void, void, AftMetricPrcsr>
+	template<class CurveType, class MetricPrcsr>
+	class Aft_BndEdgeAdaptor<CurveType, void, void, MetricPrcsr>
 		: public Mesh_BndEdgeGeomAdaptor<CurveType, void, Mesh_BndEdge_Position_Segment>
 	{
 
@@ -52,7 +52,7 @@ namespace AutLib
 		Aft_BndEdgeAdaptor()
 		{}
 
-		virtual void SingularityContraction(const AftMetricPrcsr&);
+		virtual void SingularityContraction(const MetricPrcsr&);
 	};
 
 	//template
@@ -73,5 +73,7 @@ namespace AutLib
 	//	{}
 	//};
 }
+
+#include <Aft_BndEdgeAdaptorI.hxx>
 
 #endif // !_Aft_BndEdgeAdaptor_Header

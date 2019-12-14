@@ -3,7 +3,6 @@
 #define _CadRepair_ParaPlaneAR_Header
 
 #include <Global_Done.hxx>
-#include <Global_Verbose.hxx>
 #include <Entity2d_Box.hxx>
 #include <CadRepair_ParaPlaneAR_Info.hxx>
 
@@ -15,7 +14,6 @@ namespace AutLib
 	template<class SurfType>
 	class CadRepair_ParaPlaneAR
 		: public Global_Done
-		, public Global_Verbose
 	{
 
 		typedef CadRepair_ParaPlaneAR_Info info;
@@ -28,7 +26,6 @@ namespace AutLib
 		std::shared_ptr<SurfType> theModified_;
 
 		Standard_Boolean Applied_;
-		Standard_Boolean toApply_;
 
 		std::shared_ptr<SurfType>& ChangeModified()
 		{
@@ -51,7 +48,6 @@ namespace AutLib
 		)
 			: theInfo_(theInfo)
 			, Applied_(Standard_False)
-			, toApply_(Standard_False)
 		{}
 
 		CadRepair_ParaPlaneAR
@@ -62,17 +58,11 @@ namespace AutLib
 			: theInfo_(theInfo)
 			, theSurface_(theSurface)
 			, Applied_(Standard_False)
-			, toApply_(Standard_False)
 		{}
 
 		Standard_Boolean Applied() const
 		{
 			return Applied_;
-		}
-
-		Standard_Boolean ToApply() const
-		{
-			return toApply_;
 		}
 
 		const std::shared_ptr<info>& Info() const
@@ -85,9 +75,9 @@ namespace AutLib
 			return theSurface_;
 		}
 
-		void ToApply(const Standard_Boolean apply)
+		const std::shared_ptr<SurfType>& Modified() const
 		{
-			toApply_ = apply;
+			return theModified_;
 		}
 
 		void Perform();

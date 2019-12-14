@@ -4,6 +4,7 @@
 
 #include <Standard_TypeDef.hxx>
 #include <Global_AccessMethod.hxx>
+#include <Global_Verbose.hxx>
 
 #include <memory>
 
@@ -14,6 +15,7 @@ namespace AutLib
 	class Numeric_AdaptIntegrationInfo;
 
 	class CadRepair_NormalizeMetric_Info
+		: public Global_Verbose
 	{
 
 		typedef Numeric_AdaptIntegrationInfo intgInfo;
@@ -27,6 +29,8 @@ namespace AutLib
 
 		std::shared_ptr<intgInfo> theIntgInfo_;
 
+		Standard_Boolean toApply_;
+
 	public:
 
 		static const Standard_Real DEFAULT_MAX_DETERMINANT;
@@ -35,6 +39,21 @@ namespace AutLib
 		static const Standard_Integer DEFAULT_NB_SEGMENTS_V;
 
 		CadRepair_NormalizeMetric_Info();
+
+		Standard_Boolean ToApply() const
+		{
+			return toApply_;
+		}
+
+		void ToApply(const Standard_Boolean apply)
+		{
+			toApply_ = apply;
+		}
+
+		void OverrideIntegInfo(const std::shared_ptr<intgInfo>& theInfo)
+		{
+			theIntgInfo_ = theInfo;
+		}
 
 		//- Macros
 		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, MaxDet)

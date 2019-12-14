@@ -24,6 +24,26 @@ namespace AutLib
 		Mesh_ElementAdaptor()
 		{}
 
+		const std::weak_ptr<ElementType>&
+			Neighbor
+			(
+				const Standard_Integer theIndex
+			) const
+		{
+			return theNeighbors_[theIndex];
+		}
+
+		std::weak_ptr<ElementType>&
+			Neighbor
+			(
+				const Standard_Integer theIndex
+			)
+		{
+			return theNeighbors_[theIndex];
+		}
+
+		//- Macros
+
 		GLOBAL_ACCESS_VECTOR(std::weak_ptr<ElementType>, Neighbor, 0)
 			GLOBAL_ACCESS_VECTOR(std::weak_ptr<ElementType>, Neighbor, 1)
 			GLOBAL_ACCESS_VECTOR(std::weak_ptr<ElementType>, Neighbor, 2)
@@ -43,6 +63,26 @@ namespace AutLib
 		Mesh_ElementAdaptor()
 		{}
 
+		const std::weak_ptr<ElementType>& 
+			Neighbor
+			(
+				const Standard_Integer theIndex
+			) const
+		{
+			return theNeighbors_[theIndex];
+		}
+
+		std::weak_ptr<ElementType>&
+			Neighbor
+			(
+				const Standard_Integer theIndex
+			)
+		{
+			return theNeighbors_[theIndex];
+		}
+
+		//- Macros
+
 		GLOBAL_ACCESS_VECTOR(std::weak_ptr<ElementType>, Neighbor, 0)
 			GLOBAL_ACCESS_VECTOR(std::weak_ptr<ElementType>, Neighbor, 1)
 			GLOBAL_ACCESS_VECTOR(std::weak_ptr<ElementType>, Neighbor, 2)
@@ -61,6 +101,8 @@ namespace AutLib
 
 		Mesh_ElementAdaptor()
 		{}
+
+		//- Macros
 
 		GLOBAL_ACCESS_SINGLE(std::weak_ptr<ElementType>, LeftElement)
 			GLOBAL_ACCESS_SINGLE(std::weak_ptr<ElementType>, RightElement)

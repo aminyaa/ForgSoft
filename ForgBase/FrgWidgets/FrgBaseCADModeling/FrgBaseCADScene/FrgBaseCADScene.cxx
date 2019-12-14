@@ -36,6 +36,14 @@
 #include <vtkUnsignedCharArray.h>
 #include <vtkCellData.h>
 
+#include <vtkWindowToImageFilter.h>
+#include <vtkJPEGWriter.h>
+#include <vtkPNGWriter.h>
+#include <vtkBMPWriter.h>
+#include <vtkPNMWriter.h>
+#include <vtkPostScriptWriter.h>
+#include <QtWidgets/QFileDialog>
+
 #include <vtkAutoInit.h>
 
 VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
@@ -426,8 +434,12 @@ void ForgBaseLib::FrgBaseCADScene::CreateMenus()
 	theMenus_.last()->AddItem(FrgICON_Menu_View_Grid, "Draw Grid");
 	theMenus_.last()->GetItem("Draw Grid")->setCheckable(FrgTrue);
 	theMenus_.last()->GetItem("Draw Grid")->setChecked(FrgTrue);
-
 	connect(theMenus_.last()->GetItem("Draw Grid"), SIGNAL(triggered(bool)), this, SLOT(DrawGridSlot(bool)));
+
+	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
+	theMenus_.last()->setHidden(FrgTrue);
+	theMenus_.last()->AddItem(FrgICON_Menu_File_Export, "Screenshot...");
+	connect(theMenus_.last()->GetItem("Screenshot..."), SIGNAL(triggered(bool)), this, SLOT(ScreenshotSlot(bool)));
 }
 
 void ForgBaseLib::FrgBaseCADScene::ClearGrid()
@@ -551,6 +563,97 @@ void ForgBaseLib::FrgBaseCADScene::DrawGridSlot(bool checked)
 		theGridActor_->theMajorActor_->SetVisibility(checked);
 		theGridActor_->theMinorActor_->SetVisibility(checked);
 		theGridActor_->theMiddleLines_->SetVisibility(checked);
+
+		theRenderWindow_->Render();
+	}
+}
+
+void ForgBaseLib::FrgBaseCADScene::ScreenshotSlot(bool)
+{
+	QList<QString> QfileTypes;
+	QfileTypes.push_back("JPEG (*.jpg; *.jpeg)");
+	QfileTypes.push_back("PNG (*.png)");
+	QfileTypes.push_back("BMP (*.bmp)");
+	QfileTypes.push_back("PNM (*.pnm)");
+	QfileTypes.push_back("Post Script (*.ps)");
+
+	QString fileTypes;
+	for (int i = 0; i < QfileTypes.size() - 1; i++)
+	{
+		fileTypes += QfileTypes.at(i);
+		fileTypes += ";;";
+	}
+	fileTypes += QfileTypes.at(QfileTypes.size() - 1);
+
+	QString* ext = new QString("PNG");
+	QString fileName = QFileDialog::getSaveFileName(GetParentTree()->GetParentMainWindow(),
+		QMainWindow::tr("Export Part"), "",
+		fileTypes, ext);
+
+	if (fileName.isEmpty())
+		return;
+	else
+	{
+		// Screenshot  
+		vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter =
+			vtkSmartPointer<vtkWindowToImageFilter>::New();
+		windowToImageFilter->SetInput(theRenderWindow_);
+
+		int Magnification = 2;
+
+		//windowToImageFilter->SetScale(1366 / theRenderWindow_->GetSize()[0], 768 / theRenderWindow_->GetSize()[1]); // image quality
+		windowToImageFilter->SetScale(Magnification); // image quality
+
+		theLogoActor_->GetTextProperty()->SetFontSize(Magnification * theLogoActor_->GetTextProperty()->GetFontSize());
+		theLogoActor_->GetTextProperty()->SetShadowOffset
+		(
+			Magnification * theLogoActor_->GetTextProperty()->GetShadowOffset()[0],
+			Magnification * theLogoActor_->GetTextProperty()->GetShadowOffset()[1]
+		);
+
+		/*for (int i = 0; i < theGeometry_.size(); i++)
+			theGeometry_[i]->GetProperty()->SetLineWidth((float)Magnification*theGeometry_[i]->GetProperty()->GetLineWidth());*/
+
+		windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
+		windowToImageFilter->Update();
+
+		vtkSmartPointer<vtkImageWriter> writer;// = vtkSmartPointer<vtkJPEGWriter>::New();
+
+		if (*ext == "JPEG (*.jpg; *.jpeg)")
+		{
+			writer = vtkSmartPointer<vtkJPEGWriter>::New();
+		}
+		else if (*ext == "PNG (*.png)")
+		{
+			writer = vtkSmartPointer<vtkPNGWriter>::New();
+		}
+		else if (*ext == "BMP (*.bmp)")
+		{
+			writer = vtkSmartPointer<vtkBMPWriter>::New();
+		}
+		else if (*ext == "PNM (*.pnm)")
+		{
+			writer = vtkSmartPointer<vtkPNMWriter>::New();
+		}
+		else if (*ext == "Post Script (*.ps)")
+		{
+			writer = vtkSmartPointer<vtkPostScriptWriter>::New();
+		}
+
+		writer->SetFileName(fileName.toStdString().c_str());
+		writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+		//writer->SetQuality(100);
+		writer->Write();
+
+		theLogoActor_->GetTextProperty()->SetFontSize((1.0 / (float)Magnification) * theLogoActor_->GetTextProperty()->GetFontSize());
+		theLogoActor_->GetTextProperty()->SetShadowOffset
+		(
+			(1.0 / (float)Magnification) * theLogoActor_->GetTextProperty()->GetShadowOffset()[0],
+			(1.0 / (float)Magnification) * theLogoActor_->GetTextProperty()->GetShadowOffset()[1]
+		);
+
+		/*for (int i = 0; i < theGeometry_.size(); i++)
+			theGeometry_[i]->GetProperty()->SetLineWidth((1.0 / (float)Magnification)*theGeometry_[i]->GetProperty()->GetLineWidth());*/
 
 		theRenderWindow_->Render();
 	}

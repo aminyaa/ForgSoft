@@ -9,7 +9,12 @@
 #include <error.hxx>
 #include <OSstream.hxx>
 
-
+//#include "Aft_FrontTraits.hxx"
+//#include "Aft2d_FrontInfoAdaptor.hxx"
+//#include "Aft2d_Element.hxx"
+//#include "Aft2d_Edge.hxx"
+//#include "Aft2d_Node.hxx"
+//#include "Geo2d_SizeFunction.hxx"
 
 namespace AutLib
 {
@@ -87,7 +92,7 @@ namespace AutLib
 				auto& edge = *frontInfo::CreatedEdge0();
 
 				edge.SetCharLength(theSizeMap.CalcDistance(P1, P2));
-				edge.SetCentre(theSizeMap.CalcCentreOf(P1, P2));
+				edge.SetCentre(theSizeMap.CalcCentre(P1, P2));
 				edge.SetNode0(frontInfo::ValidNode());
 				edge.SetNode1(current.Node1());
 
@@ -119,7 +124,7 @@ namespace AutLib
 				auto& edge = *frontInfo::CreatedEdge1();
 
 				edge.SetCharLength(theSizeMap.CalcDistance(P1, P2));
-				edge.SetCentre(theSizeMap.CalcCentreOf(P1, P2));
+				edge.SetCentre(theSizeMap.CalcCentre(P1, P2));
 				edge.SetNode0(current.Node0());
 				edge.SetNode1(frontInfo::ValidNode());
 
@@ -159,7 +164,7 @@ namespace AutLib
 				auto& edge = *frontInfo::CreatedEdge0();
 
 				edge.SetCharLength(theSizeMap.CalcDistance(P1, P2));
-				edge.SetCentre(theSizeMap.CalcCentreOf(P1, P2));
+				edge.SetCentre(theSizeMap.CalcCentre(P1, P2));
 				edge.SetNode0(frontInfo::ValidNode());
 				edge.SetNode1(current.Node1());
 				edge.SetEffectiveMetric(theSizeMap.CalcEffectiveMetric(P1, P2));
@@ -192,7 +197,7 @@ namespace AutLib
 				auto& edge = *frontInfo::CreatedEdge1();
 
 				edge.SetCharLength(theSizeMap.CalcDistance(P1, P2));
-				edge.SetCentre(theSizeMap.CalcCentreOf(P1, P2));
+				edge.SetCentre(theSizeMap.CalcCentre(P1, P2));
 				edge.SetNode0(current.Node0());
 				edge.SetNode1(frontInfo::ValidNode());
 				edge.SetEffectiveMetric(theSizeMap.CalcEffectiveMetric(P1, P2));

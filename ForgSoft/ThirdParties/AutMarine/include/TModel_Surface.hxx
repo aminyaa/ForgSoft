@@ -21,6 +21,8 @@ namespace AutLib
 	// Forward Declarations
 	class TModel_Edge;
 	class TModel_Wire;
+	class TModel_Plane;
+	class TModel_parWire;
 	class Entity2d_Metric1;
 	class TModel_parCurve;
 
@@ -61,6 +63,8 @@ namespace AutLib
 	public:
 
 		typedef TModel_parCurve parCurveType;
+		typedef TModel_Plane planeType;
+		typedef TModel_parWire parWireType;
 
 		TModel_Surface
 		(
@@ -115,6 +119,8 @@ namespace AutLib
 		{
 			return theGeom_;
 		}
+
+		Handle(Poly_Triangulation) RetrieveTriangulation() const;
 
 		const Handle(Poly_Triangulation)& Triangulation() const
 		{

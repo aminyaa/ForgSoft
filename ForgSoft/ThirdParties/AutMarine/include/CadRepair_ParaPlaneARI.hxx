@@ -35,7 +35,7 @@ namespace AutLib
 	template<class SurfType>
 	void CadRepair_ParaPlaneAR<SurfType>::Perform()
 	{
-		if (Verbose())
+		if (Info()->Verbose())
 		{
 			GET_MESSAGE << " @ void CadRepair_ParaPlaneAR<SurfType>::Perform()";
 			SEND_INFO;
@@ -50,7 +50,7 @@ namespace AutLib
 
 		const auto ar = CalcMaxAR(*Surface());
 
-		if (Verbose())
+		if (Info()->Verbose())
 		{
 			GET_MESSAGE << " - the surface is modified if it's AR be less than the criterion";
 			SEND_INFO;
@@ -64,7 +64,7 @@ namespace AutLib
 
 		if (ar.second <= Info()->AR())
 		{
-			if (Verbose())
+			if (Info()->Verbose())
 			{
 				GET_MESSAGE << "  *****the surface is received no modification****";
 				SEND_INFO;
@@ -74,7 +74,7 @@ namespace AutLib
 		}
 		else
 		{
-			if (NOT ToApply())
+			if (NOT Info()->ToApply())
 			{
 				GET_MESSAGE << "   *****AR modification is not permitted****";
 				SEND_INFO;

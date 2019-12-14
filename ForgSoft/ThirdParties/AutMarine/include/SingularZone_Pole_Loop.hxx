@@ -18,7 +18,7 @@ namespace AutLib
 		, public SingularZone_Pole_Loop_Base
 	{
 
-		typedef typename SurfPln::plnCurve plnCurve;
+		typedef typename SurfPln::parCurveType plnCurve;
 
 		/*Private Data*/
 
@@ -61,9 +61,9 @@ namespace AutLib
 		{}
 
 
-		Mesh_SingularType Type() const override
+		Cad_SingularType Type() const override
 		{
-			return Mesh_SingularType::Pole_Loop;
+			return Cad_SingularType::Pole_Loop;
 		}
 
 		const word& TypeName() const override

@@ -24,6 +24,7 @@ namespace AutLib
 	public:
 
 		typedef Aft_BndNode<typename TBndNodeTraits::bndNodeTraits> base;
+		using base::Merge_Alg;
 
 		Aft_TBndNode()
 		{}
@@ -54,5 +55,7 @@ namespace AutLib
 			);
 	};
 }
+
+#include <Aft_TBndNodeI.hxx>
 
 #endif // !_Aft_TBndNode_Header

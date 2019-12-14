@@ -52,7 +52,7 @@ namespace AutLib
 	Standard_Boolean Aft_Core_Base<OptNodeAlg, FrontInfo, FrontData, SizeFun, MetricFun>::IsBelongToFront() const
 	{
 		Debug_Null_Pointer(frontInfo::CurrentFront());
-		return edgeType::IsOnFront(frontInfo::CurrentFront());
+		return frontType::IsOnFront(frontInfo::CurrentFront());
 	}
 
 	template<class OptNodeAlg, class FrontInfo, class FrontData, class SizeFun, class MetricFun>
@@ -224,6 +224,37 @@ namespace AutLib
 	}
 
 	template<class OptNodeAlg, class FrontInfo, class FrontData, class SizeFun, class MetricFun>
+	void Aft_Core_Base<OptNodeAlg, FrontInfo, FrontData, SizeFun, MetricFun>::CalcOptimumCoord()
+	{
+		Debug_Null_Pointer(frontInfo::CurrentFront());
+		Debug_Null_Pointer(theMetricMap_);
+		Debug_Null_Pointer(NodeCalculator());
+
+		auto& nodeCalc = *NodeCalculator();
+
+		if (frontInfo::AlgCondition() IS_EQUAL Aft_AlgCondition_Generation)
+		{
+			nodeCalc.SetFront(frontInfo::CurrentFront());
+			nodeCalc.SetSize(frontInfo::ElementSize());
+
+			nodeCalc.Perform();
+
+			Debug_If_Condition_Message(NOT nodeCalc.IsDone(), "opt node calculator is not performed!");
+
+			if (NOT nodeCalc.IsConverged())
+			{
+				std::cout << "warning! the algorithm is not converged!" << std::endl;
+			}
+
+			frontInfo::SetCoord(nodeCalc.Coord());
+		}
+		else
+		{
+			frontInfo::SetCoord(frontInfo::CurrentFront()->Centre());
+		}
+	}
+
+	template<class OptNodeAlg, class FrontInfo, class FrontData, class SizeFun, class MetricFun>
 	void Aft_Core_Base<OptNodeAlg, FrontInfo, FrontData, SizeFun, MetricFun>::CalcElementSize()
 	{
 		Debug_Null_Pointer(frontInfo::CurrentFront());
@@ -247,7 +278,7 @@ namespace AutLib
 
 		Debug_Null_Pointer(theMetricMap_);
 		const auto& sizeMap = *theMetricMap_;
-
+		
 		if (frontInfo::AlgCondition() IS_EQUAL Aft_AlgCondition_Generation)
 		{
 			auto maxLenght = (Standard_Real)0.;
@@ -273,7 +304,7 @@ namespace AutLib
 
 			auto sr = current.SearchRadius();
 
-			frontInfo::SetLocFrontRadius(MIN(sr, MAX(sizeMap.DimSize(), maxLenght)));
+			frontInfo::SetLocFrontRadius(MAX(sr, MIN(sizeMap.DimSize(), maxLenght)));
 		}
 	}
 
@@ -390,8 +421,8 @@ namespace AutLib
 
 		const auto& P = frontInfo::Coord();
 		const auto r = sizeMap.CalcDistance(P, current.Centre());
-
-		const auto box1 = sizeMap.CalcEffectiveRegion(r, P, current);
+		
+		const auto box1 = sizeMap.CalcEffectiveFront(r, P, current);
 		/*fileName name("box.plt");
 		OFstream file(name, ios_base::app);*/
 

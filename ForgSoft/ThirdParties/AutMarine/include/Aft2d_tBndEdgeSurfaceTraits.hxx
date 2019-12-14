@@ -15,12 +15,16 @@ namespace AutLib
 	template<class CrvEntity, class SizeFun, class MetricFun>
 	class Mesh_PlnCurve;
 
+	template<class SizeFun, class MetricFun>
+	class Geo_MetricPrcsr;
+
 	struct Aft2d_tBndEdgeSurfaceTraits
 	{
 		typedef Aft2d_BndEdgeSurfaceTraits bndEdgeTraits;
 
 		typedef Mesh_PlnCurve<TModel_parCurve, Geo2d_SizeFunction, Geo2d_MetricFunction> curveType;
 		typedef void surfType;
+		typedef Geo_MetricPrcsr<Geo2d_SizeFunction, Geo2d_MetricFunction> metricPrcsr;
 	};
 }
 

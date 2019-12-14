@@ -1,8 +1,21 @@
 #pragma once
+#include <Global_Macros.hxx>
 #include <error.hxx>
 #include <OSstream.hxx>
 namespace AutLib
 {
+
+	template<class SizeFun, class MetricFun>
+	typename Geo_MetricPrcsr<SizeFun, MetricFun>::Point 
+		Geo_MetricPrcsr<SizeFun, MetricFun>::CalcCentre
+		(
+			const Point& theP0, 
+			const Point& theP1
+		) const
+	{
+		auto c = MEAN(theP0, theP1);
+		return std::move(c);
+	}
 
 	template<class SizeFun, class MetricFun>
 	Standard_Real Geo_MetricPrcsr<SizeFun, MetricFun>::CalcElementSize
@@ -25,6 +38,54 @@ namespace AutLib
 		auto m = theMetricFunction_->Value(theCoord);
 		currentMetric = m;
 		return std::move(m);
+	}
+
+	template<class SizeFun, class MetricFun>
+	typename Geo_MetricPrcsr<SizeFun, MetricFun>::metricType 
+		Geo_MetricPrcsr<SizeFun, MetricFun>::CalcEffectiveMetric
+		(
+			const Point & theP0, 
+			const Point & theP1
+		) const
+	{
+		const auto nbSamples = base::Info()->NbSamples();
+		if (nbSamples IS_EQUAL 1)
+		{
+			auto m = CalcMetric(MEAN(theP0, theP1));
+			const auto dP = theP1 - theP0;
+
+			const auto d = CalcDistance(theP0, theP1);
+			const auto landa = d / DotProduct(dP, m.Multiplied(dP));
+
+			m *= (landa*landa);
+			return std::move(m);
+		}
+
+		const auto du = 1.0 / (Standard_Real)nbSamples;
+		const auto dP = theP1 - theP0;
+		const auto dPu = dP * du;
+
+		std::vector<metricType> metrics;
+		metrics.reserve(nbSamples);
+		forThose(Index, 1, nbSamples)
+		{
+			auto P = dPu * Index + theP0 - 0.5*dPu;
+
+			auto m = CalcMetric(P);
+			metrics.push_back(std::move(m));
+		}
+
+		auto ms = metrics[0];
+		forThose(Index, 1, metrics.size() - 1)
+		{
+			ms = metricType::IntersectionSR(ms, metrics[Index]);
+		}
+
+		const auto d = CalcDistance(theP0, theP1);
+		const auto landa = d / metricType::Distance(theP0, theP1, ms);
+
+		ms *= (landa*landa);
+		return std::move(ms);
 	}
 
 	template<class SizeFun, class MetricFun>
@@ -79,6 +140,18 @@ namespace AutLib
 	{
 		return sqrt(theVector.Dot(CalcMetric(thePoint).Multiplied(theVector)))
 			/ CalcElementSize(thePoint);
+	}
+
+	template<class SizeFun>
+	typename Geo_MetricPrcsr<SizeFun, void>::Point 
+		Geo_MetricPrcsr<SizeFun, void>::CalcCentre
+		(
+			const Point& theP0,
+			const Point& theP1
+		) const
+	{
+		auto c = MEAN(theP0, theP1);
+		return std::move(c);
 	}
 
 	template<class SizeFun>

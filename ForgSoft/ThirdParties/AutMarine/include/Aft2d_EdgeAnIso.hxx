@@ -4,6 +4,7 @@
 
 #include <Aft_Edge.hxx>
 #include <Aft2d_EdgeAnIsoTraits.hxx>
+#include <Aft2d_EdgeIdentifierAnIso.hxx>
 
 namespace AutLib
 {

@@ -72,7 +72,7 @@ namespace AutLib
 		return std::move(cp);
 	}
 
-	template<class FrontType, class SizeFun, class MetricFun>
+	/*template<class FrontType, class SizeFun, class MetricFun>
 	typename Aft_MetricPrcsr<FrontType, SizeFun, MetricFun>::metricType 
 		Aft_MetricPrcsr<FrontType, SizeFun, MetricFun>::CalcEffectiveMetric
 		(
@@ -118,7 +118,7 @@ namespace AutLib
 
 		ms *= (landa*landa);
 		return std::move(ms);
-	}
+	}*/
 
 }
 
@@ -188,6 +188,18 @@ namespace AutLib
 		) const
 	{
 		auto b = box(theCentre - theRadius, theCentre + theRadius);
+		return std::move(b);
+	}
+
+	template<class FrontType, class SizeFun>
+	typename Aft_MetricPrcsr<FrontType, SizeFun, void>::box 
+		Aft_MetricPrcsr<FrontType, SizeFun, void>::CalcSearchRegion
+		(
+			const Standard_Real theRadius, 
+			const frontType & theFront
+		) const
+	{
+		auto b = CalcSearchRegion(theRadius, theFront.Centre());
 		return std::move(b);
 	}
 

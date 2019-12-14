@@ -71,26 +71,29 @@ void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
 				vtkNew<vtkPolyData> Hull;
 				vtkNew<vtkPoints> points;
 				vtkNew<vtkCellArray> polys;
-				std::vector<Handle(Poly_Triangulation)> Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(model->Shape());
+				//std::vector<Handle(Poly_Triangulation)> Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(model->Shape());
+				//std::vector<Handle(Poly_Triangulation)> Triangulation = AutLib::Cad_Tools::RetrieveTriangulation(model->Shape());
 
 				int I_max_0 = 0;
 				for (int iSurface = 0; iSurface < TModelSurfaces.size(); iSurface++)
 				{
 
-					if (Triangulation.at(iSurface).IsNull()) continue;
+					Handle(Poly_Triangulation) tri = TModelSurfaces[iSurface]->RetrieveTriangulation();
 
-					int nbNodes = Triangulation.at(iSurface)->Nodes().Size();
-					int nbElements = Triangulation.at(iSurface)->Triangles().Size();
+					if (tri.IsNull()) continue;
+
+					int nbNodes = tri->Nodes().Size();
+					int nbElements = tri->Triangles().Size();
 
 					for (auto i = 0ul; i < nbNodes; ++i)
 					{
-						points->InsertPoint(i + I_max_0, Triangulation.at(iSurface)->Nodes().Value(i + 1).X(), Triangulation.at(iSurface)->Nodes().Value(i + 1).Y(), Triangulation.at(iSurface)->Nodes().Value(i + 1).Z());
+						points->InsertPoint(i + I_max_0, tri->Nodes().Value(i + 1).X(), tri->Nodes().Value(i + 1).Y(), tri->Nodes().Value(i + 1).Z());
 					}
 
 					for (int i = 0; i < nbElements; i++)
 					{
 						int I1, I2, I3;
-						Triangulation.at(iSurface)->Triangles().Value(i + 1).Get(I1, I2, I3);
+						tri->Triangles().Value(i + 1).Get(I1, I2, I3);
 
 						std::array<std::array<vtkIdType, 3>, 1> order = { { {I1 - 1 + I_max_0, I2 - 1 + I_max_0, I3 - 1 + I_max_0 } } };
 						polys->InsertNextCell(vtkIdType(3), order[0].data());
@@ -138,7 +141,7 @@ void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
 
 				for (int i = 0; i < castedPart->GetSurfaces().size(); i++)
 				{
-					if (castedPart->GetSurfaces().at(i) == surfaceBlocks.at(iBlock))
+					if (castedPart->GetSurfaces()[i] == surfaceBlocks.at(iBlock))
 					{
 						GetActorToPartFeature().insert(actor, castedPart->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(i));
 						GetPartFeatureToActor().insert(castedPart->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(i), actor);

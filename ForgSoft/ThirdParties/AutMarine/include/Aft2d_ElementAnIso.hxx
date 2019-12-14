@@ -8,7 +8,11 @@
 namespace AutLib
 {
 
-	typedef Aft_Element<Aft2d_ElementAnIsoTraits> Aft2d_ElementAnIso;
+	typedef Aft_Element
+		<
+		Aft2d_ElementAnIsoTraits, 
+		Mesh_ElementType_Triangle2D
+		> Aft2d_ElementAnIso;
 }
 
 #endif // !_Aft2d_ElementAnIso_Header

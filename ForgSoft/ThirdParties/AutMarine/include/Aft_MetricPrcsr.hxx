@@ -123,7 +123,7 @@ namespace AutLib
 
 		box CalcEffectiveFront(const Standard_Real theRadius, const Point& theCentre, const frontType& theFront) const;
 
-		metricType CalcEffectiveMetric(const Point& theP0, const Point& theP1) const;
+		//metricType CalcEffectiveMetric(const Point& theP0, const Point& theP1) const;
 	};
 
 	extern std::shared_ptr<Entity2d_Eigen> mesh2d_aft_metric_prcsr_eigen_calculator;
@@ -133,6 +133,8 @@ namespace AutLib
 	class Aft_MetricPrcsr<FrontType, SizeFun, void>
 		: public Geo_MetricPrcsr<SizeFun, void>
 	{
+
+	public:
 
 		typedef Geo_MetricPrcsr<SizeFun, void> base;
 		typedef FrontType frontType;

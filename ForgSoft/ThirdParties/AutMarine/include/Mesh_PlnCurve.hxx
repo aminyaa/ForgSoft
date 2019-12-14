@@ -20,7 +20,7 @@ namespace AutLib
 
 	template<class SizeFun, class MetricFun>
 	class Geo_MetricPrcsr;
-	
+
 	class Mesh_PlnCurve_Base
 	{
 
@@ -29,22 +29,22 @@ namespace AutLib
 		template<class SizeFun, class MetricFun = void>
 		static std::shared_ptr<Entity2d_Chain> Mesh
 		(
-			const Handle(Geom2d_Curve)& theCurve, 
-			const Standard_Real theU0, 
-			const Standard_Real theU1, 
+			const Handle(Geom2d_Curve)& theCurve,
+			const Standard_Real theU0,
+			const Standard_Real theU1,
 			const std::shared_ptr<Geo_MetricPrcsr<SizeFun, MetricFun>>& theMap,
 			const std::shared_ptr<Mesh_CurveInfo>& theInfo
 		);
 
 		static std::shared_ptr<Entity2d_Chain> Discrete
 		(
-			const Handle(Geom2d_Curve)& theCurve, 
+			const Handle(Geom2d_Curve)& theCurve,
 			const Standard_Real theU0,
-			const Standard_Real theU1, 
+			const Standard_Real theU1,
 			const std::shared_ptr<Geo_ApprxCurveInfo>& theInfo
 		);
 	};
-	
+
 
 	template<class CurveType, class SizeFun, class MetricFun = void>
 	class Mesh_PlnCurve
@@ -85,16 +85,16 @@ namespace AutLib
 
 		virtual std::shared_ptr<Entity2d_Chain> Mesh
 		(
-			const std::shared_ptr<metricMap>& theMetricMap, 
+			const std::shared_ptr<metricMap>& theMetricMap,
 			const std::shared_ptr<Mesh_CurveInfo>& theInfo
 		) const;
 
-		
+
 		template<class EdgeType, class PlnCurve>
 		static std::vector<std::shared_ptr<EdgeType>> TopoMesh
 		(
 			const std::shared_ptr<PlnCurve>& theCurve,
-			const std::shared_ptr<metricMap>& theMetricMap, 
+			const std::shared_ptr<metricMap>& theMetricMap,
 			const std::shared_ptr<Mesh_CurveInfo>& theInfo
 		);
 

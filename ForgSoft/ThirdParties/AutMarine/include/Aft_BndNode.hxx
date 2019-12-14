@@ -27,6 +27,8 @@ namespace AutLib
 
 		typedef typename BndNodeTraits::nodeType base;
 
+		using nodeType::Merge_Alg;
+
 		Aft_BndNode()
 		{}
 

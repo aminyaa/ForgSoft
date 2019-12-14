@@ -10,9 +10,9 @@ namespace AutLib
 	template<class BndEdgeTraits, Mesh_BndEdge_Position POS>
 	class Aft_TBndEdge;
 
-	struct Aft2d_SegmentEdgeTraits;
+	struct Aft2d_TBndEdgeTraits;
 
-	typedef Aft_TBndEdge<Aft2d_SegmentEdgeTraits, Mesh_BndEdge_Position_Segment>
+	typedef Aft_TBndEdge<Aft2d_TBndEdgeTraits, Mesh_BndEdge_Position_Segment>
 		Aft2d_SegmentEdge;
 }
 

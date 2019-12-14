@@ -8,6 +8,8 @@
 #include <Entity3d_Triangulation.hxx>
 #include <Entity2d_TriangulationFwd.hxx>
 
+class gp_Ax2d;
+class gp_Ax22d;
 class Bnd_Box2d;
 class Bnd_Box;
 class Geom_Curve;
@@ -29,6 +31,27 @@ namespace AutLib
 
 	public:
 
+		static Handle(Geom2d_Curve)
+			MakeSegment
+			(
+				const Pnt2d& theP0,
+				const Pnt2d& theP1
+			);
+
+		static Handle(Geom2d_Curve) 
+			MakeCircle
+			(
+				const gp_Ax22d& A,
+				const Standard_Real Radius
+			);
+
+		static Handle(Geom2d_Curve) 
+			MakeCircle
+			(
+				const gp_Ax2d& A,
+				const Standard_Real Radius, 
+				const Standard_Boolean Sense = Standard_True
+			);
 
 		//- an exception will be thrown if the curve is not bounded
 		static std::shared_ptr<Geom2dAPI_InterCurveCurve> 

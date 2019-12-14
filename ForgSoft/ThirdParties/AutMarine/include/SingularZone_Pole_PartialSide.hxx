@@ -18,7 +18,7 @@ namespace AutLib
 		, public SingularZone_Pole_PartialSide_Base
 	{
 
-		typedef typename SurfPln::plnCurve plnCurve;
+		typedef typename SurfPln::parCurveType plnCurve;
 
 		/*Private Data*/
 
@@ -45,9 +45,9 @@ namespace AutLib
 			, theHorizon_(theHorizon)
 		{}
 
-		Mesh_SingularType Type() const override
+		Cad_SingularType Type() const override
 		{
-			return Mesh_SingularType::Pole_PartialSide;
+			return Cad_SingularType::Pole_PartialSide;
 		}
 
 		const word& TypeName() const override

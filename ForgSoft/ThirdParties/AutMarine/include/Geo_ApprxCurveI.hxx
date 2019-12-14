@@ -236,6 +236,13 @@ namespace AutLib
 				<< abort(FatalError);
 		}
 
+		if (NOT Info())
+		{
+			FatalErrorIn("void Perform()") << endl
+				<< "no info has been loaded!" << endl
+				<< abort(FatalError);
+		}
+
 		Debug_Null_Pointer(Info());
 		const auto& theInfo = *Info();
 

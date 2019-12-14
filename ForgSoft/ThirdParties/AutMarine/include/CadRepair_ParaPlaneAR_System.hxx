@@ -11,6 +11,15 @@
 namespace AutLib
 {
 
+	// Forward Declarations
+	class CadRepair_ParaPlaneAR_Info;
+
+	namespace cadRepairSys
+	{
+
+		extern std::shared_ptr<CadRepair_ParaPlaneAR_Info> gl_para_plane_ar_info;
+	}
+
 	class AR_ParaPlane_Failure
 		: public error
 	{

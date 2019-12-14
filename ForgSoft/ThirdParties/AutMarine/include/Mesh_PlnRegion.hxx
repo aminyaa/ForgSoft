@@ -5,6 +5,7 @@
 #include <Global_Indexed.hxx>
 #include <Global_Named.hxx>
 #include <OFstream.hxx>
+#include <Mesh_PlnRegion_Traits.hxx>
 
 #include <memory>
 #include <vector>
@@ -30,6 +31,9 @@ namespace AutLib
 		typedef Mesh_PlnCurve<CurveType, SizeFun, MetricFun>
 			plnCurveType;
 
+		typedef typename Mesh_PlnRegion_Traits<CurveType>::plnType 
+			plnType;
+
 		typedef Mesh_PlnWire<plnCurveType> plnWireType;
 
 		typedef std::shared_ptr<plnWireType > outer;
@@ -43,6 +47,8 @@ namespace AutLib
 
 		/*Private Data*/
 
+		std::shared_ptr<plnType> thePlane_;
+
 		outer theOutter_;
 		inner theInner_;
 
@@ -50,10 +56,12 @@ namespace AutLib
 
 		Mesh_PlnRegion
 		(
+			const std::shared_ptr<plnType>& thePlane,
 			const outer& theOuter,
 			const inner& theInner = nullptr
 		)
-			: theOutter_(theOuter)
+			: thePlane_(thePlane)
+			, theOutter_(theOuter)
 			, theInner_(theInner)
 		{}
 
@@ -61,14 +69,21 @@ namespace AutLib
 		(
 			const Standard_Integer theIndex,
 			const word& theName,
+			const std::shared_ptr<plnType>& thePlane,
 			const outer& theOuter,
 			const inner& theInner = nullptr
 		)
 			: Global_Indexed(theIndex)
 			, Global_Named(theName)
+			, thePlane_(thePlane)
 			, theOutter_(theOuter)
 			, theInner_(theInner)
 		{}
+
+		const std::shared_ptr<plnType>& Plane() const
+		{
+			return thePlane_;
+		}
 
 		Standard_Boolean HasHole() const
 		{
@@ -99,9 +114,21 @@ namespace AutLib
 		//- Static functions and operators
 
 		template<class WireType>
-		static std::shared_ptr<plnWireType> MakeMeshWire(const WireType& theWire);
+		static std::shared_ptr<plnWireType>
+			MakeMeshWire
+			(
+				const WireType& theWire
+			);
+
+		static std::shared_ptr<Mesh_PlnRegion> 
+			MakePlane
+			(
+				const std::shared_ptr<plnType>& thePlane
+			);
 
 	};
 }
+
+#include <Mesh_PlnRegionI.hxx>
 
 #endif // !_Mesh_PlnRegion_Header

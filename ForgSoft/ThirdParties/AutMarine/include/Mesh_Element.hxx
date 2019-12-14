@@ -394,7 +394,11 @@ namespace AutLib
 		typedef typename ElementTraits::connectType connectType;
 
 		typedef typename nodeType::ptType Point;
-		typedef Mesh_Element<ElementTraits, Mesh_ElementType_Triangle3D> base;
+		typedef Mesh_ElementAdaptor
+			<
+			typename ElementTraits::elementType,
+			Mesh_ElementType_Triangle2D
+			> base;
 
 	private:
 
@@ -451,7 +455,7 @@ namespace AutLib
 			Debug_Null_Pointer(theEdge);
 			for (int i = 0; i < 3; i++)
 			{
-				if (base::Edge(i) == theEdge)
+				if (Edge(i) == theEdge)
 				{
 					return i;
 				}
@@ -464,12 +468,12 @@ namespace AutLib
 			return 0;
 		}
 
-		Standard_Integer OppositeVertexIndex(const std::shared_ptr<elementType>& theElement) const
+		Standard_Integer OppositeVertexIndex(const std::shared_ptr<elementType>& theNeighbor) const
 		{
-			Debug_Null_Pointer(theElement);
+			Debug_Null_Pointer(theNeighbor);
 			for (int i = 0; i < 3; i++)
 			{
-				if (base::Neighbor(i).lock() == theElement)
+				if (base::Neighbor(i).lock() == theNeighbor)
 				{
 					return i;
 				}
@@ -504,7 +508,7 @@ namespace AutLib
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				if (adaptor::Neighbor(i).lock() == theElement)
+				if (base::Neighbor(i).lock() == theElement)
 				{
 					return this->Node(i);
 				}

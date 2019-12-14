@@ -30,7 +30,7 @@ namespace AutLib
 		typedef FrontInfo frontInfo;
 		typedef FrontData frontData;
 
-		typedef Aft_MetricPrcsr<SizeFun, MetricFun> metricMap;
+		typedef Aft_MetricPrcsr<frontType, SizeFun, MetricFun> metricMap;
 
 		/*Private Data*/
 
@@ -83,7 +83,7 @@ namespace AutLib
 		typedef FrontInfo frontInfo;
 		typedef FrontData frontData;
 
-		typedef Aft_MetricPrcsr<SizeFun, void> metricMap;
+		typedef Aft_MetricPrcsr<frontType, SizeFun, void> metricMap;
 
 		/*Private Data*/
 

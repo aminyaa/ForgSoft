@@ -79,7 +79,7 @@ namespace AutLib
 	template<class SurfType>
 	void CadRepair_NormalizeMetric<SurfType>::Perform()
 	{
-		if (Verbose())
+		if (Info()->Verbose())
 		{
 			GET_MESSAGE << " @ void CadRepair_NormalizeMetric<SurfType>::Perform()";
 			SEND_INFO;
@@ -106,7 +106,7 @@ namespace AutLib
 				<< abort(FatalError);
 		}
 
-		if (Verbose())
+		if (Info()->Verbose())
 		{
 			GET_MESSAGE << " - the normalizing metric algorithm is applied if the maximum determinant ";
 			SEND_INFO;
@@ -123,7 +123,7 @@ namespace AutLib
 
 		if (Metric()->MaxDet() < Info()->MaxDet())
 		{
-			if (Verbose())
+			if (Info()->Verbose())
 			{
 				GET_MESSAGE << "  *****the surface needs no metric normalization**** ";
 				SEND_INFO;
@@ -137,7 +137,7 @@ namespace AutLib
 		else
 		{
 
-			if (NOT ToApply())
+			if (NOT Info()->ToApply())
 			{
 				GET_MESSAGE << "  *****Normalization has not been permitted*****";
 				SEND_INFO;
@@ -151,7 +151,7 @@ namespace AutLib
 					<< abort(FatalMetricSurfError);
 			}
 
-			if (Verbose())
+			if (Info()->Verbose())
 			{
 				GET_MESSAGE << "   going to normalize the surface metric...";
 				SEND_INFO;
@@ -171,7 +171,7 @@ namespace AutLib
 
 			const auto scale = MAX(maxLu, maxLv) / MAX(du, dv);
 
-			if (Verbose())
+			if (Info()->Verbose())
 			{
 				GET_MESSAGE << "  scale: " << scale;
 				SEND_INFO;
@@ -181,7 +181,7 @@ namespace AutLib
 
 			ChangeApplied() = Standard_True;
 
-			if (Verbose())
+			if (Info()->Verbose())
 			{
 				GET_MESSAGE << "   *****the normalization is done successfully!*****";
 				SEND_INFO;

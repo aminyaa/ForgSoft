@@ -120,6 +120,7 @@ public slots:
 	void SetViewToXYZSlot(bool);
 	void GridOpacityChangedSlot(int);
 	void DrawGridSlot(bool);
+	void ScreenshotSlot(bool);
 
 	void SelectIconSelectedSlot(bool);
 	void MoveIconSelectedSlot(bool);

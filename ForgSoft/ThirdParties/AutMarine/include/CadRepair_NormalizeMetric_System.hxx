@@ -13,13 +13,15 @@ namespace AutLib
 
 	// Forward Declarations
 	class Numeric_AdaptIntegrationInfo;
+	class CadRepair_NormalizeMetric_Info;
 
 	namespace cadRepairSys
 	{
 
-		extern std::shared_ptr<Numeric_AdaptIntegrationInfo> normalize_metric_intg_info;
+		extern std::shared_ptr<Numeric_AdaptIntegrationInfo> gl_normalize_metric_intg_info;
+		extern std::shared_ptr<CadRepair_NormalizeMetric_Info> gl_normalize_metric_info;
 
-		void InitRunTime();
+		void InitNormalizeMetricRunTime();
 	}
 
 	class Metric_Surface_Failure

@@ -18,7 +18,7 @@ namespace AutLib
 		, public SingularZone_Line_Corner_Base
 	{
 
-		typedef typename SurfPln::plnCurve plnCurve;
+		typedef typename SurfPln::parCurveType plnCurve;
 
 		/*private Data*/
 
@@ -57,9 +57,9 @@ namespace AutLib
 			return Standard_True;
 		}
 
-		Mesh_SingularType Type() const override
+		Cad_SingularType Type() const override
 		{
-			return Mesh_SingularType::Line_Corner;
+			return Cad_SingularType::Line_Corner;
 		}
 
 		const word& TypeName() const override

@@ -37,10 +37,10 @@ ForgBaseLib::SplitWidget::SplitWidget
 	nameLayout->addWidget(theNameLineEdit_);
 
 	QPushButton* createButton = new QPushButton("Create");
-	QPushButton* cancelButton = new QPushButton("Cancel");
+	QPushButton* closeButton = new QPushButton("Close");
 	buttonsLayout->addStretch(1);
 	buttonsLayout->addWidget(createButton);
-	buttonsLayout->addWidget(cancelButton);
+	buttonsLayout->addWidget(closeButton);
 
 	mainLayout->addWidget(theTree_);
 	mainLayout->addLayout(nameLayout);
@@ -60,15 +60,15 @@ ForgBaseLib::SplitWidget::SplitWidget
 	theDockWidget_->raise();
 
 	connect(createButton, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(CancelButtonClickedSlot()));
+	connect(closeButton, SIGNAL(clicked()), this, SLOT(CloseButtonClickedSlot()));
 }
 
-void ForgBaseLib::SplitWidget::CancelButtonClickedSlot()
+void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 {
 	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theTree_->GetParentPart());
 	if (!part)
 	{
-		std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CancelButtonClickedSlot()\n";
+		std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CloseButtonClickedSlot()\n";
 		return;
 	}
 
@@ -83,6 +83,7 @@ void ForgBaseLib::SplitWidget::CancelButtonClickedSlot()
 		theParentMainWindow_->GetTree()->GetItems().removeOne(listOfSurfaces[iSurface]);
 		part->GetFeatures()->GetSurfacesEntity()->removeChild(listOfSurfaces[iSurface]);
 	}
+	part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().clear();
 
 	std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>> surfaceBlocks;
 	auto surfaceManager = part->GetModel()->Faces();
@@ -92,14 +93,25 @@ void ForgBaseLib::SplitWidget::CancelButtonClickedSlot()
 	{
 		auto surfaceFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(surfaceBlocks[iBlock]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity());
 		theParentMainWindow_->GetTree()->GetItems().push_back(surfaceFeature);
-		
+		part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().push_back(surfaceFeature);
+
 		surfaceFeature->GetEntity() = surfaceBlocks[iBlock];
 		surfaceFeature->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
 	}
 
-	QList<QTreeWidgetItem*> items;
-	items.push_back(part);
-	dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree())->ObjectsSelectedUpdateInSceneSlot(items);
+	//QList<QTreeWidgetItem*> items;
+	//items.push_back(part);
+	//dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree())->ObjectsSelectedUpdateInSceneSlot(items, part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(0)->GetPointerToScenes());
+
+	part->GetSurfaces() = surfaceBlocks;
+
+	/*for (int iBlock = 0; iBlock < surfaceManager->NbBlocks(); iBlock++)
+	{
+		part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().push_back(FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(surfaceBlocks[iBlock]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity()));
+		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->GetEntity() = surfaceBlocks[iBlock];
+		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
+		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->GetParentPart() = part;
+	}*/
 
 	this->deleteLater();
 }

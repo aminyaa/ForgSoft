@@ -18,7 +18,7 @@ namespace AutLib
 		, public SingularZone_Line_TwoSide_Base
 	{
 
-		typedef typename SurfPln::plnCurve plnCurve;
+		typedef typename SurfPln::parCurveType plnCurve;
 
 		/*Private Data*/
 
@@ -50,9 +50,9 @@ namespace AutLib
 			, theHorizon1_(theHorizon1)
 		{}
 
-		Mesh_SingularType Type() const override
+		Cad_SingularType Type() const override
 		{
-			return Mesh_SingularType::Line_TwoSide;
+			return Cad_SingularType::Line_TwoSide;
 		}
 
 		const word& TypeName() const override
