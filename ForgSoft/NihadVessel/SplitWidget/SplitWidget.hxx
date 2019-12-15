@@ -8,6 +8,7 @@
 
 class QLineEdit;
 class QDockWidget;
+class QPushButton;
 
 namespace AutLib
 {
@@ -43,6 +44,8 @@ private:
 	QDockWidget* theDockWidget_ = FrgNullPtr;
 
 	QLineEdit* theNameLineEdit_ = FrgNullPtr;
+	QPushButton* theCreateButton_ = FrgNullPtr;
+	QPushButton* theCloseButton_ = FrgNullPtr;
 
 private slots:
 
@@ -61,6 +64,9 @@ public:
 	);
 
 	FrgGetMacro(QLineEdit*, NameLineEdit, theNameLineEdit_);
+	FrgGetMacro(SplitTree*, Tree, theTree_);
+	FrgGetMacro(QPushButton*, CreateButton, theCreateButton_);
+	FrgGetMacro(QPushButton*, CloseButton, theCloseButton_);
 };
 
 EndFrgBaseLib

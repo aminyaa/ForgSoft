@@ -84,8 +84,6 @@ void ForgBaseLib::ViewPorts::RenderScenes()
 	for (int i = 0; i < theMdiArea_->subWindowList().size(); i++)
 	{
 		theMdiArea_->subWindowActivated(theMdiArea_->subWindowList()[i]);
-
-		theParentMainWindow_->ParseErrorToConsole("Activated!");
 	}
 }
 

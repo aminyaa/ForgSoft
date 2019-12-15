@@ -28,6 +28,10 @@ public:
 	)
 		: FrgBaseTreeItem(title, FrgNullPtr, parentTree, parentTree->GetParentMainWindow())
 	{}
+
+//public slots:
+
+	//virtual void SplitByPatchPartSlot(bool);
 };
 
 template <class SurfaceEntity, class CurveEntity>

@@ -40,6 +40,7 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
 #include <SplitWidget.hxx>
 
 #include <vtkActor.h>
@@ -775,6 +776,39 @@ void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 	auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
 	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
 
+	if (surfaceItem)
+		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+	else if (curveItem)
+		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+
+	SplitWidget* splitWidget = FrgNew SplitWidget
+	(
+		theLastRightClicked_->text(0),
+		GetParentMainWindow(), (surfaceItem ? surfaceItem->GetEntity() : FrgNullPtr),
+		(curveItem ? curveItem->GetEntity() : FrgNullPtr),
+		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes()),
+		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+	);
+}
+
+void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
+{
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>
+		(dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart());
+	if (!part)
+	{
+		std::cout << " Error! ==> The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in NihadTree::SplitByNonContiguousPartSlot(bool)\n";
+		return;
+	}
+
+	auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
+	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
+
+	if (surfaceItem)
+		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+	else if (curveItem)
+		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+
 	SplitWidget* splitWidget = FrgNew SplitWidget
 	(
 		theLastRightClicked_->text(0),
@@ -784,10 +818,23 @@ void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
 	);
 
-	if (surfaceItem)
-		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
-	else if (curveItem)
-		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+	splitWidget->setHidden(FrgTrue);
+	int nbTreeChildren = splitWidget->GetTree()->topLevelItemCount();
+
+	for (int i = 0; i < nbTreeChildren; i++)
+	{
+		FrgString name;
+		splitWidget->GetTree()->setItemSelected(splitWidget->GetTree()->topLevelItem(0), true);
+
+		if(i < 9)
+			name = "Surface 0" + FrgString::number(i + 1);
+		else
+			name = "Surface " + FrgString::number(i + 1);
+		splitWidget->GetNameLineEdit()->setText(name);
+		emit splitWidget->GetCreateButton()->click();
+	}
+
+	emit splitWidget->GetCloseButton()->click();
 }
 
 ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)

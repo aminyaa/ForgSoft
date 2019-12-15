@@ -62,7 +62,7 @@ inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::DoAfterConstru
 		, SLOT(ExportPartSlot(bool))
 	);
 
-	auto& surfacesList = this->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
+	/*auto& surfacesList = this->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
 
 	for (int i = 0; i < surfacesList.size(); i++)
 	{
@@ -77,5 +77,28 @@ inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::DoAfterConstru
 			, this->GetParentTree()
 			, SLOT(SplitByPatchPartSlot(bool))
 		);
-	}
+	}*/
 }
+
+//template<class SurfaceEntity, class CurveEntity>
+//inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::SplitByPatchPartSlot(bool)
+//{
+//	/*auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<SurfaceEntity>*>(theLastRightClicked_);
+//	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<CurveEntity>*>(theLastRightClicked_);
+//
+//	SplitWidget* splitWidget = FrgNew SplitWidget
+//	(
+//		theLastRightClicked_->text(0),
+//		GetParentMainWindow(), (surfaceItem ? surfaceItem->GetEntity() : FrgNullPtr),
+//		(curveItem ? curveItem->GetEntity() : FrgNullPtr),
+//		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes()),
+//		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+//	);
+//
+//	if (surfaceItem)
+//		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+//	else if (curveItem)
+//		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());*/
+//
+//	std::cout << "It is connected!\n";
+//}

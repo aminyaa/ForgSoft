@@ -101,6 +101,8 @@ public:
 	FrgGetMacro(FrgBaseMenu*, ContextMenuInScene, theContextMenuInScene_);
 	FrgGetMacro(QList<FrgBaseMenu*>, Menus, theMenus_);
 
+	QAction* GetActionItemInScene(FrgString actionName);
+
 	void Render();
 
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
@@ -121,6 +123,7 @@ public slots:
 	void GridOpacityChangedSlot(int);
 	void DrawGridSlot(bool);
 	void ScreenshotSlot(bool);
+	void RandomColorsSlot(bool);
 
 	void SelectIconSelectedSlot(bool);
 	void MoveIconSelectedSlot(bool);

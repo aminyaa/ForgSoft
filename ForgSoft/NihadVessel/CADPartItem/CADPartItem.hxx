@@ -20,7 +20,6 @@ template<class SurfaceEntity, class CurveEntity>
 class CADPartItem : public FrgBaseCADPart<SurfaceEntity, CurveEntity>
 {
 
-
 private:
 
 	FrgSharedPtr<AutLib::Cad3d_TModel> theModel_ = FrgNullPtr;

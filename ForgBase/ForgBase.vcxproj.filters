@@ -168,6 +168,9 @@
     <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help\FrgMenu_Help.cxx">
       <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Help</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.cxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -209,9 +212,6 @@
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry\FrgBaseCADGeometryI.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry</Filter>
     </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPart.hxx">
-      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
-    </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartI.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
     </ClInclude>
@@ -247,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help\FrgMenu_Help.hxx">
       <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Help</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPart.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

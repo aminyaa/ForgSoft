@@ -113,6 +113,7 @@ for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBaseCADScene.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx" />

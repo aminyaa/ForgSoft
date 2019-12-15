@@ -36,11 +36,11 @@ ForgBaseLib::SplitWidget::SplitWidget
 	nameLayout->addWidget(nameLabel);
 	nameLayout->addWidget(theNameLineEdit_);
 
-	QPushButton* createButton = new QPushButton("Create");
-	QPushButton* closeButton = new QPushButton("Close");
+	theCreateButton_ = new QPushButton("Create");
+	theCloseButton_ = new QPushButton("Close");
 	buttonsLayout->addStretch(1);
-	buttonsLayout->addWidget(createButton);
-	buttonsLayout->addWidget(closeButton);
+	buttonsLayout->addWidget(theCreateButton_);
+	buttonsLayout->addWidget(theCloseButton_);
 
 	mainLayout->addWidget(theTree_);
 	mainLayout->addLayout(nameLayout);
@@ -59,8 +59,8 @@ ForgBaseLib::SplitWidget::SplitWidget
 	theDockWidget_->show();
 	theDockWidget_->raise();
 
-	connect(createButton, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
-	connect(closeButton, SIGNAL(clicked()), this, SLOT(CloseButtonClickedSlot()));
+	connect(theCreateButton_, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
+	connect(theCloseButton_, SIGNAL(clicked()), this, SLOT(CloseButtonClickedSlot()));
 }
 
 void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
@@ -97,6 +97,8 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 
 		surfaceFeature->GetEntity() = surfaceBlocks[iBlock];
 		surfaceFeature->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
+
+		surfaceFeature->GetParentPart() = part;
 	}
 
 	//QList<QTreeWidgetItem*> items;
@@ -112,6 +114,9 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
 		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->GetParentPart() = part;
 	}*/
+
+	part->GetModel()->Faces()->UnSelectAll();
+	part->GetModel()->Segments()->UnSelectAll();
 
 	this->deleteLater();
 }

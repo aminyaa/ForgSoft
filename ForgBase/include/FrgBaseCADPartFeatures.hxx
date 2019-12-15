@@ -5,13 +5,14 @@
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseTree.hxx>
+#include <FrgBaseMenu.hxx>
 
 BeginFrgBaseLib
 
 class FrgBaseCADScene;
 class FrgBaseCADPart_Entity;
 
-class FrgBaseCADPartFeatureBase : public FrgBaseTreeItem
+class FORGBASE_EXPORT FrgBaseCADPartFeatureBase : public FrgBaseTreeItem
 {
 
 private:
@@ -26,26 +27,17 @@ public:
 	(
 		const FrgString& title,
 		FrgBaseTreeItem* parentItem
-	)
-		: FrgBaseTreeItem(title, parentItem, (parentItem ? parentItem->GetParentTree() : FrgNullPtr), (parentItem ? parentItem->GetParentMainWindow() : FrgNullPtr))
-	{}
+	);
 
 	FrgBaseCADPartFeatureBase
 	(
 		const FrgString& title,
 		FrgBaseTree* parentTree
-	)
-		: FrgBaseTreeItem(title, FrgNullPtr, parentTree, (parentTree ? parentTree->GetParentMainWindow() : FrgNullPtr))
-	{}
+	);
 
-	~FrgBaseCADPartFeatureBase()
-	{
-		for (int i = 0; i < thePointerToScenes_.size(); i++)
-		{
-			if (thePointerToScenes_[i])
-				thePointerToScenes_[i] = FrgNullPtr;
-		}
-	}
+	~FrgBaseCADPartFeatureBase();
+
+	virtual void DoAfterConstruct() override;
 
 	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
 	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);

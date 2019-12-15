@@ -67,6 +67,7 @@ public slots:
 
 	void ExportPartSlot(bool b);
 	void SplitByPatchPartSlot(bool);
+	void SplitByNonContiguousPartSlot(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<QTreeWidgetItem*> scenes);

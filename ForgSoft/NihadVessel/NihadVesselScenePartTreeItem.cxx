@@ -131,7 +131,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
 
 	CreateActor();
 
-	theViewPorts_->SetLogoText("Tonb");
+	theViewPorts_->SetLogoText("TONB");
 
 	theViewPorts_->RenderScenes();
 
@@ -186,6 +186,13 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 			theViewPorts_->CreateActor(part);
 	}
 
-	for(auto scene :theViewPorts_->GetScenes())
-		scene->DrawGrid(10, 5);
+	for (auto scene : theViewPorts_->GetScenes())
+	{
+		auto action = scene->GetActionItemInScene("Draw Grid");
+		if (action)
+		{
+			if(action->isChecked())
+				scene->DrawGrid(10, 5);
+		}
+	}
 }

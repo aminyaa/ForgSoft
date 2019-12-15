@@ -118,8 +118,10 @@ void ForgBaseLib::FrgBaseCADScene::Init()
 	tprop->ShadowOff();
 
 	tprop->SetLineSpacing(1.0);
-	tprop->SetFontSize(20);
-	tprop->SetFontFamilyToArial();
+	tprop->SetFontSize(24);
+	//tprop->SetFontFamilyToArial();
+	tprop->BoldOn();
+	tprop->SetFontFile(":/Fonts/swissek.ttf");
 	tprop->ShadowOn();
 	tprop->SetColor(0, 0, 0); // (Black) Color
 
@@ -437,9 +439,29 @@ void ForgBaseLib::FrgBaseCADScene::CreateMenus()
 	connect(theMenus_.last()->GetItem("Draw Grid"), SIGNAL(triggered(bool)), this, SLOT(DrawGridSlot(bool)));
 
 	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
-	theMenus_.last()->setHidden(FrgTrue);
+	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
 	theMenus_.last()->AddItem(FrgICON_Menu_File_Export, "Screenshot...");
 	connect(theMenus_.last()->GetItem("Screenshot..."), SIGNAL(triggered(bool)), this, SLOT(ScreenshotSlot(bool)));
+
+	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
+	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
+	theMenus_.last()->AddItem("Random Colors");
+	theMenus_.last()->GetItem("Random Colors")->setCheckable(FrgTrue);
+	theMenus_.last()->GetItem("Random Colors")->setChecked(FrgFalse);
+	connect(theMenus_.last()->GetItem("Random Colors"), SIGNAL(triggered(bool)), this, SLOT(RandomColorsSlot(bool)));
+}
+
+QAction* ForgBaseLib::FrgBaseCADScene::GetActionItemInScene(FrgString actionName)
+{
+	QAction* result = nullptr;
+
+	for (int iMenu = 0; iMenu < theMenus_.size(); iMenu++)
+	{
+		result = theMenus_[iMenu]->GetItem(actionName);
+		if (result)
+			break;
+	}
+	return result;
 }
 
 void ForgBaseLib::FrgBaseCADScene::ClearGrid()
@@ -656,6 +678,47 @@ void ForgBaseLib::FrgBaseCADScene::ScreenshotSlot(bool)
 			theGeometry_[i]->GetProperty()->SetLineWidth((1.0 / (float)Magnification)*theGeometry_[i]->GetProperty()->GetLineWidth());*/
 
 		theRenderWindow_->Render();
+	}
+}
+
+inline QVector<QColor> rndColors(int count) {
+	QVector<QColor> colors;
+	float currentHue = 0.0;
+	for (int i = 0; i < count; i++)
+	{
+		colors.push_back(QColor::fromHslF(currentHue, 1.0, 0.5));
+		currentHue += 0.618033988749895f;
+		currentHue = std::fmod(currentHue, 1.0f);
+	}
+	return colors;
+}
+
+void ForgBaseLib::FrgBaseCADScene::RandomColorsSlot(bool checked)
+{
+	auto actors = GetActors();
+
+	if (!checked)
+	{
+		for (int iActor = 0; iActor < actors.size(); iActor++)
+		{
+			actors[iActor]->GetProperty()->SetColor
+			(
+				FrgBaseInteractorStyle::GeometryColorRGB.redF(),
+				FrgBaseInteractorStyle::GeometryColorRGB.greenF(),
+				FrgBaseInteractorStyle::GeometryColorRGB.blueF()
+			);
+		}
+	}
+	else
+	{
+		QVector<QColor> colors = rndColors(actors.size());
+
+		for (int iActor = 0; iActor < actors.size(); iActor++)
+		{
+			actors[iActor]->GetProperty()->SetColor(colors.at(iActor).redF(), colors.at(iActor).greenF(), colors.at(iActor).blueF());
+
+			theRenderWindow_->Render();
+		}
 	}
 }
 

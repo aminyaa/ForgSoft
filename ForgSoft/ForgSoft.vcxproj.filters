@@ -156,13 +156,13 @@
     <ClInclude Include="NihadVessel\CADScene\CADScene.hxx">
       <Filter>NihadVessel\CADScene</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx">
-      <Filter>NihadVessel\CADPartItem</Filter>
-    </ClInclude>
     <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
       <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </ClInclude>
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItemI.hxx">
+      <Filter>NihadVessel\CADPartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx">
       <Filter>NihadVessel\CADPartItem</Filter>
     </ClInclude>
   </ItemGroup>

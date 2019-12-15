@@ -80,6 +80,6 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 
 		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->setIcon(0, QIcon(FrgICONTreeItemPartCurve));
 
-		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iCurve)->GetParentPart() = this;
+		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->GetParentPart() = this;
 	}
 }
