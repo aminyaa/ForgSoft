@@ -15,6 +15,7 @@ BeginFrgBaseLib
 class FrgBaseTree;
 //class NihadVesselPartTreeItem;
 class FrgBaseCADPart_Entity;
+class FrgBase_CADScene_TreeItem;
 
 template<class Entity>
 class FrgBaseCADPartFeatureEntity;
@@ -24,7 +25,7 @@ class CADScene : public FrgBaseCADScene
 
 public:
 
-	CADScene(FrgBaseTree* parentTree);
+	CADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseTree* parentTree);
 
 	//void DoAfterConstruct() override;
 

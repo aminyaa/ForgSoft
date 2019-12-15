@@ -465,11 +465,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::SelectActor(vtkActor* actor, int isCon
 
 	if (actor == FrgNullPtr && !isControlKeyPressed)
 	{
-		for (int i = 0; i < theParent_->GetActors().size(); i++)
-		{
-			theParent_->GetActors()[i]->GetProperty()->SetOpacity(1.0);
-		}
-		theSelectedActors_.clear();
+		UnSelectAllActors();
 
 		return;
 	}
@@ -516,6 +512,36 @@ void ForgBaseLib::FrgBaseInteractorStyle::SelectActor(vtkActor* actor, int isCon
 
 	if (!isFromTree)
 		theParent_->GetParentTree()->ScrollToItems(items);
+
+	this->Interactor->Render();
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SelectActors(QList<vtkActor*> actors, FrgBool isFromTree)
+{
+	UnSelectAllActors();
+
+	for (int i = 0; i < actors.size(); i++)
+	{
+		SelectActor(actors[i], 1, isFromTree);
+	}
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::UnSelectAllActors()
+{
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		// If we picked something before, reset its property
+		if (this->theSelectedActors_[i]->theActor_)
+		{
+			this->theSelectedActors_[i]->theActor_->GetProperty()->DeepCopy(this->theSelectedActors_[i]->theProperty_);
+		}
+	}
+
+	for (int i = 0; i < theParent_->GetActors().size(); i++)
+	{
+		theParent_->GetActors()[i]->GetProperty()->SetOpacity(1.0);
+	}
+	theSelectedActors_.clear();
 
 	this->Interactor->Render();
 }

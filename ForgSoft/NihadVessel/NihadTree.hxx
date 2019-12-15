@@ -70,7 +70,7 @@ public slots:
 	void SplitByNonContiguousPartSlot(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
-	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<QTreeWidgetItem*> scenes);
+	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<FrgBase_CADScene_TreeItem*> scenes);
 
 	void PreviewGeometryClickedSlot(bool);
 

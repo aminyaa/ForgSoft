@@ -46,7 +46,7 @@ ForgBaseLib::NihadVesselScenePartTreeItem::NihadVesselScenePartTreeItem
 	: FrgBase_CADScene_TreeItem(title, parent)
 	, theDiscreteParametersBool_(discreteParameters)
 {
-	theViewPorts_ = FrgNew ViewPorts(GetParentMainWindow());
+	theViewPorts_ = FrgNew ViewPorts(this, GetParentMainWindow());
 	theViewPorts_->SetLogoText("Tonb");
 
 	/*if (theDiscreteParametersBool_)

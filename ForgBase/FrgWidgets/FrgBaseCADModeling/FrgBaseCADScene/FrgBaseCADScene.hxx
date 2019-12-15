@@ -38,6 +38,7 @@ struct GridActor
 class FrgBaseMainWindow;
 class FrgBaseInteractorStyle;
 class FrgBaseCADPartFeatureBase;
+class FrgBase_CADScene_TreeItem;
 
 typedef QMap<vtkSmartPointer<vtkActor>, FrgBaseCADPartFeatureBase*> QMapActorToPartFeature;
 typedef QMap<FrgBaseCADPartFeatureBase*, vtkSmartPointer<vtkActor>> QMapPartFeatureToActor;
@@ -72,6 +73,7 @@ private:
 	QMapPartFeatureToActor thePartFeatureToActor_;
 
 	FrgBaseTree* theParentTree_;
+	FrgBase_CADScene_TreeItem* theParentCADSceneTreeItem_ = FrgNullPtr;
 
 	void Init();
 
@@ -85,7 +87,7 @@ private:
 
 public:
 
-	FrgBaseCADScene(FrgBaseTree* parentTree);
+	FrgBaseCADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseTree* parentTree);
 
 	void StartScene();
 
@@ -100,6 +102,7 @@ public:
 	FrgGetMacro(QMapPartFeatureToActor, PartFeatureToActor, thePartFeatureToActor_);
 	FrgGetMacro(FrgBaseMenu*, ContextMenuInScene, theContextMenuInScene_);
 	FrgGetMacro(QList<FrgBaseMenu*>, Menus, theMenus_);
+	FrgGetMacro(FrgBase_CADScene_TreeItem*, ParentCADSceneTreeItem, theParentCADSceneTreeItem_);
 
 	QAction* GetActionItemInScene(FrgString actionName);
 

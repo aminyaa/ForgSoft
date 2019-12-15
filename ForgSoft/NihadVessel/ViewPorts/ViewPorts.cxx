@@ -41,7 +41,7 @@ public:
 	FrgGetMacro(QSlider*, Slider, theSlider_);
 };
 
-ForgBaseLib::ViewPorts::ViewPorts(FrgBaseMainWindow* parent)
+ForgBaseLib::ViewPorts::ViewPorts(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseMainWindow* parent)
 	: QMainWindow()
 	, theParentMainWindow_(parent)
 {
@@ -50,7 +50,7 @@ ForgBaseLib::ViewPorts::ViewPorts(FrgBaseMainWindow* parent)
 	theMdiArea_ = FrgNew QMdiArea(this);
 	theToolBar_ = FrgNew QToolBar(this);
 
-	AddScene(FrgNew CADScene(parent->GetTree()), Qt::FramelessWindowHint);
+	AddScene(FrgNew CADScene(parentCADSceneTreeItem, parent->GetTree()), Qt::FramelessWindowHint);
 	SetToolBar();
 
 	this->setCentralWidget(theMdiArea_);

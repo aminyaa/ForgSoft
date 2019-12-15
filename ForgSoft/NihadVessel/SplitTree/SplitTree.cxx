@@ -69,6 +69,7 @@ void ForgBaseLib::SplitTree::FormTree()
 			if (!scene) continue;
 
 			scene->CreateActor(surfaces[iSurface], item);
+			scene->GetParentTree() = this;
 		}
 
 		//auto item = FrgNew FrgBaseTreeItem(QString::number(surfaces[iSurface]->Index()), FrgNullPtr, this, theParentMainWindow_);

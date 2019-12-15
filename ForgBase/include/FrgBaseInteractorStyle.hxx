@@ -106,6 +106,8 @@ public:
 	virtual void OnChar() override;
 
 	void SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree = FrgFalse);
+	void SelectActors(QList<vtkActor*> actors, FrgBool isFromTree = FrgFalse);
+	void UnSelectAllActors();
 
 	FrgGetMacro(QList<FrgBaseActor*>, SelectedActors, theSelectedActors_);
 	FrgGetMacro(FrgBaseCADScene*, ParentScene, theParent_);

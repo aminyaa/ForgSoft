@@ -26,8 +26,8 @@
 
 std::shared_ptr<AutLib::FastDiscrete_Params> FrgFastParameters_2 = std::make_shared<AutLib::FastDiscrete_Params>();
 
-ForgBaseLib::CADScene::CADScene(FrgBaseTree * parentTree)
-	: FrgBaseCADScene(parentTree)
+ForgBaseLib::CADScene::CADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseTree * parentTree)
+	: FrgBaseCADScene(parentCADSceneTreeItem, parentTree)
 {
 
 }

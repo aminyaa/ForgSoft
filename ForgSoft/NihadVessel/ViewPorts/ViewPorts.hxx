@@ -16,6 +16,7 @@ class CADScene;
 //class NihadVesselPartTreeItem;
 class FrgBaseCADPart_Entity;
 class FrgBaseMainWindow;
+class FrgBase_CADScene_TreeItem;
 
 class ViewPorts : public QMainWindow
 {
@@ -32,7 +33,7 @@ private:
 
 public:
 
-	ViewPorts(FrgBaseMainWindow* parent = FrgNullPtr);
+	ViewPorts(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseMainWindow* parent = FrgNullPtr);
 
 	FrgGetMacro(QList<CADScene*>, Scenes, theScenes_);
 	FrgGetMacro(QMdiArea*, MdiArea, theMdiArea_);

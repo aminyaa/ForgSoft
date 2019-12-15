@@ -1,5 +1,7 @@
 #include <FrgBaseCADPartFeatures.hxx>
 #include <FrgBaseCADPart.hxx>
+#include <FrgBase_CADScene_TreeItem.hxx>
+#include <FrgBaseCADScene.hxx>
 
 #include <QtCore/QObject>
 
@@ -55,4 +57,28 @@ void ForgBaseLib::FrgBaseCADPartFeatureBase::DoAfterConstruct()
 		, this->GetParentTree()
 		, SLOT(SplitByNonContiguousPartSlot(bool))
 	);
+}
+
+QList<ForgBaseLib::FrgBase_CADScene_TreeItem*> ForgBaseLib::FrgBaseCADPartFeatureBase::GetPointerToCADSceneTreeItems() const
+{
+	QList<FrgBase_CADScene_TreeItem*> output;
+
+	for (int i = 0; i < thePointerToScenes_.size(); i++)
+	{
+		output.push_back(thePointerToScenes_[i]->GetParentCADSceneTreeItem());
+	}
+
+	return output;
+}
+
+QList<ForgBaseLib::FrgBase_CADScene_TreeItem*> ForgBaseLib::FrgBaseCADPartFeatureBase::GetPointerToCADSceneTreeItems()
+{
+	QList<FrgBase_CADScene_TreeItem*> output;
+
+	for (int i = 0; i < thePointerToScenes_.size(); i++)
+	{
+		output.push_back(thePointerToScenes_[i]->GetParentCADSceneTreeItem());
+	}
+
+	return output;
 }

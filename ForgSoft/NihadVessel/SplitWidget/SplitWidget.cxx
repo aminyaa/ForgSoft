@@ -5,6 +5,8 @@
 #include <CADPartItem.hxx>
 #include <NihadTree.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBase_CADScene_TreeItem.hxx>
+#include <FrgBaseTreeItem.hxx>
 
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QVBoxLayout>
@@ -72,6 +74,10 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 		return;
 	}
 
+	QList<QTreeWidgetItem*> items;
+	items.push_back(part);
+	auto scenes = part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(0)->GetPointerToCADSceneTreeItems();
+
 	theParentMainWindow_->GetTreeWidget()->theDockWidget_->setEnabled(true);
 	theParentMainWindow_->GetTreeWidget()->theDockWidget_->show();
 	theParentMainWindow_->GetTreeWidget()->theDockWidget_->raise();
@@ -117,6 +123,15 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 
 	part->GetModel()->Faces()->UnSelectAll();
 	part->GetModel()->Segments()->UnSelectAll();
+
+	dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree())->ObjectsSelectedUpdateInSceneSlot
+	(
+		items,
+		scenes
+	);
+
+	for (int i = 0; i < theTree_->GetPointerToScenes().size(); i++)
+		theTree_->GetPointerToScenes()[i]->GetParentTree() = theParentMainWindow_->GetTree();
 
 	this->deleteLater();
 }

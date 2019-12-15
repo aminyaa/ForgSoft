@@ -151,8 +151,14 @@ void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 				for (int iScene = 0; iScene < scenes.size(); iScene++)
 				{
 					auto actor = (scenes.at(iScene))->GetPartFeatureToActor().value(feature);
+
 					if (SelectedItems.size() > 1)
+					{
+						if (iItem == 0)
+							scenes[iScene]->GetInteractorStyle()->UnSelectAllActors();
+
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
+					}
 					else
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 0, FrgTrue);
 				}
@@ -881,12 +887,16 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 		scene->GetPartsPointer() = output;
 		scene->RenderSceneSlot();
 
+		int index = GetParentMainWindow()->GetTabWidget()->indexOf(scene->GetViewPorts());
+		if (index >= 0)
+			return;
 		GetParentMainWindow()->GetTabWidget()->addTab(scene->GetViewPorts(), scene->text(0));
 		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(scene->GetViewPorts());
+		
 	}
 }
 
-void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> parts, QList<QTreeWidgetItem*> scenes)
+void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> parts, QList<FrgBase_CADScene_TreeItem*> scenes)
 {
 	QList<FrgBaseCADPart_Entity*> output;
 
@@ -901,9 +911,27 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 
 		if (scene)
 		{
-			scene->GetPartsPointer() = output;
+			/*auto partsPointer = scene->GetPartsPointer();
+			for (int i = 0; i < partsPointer.size(); i++)
+			{
+				for (int j = 0; j < output.size(); j++)
+				{
+					if (partsPointer[i] == output[j])
+					{
+						std::cout << "Continue;\n";
+						continue;
+					}
+					std::cout << "Not Continue;\n";
+					scene->GetPartsPointer().push_back(output[j]);
+				}
+			}*/
+
+			//scene->GetPartsPointer() = output;
 			scene->RenderSceneSlot();
 
+			int index = GetParentMainWindow()->GetTabWidget()->indexOf(scene->GetViewPorts());
+			if (index >= 0)
+				return;
 			GetParentMainWindow()->GetTabWidget()->addTab(scene->GetViewPorts(), scene->text(0));
 			GetParentMainWindow()->GetTabWidget()->setCurrentWidget(scene->GetViewPorts());
 		}

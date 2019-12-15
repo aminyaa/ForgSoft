@@ -60,6 +60,7 @@ public:
 	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);
 	FrgGetMacro(SurfaceBlockPtr, SurfaceBlock, theSurfaceBlock_);
 	FrgGetMacro(CurveBlockPtr, CurveBlock, theCurveBlock_);
+	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
 
 private slots:
 

@@ -11,6 +11,7 @@ BeginFrgBaseLib
 
 class FrgBaseCADScene;
 class FrgBaseCADPart_Entity;
+class FrgBase_CADScene_TreeItem;
 
 class FORGBASE_EXPORT FrgBaseCADPartFeatureBase : public FrgBaseTreeItem
 {
@@ -20,6 +21,7 @@ private:
 	FrgBaseCADPart_Entity* theParentPart_ = FrgNullPtr;
 
 	QList<FrgBaseCADScene*> thePointerToScenes_;
+	QList<FrgBase_CADScene_TreeItem*> thePointerToCADSceneTreeItems_;
 
 public:
 
@@ -41,6 +43,9 @@ public:
 
 	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
 	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);
+
+	QList<FrgBase_CADScene_TreeItem*> GetPointerToCADSceneTreeItems() const;
+	QList<FrgBase_CADScene_TreeItem*> GetPointerToCADSceneTreeItems();
 };
 
 template <class Entity>

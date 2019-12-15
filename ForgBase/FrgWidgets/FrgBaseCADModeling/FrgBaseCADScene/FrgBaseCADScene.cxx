@@ -51,9 +51,10 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2)
 VTK_MODULE_INIT(vtkInteractionStyle)
 VTK_MODULE_INIT(vtkRenderingFreeType)
 
-ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene(FrgBaseTree* parentTree)
+ForgBaseLib::FrgBaseCADScene::FrgBaseCADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseTree* parentTree)
 	: QVTKOpenGLNativeWidget(parentTree->GetParentMainWindow())
 	, theParentTree_(parentTree)
+	, theParentCADSceneTreeItem_(parentCADSceneTreeItem)
 {
 	Init();
 	CreateMenus();
