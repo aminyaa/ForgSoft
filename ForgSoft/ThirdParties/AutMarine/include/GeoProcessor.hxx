@@ -288,6 +288,8 @@ namespace AutLib
 		Standard_Boolean IsSimple_cgal(const std::vector<Pnt2d>& thePts);
 
 		Pnt2d IntersectionTwoLines(const Pnt2d& P0, const Pnt2d& t0, const Pnt2d& P1, const Pnt2d& t1);
+
+		Pnt2d ProjectPtAtSegment(const Pnt2d& thePt, const Pnt2d& theP0, const Pnt2d& theP1);
 	}
 }
 

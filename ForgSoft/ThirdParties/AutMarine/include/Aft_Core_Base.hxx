@@ -12,9 +12,9 @@
 #include <memory>
 #include <vector>
 
-//#include "Aft2d_OptNode_Calculator.hxx"
-//#include "Aft2d_FrontGlobalData.hxx"
-//#include "Aft2d_FrontInfo.hxx"
+//#include "Aft2d_OptNodeAnIso_Calculator.hxx"
+//#include "Aft2d_FrontAnIsoGlobalData.hxx"
+//#include "Aft2d_FrontAnIsoInfo.hxx"
 
 namespace AutLib
 {

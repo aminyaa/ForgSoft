@@ -361,12 +361,14 @@ namespace AutLib
 					SEND_INFO;
 				}
 				
-				auto sizeMap2d = std::make_shared<Geo2d_SizeFunction_Surface>(x->Geometry(), sizeMap);
+				auto sizeMap2d = std::make_shared<Geo2d_SizeFunction_Surface>(x->Geometry(), sizeMap, x->BoundingBox());
 
-				auto detection = std::make_shared<CadSingularity_Detection<SurfType>>
-					(
-						horizons, colors,
-						sizeMap2d, typeDetecInfo);
+				auto detection = std::make_shared<CadSingularity_Detection<typename SurfType::planeType>>();
+
+				detection->LoadHorizons(horizons);
+				detection->LoadColors(colors);
+				detection->LoadSizeFunction(sizeMap2d);
+				detection->LoadInfo(typeDetecInfo);
 
 				detection->Perform();
 				Debug_If_Condition_Message(NOT detection->IsDone(), "the type detection algorithm has not been performed");

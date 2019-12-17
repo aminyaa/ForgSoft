@@ -14,10 +14,10 @@ namespace AutLib
 	namespace metricSys
 	{
 
-		extern std::shared_ptr<Numeric_AdaptIntegrationInfo> mesh2d_metric_prcsr_aniso_intg_info;
-		extern std::shared_ptr<Aft_MetricPrcsrAnIso_Info> mesh2d_aft_metric_prcsr_aniso_info;
+		extern std::shared_ptr<Numeric_AdaptIntegrationInfo> gl_metric_prcsr_aniso_intg_info;
+		extern std::shared_ptr<Aft_MetricPrcsrAnIso_Info> gl_aft_metric_prcsr_aniso_info;
 
-		void InitRunTime();
+		void init_aft_metric_prcsr_aniso_info();
 	}
 
 	

@@ -4,6 +4,9 @@
 
 #include <Aft_Model.hxx>
 #include <Geo2d_SizeFunction.hxx>
+#include <Aft2d_OptNode_Calculator.hxx>
+#include <Aft2d_FrontGlobalData.hxx>
+#include <Aft2d_FrontInfo.hxx>
 
 namespace AutLib
 {

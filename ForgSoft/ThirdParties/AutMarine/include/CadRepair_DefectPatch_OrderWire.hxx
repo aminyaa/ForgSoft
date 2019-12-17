@@ -6,6 +6,9 @@
 
 #include <vector>
 
+//#include "TModel_Surface.hxx"
+//#include "TModel_Wire.hxx"
+
 namespace AutLib
 {
 
@@ -14,7 +17,7 @@ namespace AutLib
 		: public CadRepair_DefectPatch<SurfType>
 	{
 
-		typedef typename SurfType::parWireType wireType;
+		typedef typename SurfType::wireType wireType;
 
 		/*Private Data*/
 
@@ -31,7 +34,8 @@ namespace AutLib
 			const std::shared_ptr<SurfType>& theSurface,
 			const std::vector<std::shared_ptr<wireType>>& theWires
 		)
-			: CadRepair_DefectPatch<SurfType>(theIndex, theSurface, theWires)
+			: CadRepair_DefectPatch<SurfType>(theIndex, theSurface)
+			, theWires_(theWires)
 		{}
 
 		const std::vector<std::shared_ptr<wireType>>& Wires() const

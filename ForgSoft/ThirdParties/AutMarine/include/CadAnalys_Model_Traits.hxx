@@ -13,17 +13,17 @@ namespace AutLib
 	class TModel_Surface;
 	class GModel_Surface;
 
-	class TModel_parWire;
-	class GModel_parWire;
+	class TModel_Wire;
+	class GModel_Wire;
 
 	template<> struct CadAnalys_Model_Traits<GModel_Surface>
 	{
-		typedef GModel_parWire parWireType;
+		typedef GModel_Wire wireType;
 	};
 
 	template<> struct CadAnalys_Model_Traits<TModel_Surface>
 	{
-		typedef TModel_parWire parWireType;
+		typedef TModel_Wire wireType;
 	};
 }
 

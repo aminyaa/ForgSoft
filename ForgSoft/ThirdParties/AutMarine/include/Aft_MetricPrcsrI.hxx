@@ -1,5 +1,6 @@
 #pragma once
 #include <Global_Macros.hxx>
+#include <GeoProcessor.hxx>
 namespace AutLib
 {
 
@@ -26,6 +27,7 @@ namespace AutLib
 				break;
 			}
 		}
+
 		return std::move(P);
 	}
 
@@ -46,8 +48,10 @@ namespace AutLib
 		const frontType & theFront
 	) const
 	{
-		const auto p0 = theFront.ProjectAt(thePt);
-		return base::CalcDistance(thePt, p0);
+		const auto& p0 = theFront.Node0()->Coord();
+		const auto& p1 = theFront.Node1()->Coord();
+		const auto pt = Processor::ProjectPtAtSegment(thePt, p0, p1);
+		return base::CalcDistance(thePt, pt);
 	}
 
 	template<class FrontType, class SizeFun, class MetricFun>
@@ -57,8 +61,10 @@ namespace AutLib
 		const frontType & theFront
 	) const
 	{
-		const auto p0 = theFront.ProjectAt(thePt);
-		return base::CalcSquareDistance(thePt, p0);
+		const auto& p0 = theFront.Node0()->Coord();
+		const auto& p1 = theFront.Node1()->Coord();
+		const auto pt = Processor::ProjectPtAtSegment(thePt, p0, p1);
+		return base::CalcSquareDistance(thePt, pt);
 	}
 
 	template<class FrontType, class SizeFun, class MetricFun>

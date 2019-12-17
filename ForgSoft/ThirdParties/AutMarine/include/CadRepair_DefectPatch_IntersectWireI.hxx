@@ -19,7 +19,7 @@ namespace AutLib
 			return Standard_False;
 		}
 
-		theWire1_ = theSurface.OuterWire();
+		theOuter = theSurface.OuterWire();
 
 		const auto& outer = theSurface.OuterWire();
 		const auto& inners = *theSurface.InnerWires();
@@ -35,7 +35,7 @@ namespace AutLib
 
 			if (NOT Entity2d_Box::IsInside(offset, oBox))
 			{
-				theWire2_ = x;
+				theInner = x;
 				return Standard_True;
 			}
 		}

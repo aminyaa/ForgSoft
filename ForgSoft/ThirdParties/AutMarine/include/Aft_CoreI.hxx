@@ -196,7 +196,7 @@ namespace AutLib
 			);
 
 			std::vector<std::shared_ptr<nodeType>> inners;
-			NodesInRadius
+			base::NodesInRadius
 			(
 				maxLength,
 				node.Coord(),

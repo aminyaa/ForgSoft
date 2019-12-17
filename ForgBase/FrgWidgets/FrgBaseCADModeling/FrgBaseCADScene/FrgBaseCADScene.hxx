@@ -127,6 +127,10 @@ public slots:
 	void DrawGridSlot(bool);
 	void ScreenshotSlot(bool);
 	void RandomColorsSlot(bool);
+	void ShowMeshSlot(bool condition);
+	void HideActorsSlot(bool);
+	void ShowHiddenPartsSlot(bool);
+	virtual void ExportSelectedPartClickedSlot(bool) {}
 
 	void SelectIconSelectedSlot(bool);
 	void MoveIconSelectedSlot(bool);
@@ -134,6 +138,10 @@ public slots:
 	void RotateYIconSelectedSlot(bool);
 	void RotateZIconSelectedSlot(bool);
 	void RotateXYZIconSelectedSlot(bool);
+
+signals:
+
+	void ActorSelectedSignal(bool);
 };
 
 EndFrgBaseLib

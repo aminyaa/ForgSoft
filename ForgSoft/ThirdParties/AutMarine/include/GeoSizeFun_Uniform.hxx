@@ -2,7 +2,7 @@
 #ifndef _GeoSizeFun_Uniform_Header
 #define _GeoSizeFun_Uniform_Header
 
-#include <Entity2d_Box.hxx>
+#include <Entity_Box.hxx>
 #include <Geo_SizeFunction.hxx>
 #include <Global_AccessMethod.hxx>
 
@@ -23,7 +23,7 @@ namespace AutLib
 		GeoSizeFun_Uniform
 		(
 			const Standard_Real theSize, 
-			const Entity2d_Box& theBox
+			const Entity_Box<Point>& theBox
 		)
 			: theSize_(theSize)
 			, Geo_SizeFunction<Point>(theBox)
@@ -34,7 +34,7 @@ namespace AutLib
 			const Standard_Integer theIndex,
 			const word& theName, 
 			const Standard_Real theSize,
-			const Entity2d_Box& theBox
+			const Entity_Box<Point>& theBox
 		)
 			: Geo_SizeFunction(theIndex, theName, theBox)
 			, theSize_(theSize)

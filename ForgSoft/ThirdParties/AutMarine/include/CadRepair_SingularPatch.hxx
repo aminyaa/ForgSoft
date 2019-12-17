@@ -18,7 +18,7 @@ namespace AutLib
 		: public CadRepair_ImpPatch<SurfType>
 	{
 
-		typedef typename SurfType::surfPln surfPln;
+		typedef typename SurfType::planeType surfPln;
 
 		/*private Data*/
 

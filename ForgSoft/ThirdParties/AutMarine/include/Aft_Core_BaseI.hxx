@@ -61,7 +61,7 @@ namespace AutLib
 		const std::vector<std::shared_ptr<frontType>>& theFronts
 	) const
 	{
-		Standard_Real factor = frontInfo::MinDistFactor();
+		const auto factor = frontInfo::MinDistFactor();
 		Debug_If_Condition
 		(
 			factor <= RealSmall()
@@ -76,7 +76,7 @@ namespace AutLib
 			Debug_Null_Pointer(front);
 			const auto& entity = *front;
 
-			Standard_Real charLength = factor * entity.CharLength();
+			auto charLength = factor * entity.CharLength();
 			if (sizeMap.CalcSquareDistance(Pt, entity) <= charLength * charLength)
 			{
 				return Standard_True;
@@ -289,12 +289,13 @@ namespace AutLib
 
 				if (length > maxLenght) maxLenght = length;
 			}
+
 			maxLenght = MAX(maxLenght, frontInfo::ElementSize() / SIZE_TO_HIGHT_ELEMENT_COEFF)*1.12;
 			frontInfo::SetMaxElmLength(maxLenght);
 
 			auto sr = current.SearchRadius();
 			auto ratio = MAX(maxLenght / current.CharLength(), 1.0);
-
+			
 			frontInfo::SetLocFrontRadius(ratio*sr);
 		}
 		else
@@ -477,7 +478,7 @@ namespace AutLib
 
 		std::vector<std::shared_ptr<nodeType>> nodes;
 		frontData::GeometrySearch(region, nodes);
-
+		
 		NodesInRadius(frontInfo::SearchRadius(), frontInfo::Coord(), nodes, theNodes);
 	}
 

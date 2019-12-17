@@ -5,6 +5,9 @@
 #include <Aft2d_CoreFwd.hxx>
 #include <Aft2d_CoreAnIsoFwd.hxx>
 #include <Aft2d_CoreSurfaceFwd.hxx>
+#include <Aft2d_EdgeFwd.hxx>
+#include <Aft2d_EdgeAnIsoFwd.hxx>
+#include <Aft2d_EdgeSurfaceFwd.hxx>
 
 namespace AutLib
 {
@@ -21,6 +24,7 @@ namespace AutLib
 	template<class SizeFun> 
 	struct aft_model_traits<Cad2d_Plane, SizeFun> 
 	{
+		typedef Aft2d_Edge frontType;
 		typedef Aft2d_Element elementType;
 		typedef Aft2d_OptNode_Calculator nodeCalculator;
 		typedef Aft2d_FrontInfo frontInfo;
@@ -32,6 +36,7 @@ namespace AutLib
 	template<class SizeFun, class MetricFun>
 	struct aft_model_traits<Cad2d_Plane, SizeFun, MetricFun>
 	{
+		typedef Aft2d_EdgeAnIso frontType;
 		typedef Aft2d_ElementAnIso elementType;
 		typedef Aft2d_OptNodeAnIso_Calculator nodeCalculator;
 		typedef Aft2d_FrontAnIsoInfo frontInfo;
@@ -43,6 +48,7 @@ namespace AutLib
 	template<class SizeFun, class MetricFun>
 	struct aft_model_traits<GModel_Surface, SizeFun, MetricFun>
 	{
+		typedef Aft2d_EdgeSurface frontType;
 		typedef Aft2d_ElementSurface elementType;
 		typedef Aft2d_OptNodeSurface_Calculator nodeCalculator;
 		typedef Aft2d_FrontSurfaceInfo frontInfo;
@@ -54,6 +60,7 @@ namespace AutLib
 	template<class SizeFun, class MetricFun>
 	struct aft_model_traits<TModel_Surface, SizeFun, MetricFun>
 	{
+		typedef Aft2d_EdgeSurface frontType;
 		typedef Aft2d_ElementSurface elementType;
 		typedef Aft2d_OptNodeSurface_Calculator nodeCalculator;
 		typedef Aft2d_FrontSurfaceInfo frontInfo;

@@ -14,7 +14,7 @@ namespace AutLib
 		: public CadRepair_DefectPatch_Wire<SurfType>
 	{
 
-		typedef typename SurfType::parWireType wireType;
+		typedef typename SurfType::wireType wireType;
 
 		/*private Data*/
 

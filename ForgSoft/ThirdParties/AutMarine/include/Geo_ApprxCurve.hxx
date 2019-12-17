@@ -35,7 +35,7 @@ namespace AutLib
 		Standard_Real theFirst_;
 		Standard_Real theLast_;
 
-		const std::shared_ptr<info>& theInfo_;
+		std::shared_ptr<info> theInfo_;
 
 		chain_ptr theChain_;
 

@@ -25,7 +25,7 @@ namespace AutLib
 		, public Global_Done
 	{
 
-		typedef typename CadAnalys_Model_Traits<SurfType>::parWireType wireType;
+		typedef typename CadAnalys_Model_Traits<SurfType>::wireType wireType;
 		typedef CadAnalys_Model_Info info;
 		typedef CadAnalys_Model_Base<CadRepair_Patch<SurfType>>
 			base;

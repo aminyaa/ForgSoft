@@ -88,21 +88,13 @@ public:
 	void SetGeometriesOpacity(double opacity = 1.0);
 
 	virtual void OnLeftButtonUp() override;
-
 	virtual void OnLeftButtonDown() override;
-
 	virtual void OnMouseWheelForward() override;
-
 	virtual void OnMouseWheelBackward() override;
-
 	virtual void OnMiddleButtonDown() override;
-
 	virtual void OnRightButtonDown() override;
-
 	virtual void OnRightButtonUp() override;
-
 	virtual void OnMouseMove() override;
-
 	virtual void OnChar() override;
 
 	void SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree = FrgFalse);
@@ -124,6 +116,8 @@ public:
 	void SetViewToXZPlane();
 	void SetViewToYZPlane();
 	void SetViewToXYZ();
+
+	void ShowMesh(FrgBool condition);
 };
 
 EndFrgBaseLib

@@ -4,6 +4,7 @@
 
 #include <Entity_Connectivity.hxx>
 #include <Entity_StaticData.hxx>
+#include <Aft_MetricPrcsr.hxx>
 #include <Aft_Core.hxx>
 #include <Aft_Model_Traits.hxx>
 #include <Aft_Model_Cache.hxx>
@@ -42,20 +43,21 @@ namespace AutLib
 			MetricFun
 			> base;
 
+		typedef typename aft_model_traits<ModelType, SizeFun, MetricFun>::frontType frontType;
 		typedef typename aft_model_traits<ModelType, SizeFun, MetricFun>::elementType elementType;
 		typedef typename aft_model_traits<ModelType, SizeFun, MetricFun>::nodeCalculator nodeCalculator;
 		typedef typename aft_model_traits<ModelType, SizeFun, MetricFun>::frontInfo frontInfo;
 		typedef typename aft_model_traits<ModelType, SizeFun, MetricFun>::globalData frontData;
 		typedef typename aft_model_traits<ModelType, SizeFun, MetricFun>::cacheType cache;
 
-		typedef typename frontInfo::frontType frontType;
+		//typedef typename frontInfo::frontType frontType;
 		typedef typename frontInfo::nodeType nodeType;
 		typedef typename nodeType::ptType Point;
 
 		typedef Entity_StaticData<Point, typename elementType::connectType>
 			staticMesh;
 
-		typedef Aft_MetricPrcsr<SizeFun, MetricFun> metricPrcsr;
+		typedef Aft_MetricPrcsr<frontType, SizeFun, MetricFun> metricPrcsr;
 
 	private:
 

@@ -214,7 +214,7 @@ namespace AutLib
 			const Point& theVector
 		) const
 	{
-		return (Standard_Real)1.0 / CalcElementSize(thePoint) * sqrt(DotProduct(theVector, theVector));
+		return ((Standard_Real)1.0 / CalcElementSize(thePoint)) * sqrt(DotProduct(theVector, theVector));
 	}
 
 	template<class SizeFun>
@@ -225,6 +225,6 @@ namespace AutLib
 			const vcType& theVector
 		) const
 	{
-		return (Standard_Real)1.0 / CalcElementSize(thePoint) * sqrt(theVector.Dot(theVector));
+		return ((Standard_Real)1.0 / CalcElementSize(thePoint)) * sqrt(theVector.Dot(theVector));
 	}
 }

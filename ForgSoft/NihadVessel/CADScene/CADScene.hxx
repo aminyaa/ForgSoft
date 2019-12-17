@@ -23,6 +23,8 @@ class FrgBaseCADPartFeatureEntity;
 class CADScene : public FrgBaseCADScene
 {
 
+	Q_OBJECT
+
 public:
 
 	CADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseTree* parentTree);
@@ -31,7 +33,8 @@ public:
 
 public slots:
 
-	void RenderSceneSlot();
+	//void RenderSceneSlot();
+	virtual void ExportSelectedPartClickedSlot(bool) override;
 
 public:
 

@@ -134,5 +134,31 @@ namespace AutLib
 											else
 												return Standard_False;
 		}
+
+		inline
+			Pnt2d ProjectPtAtSegment
+			(
+				const Pnt2d & thePt,
+				const Pnt2d & theP0,
+				const Pnt2d & theP1
+			)
+		{
+			const auto bot = SquareDistance(theP0, theP1);
+
+			Pnt2d Pn;
+			if (bot == 0.0) Pn = theP1;
+			else
+			{
+				const auto V1 = theP1 - theP0;
+				const auto V2 = thePt - theP0;
+
+				Standard_Real t = DotProduct(V1, V2) / bot;
+				if (t > 1) t = 1;
+				if (t < 0) t = 0;
+
+				Pn = theP0 + t * V1;
+			}
+			return std::move(Pn);
+		}
 	}
 }

@@ -64,7 +64,7 @@ namespace AutLib
 		(
 			const std::shared_ptr<info>& theInfo
 		)
-			: base(theInfo->IntegInfo())
+			: base(theInfo)
 			, theInfo_(theInfo)
 		{}
 
@@ -74,7 +74,7 @@ namespace AutLib
 			const std::shared_ptr<MetricFun>& theMetricFunction,
 			const std::shared_ptr<info>& theInfo
 		)
-			: base(theSizeFunction, theMetricFunction, theInfo->IntegInfo())
+			: base(theSizeFunction, theMetricFunction, theInfo)
 			, theInfo_(theInfo)
 		{}
 
@@ -86,7 +86,7 @@ namespace AutLib
 			const std::shared_ptr<MetricFun>& theMetricFunction,
 			const std::shared_ptr<info>& theInfo
 		)
-			: base(theIndex, theName, theSizeFunction, theMetricFunction, theInfo->IntegInfo())
+			: base(theIndex, theName, theSizeFunction, theMetricFunction, theInfo)
 			, theInfo_(theInfo)
 		{}
 

@@ -189,6 +189,8 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int
 	else if (plane == YZ)
 		L = LY > LZ ? LY : LZ;
 
+	L = sqrt(LX*LX + LY*LY + LZ * LZ);
+
 	double d = 2.0 * L / (double)nbDivision;
 
 	vtkSmartPointer<vtkDoubleArray> xCoords =
@@ -202,18 +204,18 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int
 	{
 		if (plane == XY)
 		{
-			xCoords->InsertNextValue(i * d + (Xmin + LX / 2.0) - L);
-			yCoords->InsertNextValue(i * d + (Ymin + LY / 2.0) - L);
+			xCoords->InsertNextValue(i * d - L);
+			yCoords->InsertNextValue(i * d - L);
 		}
 		else if (plane == XZ)
 		{
-			xCoords->InsertNextValue(i * d + (Xmin + LX / 2.0) - L);
-			yCoords->InsertNextValue(i * d + (Zmin + LZ / 2.0) - L);
+			xCoords->InsertNextValue(i * d - L);
+			yCoords->InsertNextValue(i * d - L);
 		}
 		else if (plane == YZ)
 		{
-			xCoords->InsertNextValue(i * d + (Ymin + LY / 2.0) - L);
-			yCoords->InsertNextValue(i * d + (Zmin + LZ / 2.0) - L);
+			xCoords->InsertNextValue(i * d - L);
+			yCoords->InsertNextValue(i * d - L);
 		}
 	}
 
@@ -283,6 +285,8 @@ void ForgBaseLib::FrgBaseCADScene::DrawGridMiddleLines(vtkSmartPointer<vtkActor>
 		L = LX > LZ ? LX : LZ;
 	else if (plane == YZ)
 		L = LY > LZ ? LY : LZ;
+
+	L = sqrt(LX * LX + LY * LY + LZ * LZ);
 
 	// Create two colors - one for each line
 	unsigned char axis1Color[3];
@@ -441,8 +445,11 @@ void ForgBaseLib::FrgBaseCADScene::CreateMenus()
 
 	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
 	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
-	theMenus_.last()->AddItem(FrgICON_Menu_File_Export, "Screenshot...");
+	theMenus_.last()->AddItem(FrgICONTreeItemGeometry, "Screenshot...");
 	connect(theMenus_.last()->GetItem("Screenshot..."), SIGNAL(triggered(bool)), this, SLOT(ScreenshotSlot(bool)));
+	theMenus_.last()->AddItem(FrgICON_Menu_File_Export, "Export Selected Parts");
+	connect(theMenus_.last()->GetItem("Export Selected Parts"), SIGNAL(triggered(bool)), this, SLOT(ExportSelectedPartClickedSlot(bool)));
+	connect(this, SIGNAL(ActorSelectedSignal(bool)), theMenus_.last()->GetItem("Export Selected Parts"), SLOT(setEnabled(bool)));
 
 	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
 	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
@@ -450,6 +457,23 @@ void ForgBaseLib::FrgBaseCADScene::CreateMenus()
 	theMenus_.last()->GetItem("Random Colors")->setCheckable(FrgTrue);
 	theMenus_.last()->GetItem("Random Colors")->setChecked(FrgFalse);
 	connect(theMenus_.last()->GetItem("Random Colors"), SIGNAL(triggered(bool)), this, SLOT(RandomColorsSlot(bool)));
+
+	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
+	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
+	theMenus_.last()->AddItem("Show Mesh");
+	theMenus_.last()->GetItem("Show Mesh")->setCheckable(FrgTrue);
+	theMenus_.last()->GetItem("Show Mesh")->setChecked(FrgFalse);
+	theMenus_.last()->GetItem("Show Mesh")->setShortcut(QMainWindow::tr("M"));
+	connect(theMenus_.last()->GetItem("Show Mesh"), SIGNAL(triggered(bool)), this, SLOT(ShowMeshSlot(bool)));
+
+	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));
+	theMenus_.last()->GetToolBar()->setHidden(FrgTrue);
+	theMenus_.last()->AddItem("Hide");
+	theMenus_.last()->GetItem("Hide")->setEnabled(FrgFalse);
+	connect(theMenus_.last()->GetItem("Hide"), SIGNAL(triggered(bool)), this, SLOT(HideActorsSlot(bool)));
+	connect(this, SIGNAL(ActorSelectedSignal(bool)), theMenus_.last()->GetItem("Hide"), SLOT(setEnabled(bool)));
+	theMenus_.last()->AddItem("Show Hidden Parts");
+	connect(theMenus_.last()->GetItem("Show Hidden Parts"), SIGNAL(triggered(bool)), this, SLOT(ShowHiddenPartsSlot(bool)));
 }
 
 QAction* ForgBaseLib::FrgBaseCADScene::GetActionItemInScene(FrgString actionName)
@@ -721,6 +745,21 @@ void ForgBaseLib::FrgBaseCADScene::RandomColorsSlot(bool checked)
 			theRenderWindow_->Render();
 		}
 	}
+}
+
+void ForgBaseLib::FrgBaseCADScene::ShowMeshSlot(bool condition)
+{
+	theInteractorStyle_->ShowMesh(condition);
+}
+
+void ForgBaseLib::FrgBaseCADScene::HideActorsSlot(bool)
+{
+	theInteractorStyle_->HideSelectedActors();
+}
+
+void ForgBaseLib::FrgBaseCADScene::ShowHiddenPartsSlot(bool)
+{
+	theInteractorStyle_->ShowAllActors();
 }
 
 void ForgBaseLib::FrgBaseCADScene::SelectIconSelectedSlot(bool)

@@ -12,7 +12,7 @@ namespace AutLib
 		: public CadRepair_SingularPatch<SurfType>
 	{
 
-		typedef typename SurfType::surfPln surfPln;
+		typedef typename SurfType::planeType surfPln;
 
 		/*Private Data*/
 

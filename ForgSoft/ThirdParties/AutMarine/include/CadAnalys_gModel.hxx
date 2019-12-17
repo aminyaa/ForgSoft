@@ -4,6 +4,7 @@
 
 #include <Geo3d_SizeFunction.hxx>
 #include <GModel_Surface.hxx>
+#include <GModel_Wire.hxx>
 #include <CadAnalys_Model.hxx>
 
 namespace AutLib

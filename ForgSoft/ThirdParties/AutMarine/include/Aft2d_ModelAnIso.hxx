@@ -5,6 +5,10 @@
 #include <Aft_Model.hxx>
 #include <Geo2d_SizeFunction.hxx>
 #include <Geo2d_MetricFunction.hxx>
+#include <Aft2d_OptNodeAnIso_Calculator.hxx>
+#include <Aft2d_FrontAnIsoGlobalData.hxx>
+#include <Aft2d_FrontAnIsoInfo.hxx>
+#include <Aft2d_CoreAnIso.hxx>
 
 namespace AutLib
 {

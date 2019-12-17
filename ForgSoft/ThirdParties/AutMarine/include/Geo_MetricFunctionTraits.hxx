@@ -22,6 +22,10 @@ namespace AutLib
 
 	template<> struct metric_type_from_point<Pnt2d> { typedef Entity2d_Metric1 metricType; };
 	template<> struct metric_type_from_point<Pnt3d> { typedef Entity3d_Metric1 metricType; };
+
+	template<class T> struct metric2_type_from_point {};
+
+	template<> struct metric2_type_from_point<Pnt2d> { typedef Entity2d_Metric2 metricType; };
 }
 
 #endif // !_Geo_MetricFunctionTraits_Header

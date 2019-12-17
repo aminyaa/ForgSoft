@@ -54,6 +54,8 @@ namespace AutLib
 		typedef GModel_Plane planeType;
 		typedef GModel_parWire parWireType;
 
+		typedef GModel_Wire wireType;
+
 		GModel_Surface
 		(
 			const Handle(Geom_Surface)& theGeom,

@@ -244,6 +244,8 @@ namespace AutLib
 			const fileName& name
 		);
 
+		static TopoDS_Shape CombineFaces(const std::vector<TopoDS_Face>& theFaces);
+
 		Standard_Real CharLength(const Handle(Geom_Surface)& theSurface, const Pnt2d& theP0, const Pnt2d& theP1, Numeric_AdaptIntegrationInfo& theInfo);
 
 		template<class SurfType>

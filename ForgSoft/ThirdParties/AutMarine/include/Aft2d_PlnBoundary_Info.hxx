@@ -8,9 +8,9 @@ namespace AutLib
 {
 
 	// Forward Declarations
-	class Aft_MetricPrcsr_Info;
+	class Numeric_AdaptIntegrationInfo;
 
-	typedef Aft_PlnBoundary_Info<Aft_MetricPrcsr_Info>
+	typedef Aft_PlnBoundary_Info<Numeric_AdaptIntegrationInfo>
 		Aft2d_PlnBoundary_Info;
 }
 

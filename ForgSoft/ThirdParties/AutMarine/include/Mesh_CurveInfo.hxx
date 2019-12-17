@@ -41,7 +41,11 @@ namespace AutLib
 		static const Standard_Integer DEFAULT_MAX_LEVEL_LENGTH_CALC;
 		static const Standard_Real DEFAULT_UNDER_RELAXATION;
 
-		Mesh_CurveInfo();
+		Mesh_CurveInfo()
+			: theLengthCalcMaxLevel_(DEFAULT_MAX_LEVEL_LENGTH_CALC)
+			, theUnderRelaxation_(DEFAULT_UNDER_RELAXATION)
+			, IgnoreNonConvergency_(Standard_True)
+		{}
 
 		Standard_Boolean IgnoreNonConvergency() const
 		{

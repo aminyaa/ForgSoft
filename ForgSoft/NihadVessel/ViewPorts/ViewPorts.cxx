@@ -117,6 +117,19 @@ void ForgBaseLib::ViewPorts::SetToolBar()
 	}*/
 	for (int i = 0; i < theScenes_[0]->GetMenus().size(); i++)
 	{
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Screenshot..."))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Export Selected Parts"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Random Colors"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Show Mesh"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Hide"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Show Hidden Parts"))
+			continue;
+
 		theToolButtons_.push_back(FrgNew QToolButton(this));
 		theToolButtons_.last()->setPopupMode(QToolButton::InstantPopup);
 		theToolButtons_.last()->setMenu(theScenes_[0]->GetMenus()[i]);

@@ -4,7 +4,7 @@
 
 #include <Aft2d_PlnCurveAnIso_Base.hxx>
 #include <Pln_Curve.hxx>
-#include <Aft2d_BndEdgeAnIsoFwd.hxx>
+#include <Aft2d_SegmentEdgeAnIso.hxx>
 
 namespace AutLib
 {
@@ -17,8 +17,8 @@ namespace AutLib
 
 	template<>
 	template<>
-	static std::vector<std::shared_ptr<Aft2d_BndEdgeAnIso>> 
-		Aft2d_PlnCurveAnIso::TopoMesh<Aft2d_BndEdgeAnIso>
+	static std::vector<std::shared_ptr<Aft2d_SegmentEdgeAnIso>>
+		Aft2d_PlnCurveAnIso::TopoMesh<Aft2d_SegmentEdgeAnIso>
 		(
 			const std::shared_ptr<Aft2d_PlnCurveAnIso>& theCurve,
 			const std::shared_ptr<Geo2d_MetricPrcsrAnIso>& theMap,

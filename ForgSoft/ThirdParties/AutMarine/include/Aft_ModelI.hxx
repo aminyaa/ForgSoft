@@ -170,7 +170,7 @@ namespace AutLib
 			/*cout << "element index = " << this->NbElements() << std::endl;
 			cout << "condition = " << base::AlgCondition() << std::endl;
 			PAUSE;*/
-			//if (this->NbElements() > 5) continue; 
+			//if (this->NbElements() > 61) continue; 
 			//cout << base::CurrentFront()->Node0()->Coord().Y() << "   " << base::CurrentFront()->Node1()->Coord().Y() << std::endl;
 			/*cout << "index = " << this->NbElements() << std::endl;
 			cout << base::CurrentFront()->Centre() << std::endl;

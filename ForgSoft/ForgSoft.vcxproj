@@ -36,7 +36,7 @@
   <ItemGroup>
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx" />
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItemI.hxx" />
-    <ClInclude Include="NihadVessel\CADScene\CADScene.hxx" />
+    <QtMoc Include="NihadVessel\CADScene\CADScene.hxx" />
     <QtMoc Include="NihadVessel\CustomWindowType\WindowTitleBar.hxx" />
     <QtMoc Include="NihadVessel\CustomWindowType\CustomWindow.hxx" />
     <QtMoc Include="NihadVessel\CustomWindowType\WindowButton.hxx" />

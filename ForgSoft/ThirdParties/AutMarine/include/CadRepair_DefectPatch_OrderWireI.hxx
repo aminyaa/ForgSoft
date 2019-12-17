@@ -8,8 +8,8 @@ namespace AutLib
 	template<class SurfType>
 	Standard_Boolean CadRepair_DefectPatch_OrderWire<SurfType>::Check
 	(
-		const SurfType& theSurface
-		, std::vector<std::shared_ptr<wireType>>& theWires
+		const SurfType& theSurface, 
+		std::vector<std::shared_ptr<wireType>>& theWires
 	)
 	{
 		Debug_Null_Pointer(theSurface.OuterWire());

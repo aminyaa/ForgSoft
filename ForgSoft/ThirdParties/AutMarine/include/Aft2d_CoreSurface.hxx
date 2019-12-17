@@ -17,7 +17,8 @@ namespace AutLib
 		Aft2d_OptNodeSurface_Calculator,
 		Geo2d_SizeFunction, 
 		Aft2d_FrontSurfaceInfo, 
-		Aft2d_FrontSurfaceGlobalData
+		Aft2d_FrontSurfaceGlobalData,
+		Geo2d_MetricFunction
 		> Aft2d_CoreSurface;
 }
 

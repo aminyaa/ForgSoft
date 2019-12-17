@@ -130,12 +130,12 @@ void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 	if (!myItem)
 		return;
 
-	auto tree = dynamic_cast<NihadTree*>(myItem->GetParentTree());
+	/*auto tree = dynamic_cast<NihadTree*>(myItem->GetParentTree());
 	if (!tree)
 	{
 		itemInSplitTreeClickedSlot(tree, item, column);
 		return;
-	}
+	}*/
 
 	FrgBaseTree::itemClickedSlot(item, column);
 	auto& SelectedItems = this->selectedItems();
@@ -183,7 +183,12 @@ void ForgBaseLib::NihadTree::itemInSplitTreeClickedSlot(FrgBaseTree* tree, QTree
 				{
 					auto actor = (scenes.at(iScene))->GetPartFeatureToActor().value(feature);
 					if (SelectedItems.size() > 1)
+					{
+						if (iItem == 0)
+							scenes[iScene]->GetInteractorStyle()->UnSelectAllActors();
+
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
+					}
 					else
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 0, FrgTrue);
 				}
@@ -199,6 +204,7 @@ void ForgBaseLib::NihadTree::NewGeometryShipClickedSlot(bool)
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_BareHull)();
 
 	FrgBaseTreeItem* NihadGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	NihadGeometryTreeItem->setIcon(0, QIcon(FrgICON_Menu_Models_Ship));
 	FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	patch->FwdSection().Tightness0()->SetValue(0.9);
@@ -309,6 +315,7 @@ void ForgBaseLib::NihadTree::NewGeometryPropellerClickedSlot(bool b)
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Model_PropNo1)();
 
 	FrgBaseTreeItem* PropellerGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	PropellerGeometryTreeItem->setIcon(0, QIcon(FrgICON_Menu_Models_Propeller));
 	FrgSharedPtr<AutLib::Leg_Model_PropNo1> patch = std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	auto PropellerProperties = PropellerGeometryTreeItem->GetProperties();
@@ -406,6 +413,7 @@ void ForgBaseLib::NihadTree::NewGeometryDuctClickedSlot(bool b)
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Model_DuctNo1)();
 
 	FrgBaseTreeItem* DuctGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	DuctGeometryTreeItem->setIcon(0, QIcon(FrgICON_Menu_Models_Duct));
 	FrgSharedPtr<AutLib::Leg_Model_DuctNo1> patch = std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	auto DuctProperties = DuctGeometryTreeItem->GetProperties();
@@ -693,14 +701,19 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 {
-	if(std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
-		std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	auto geometryItem = dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_);
 
-	if (std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
-		std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	auto shipItem = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(geometryItem->GetEntity());
+	if (shipItem)
+		shipItem->Perform();
 
-	if (std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
-		std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	auto propellerItem = std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(geometryItem->GetEntity());
+	if (propellerItem)
+		propellerItem->Perform();
+
+	auto ductItem = std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(geometryItem->GetEntity());
+	if (ductItem)
+		ductItem->Perform();
 
 	auto solid = AutLib::Cad3d_TModel::MakeSolid((dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_))->GetTopoDS_Shape(), 1.0e-6);
 
@@ -722,10 +735,17 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 	)
 	);
 
+	if (shipItem)
+		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Ship));
+	if (propellerItem)
+		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Propeller));
+	if (ductItem)
+		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Duct));
+
 	ScrollToItem(thePartTreeItems_.at(thePartTreeItems_.size() - 1));
 }
 
-void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
+void ForgBaseLib::NihadTree::ExportPart(const TopoDS_Shape& shape)
 {
 	QList<QString> QfileTypes;
 	QfileTypes.push_back("IGES (*.igs)");
@@ -751,11 +771,11 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	{
 		if (*ext == "IGES (*.igs)")
 		{
-			AutLib::Cad_Tools::ExportToIGES("MM", ((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
+			AutLib::Cad_Tools::ExportToIGES("MM", shape, fileName.toStdString());
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{
-			AutLib::Cad_Tools::ExportToSTEP(((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
+			AutLib::Cad_Tools::ExportToSTEP(shape, fileName.toStdString());
 		}
 		else if (*ext == "Tecplot (*.plt)")
 		{
@@ -763,7 +783,20 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 		}
 	}
 
-	GetParentMainWindow()->ParseInfoToConsole("\"" + theLastRightClicked_->text(0) + "\" saved successfully at\"" + fileName + "\"");
+	GetParentMainWindow()->ParseInfoToConsole("The part exported successfully at\"" + fileName + "\"");
+}
+
+void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
+{
+	auto part = dynamic_cast<NihadVesselPartTreeItem*>(theLastRightClicked_);
+
+	if (!part)
+	{
+		std::cout << "theLastRightClicked_ is null in NihadTree::ExportPartSlot(bool b)\n";
+		return;
+	}
+
+	ExportPart(part->GetModel()->Shape());
 }
 
 void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)

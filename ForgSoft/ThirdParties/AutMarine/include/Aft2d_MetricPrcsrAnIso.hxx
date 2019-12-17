@@ -6,6 +6,7 @@
 #include <Aft2d_EdgeAnIso.hxx>
 #include <Geo2d_SizeFunction.hxx>
 #include <Geo2d_MetricFunction.hxx>
+#include <Geo2d_MetricPrcsrAnIso.hxx>
 #include <Entity2d_BoxFwd.hxx>
 
 namespace AutLib

@@ -15,7 +15,7 @@ namespace AutLib
 
 		extern std::shared_ptr<CadAnalys_Model_Info> gl_model_analysis_info;
 
-		void InitModelRunTime();
+		void init_model_analysis_info();
 	}
 }
 

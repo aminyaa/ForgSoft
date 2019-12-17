@@ -14,10 +14,13 @@ namespace AutLib
 	// Forward Declarations
 	template
 		<
-		class OptNodeAlg, 
-		class SizeFun, class FrontInfo, 
-		class FrontData, class MetricFun>
-	class Aft_Core;
+		class OptNodeAlg,
+		class SizeFun,
+		class FrontInfo,
+		class FrontData,
+		class MetricFun
+		>
+		class Aft_Core;
 
 	typedef Aft_Core
 		<

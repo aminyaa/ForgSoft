@@ -2,6 +2,7 @@
 #ifndef _CadRepair_Patch_Header
 #define _CadRepair_Patch_Header
 
+#include <Standard_TypeDef.hxx>
 #include <Global_Indexed.hxx>
 
 #include <memory>

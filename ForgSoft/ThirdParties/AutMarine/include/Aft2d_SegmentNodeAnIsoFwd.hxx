@@ -11,9 +11,9 @@ namespace AutLib
 	template<class BndNodeTraits, Mesh_BndNode_Position POS>
 	class Aft_TBndNode;
 
-	struct Aft2d_SegmentNodeAnIsoTraits;
+	struct Aft2d_TBndNodeAnIsoTraits;
 
-	typedef Aft_TBndNode<Aft2d_SegmentNodeAnIsoTraits, Mesh_BndNode_Position_Segment>
+	typedef Aft_TBndNode<Aft2d_TBndNodeAnIsoTraits, Mesh_BndNode_Position_Segment>
 		Aft2d_SegmentNodeAnIso;
 }
 

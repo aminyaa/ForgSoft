@@ -36,6 +36,8 @@ ForgBaseLib::FrgBaseCADPartFeatureBase::~FrgBaseCADPartFeatureBase()
 
 void ForgBaseLib::FrgBaseCADPartFeatureBase::DoAfterConstruct()
 {
+	this->GetContextMenu()->addSeparator();
+
 	FrgString SplitByPatchPartString = "&Split By Patch";
 
 	this->GetContextMenu()->AddItem(SplitByPatchPartString);

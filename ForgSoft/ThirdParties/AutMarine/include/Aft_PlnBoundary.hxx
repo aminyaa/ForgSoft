@@ -9,11 +9,11 @@
 #include <memory>
 #include <vector>
 
-//#include "Aft2d_gPlnRegionSurface.hxx"
-//#include "Aft2d_gPlnCurveSurface.hxx"
-//#include "Aft2d_gPlnWireSurface.hxx"
-//#include "Aft2d_PlnBoundary_Info.hxx"
-//#include "Aft2d_gSegmentEdge.hxx"
+#include "Aft2d_PlnRegion.hxx"
+#include "Aft2d_PlnCurve.hxx"
+#include "Aft2d_PlnWire.hxx"
+#include "Aft2d_PlnBoundary_Info.hxx"
+#include "Aft2d_SegmentEdge.hxx"
 
 namespace AutLib
 {
@@ -58,7 +58,8 @@ namespace AutLib
 
 	public:
 
-		Aft_PlnBoundary()
+		Aft_PlnBoundary(const std::shared_ptr<info>& theInfo)
+			: theInfo_(theInfo)
 		{}
 
 		const std::shared_ptr<metricPrcsr>& MetricProcessor() const
@@ -105,6 +106,9 @@ namespace AutLib
 			info;
 		typedef typename aft_pln_boundary_entity_type<RegionType>::type
 			bndType;
+		typedef Aft_PlnBoundary_Base<typename aft_pln_boundary_entity_type<RegionType>::type>
+			base;
+		typedef typename RegionType::plnCurveType curveType;
 
 		/*Private Data*/
 
@@ -127,7 +131,8 @@ namespace AutLib
 
 	public:
 
-		Aft_PlnBoundary()
+		Aft_PlnBoundary(const std::shared_ptr<info>& theInfo)
+			: theInfo_(theInfo)
 		{}
 
 		const std::shared_ptr<metricPrcsr>& MetricProcessor() const

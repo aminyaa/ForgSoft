@@ -2,6 +2,8 @@
 #include <Numeric_Random.hxx>
 #include <GeoProcessor.hxx>
 #include <Geom_ItemSort.hxx>
+#include <Geo_ApprxCurve_Traits.hxx>
+#include <Standard_Failure.hxx>
 namespace AutLib
 {
 
@@ -125,15 +127,22 @@ namespace AutLib
 			const Segment& theSeg
 		)
 		{
-			typename CurveType::ptType pt0, pt1;
-			typename CurveType::vtType vec0, vec1;
+			typename Geo_ApprxCurve_Traits<CurveType>::ptType pt0, pt1;
+			typename Geo_ApprxCurve_Traits<CurveType>::vtType vec0, vec1;
 
 			theCurve.D1(theSeg.theX0, pt0, vec0);
 			theCurve.D1(theSeg.theX1, pt1, vec1);
+			
+			try
+			{
+				typename Geo_ApprxCurve_Traits<CurveType>::vtType vt(pt0, pt1);
 
-			typename CurveType::vtType vt(pt0, pt1);
-
-			return MAX(vt.Angle(vec0), vt.Angle(vec1));
+				return MAX(vt.Angle(vec0), vt.Angle(vec1));
+			}
+			catch (const Standard_Failure&)
+			{
+				return 0;
+			}
 		}
 
 		template<class CurveType, bool RandSamples>
@@ -144,6 +153,7 @@ namespace AutLib
 			const Standard_Integer theNbSamples,
 			const Standard_Real theApprox,
 			const Standard_Real theAngle,
+			const Standard_Real theMinSizeSQ,
 			const Standard_Integer theLevel,
 			const Standard_Integer theInitlevel,
 			const Standard_Integer theMaxlevel,
@@ -158,6 +168,7 @@ namespace AutLib
 						theNbSamples,
 						theApprox,
 						theAngle,
+						theMinSizeSQ,
 						theLevel + 1, theInitlevel, theMaxlevel, theSegments);
 				Subdivide<CurveType, RandSamples>
 					(
@@ -165,6 +176,7 @@ namespace AutLib
 						theNbSamples,
 						theApprox,
 						theAngle,
+						theMinSizeSQ,
 						theLevel + 1, theInitlevel, theMaxlevel, theSegments);
 				return;
 			}
@@ -179,6 +191,9 @@ namespace AutLib
 			auto approx =
 				GeoLib::CalcApproximate<CurveType, RandSamples>::_(theCurve, theSeg, theNbSamples, sqDis);
 
+			if (sqDis <= theMinSizeSQ)
+				return;
+
 			if (theApprox*sqDis < approx)
 			{
 				Subdivide<CurveType, RandSamples>
@@ -188,6 +203,7 @@ namespace AutLib
 						theNbSamples,
 						theApprox,
 						theAngle,
+						theMinSizeSQ,
 						theLevel + 1, theInitlevel, theMaxlevel, theSegments);
 				Subdivide<CurveType, RandSamples>
 					(
@@ -196,6 +212,7 @@ namespace AutLib
 						theNbSamples,
 						theApprox,
 						theAngle,
+						theMinSizeSQ,
 						theLevel + 1, theInitlevel, theMaxlevel, theSegments);
 				return;
 			}
@@ -210,6 +227,7 @@ namespace AutLib
 						theNbSamples,
 						theApprox,
 						theAngle,
+						theMinSizeSQ,
 						theLevel + 1, theInitlevel, theMaxlevel, theSegments);
 				Subdivide<CurveType, RandSamples>
 					(
@@ -218,6 +236,7 @@ namespace AutLib
 						theNbSamples,
 						theApprox,
 						theAngle,
+						theMinSizeSQ,
 						theLevel + 1, theInitlevel, theMaxlevel, theSegments);
 				return;
 			}
@@ -254,6 +273,7 @@ namespace AutLib
 				theInfo.MaxNbSubdivision(),
 				theInfo.Approx()*theInfo.Approx(),
 				Processor::DegToRadian(theInfo.Angle()),
+				theInfo.MinSize()* theInfo.MinSize(),
 				0, theInfo.InitNbSubdivision(), theInfo.MaxNbSubdivision(), Segments
 				);
 

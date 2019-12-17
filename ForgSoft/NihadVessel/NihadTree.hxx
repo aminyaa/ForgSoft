@@ -7,6 +7,7 @@
 
 class QVariant;
 class QtProperty;
+class TopoDS_Shape;
 
 namespace AutLib
 {
@@ -48,6 +49,8 @@ public:
 	NihadVesselGeometryTreeItem* GetGeometryTreeItem(FrgBaseTreeItem* item);
 	//NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
 	FrgBaseCADPart_Entity* GetPartTreeItem(FrgBaseTreeItem* item);
+
+	void ExportPart(const TopoDS_Shape& shape);
 
 protected Q_SLOTS:
 

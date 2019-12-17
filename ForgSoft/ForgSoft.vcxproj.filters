@@ -153,9 +153,6 @@
     <ClInclude Include="NihadVessel\ViewPorts\ViewPorts.hxx">
       <Filter>NihadVessel\ViewPorts</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\CADScene\CADScene.hxx">
-      <Filter>NihadVessel\CADScene</Filter>
-    </ClInclude>
     <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
       <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
     </ClInclude>
@@ -205,6 +202,9 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\SplitWidget\SplitWidget.hxx">
       <Filter>NihadVessel\SplitWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CADScene\CADScene.hxx">
+      <Filter>NihadVessel\CADScene</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
