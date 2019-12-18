@@ -32,7 +32,7 @@ namespace AutLib
 
 		/*Private Data*/
 
-		const std::shared_ptr<SizeFun>& theSizeFunction_;
+		std::shared_ptr<SizeFun> theSizeFunction_;
 
 		const std::shared_ptr<info>& theInfo_;
 		const std::vector<std::shared_ptr<SurfType>>& theSurfaces_;

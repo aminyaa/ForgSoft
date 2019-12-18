@@ -8,6 +8,7 @@
 namespace AutLib
 {
 	class TModel_Surface;
+	class TModel_Paired;
 }
 
 BeginFrgBaseLib
@@ -43,6 +44,7 @@ public:
 	void CreateActor(FrgBaseCADPart_Entity* part);
 
 	void CreateActor(std::shared_ptr<AutLib::TModel_Surface> surface, FrgBaseCADPartFeatureEntity<AutLib::TModel_Surface>* item);
+	void CreateActor(std::shared_ptr<AutLib::TModel_Paired> curve, FrgBaseCADPartFeatureEntity<AutLib::TModel_Paired>* item);
 
 	void ClearScene();
 

@@ -42,7 +42,7 @@ public:
 
 public slots:
 
-	void RenderSceneSlot();
+	void RenderSceneSlot(FrgBool resetCamera = FrgTrue);
 
 private:
 

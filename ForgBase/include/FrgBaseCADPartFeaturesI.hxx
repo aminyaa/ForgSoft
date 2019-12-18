@@ -1,4 +1,6 @@
 #pragma once
+#include <QtCore/QObject>
+#include <FrgBaseMenu.hxx>
 //#include <FrgBaseCADPartFeatures.hxx>
 
 //ForgBaseLib::CADPartFeatureBase::CADPartFeatureBase
@@ -38,7 +40,7 @@ inline ForgBaseLib::FrgBaseCADPartFeaturesEntity<Entity>::FrgBaseCADPartFeatures
 	const FrgString& title,
 	FrgBaseTreeItem* parentItem
 )
-	: FrgBaseTreeItem(title, parentItem, parentItem->GetParentTree(), parentItem->GetParentMainWindow())
+	: FrgBaseCADPartFeaturesEntity_Base(title, parentItem)
 {
 
 }

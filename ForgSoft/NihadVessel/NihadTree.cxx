@@ -18,6 +18,7 @@
 #include <NihadVesselScenePartTreeItem.hxx>
 #include <NihadVesselScenePreviewTreeItem.hxx>
 #include <SplitTree.hxx>
+#include <AnalyzePart.hxx>
 
 #include <Pnt2d.hxx>
 #include <Entity2d_Box.hxx>
@@ -743,6 +744,8 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Duct));
 
 	ScrollToItem(thePartTreeItems_.at(thePartTreeItems_.size() - 1));
+
+	AnalyzePart* analyze = FrgNew AnalyzePart(thePartTreeItems_.last()->text(0), GetParentMainWindow(), thePartTreeItems_.last());
 }
 
 void ForgBaseLib::NihadTree::ExportPart(const TopoDS_Shape& shape)
@@ -862,18 +865,57 @@ void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
 
 	for (int i = 0; i < nbTreeChildren; i++)
 	{
+		FrgString entityName = (surfaceItem ? "Surface" : "Curve");
 		FrgString name;
 		splitWidget->GetTree()->setItemSelected(splitWidget->GetTree()->topLevelItem(0), true);
 
 		if(i < 9)
-			name = "Surface 0" + FrgString::number(i + 1);
+			name = entityName + " 0" + FrgString::number(i + 1);
 		else
-			name = "Surface " + FrgString::number(i + 1);
+			name = entityName + " " + FrgString::number(i + 1);
 		splitWidget->GetNameLineEdit()->setText(name);
 		emit splitWidget->GetCreateButton()->click();
 	}
 
 	emit splitWidget->GetCloseButton()->click();
+}
+
+void ForgBaseLib::NihadTree::SelectAllPartFeatureEntities(bool)
+{
+	auto partFeature = dynamic_cast<FrgBaseCADPartFeaturesEntity_Base*>(theLastRightClicked_);
+
+	if (!partFeature)
+	{
+		std::cout << "partFeature is null in NihadTree::SelectAllPartFeatureEntities(bool)\n";
+		return;
+	}
+
+	auto surfacesFeature = dynamic_cast<FrgBaseCADPartFeaturesEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(partFeature);
+	auto curvesFeature = dynamic_cast<FrgBaseCADPartFeaturesEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(partFeature);
+
+	QList<FrgBaseTreeItem*> items;
+
+	if (surfacesFeature)
+	{
+		auto listOfSurfaces = surfacesFeature->GetFeatureListEntity();
+		for (int i = 0; i < listOfSurfaces.size(); i++)
+		{
+			items.push_back(listOfSurfaces[i]);
+		}
+
+		this->ScrollToItems(items);
+	}
+
+	if (curvesFeature)
+	{
+		auto listOfCurves = curvesFeature->GetFeatureListEntity();
+		for (int i = 0; i < listOfCurves.size(); i++)
+		{
+			items.push_back(listOfCurves[i]);
+		}
+
+		this->ScrollToItems(items);
+	}
 }
 
 ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)
@@ -929,7 +971,7 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 	}
 }
 
-void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> parts, QList<FrgBase_CADScene_TreeItem*> scenes)
+void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> parts, QList<FrgBase_CADScene_TreeItem*> scenes, FrgBool resetCamera)
 {
 	QList<FrgBaseCADPart_Entity*> output;
 
@@ -960,7 +1002,7 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 			}*/
 
 			//scene->GetPartsPointer() = output;
-			scene->RenderSceneSlot();
+			scene->RenderSceneSlot(resetCamera);
 
 			int index = GetParentMainWindow()->GetTabWidget()->indexOf(scene->GetViewPorts());
 			if (index >= 0)

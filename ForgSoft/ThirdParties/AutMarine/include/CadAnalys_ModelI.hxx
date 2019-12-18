@@ -32,7 +32,7 @@ namespace AutLib
 				<< "the singular surface has no singularity zone!" << endl
 				<< abort(FatalError);
 		}
-
+		cout << "nb zones = " << detection.NbZones() << std::endl;
 		const auto& zones = detection.Zones();
 		for (const auto& x : zones)
 		{
@@ -48,7 +48,7 @@ namespace AutLib
 	template<class SurfType, class SizeFun>
 	void CadAnalys_Model<SurfType, SizeFun>::Perform()
 	{
-		if (NOT Surfaces().empty())
+		if (Surfaces().empty())
 		{
 			FatalErrorIn("void Perform()")
 				<< "the model has not been loaded!" << endl
@@ -56,13 +56,14 @@ namespace AutLib
 		}
 
 		Debug_Null_Pointer(Info());
+		Debug_Null_Pointer(SizeFunction());
 
 		const auto verbose = Info()->Verbose();
 
 		const auto& surfaces = Surfaces();
 		const auto& sizeMap = SizeFunction();
 
-		if (verbose)
+		if (verbose > 1)
 		{
 			GET_MESSAGE << "  - Overriding ParaPlaneAR? " << (Info()->OverrideParaPlaneAR() ? "YES" : "NO");
 			SEND_INFO;
@@ -73,7 +74,7 @@ namespace AutLib
 		{
 			Debug_Null_Pointer(x);
 
-			if (verbose)
+			if (verbose > 1)
 			{
 				GET_MESSAGE << " checking surface nb. " << x->Index() << ";";
 				SEND_INFO;
@@ -82,13 +83,15 @@ namespace AutLib
 				SEND_INFO;
 			}
 			
-			if (verbose)
+			if (verbose > 1)
 			{
 				GET_MESSAGE << "  checking plane balancing...";
 				SEND_INFO;
 			}
 
 			auto arInfo = Info()->GlobalParaPlaneAR();
+			Debug_Null_Pointer(arInfo);
+
 			if (Info()->OverrideParaPlaneAR())
 			{
 				const auto& arMap = Info()->ParaPlaneAR();
@@ -119,7 +122,7 @@ namespace AutLib
 			if (CadRepair_DefectPatch_OrderWire<SurfType>::Check(*x, wires))
 			{
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << " defect wire has been detected: WIRE ORDER";
 					SEND_WARNING;
@@ -140,7 +143,7 @@ namespace AutLib
 			if (CadRepair_DefectPatch_OpenWire<SurfType>::Check(*x, wires, Info()->OpenWireTolerance()))
 			{
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << " defect wire has been detected: OPENNED WIRE";
 					SEND_WARNING;
@@ -163,7 +166,7 @@ namespace AutLib
 			if (CadRepair_DefectPatch_IntersectWire<SurfType>::Check(*x, outerWire, innerWire, Info()->IntersectWireTolerance()))
 			{
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << " defect wire has been detected: INTERSECTED WIRES";
 					SEND_WARNING;
@@ -195,7 +198,7 @@ namespace AutLib
 				}
 			}
 
-			if (verbose)
+			if (verbose > 1)
 			{
 				GET_MESSAGE << " - Overriding metric approximation settings? " << (Info()->OverrideMetricApproximation() ? "YES" : "NO");
 				SEND_INFO;
@@ -223,7 +226,7 @@ namespace AutLib
 				NOT approx->IsDone(),
 				"the Geo_ApprxSurfaceMetric has not been performed!");
 
-			if (verbose)
+			if (verbose > 1)
 			{
 				GET_MESSAGE << "  making an approximation of the surface metric is done!";
 				SEND_INFO;
@@ -245,6 +248,14 @@ namespace AutLib
 				}
 			}
 
+			if (verbose > 1)
+			{
+				GET_MESSAGE << "  surface's max metric determinant = "<< approx->MaxDet();
+				SEND_INFO;
+				GET_MESSAGE << "  max metric determinant criteria = " << normMetric->MaxDet();
+				SEND_INFO;
+			}
+
 			if (approx->MaxDet() > normMetric->MaxDet())
 			{
 
@@ -260,12 +271,12 @@ namespace AutLib
 				continue;
 			}
 
-			if (verbose)
+			if (verbose > 1)
 			{
 				GET_MESSAGE << "  Proceeding to detect the horizons of singularities...";
 				SEND_INFO;
 			}
-
+			
 			auto horizons =
 				std::make_shared<CadSingularity_Horizon>(x->Index(), approx);
 
@@ -275,7 +286,7 @@ namespace AutLib
 				NOT horizons->IsDone(),
 				"the Mesh_SingularHorizon has not been performed!");
 
-			if (verbose)
+			if (verbose > 1)
 			{
 				GET_MESSAGE << "  detecting of horizons has been completed!";
 				SEND_INFO;
@@ -292,7 +303,7 @@ namespace AutLib
 			if (NOT horizons->HasHorizon())
 			{
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << "  ****registering the surface as a perfection one!****";
 					SEND_INFO;
@@ -314,7 +325,7 @@ namespace AutLib
 			}
 			else if (horizons->HasHorizon())
 			{
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << "  Coloring algorithm has been called!";
 					SEND_INFO;
@@ -326,7 +337,7 @@ namespace AutLib
 				colors->Perform();
 				Debug_If_Condition_Message(NOT colors->IsDone(), "the color algorithm has not been performed");
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << "  Coloring the regions has been finished";
 					SEND_INFO;
@@ -349,7 +360,7 @@ namespace AutLib
 					}
 				}
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << "  - Overriding settings? " << (Info()->OverrideSingularityDetection() ? "YES" : "NO");
 					SEND_INFO;
@@ -360,7 +371,8 @@ namespace AutLib
 					GET_MESSAGE << "  - Omega: " << typeDetecInfo->Omega();
 					SEND_INFO;
 				}
-				
+
+				Debug_Null_Pointer(x->Geometry());
 				auto sizeMap2d = std::make_shared<Geo2d_SizeFunction_Surface>(x->Geometry(), sizeMap, x->BoundingBox());
 
 				auto detection = std::make_shared<CadSingularity_Detection<typename SurfType::planeType>>();
@@ -373,7 +385,7 @@ namespace AutLib
 				detection->Perform();
 				Debug_If_Condition_Message(NOT detection->IsDone(), "the type detection algorithm has not been performed");
 
-				if (verbose)
+				if (verbose > 1)
 				{
 					GET_MESSAGE << "  type detection has been performed successfully! ";
 					SEND_INFO;

@@ -71,9 +71,10 @@ public slots:
 	void ExportPartSlot(bool b);
 	void SplitByPatchPartSlot(bool);
 	void SplitByNonContiguousPartSlot(bool);
+	void SelectAllPartFeatureEntities(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
-	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<FrgBase_CADScene_TreeItem*> scenes);
+	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<FrgBase_CADScene_TreeItem*> scenes, FrgBool resetCamera = FrgTrue);
 
 	void PreviewGeometryClickedSlot(bool);
 

@@ -124,7 +124,7 @@ void ForgBaseLib::FrgBaseCADScene::Init()
 	tprop->BoldOn();
 	tprop->SetFontFile(":/Fonts/swissek.ttf");
 	tprop->ShadowOn();
-	tprop->SetColor(0, 0, 0); // (Black) Color
+	tprop->SetColor(0.91, 0.91, 0.91); // (Black) Color
 
 	theLogoActor_->SetDisplayPosition(20, 20);
 	theRenderer_->AddActor2D(theLogoActor_);
@@ -135,21 +135,26 @@ void ForgBaseLib::FrgBaseCADScene::Init()
 	theRenderer_->TwoSidedLightingOn();
 }
 
-void ForgBaseLib::FrgBaseCADScene::Render()
+void ForgBaseLib::FrgBaseCADScene::Render(FrgBool resetCamera)
 {
-	theCamera_->SetPosition(0, 1, 0);
-	theCamera_->SetFocalPoint(0, 0, 0);
-	theCamera_->SetViewUp(0, 0, 1);
-	theCamera_->Azimuth(-180);
+	if (resetCamera)
+	{
+		theCamera_->SetPosition(0, 1, 0);
+		theCamera_->SetFocalPoint(0, 0, 0);
+		theCamera_->SetViewUp(0, 0, 1);
+		theCamera_->Azimuth(-180);
 
-	theRenderer_->SetActiveCamera(theCamera_);
-	theRenderer_->ResetCamera();
-	theRenderer_->ResetCameraClippingRange();
+		theRenderer_->SetActiveCamera(theCamera_);
+		theRenderer_->ResetCamera();
+		theRenderer_->ResetCameraClippingRange();
 
-	this->SetRenderWindow(theRenderWindow_);
+		this->SetRenderWindow(theRenderWindow_);
 
-	theRenderWindow_->Render();
-	theRenderWindowInteractor_->Initialize();
+		theRenderWindow_->Render();
+		theRenderWindowInteractor_->Initialize();
+	}
+	else
+		theRenderWindow_->Render();
 }
 
 void ForgBaseLib::FrgBaseCADScene::StartScene()
@@ -463,7 +468,8 @@ void ForgBaseLib::FrgBaseCADScene::CreateMenus()
 	theMenus_.last()->AddItem("Show Mesh");
 	theMenus_.last()->GetItem("Show Mesh")->setCheckable(FrgTrue);
 	theMenus_.last()->GetItem("Show Mesh")->setChecked(FrgFalse);
-	theMenus_.last()->GetItem("Show Mesh")->setShortcut(QMainWindow::tr("M"));
+	theMenus_.last()->GetItem("Show Mesh")->setShortcutVisibleInContextMenu(true);
+	theMenus_.last()->GetItem("Show Mesh")->setShortcut(QKeySequence(Qt::Key_M));
 	connect(theMenus_.last()->GetItem("Show Mesh"), SIGNAL(triggered(bool)), this, SLOT(ShowMeshSlot(bool)));
 
 	theMenus_.push_back(FrgNew FrgBaseMenu(GetParentTree()->GetParentMainWindow()));

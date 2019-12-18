@@ -19,6 +19,7 @@ ForgBaseLib::FrgBaseTree::FrgBaseTree(FrgBaseMainWindow* parent)
 	this->setHeaderLabel(tr("Simulation"));
 	this->header()->setSectionResizeMode(0, QHeaderView::Interactive);
 	this->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	//this->setSelectionMode(QAbstractItemView::SingleSelection);
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -256,6 +257,7 @@ void ForgBaseLib::FrgBaseTree::ScrollToItems(QList<FrgBaseTreeItem*> items)
 		setItemSelected(items[i], true);
 
 	scrollToItem(items.last());
+	itemClickedSlot(items.last(), 0);
 	//this->setCurrentItem(items.last());
 	//emit itemClickedSlot(items.last(), 0);
 

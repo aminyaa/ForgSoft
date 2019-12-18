@@ -76,10 +76,10 @@ void ForgBaseLib::ViewPorts::ClearScenes()
 		scene->ClearScene();
 }
 
-void ForgBaseLib::ViewPorts::RenderScenes()
+void ForgBaseLib::ViewPorts::RenderScenes(FrgBool resetCamera)
 {
 	for (auto scene : theScenes_)
-		scene->Render();
+		scene->Render(resetCamera);
 
 	for (int i = 0; i < theMdiArea_->subWindowList().size(); i++)
 	{

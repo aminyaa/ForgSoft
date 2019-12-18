@@ -106,7 +106,7 @@ public:
 
 	QAction* GetActionItemInScene(FrgString actionName);
 
-	void Render();
+	void Render(FrgBool resetCamera = FrgTrue);
 
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 

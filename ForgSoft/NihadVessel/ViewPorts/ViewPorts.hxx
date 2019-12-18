@@ -46,7 +46,7 @@ public:
 
 	void ClearScenes();
 
-	void RenderScenes();
+	void RenderScenes(FrgBool resetCamera = FrgTrue);
 
 	void AddScene(CADScene* scene, Qt::WindowFlags flags = Qt::WindowFlags());
 
