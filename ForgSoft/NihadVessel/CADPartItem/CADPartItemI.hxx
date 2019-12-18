@@ -62,6 +62,16 @@ inline void ForgBaseLib::CADPartItem<SurfaceEntity, CurveEntity>::DoAfterConstru
 		, SLOT(ExportPartSlot(bool))
 	);
 
+	FrgString AnalyzePartString = "Analyze Part";
+	this->GetContextMenu()->AddItem(AnalyzePartString);
+	QObject::connect
+	(
+		this->GetContextMenu()->GetItem(AnalyzePartString)
+		, SIGNAL(triggered(bool))
+		, this->GetParentTree()
+		, SLOT(AnalyzePartSlot(bool))
+	);
+
 	/*auto& surfacesList = this->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
 
 	for (int i = 0; i < surfacesList.size(); i++)

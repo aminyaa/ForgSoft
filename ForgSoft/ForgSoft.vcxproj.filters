@@ -168,9 +168,6 @@
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx">
       <Filter>NihadVessel\CADPartItem</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\AnalyzePart\AnalyzePart.hxx">
-      <Filter>NihadVessel\AnalyzePart</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="NihadVessel\NihadTree.hxx">
@@ -214,6 +211,9 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\CADScene\CADScene.hxx">
       <Filter>NihadVessel\CADScene</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\AnalyzePart\AnalyzePart.hxx">
+      <Filter>NihadVessel\AnalyzePart</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

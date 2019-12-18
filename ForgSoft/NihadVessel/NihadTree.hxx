@@ -69,6 +69,7 @@ public slots:
 	void CreatePartFromGeometryClickedSlot(bool b);
 
 	void ExportPartSlot(bool b);
+	void AnalyzePartSlot(bool);
 	void SplitByPatchPartSlot(bool);
 	void SplitByNonContiguousPartSlot(bool);
 	void SelectAllPartFeatureEntities(bool);
