@@ -73,8 +73,22 @@ public:
 	FrgGetMacro(FrgSharedPtr<Entity>, Entity, theEntity_);
 };
 
+class FORGBASE_EXPORT FrgBaseCADPartFeaturesEntity_Base : public FrgBaseTreeItem
+{
+
+private:
+
+public:
+
+	FrgBaseCADPartFeaturesEntity_Base
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parentItem
+	);
+};
+
 template<class Entity>
-class FrgBaseCADPartFeaturesEntity : public FrgBaseTreeItem
+class FrgBaseCADPartFeaturesEntity : public FrgBaseCADPartFeaturesEntity_Base
 {
 
 private:

@@ -18,14 +18,14 @@
 ForgBaseLib::SplitWidget::SplitWidget
 (
 	FrgString name,
-	FrgBaseMainWindow* parenMainWindow,
+	FrgBaseMainWindow* parentMainWindow,
 	SurfaceBlockPtr surfaceBlock,
 	CurveBlockPtr curveBlock,
 	QList<FrgBaseCADScene*> pointerToScenes,
 	FrgBaseCADPart_Entity* parentPart
 )
-	: QWidget(parenMainWindow)
-	, theParentMainWindow_(parenMainWindow)
+	: QWidget(parentMainWindow)
+	, theParentMainWindow_(parentMainWindow)
 {
 	QVBoxLayout* mainLayout = new QVBoxLayout();
 	QHBoxLayout* nameLayout = new QHBoxLayout();
@@ -67,10 +67,18 @@ ForgBaseLib::SplitWidget::SplitWidget
 
 void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 {
+	if (theTree_->GetSurfaceBlock())
+		CloseButtonClickedForSurfaces();
+	if (theTree_->GetCurveBlock())
+		CloseButtonClickedForCurves();
+}
+
+void ForgBaseLib::SplitWidget::CloseButtonClickedForSurfaces()
+{
 	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theTree_->GetParentPart());
 	if (!part)
 	{
-		std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CloseButtonClickedSlot()\n";
+		std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CloseButtonClickedForSurfaces()\n";
 		return;
 	}
 
@@ -107,27 +115,92 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
 		surfaceFeature->GetParentPart() = part;
 	}
 
-	//QList<QTreeWidgetItem*> items;
-	//items.push_back(part);
-	//dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree())->ObjectsSelectedUpdateInSceneSlot(items, part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(0)->GetPointerToScenes());
-
 	part->GetSurfaces() = surfaceBlocks;
 
-	/*for (int iBlock = 0; iBlock < surfaceManager->NbBlocks(); iBlock++)
-	{
-		part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().push_back(FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(surfaceBlocks[iBlock]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity()));
-		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->GetEntity() = surfaceBlocks[iBlock];
-		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
-		part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(iBlock)->GetParentPart() = part;
-	}*/
-
 	part->GetModel()->Faces()->UnSelectAll();
-	part->GetModel()->Segments()->UnSelectAll();
 
-	dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree())->ObjectsSelectedUpdateInSceneSlot
+
+
+	auto tree = dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree());
+
+	if (!tree)
+	{
+		std::cout << "tree is null in SplitWidget::CloseButtonClickedForSurfaces()\n";
+		return;
+	}
+	
+	tree->ObjectsSelectedUpdateInSceneSlot
 	(
 		items,
-		scenes
+		scenes,
+		FrgFalse
+	);
+
+	for (int i = 0; i < theTree_->GetPointerToScenes().size(); i++)
+		theTree_->GetPointerToScenes()[i]->GetParentTree() = theParentMainWindow_->GetTree();
+
+	this->deleteLater();
+}
+
+void ForgBaseLib::SplitWidget::CloseButtonClickedForCurves()
+{
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theTree_->GetParentPart());
+	if (!part)
+	{
+		std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CloseButtonClickedForCurves()\n";
+		return;
+	}
+
+	QList<QTreeWidgetItem*> items;
+	items.push_back(part);
+	auto scenes = part->GetFeatures()->GetCurvesEntity()->GetFeatureEntity(0)->GetPointerToCADSceneTreeItems();
+
+	theParentMainWindow_->GetTreeWidget()->theDockWidget_->setEnabled(true);
+	theParentMainWindow_->GetTreeWidget()->theDockWidget_->show();
+	theParentMainWindow_->GetTreeWidget()->theDockWidget_->raise();
+	theParentMainWindow_->removeDockWidget(theDockWidget_);
+
+	auto listOfCurves = part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity();
+	for (int iCurve = 0; iCurve < listOfCurves.size(); iCurve++)
+	{
+		theParentMainWindow_->GetTree()->GetItems().removeOne(listOfCurves[iCurve]);
+		part->GetFeatures()->GetCurvesEntity()->removeChild(listOfCurves[iCurve]);
+	}
+	part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity().clear();
+
+	std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>> curveBlocks;
+	auto curveManager = part->GetModel()->Segments();
+	curveManager->RetrieveTo(curveBlocks);
+
+	for (int iBlock = 0; iBlock < curveManager->NbBlocks(); iBlock++)
+	{
+		auto curveFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>(curveBlocks[iBlock]->Name().c_str(), part->GetFeatures()->GetCurvesEntity());
+		theParentMainWindow_->GetTree()->GetItems().push_back(curveFeature);
+		part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity().push_back(curveFeature);
+
+		curveFeature->GetEntity() = curveBlocks[iBlock];
+		curveFeature->setIcon(0, QIcon(FrgICONTreeItemPartCurve));
+
+		curveFeature->GetParentPart() = part;
+	}
+
+	part->GetCurves() = curveBlocks;
+
+	part->GetModel()->Segments()->UnSelectAll();
+
+	auto tree = dynamic_cast<NihadTree*>(theParentMainWindow_->GetTree());
+	
+	if (!tree)
+	{
+		std::cout << "tree is null in SplitWidget::CloseButtonClickedForCurves()\n";
+		return;
+	}
+
+	tree->ObjectsSelectedUpdateInSceneSlot
+	(
+		items,
+		scenes,
+		FrgFalse
 	);
 
 	for (int i = 0; i < theTree_->GetPointerToScenes().size(); i++)

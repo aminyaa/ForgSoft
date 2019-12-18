@@ -38,7 +38,7 @@ void ForgBaseLib::FrgBaseCADPartFeatureBase::DoAfterConstruct()
 {
 	this->GetContextMenu()->addSeparator();
 
-	FrgString SplitByPatchPartString = "&Split By Patch";
+	FrgString SplitByPatchPartString = "Split By Patch";
 
 	this->GetContextMenu()->AddItem(SplitByPatchPartString);
 	QObject::connect
@@ -49,7 +49,7 @@ void ForgBaseLib::FrgBaseCADPartFeatureBase::DoAfterConstruct()
 		, SLOT(SplitByPatchPartSlot(bool))
 	);
 
-	FrgString SplitByNonContiguousString = "&Split By Non-Contiguous";
+	FrgString SplitByNonContiguousString = "Split By Non-Contiguous";
 
 	this->GetContextMenu()->AddItem(SplitByNonContiguousString);
 	QObject::connect
@@ -83,4 +83,23 @@ QList<ForgBaseLib::FrgBase_CADScene_TreeItem*> ForgBaseLib::FrgBaseCADPartFeatur
 	}
 
 	return output;
+}
+
+ForgBaseLib::FrgBaseCADPartFeaturesEntity_Base::FrgBaseCADPartFeaturesEntity_Base
+(
+	const FrgString& title,
+	FrgBaseTreeItem* parentItem
+)
+	: FrgBaseTreeItem(title, parentItem, parentItem->GetParentTree(), parentItem->GetParentMainWindow())
+{
+	FrgString SelectAllEntitiesString = "Select All " + this->text(0);
+
+	this->GetContextMenu()->AddItem(SelectAllEntitiesString);
+	QObject::connect
+	(
+		this->GetContextMenu()->GetItem(SelectAllEntitiesString)
+		, SIGNAL(triggered(bool))
+		, this->GetParentTree()
+		, SLOT(SelectAllPartFeatureEntities(bool))
+	);
 }

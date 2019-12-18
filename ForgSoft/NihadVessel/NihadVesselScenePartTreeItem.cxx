@@ -126,14 +126,14 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::DoAfterConstruct()
 	}
 }
 
-void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot()
+void ForgBaseLib::NihadVesselScenePartTreeItem::RenderSceneSlot(FrgBool resetCamera)
 {
 
 	CreateActor();
 
 	theViewPorts_->SetLogoText("TONB");
 
-	theViewPorts_->RenderScenes();
+	theViewPorts_->RenderScenes(resetCamera);
 
 	/*if (theViewPorts_->GetScenes().size() > 1)
 	{

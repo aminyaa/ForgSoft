@@ -68,6 +68,9 @@
     <Filter Include="NihadVessel\SplitWidget">
       <UniqueIdentifier>{f7af29d1-90cc-493f-91b2-121c9ccf6e4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\AnalyzePart">
+      <UniqueIdentifier>{51f8c2dd-9b7c-4143-91ea-0985d87dcc14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -133,6 +136,9 @@
     <ClCompile Include="NihadVessel\SplitWidget\SplitWidget.cxx">
       <Filter>NihadVessel\SplitWidget</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\AnalyzePart\AnalyzePart.cxx">
+      <Filter>NihadVessel\AnalyzePart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -161,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx">
       <Filter>NihadVessel\CADPartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\AnalyzePart\AnalyzePart.hxx">
+      <Filter>NihadVessel\AnalyzePart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

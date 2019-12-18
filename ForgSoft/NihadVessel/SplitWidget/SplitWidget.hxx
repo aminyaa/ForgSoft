@@ -47,7 +47,10 @@ private:
 	QPushButton* theCreateButton_ = FrgNullPtr;
 	QPushButton* theCloseButton_ = FrgNullPtr;
 
-private slots:
+	void CloseButtonClickedForSurfaces();
+	void CloseButtonClickedForCurves();
+
+public slots:
 
 	void CloseButtonClickedSlot();
 
@@ -56,7 +59,7 @@ public:
 	SplitWidget
 	(
 		FrgString name,
-		FrgBaseMainWindow* parenMainWindow,
+		FrgBaseMainWindow* parentMainWindow,
 		SurfaceBlockPtr surfaceBlock,
 		CurveBlockPtr curveBlock,
 		QList<FrgBaseCADScene*> pointerToScenes,

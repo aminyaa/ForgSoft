@@ -76,6 +76,26 @@ void ForgBaseLib::SplitTree::FormTree()
 		item->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
 		GetItems().push_back(item);
 	}
+
+	for (int iCurve = 0; iCurve < curves.size(); iCurve++)
+	{
+		auto item = FrgNew FrgBaseCADPartFeatureEntity<AutLib::TModel_Paired>(QString::number(curves[iCurve]->Index()), this);
+		item->GetEntity() = curves[iCurve];
+		item->GetPointerToScenes() = thePointerToScenes_;
+
+		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		{
+			auto scene = dynamic_cast<CADScene*>(thePointerToScenes_[iScene]);
+			if (!scene) continue;
+
+			scene->CreateActor(curves[iCurve], item);
+			scene->GetParentTree() = this;
+		}
+
+		//auto item = FrgNew FrgBaseTreeItem(QString::number(surfaces[iSurface]->Index()), FrgNullPtr, this, theParentMainWindow_);
+		item->setIcon(0, QIcon(FrgICONTreeItemPartCurve));
+		GetItems().push_back(item);
+	}
 }
 
 void ForgBaseLib::SplitTree::itemInSplitTreeClickedSlot(QTreeWidgetItem* item, int column)
@@ -160,7 +180,10 @@ void ForgBaseLib::SplitTree::CreateButtonClickedSlot()
 		if (theSurfaceBlock_)
 		{
 			if (selected.size() == nbTreeChildren)
+			{
 				part->GetModel()->Faces()->RenameBlock(blockName);
+				theParentSplitWidget_->CloseButtonClickedSlot();
+			}
 			else
 			{
 				part->GetModel()->Faces()->Split(blockName);
@@ -169,8 +192,11 @@ void ForgBaseLib::SplitTree::CreateButtonClickedSlot()
 		}
 		else if (theCurveBlock_)
 		{
-			if(selected.size() == nbTreeChildren)
+			if (selected.size() == nbTreeChildren)
+			{
 				part->GetModel()->Segments()->RenameBlock(blockName);
+				theParentSplitWidget_->CloseButtonClickedSlot();
+			}
 			else
 			{
 				part->GetModel()->Segments()->Split(blockName);

@@ -241,7 +241,7 @@ void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
 				
 				actor->GetProperty()->SetRepresentationToWireframe();
 				actor->GetProperty()->EdgeVisibilityOn();
-				actor->GetProperty()->SetLineWidth(3);
+				actor->GetProperty()->SetLineWidth(2);
 				actor->GetProperty()->SetRenderLinesAsTubes(true);
 				actor->GetProperty()->SetColor(0.0, 0.0, 0.0);
 				actor->GetProperty()->SetAmbient(0.0);
@@ -367,6 +367,78 @@ void ForgBaseLib::CADScene::CreateActor(std::shared_ptr<AutLib::TModel_Surface> 
 
 	HullMapper->SetInputConnection(norms->GetOutputPort());
 	HullMapper->ScalarVisibilityOff();
+
+	GetActors().push_back(actor);
+	GetActors().at(GetActors().size() - 1)->SetMapper(HullMapper);
+
+	AddActorToTheRenderer(actor);
+
+	auto castedItem = dynamic_cast<FrgBaseCADPartFeatureBase*>(item);
+
+	GetActorToPartFeature().insert(actor, castedItem);
+	GetPartFeatureToActor().insert(castedItem, actor);
+}
+
+void ForgBaseLib::CADScene::CreateActor(std::shared_ptr<AutLib::TModel_Paired> curve, FrgBaseCADPartFeatureEntity<AutLib::TModel_Paired>* item)
+{
+	std::shared_ptr<AutLib::Entity3d_Chain> Triangulation;
+
+	auto Edge0 = curve->Edge0();
+	auto Edge1 = curve->Edge1();
+
+	if (Edge0 && Edge1)
+		Triangulation = Edge0->Mesh();
+	else if (Edge0 && !Edge1)
+		Triangulation = Edge0->Mesh();
+	else if (!Edge0 && Edge1)
+		Triangulation = Edge1->Mesh();
+
+	if (!Triangulation) return;
+
+	int nbNodes = Triangulation->NbPoints();
+	int nbElements = Triangulation->NbConnectivity();
+
+	vtkNew<vtkPolyData> Hull;
+	vtkNew<vtkPoints> points;
+	vtkNew<vtkCellArray> polys;
+
+	auto meshPts = Triangulation->Points();
+
+	for (auto i = 0ul; i < nbNodes; ++i)
+	{
+		points->InsertPoint(i, meshPts[i].X(), meshPts[i].Y(), meshPts[i].Z());
+	}
+
+	auto meshConnectivity = Triangulation->Connectivity();
+
+	for (int i = 0; i < nbElements; i++)
+	{
+		int I1 = meshConnectivity[i].Value(0);
+		int I2 = meshConnectivity[i].Value(1);
+		int I3 = I1;
+
+		std::array<std::array<vtkIdType, 3>, 1> order = { { {I1 - 1, I2 - 1, I3 - 1 } } };
+		polys->InsertNextCell(vtkIdType(3), order[0].data());
+	}
+
+	Hull->SetPoints(points);
+	Hull->SetPolys(polys);
+
+	// Now we'll look at it.
+	vtkNew<vtkPolyDataMapper> HullMapper;
+	HullMapper->SetInputData(Hull);
+
+	vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+
+	HullMapper->ScalarVisibilityOff();
+
+	actor->GetProperty()->SetRepresentationToWireframe();
+	actor->GetProperty()->EdgeVisibilityOn();
+	actor->GetProperty()->SetLineWidth(2);
+	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	actor->GetProperty()->SetColor(0.0, 0.0, 0.0);
+	actor->GetProperty()->SetAmbient(0.0);
+	actor->GetProperty()->SetSpecular(0.0);
 
 	GetActors().push_back(actor);
 	GetActors().at(GetActors().size() - 1)->SetMapper(HullMapper);
