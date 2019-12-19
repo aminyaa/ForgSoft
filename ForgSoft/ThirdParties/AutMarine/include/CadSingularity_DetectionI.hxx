@@ -247,7 +247,7 @@ namespace AutLib
 			{
 				GET_MESSAGE << "  - Length of the polygon: " << length;
 				SEND_INFO;
-				GET_MESSAGE << "  - Length < weight*Element Size? " << ((length < 1.25 * size) ? "YES" : "NO");
+				GET_MESSAGE << "  - Length < weight*Element Size? " << ((length < Weight() * size) ? "YES" : "NO");
 				SEND_INFO;
 				GET_MESSAGE << "     Element Size = " << size;
 				SEND_INFO;

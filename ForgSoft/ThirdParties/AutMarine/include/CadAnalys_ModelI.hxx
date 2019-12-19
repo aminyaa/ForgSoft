@@ -32,12 +32,12 @@ namespace AutLib
 				<< "the singular surface has no singularity zone!" << endl
 				<< abort(FatalError);
 		}
-		cout << "nb zones = " << detection.NbZones() << std::endl;
+
 		const auto& zones = detection.Zones();
 		for (const auto& x : zones)
 		{
 			Debug_Null_Pointer(x);
-			if (NOT std::dynamic_pointer_cast<SingularZone_Pole_WholeSide<SurfType>>(x))
+			if (NOT std::dynamic_pointer_cast<SingularZone_Pole_WholeSide<typename SurfType::planeType>>(x))
 			{
 				return Standard_True;
 			}

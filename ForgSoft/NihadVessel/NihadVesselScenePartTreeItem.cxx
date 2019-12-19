@@ -191,7 +191,7 @@ void ForgBaseLib::NihadVesselScenePartTreeItem::CreateActor()
 		auto action = scene->GetActionItemInScene("Draw Grid");
 		if (action)
 		{
-			if(action->isChecked())
+			if (action->isChecked())
 				scene->DrawGrid(10, 5);
 		}
 	}

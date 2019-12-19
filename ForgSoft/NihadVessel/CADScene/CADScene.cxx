@@ -60,6 +60,9 @@ void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
 		{
 			const auto& model = castedPart->GetModel();
 
+			FrgFastParameters_2->Angle = 2.5;
+			FrgFastParameters_2->Deflection = 1.0E-4*model->BoundingBox().Diameter();
+
 			if (!castedPart->GetIsTriangulated())
 			{
 				//FrgExecuteFunctionInProcess(GetParentTree()->GetParentMainWindow(), AutLib::FastDiscrete::Triangulation(model->Shape(), *(FrgFastParameters_2)););
@@ -241,8 +244,8 @@ void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
 				
 				actor->GetProperty()->SetRepresentationToWireframe();
 				actor->GetProperty()->EdgeVisibilityOn();
-				actor->GetProperty()->SetLineWidth(2);
-				actor->GetProperty()->SetRenderLinesAsTubes(true);
+				actor->GetProperty()->SetLineWidth(3.0);
+				//actor->GetProperty()->SetRenderLinesAsTubes(true);
 				actor->GetProperty()->SetColor(0.0, 0.0, 0.0);
 				actor->GetProperty()->SetAmbient(0.0);
 				actor->GetProperty()->SetSpecular(0.0);
@@ -435,7 +438,7 @@ void ForgBaseLib::CADScene::CreateActor(std::shared_ptr<AutLib::TModel_Paired> c
 	actor->GetProperty()->SetRepresentationToWireframe();
 	actor->GetProperty()->EdgeVisibilityOn();
 	actor->GetProperty()->SetLineWidth(2);
-	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	//actor->GetProperty()->SetRenderLinesAsTubes(true);
 	actor->GetProperty()->SetColor(0.0, 0.0, 0.0);
 	actor->GetProperty()->SetAmbient(0.0);
 	actor->GetProperty()->SetSpecular(0.0);
