@@ -789,7 +789,7 @@ void ForgBaseLib::NihadTree::ExportPart(const TopoDS_Shape& shape)
 
 void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 {
-	auto part = dynamic_cast<NihadVesselPartTreeItem*>(theLastRightClicked_);
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
 
 	if (!part)
 	{
