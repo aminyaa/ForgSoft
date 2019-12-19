@@ -257,13 +257,13 @@ void ForgBaseLib::FrgBaseCADScene::DrawGrid(vtkSmartPointer<vtkActor> actor, int
 
 	actor->SetMapper(rgridMapper);
 	actor->GetProperty()->SetRepresentationToWireframe();
-	if(isMajor)
-		actor->GetProperty()->SetLineWidth(2.0);
+	if (isMajor)
+		actor->GetProperty()->SetLineWidth(2.0f);
 	else
-		actor->GetProperty()->SetLineWidth(1.0);
+		actor->GetProperty()->SetLineWidth(1.0f);
 	actor->GetProperty()->EdgeVisibilityOn();
 	//actor->GetProperty()->SetEdgeColor(1.0, 0.0, 0.0);
-	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	//actor->GetProperty()->SetRenderLinesAsTubes(true);
 	actor->GetProperty()->SetAmbient(0.0);
 	//actor->GetProperty()->SetDiffuse(0.0);
 	actor->GetProperty()->SetSpecular(0.0);
@@ -403,8 +403,8 @@ void ForgBaseLib::FrgBaseCADScene::DrawGridMiddleLines(vtkSmartPointer<vtkActor>
 	mapper->SetInputData(linesPolyData);
 
 	actor->SetMapper(mapper);
-	actor->GetProperty()->SetLineWidth(3.0);
-	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	actor->GetProperty()->SetLineWidth(3.0f);
+	//actor->GetProperty()->SetRenderLinesAsTubes(true);
 	actor->GetProperty()->SetAmbient(0.0);
 	actor->GetProperty()->SetSpecular(0.0);
 	actor->GetProperty()->ShadingOn();
