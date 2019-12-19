@@ -3,6 +3,8 @@
 #define _AnalyzePart_Header
 
 #include <FrgBaseGlobals.hxx>
+#include <CadAnalys_tModel.hxx>
+#include <vtkSmartPointer.h>
 
 #include <QtWidgets/QWidget>
 
@@ -11,14 +13,24 @@ class QHBoxLayout;
 class QVBoxLayout;
 class QLabel;
 class QPushButton;
+class QDockWidget;
+
+class vtkActor;
+
+namespace AutLib
+{
+	class TModel_Surface;
+}
 
 BeginFrgBaseLib
 
 class FrgBaseMainWindow;
 class FrgBaseCADPart_Entity;
+class FrgBaseCADScene;
 
 class AnalyzePart : public QWidget
 {
+	Q_OBJECT
 
 	struct ContainerItems_Struct
 	{
@@ -37,6 +49,7 @@ class AnalyzePart : public QWidget
 
 	struct ButtonItems_Struct
 	{
+		QPushButton* theAnalyzeButton_ = FrgNullPtr;
 		QPushButton* theRepairButton_ = FrgNullPtr;
 		QPushButton* theCloseButton_ = FrgNullPtr;
 	};
@@ -50,10 +63,14 @@ private:
 	QGridLayout* theContainerLayout_ = FrgNullPtr;
 	QHBoxLayout* theButtonLayout_ = FrgNullPtr;
 	ContainerItems_Struct* theContainerItems_ = FrgNullPtr;
-	QPushButton* theAnalyzeButton_ = FrgNullPtr;
 	ButtonItems_Struct* theButtonItems_ = FrgNullPtr;
 
 	QVBoxLayout* theMainLayout_ = FrgNullPtr;
+	QDockWidget* theDockWidget_ = FrgNullPtr;
+
+	std::shared_ptr<AutLib::CadAnalys_tModel> theAnalyzeObject_;
+	QList<FrgBaseCADScene*> thePointerToScenes_;
+	QList<QMap<std::shared_ptr<AutLib::TModel_Surface>, vtkSmartPointer<vtkActor>>> theListOfMapTModelSurfaceToActor_;
 
 private:
 
@@ -68,8 +85,14 @@ public:
 	(
 		FrgString name,
 		FrgBaseMainWindow* parentMainWindow,
-		FrgBaseCADPart_Entity* parentPart
+		FrgBaseCADPart_Entity* parentPart,
+		QList<FrgBaseCADScene*> pointerToScenes
 	);
+
+public slots:
+
+	void AnalyzeClickedSlot(bool);
+	void CloseButtonClickedSlot(bool);
 
 };
 

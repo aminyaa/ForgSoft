@@ -744,8 +744,6 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Duct));
 
 	ScrollToItem(thePartTreeItems_.at(thePartTreeItems_.size() - 1));
-
-	AnalyzePart* analyze = FrgNew AnalyzePart(thePartTreeItems_.last()->text(0), GetParentMainWindow(), thePartTreeItems_.last());
 }
 
 void ForgBaseLib::NihadTree::ExportPart(const TopoDS_Shape& shape)
@@ -800,6 +798,27 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	}
 
 	ExportPart(part->GetModel()->Shape());
+}
+
+void ForgBaseLib::NihadTree::AnalyzePartSlot(bool)
+{
+	auto castedPart = dynamic_cast<FrgBaseCADPart_Entity*>(theLastRightClicked_);
+	if (!castedPart)
+	{
+		std::cout << "castedPart is null in NihadTree::AnalyzePartSlot(bool)\n";
+		return;
+	}
+
+	auto castedPartToEntity = dynamic_cast<FrgBaseCADPart<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(castedPart);
+	if (!castedPartToEntity)
+	{
+		std::cout << "castedPartToEntity is null in NihadTree::AnalyzePartSlot(bool)\n";
+		return;
+	}
+
+	QList<FrgBaseCADScene*> pointerToScenes = castedPartToEntity->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(0)->GetPointerToScenes();
+
+	AnalyzePart* analyze = FrgNew AnalyzePart(castedPart->text(0), GetParentMainWindow(), castedPart, pointerToScenes);
 }
 
 void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
