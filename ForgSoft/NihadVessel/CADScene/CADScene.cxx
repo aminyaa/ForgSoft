@@ -9,7 +9,13 @@
 #include <Cad_Tools.hxx>
 #include <TopoDS_Face.hxx>
 #include <QtWidgets/QFileDialog>
+#include <vtksys/SystemTools.hxx>
 #include <array>
+#include <chrono>
+#include <iterator>
+#include <thread>
+#include <vector>
+#include <random>
 
 #include <vtkRenderer.h>
 #include <vtkPolyData.h>
@@ -21,6 +27,9 @@
 #include <vtkTriangleMeshPointNormals.h>
 #include <vtkTransform.h>
 #include <vtkProperty.h>
+#include <vtkCameraInterpolator.h>
+#include <vtkCamera.h>
+#include <vtkRenderWindow.h>
 
 #include <Cad3d_TModel.hxx>
 #include <TModel_EntityManager.hxx>
@@ -45,6 +54,65 @@ ForgBaseLib::CADScene::CADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeIte
 void ForgBaseLib::CADScene::AddActorToTheRenderer(vtkSmartPointer<vtkActor> actor)
 {
 	GetRenderer()->AddActor(actor);
+}
+
+void ComputeKeyPoints(vtkPolyData *polyData, std::array<double, 3> &center,
+	std::vector<std::array<double, 3>> &keyPoints)
+{
+	std::mt19937 mt(4355412); //Standard mersenne_twister_engine
+	std::uniform_real_distribution<double> dis(1.0, 3.0);
+
+	// Get Bounding Box
+	std::array<double, 6> bounds;
+	polyData->GetBounds(bounds.data());
+
+	double range;
+	range = std::max(std::max(bounds[1] - bounds[0], bounds[3] - bounds[2]),
+		bounds[5] - bounds[3]);
+
+	std::vector<std::array<double, 3>> points(8);
+	std::array<double, 3> point;
+	point = { {bounds[0], bounds[2], bounds[4]} };
+	points[0] = point;
+
+	point = { {bounds[1], bounds[2], bounds[4]} };
+	points[1] = point;
+
+	point = { {bounds[1], bounds[2], bounds[5]} };
+	points[2] = point;
+
+	point = { {bounds[0], bounds[2], bounds[5]} };
+	points[3] = point;
+
+	point = { {bounds[0], bounds[3], bounds[4]} };
+	points[4] = point;
+
+	point = { {bounds[1], bounds[3], bounds[4]} };
+	points[5] = point;
+
+	point = { {bounds[1], bounds[3], bounds[5]} };
+	points[6] = point;
+
+	point = { {bounds[0], bounds[3], bounds[5]} };
+	points[7] = point;
+
+	polyData->GetCenter(center.data());
+
+	for (size_t i = 0; i < points.size(); ++i)
+	{
+		std::array<double, 3> direction;
+		for (auto j = 0; j < 3; ++j)
+		{
+			direction[j] = points[i][j] - center[j];
+		}
+		vtkMath::Normalize(direction.data());
+		double factor = dis(mt);
+		keyPoints.resize(8);
+		for (auto j = 0; j < 3; ++j)
+		{
+			keyPoints[i][j] = points[i][j] + direction[j] * range * factor;
+		}
+	}
 }
 
 void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
@@ -177,6 +245,44 @@ void ForgBaseLib::CADScene::CreateActor(FrgBaseCADPart_Entity* part)
 						}
 					}
 				}
+
+				/*vtkSmartPointer<vtkCameraInterpolator> interpolator =
+					vtkSmartPointer<vtkCameraInterpolator>::New();
+				interpolator->SetInterpolationTypeToSpline();
+
+				std::array<double, 3> center1;
+				std::vector<std::array<double, 3>> keyPoints;
+				ComputeKeyPoints(Hull, center1, keyPoints);
+
+				for (size_t i = 0; i < keyPoints.size() + 1; ++i) {
+					auto j = i;
+					vtkSmartPointer<vtkCamera> cam =
+						vtkSmartPointer<vtkCamera>::New();
+					cam->SetFocalPoint(center1.data());
+					if (i < keyPoints.size())
+					{
+						cam->SetPosition(keyPoints[i].data());
+					}
+					else
+					{
+						cam->SetPosition(keyPoints[0].data());
+					}
+					cam->SetViewUp(0.0, 0.0, 1.0);
+					interpolator->AddCamera((double)i, cam);
+				}
+
+				auto numSteps = 600;
+				auto minT = interpolator->GetMinimumT();
+				auto maxT = interpolator->GetMaximumT();
+				for (auto i = 0; i < numSteps; ++i)
+				{
+					double t = (double)i * (maxT - minT) / (double)(numSteps - 1);
+					interpolator->InterpolateCamera(t, GetRenderer()->GetActiveCamera());
+					GetRenderer()->ResetCameraClippingRange();
+					GetRenderWindow()->Render();
+					std::this_thread::sleep_for(std::chrono::milliseconds(50));
+				}*/
+
 			}
 
 			for (int iBlock = 0; iBlock < curveBlocks.size(); iBlock++)

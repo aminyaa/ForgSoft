@@ -7,6 +7,7 @@
 #include <FrgBaseMenu.hxx>
 #include <FrgMenu_View.hxx>
 #include <FrgBaseGlobalsICONS.hxx>
+#include <FrgBaseGlobalsThread.hxx>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QToolBar>
 
@@ -154,7 +155,82 @@ void ForgBaseLib::FrgBaseCADScene::Render(FrgBool resetCamera)
 		theRenderWindowInteractor_->Initialize();
 	}
 	else
+	{
+		/*vtkSmartPointer<vtkPolyData> Hull = vtkPolyData::SafeDownCast(GetActors()[0]->GetMapper()->GetInputAsDataSet());
+
+		vtkSmartPointer<vtkCameraInterpolator> interpolator =
+			vtkSmartPointer<vtkCameraInterpolator>::New();
+		interpolator->SetInterpolationTypeToSpline();
+
+		std::array<double, 3> center1;
+		std::vector<std::array<double, 3>> keyPoints;
+		ComputeKeyPoints(Hull, center1, keyPoints);
+
+		for (size_t i = 0; i < keyPoints.size() + 1; ++i) {
+			auto j = i;
+			vtkSmartPointer<vtkCamera> cam =
+				vtkSmartPointer<vtkCamera>::New();
+			cam->SetFocalPoint(center1.data());
+			if (i < keyPoints.size())
+			{
+				cam->SetPosition(keyPoints[i].data());
+			}
+			else
+			{
+				cam->SetPosition(keyPoints[0].data());
+			}
+			cam->SetViewUp(0.0, 0.0, 1.0);
+			interpolator->AddCamera((double)i, cam);
+		}
+
+		auto numSteps = 60;
+		auto minT = interpolator->GetMinimumT();
+		auto maxT = interpolator->GetMaximumT();
+		for (auto i = 0; i < numSteps; ++i)
+		{
+			double t = (double)i * (maxT - minT) / (double)(numSteps - 1);
+			vtkSmartPointer<vtkCamera> cam =
+				vtkSmartPointer<vtkCamera>::New();
+			interpolator->InterpolateCamera(t, cam);
+
+			theCamera_->SetPosition(cam->GetPosition());
+			theCamera_->SetFocalPoint(cam->GetFocalPoint());
+			theCamera_->SetViewUp(cam->GetViewUp());
+
+			theRenderer_->ResetCamera();
+
+			this->SetRenderWindow(theRenderWindow_);
+
+			theRenderWindow_->Render();
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		}*/
+
+		/*auto myFunc = fnptr<void()>([&]
+			{
+				theRenderWindow_->Render();
+			});
+
+		auto myLockFunc = fnptr<void()>([&]
+			{
+				std::cout << "";
+			});
+
+		FrgVector<FrgBaseThread*> thread;
+		thread.push_back(new FrgBaseThread(this->GetParentTree()->GetParentMainWindow(), myFunc, FrgNullPtr, myLockFunc));
+		thread[0]->start();
+
+		FrgVector<QEventLoop*> eventLoop;
+		for (int i = 0; i < thread.size(); i++)
+		{
+			eventLoop.push_back(FrgNew QEventLoop());
+			QObject::connect(thread[i], SIGNAL(finished()), eventLoop[i], SLOT(quit()));
+			if (!thread[i]->isFinished())
+				eventLoop[i]->exec();
+		}*/
+
 		theRenderWindow_->Render();
+	}
 }
 
 void ForgBaseLib::FrgBaseCADScene::StartScene()

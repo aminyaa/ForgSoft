@@ -20,6 +20,10 @@ class vtkActor;
 namespace AutLib
 {
 	class TModel_Surface;
+	class Pnt3d;
+
+	template<class T>
+	class GeoSizeFun_Uniform;
 }
 
 BeginFrgBaseLib
@@ -68,9 +72,12 @@ private:
 	QVBoxLayout* theMainLayout_ = FrgNullPtr;
 	QDockWidget* theDockWidget_ = FrgNullPtr;
 
-	std::shared_ptr<AutLib::CadAnalys_tModel> theAnalyzeObject_;
 	QList<FrgBaseCADScene*> thePointerToScenes_;
 	QList<QMap<std::shared_ptr<AutLib::TModel_Surface>, vtkSmartPointer<vtkActor>>> theListOfMapTModelSurfaceToActor_;
+
+	std::shared_ptr<AutLib::CadAnalys_tModel> theAnalyzeObject_;
+	std::shared_ptr<AutLib::GeoSizeFun_Uniform<AutLib::Pnt3d>> theAnalyzeSizeFunction_;
+	std::vector<std::shared_ptr<AutLib::TModel_Surface>> theSurfaces_;
 
 private:
 

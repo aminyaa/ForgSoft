@@ -1,5 +1,6 @@
 #include <AnalyzePart.hxx>
 #include <FrgBaseMainWindow.hxx>
+#include <FrgBaseGlobalsThread.hxx>
 
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGridLayout>
@@ -7,6 +8,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QDockWidget>
+#include <QtCore/QMutex>
 
 #include <FrgBaseCADPart.hxx>
 #include <FrgBaseCADScene.hxx>
@@ -108,39 +110,27 @@ ForgBaseLib::AnalyzePart::AnalyzePart
 		return;
 	}
 
+	castedPart->GetModel()->RetrieveFacesTo(theSurfaces_);
+
 	for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
 		if (!(thePointerToScenes_[iScene]->GetActors().isEmpty()))
 			for (int i = 0; i < thePointerToScenes_[iScene]->GetActors().size(); i++)
 				thePointerToScenes_[iScene]->GetActors()[i]->SetVisibility(false);
 
-	//auto blocks = castedPart->GetSurfaces();
-	std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
-	castedPart->GetModel()->RetrieveFacesTo(surfaces);
-
-	/*for (int iBlock = 0; iBlock < blocks.size(); iBlock++)
+	for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
 	{
-		std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfacesTmp;
-		blocks[iBlock]->RetrieveEntitiesTo(surfacesTmp);
-		for (int i = 0; i < surfacesTmp.size(); i++)
-			surfaces.push_back(surfacesTmp[i]);
-	}*/
+		auto scene = dynamic_cast<CADScene*>(thePointerToScenes_[iScene]);
+		if (!scene) continue;
 
-	for (int iSurface = 0; iSurface < surfaces.size(); iSurface++)
-	{
+		theListOfMapTModelSurfaceToActor_.push_back
+		(
+			QMap<std::shared_ptr<AutLib::TModel_Surface>, vtkSmartPointer<vtkActor>>()
+		);
 
-		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		for (int iSurface = 0; iSurface < theSurfaces_.size(); iSurface++)
 		{
-			auto scene = dynamic_cast<CADScene*>(thePointerToScenes_[iScene]);
-			if (!scene) continue;
-
-			scene->CreateActor(surfaces[iSurface], FrgNullPtr);
-
-			theListOfMapTModelSurfaceToActor_.push_back
-			(
-				QMap<std::shared_ptr<AutLib::TModel_Surface>, vtkSmartPointer<vtkActor>>()
-			);
-
-			theListOfMapTModelSurfaceToActor_.last().insert(surfaces[iSurface], scene->GetActors().last());
+			scene->CreateActor(theSurfaces_[iSurface], FrgNullPtr);
+			theListOfMapTModelSurfaceToActor_.last().insert(theSurfaces_[iSurface], scene->GetActors().last());
 		}
 	}
 }
@@ -204,8 +194,8 @@ void ForgBaseLib::AnalyzePart::AnalyzeClickedSlot(bool)
 		return;
 	}
 
-	//if (!theAnalyzeObject_)
-	//{
+	/*if (!theAnalyzeObject_)
+	{
 		auto tModel = castedPart->GetModel();
 		auto sizeFun = std::make_shared<AutLib::GeoSizeFun_Uniform<AutLib::Pnt3d>>(0.1, tModel->BoundingBox());
 		std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
@@ -214,7 +204,17 @@ void ForgBaseLib::AnalyzePart::AnalyzeClickedSlot(bool)
 		AutLib::cadAnalysSys::init_model_analysis_info();
 		AutLib::cadAnalysSys::gl_model_analysis_info->SetVerbisity(1);
 		theAnalyzeObject_ = std::make_shared<AutLib::CadAnalys_tModel>(surfaces, sizeFun, AutLib::cadAnalysSys::gl_model_analysis_info);
-	//}
+	}*/
+
+	if (!theAnalyzeObject_)
+	{
+		const auto& tModel = castedPart->GetModel();
+		AutLib::cadAnalysSys::init_model_analysis_info();
+		theAnalyzeSizeFunction_ = std::make_shared<AutLib::GeoSizeFun_Uniform<AutLib::Pnt3d>>(0.1, tModel->BoundingBox());
+
+		AutLib::cadAnalysSys::gl_model_analysis_info->SetVerbisity(1);
+		theAnalyzeObject_ = std::make_shared<AutLib::CadAnalys_tModel>(theSurfaces_, theAnalyzeSizeFunction_, AutLib::cadAnalysSys::gl_model_analysis_info);
+	}
 
 	theAnalyzeObject_->Perform();
 
@@ -228,22 +228,59 @@ void ForgBaseLib::AnalyzePart::AnalyzeClickedSlot(bool)
 	auto deepSingulars = theAnalyzeObject_->DeepSingulars();
 	auto regulars = theAnalyzeObject_->Regulars();
 
-	std::map<Standard_Integer, std::shared_ptr<AutLib::CadRepair_Patch<AutLib::TModel_Surface>>>::iterator it;
-	for (it = commonSingulars.begin(); it != commonSingulars.end(); it++)
-	{
-		//x.second(x.first())->Surface();
-	}
-
 	for (const auto& x : commonSingulars)
 	{
 		for (int i = 0; i < theListOfMapTModelSurfaceToActor_.size(); i++)
 		{
 			if (theListOfMapTModelSurfaceToActor_[i].contains(x.second->Surface()))
-				theListOfMapTModelSurfaceToActor_[i].value(x.second->Surface())->GetProperty()->SetColor(0.9451, 0.768627, 0.058824); // Yellow
+			{
+				if (theListOfMapTModelSurfaceToActor_[i].contains(x.second->Surface()))
+					theListOfMapTModelSurfaceToActor_[i].value(x.second->Surface())->GetProperty()->SetColor(0.9451, 0.768627, 0.058824); // Yellow
+			}
+
+			/*auto myFunc = fnptr<void()>([&]
+			{
+					thePointerToScenes_[i]->Render(FrgFalse);
+				});
+
+			auto myLockFunc = fnptr<void()>([&]
+				{
+						std::cout << "";
+				});
+
+			FrgVector<FrgBaseThread*> thread;
+			thread.push_back(new FrgBaseThread(theParentMainWindow_, myFunc, myMutex, myLockFunc));
+
+			auto saveParent = thePointerToScenes_[i]->parentWidget();
+			thePointerToScenes_[i]->setParent(FrgNullPtr);
+			thePointerToScenes_[i]->moveToThread(thread[0]);
+			std::cout << "thePointerToScenes_ thread = " << thePointerToScenes_[i]->thread() << std::endl;
+			std::cout << "main thread = " << theParentMainWindow_->thread() << std::endl;
+			system("pause");
+			thread[0]->start();
+
+			FrgVector<QEventLoop*> eventLoop;
+			for (int i = 0; i < thread.size(); i++)
+			{
+				eventLoop.push_back(FrgNew QEventLoop());
+				QObject::connect(thread[i], SIGNAL(finished()), eventLoop[i], SLOT(quit()));
+				if (!thread[i]->isFinished())
+					eventLoop[i]->exec();
+			}
+			thePointerToScenes_[i]->setParent(saveParent);*/
 		}
 
-		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
-			thePointerToScenes_[iScene]->Render(FrgFalse);
+		/*for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		{
+			FrgExecuteFunctionInProcessMoveToThread
+			(
+				theParentMainWindow_,
+				std::cout << "";,
+				myMutex,
+				thePointerToScenes_[iScene]->Render(FrgFalse);,
+				thePointerToScenes_[iScene]
+			);
+		}*/
 	}
 
 	for (const auto& x : defects)
@@ -254,8 +291,17 @@ void ForgBaseLib::AnalyzePart::AnalyzeClickedSlot(bool)
 				theListOfMapTModelSurfaceToActor_[i].value(x.second->Surface())->GetProperty()->SetColor(0.90588, 0.29804, 0.235294); // Red
 		}
 
-		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
-			thePointerToScenes_[iScene]->Render(FrgFalse);
+		/*for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		{
+			FrgExecuteFunctionInProcessMoveToThread
+			(
+				theParentMainWindow_,
+				std::cout << "";,
+				myMutex,
+				thePointerToScenes_[iScene]->Render(FrgFalse);,
+				thePointerToScenes_[iScene]
+			);
+		}*/
 	}
 
 	for (const auto& x : deepSingulars)
@@ -266,8 +312,17 @@ void ForgBaseLib::AnalyzePart::AnalyzeClickedSlot(bool)
 				theListOfMapTModelSurfaceToActor_[i].value(x.second->Surface())->GetProperty()->SetColor(0.556863, 0.266667, 0.6784314); // Purple
 		}
 
-		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
-			thePointerToScenes_[iScene]->Render(FrgFalse);
+		/*for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		{
+			FrgExecuteFunctionInProcessMoveToThread
+			(
+				theParentMainWindow_,
+				std::cout << "";,
+				myMutex,
+				thePointerToScenes_[iScene]->Render(FrgFalse);,
+				thePointerToScenes_[iScene]
+			);
+		}*/
 	}
 
 	for (const auto& x : regulars)
@@ -278,9 +333,21 @@ void ForgBaseLib::AnalyzePart::AnalyzeClickedSlot(bool)
 				theListOfMapTModelSurfaceToActor_[i].value(x.second->Surface())->GetProperty()->SetColor(0.180392, 0.52549, 0.756863); // Blue
 		}
 
-		for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
-			thePointerToScenes_[iScene]->Render(FrgFalse);
+		/*for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		{
+			FrgExecuteFunctionInProcessMoveToThread
+			(
+				theParentMainWindow_,
+				std::cout << "";,
+				myMutex,
+				thePointerToScenes_[iScene]->Render(FrgFalse);,
+				thePointerToScenes_[iScene]
+			);
+		}*/
 	}
+
+	for (int iScene = 0; iScene < thePointerToScenes_.size(); iScene++)
+		thePointerToScenes_[iScene]->Render(FrgFalse);
 }
 
 void ForgBaseLib::AnalyzePart::CloseButtonClickedSlot(bool)
@@ -292,12 +359,10 @@ void ForgBaseLib::AnalyzePart::CloseButtonClickedSlot(bool)
 
 	for (int i = 0; i < theListOfMapTModelSurfaceToActor_.size(); i++)
 	{
-		int iScene = 0;
 		for (auto it = theListOfMapTModelSurfaceToActor_[i].begin(); it != theListOfMapTModelSurfaceToActor_[i].end(); it++)
 		{
-			thePointerToScenes_[iScene]->RemoveActor(it.value());
-			thePointerToScenes_[iScene]->GetActors().removeOne(it.value());
-			iScene++;
+			thePointerToScenes_[i]->RemoveActor(it.value());
+			thePointerToScenes_[i]->GetActors().removeOne(it.value());
 		}
 	}
 

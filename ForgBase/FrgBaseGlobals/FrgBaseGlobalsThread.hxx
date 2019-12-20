@@ -4,9 +4,10 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseThread.hxx>
-#include <QtCore/QEventLoop>
 
+#include <QtCore/QEventLoop>
 #include <QtCore/QObject>
+#include <QtCore/QMutex>
 
 #include <type_traits>
 #include <utility>
@@ -58,12 +59,13 @@ auto functionName = fnptr<void()>([&]{function;});
 //if (!MAKE_UNIQUE(thread).isFinished())\
 //MAKE_UNIQUE(eventLoop).exec();
 
-#define FrgExecuteFunctionInMultiProcess(parentMainWindow, N, function)\
+#define FrgExecuteFunctionInMultiProcess(parentMainWindow, N, function, Mutex, lockFunction)\
 FrgDefineProcessFunction(MAKE_UNIQUE(func), function); \
+FrgDefineProcessFunction(MAKE_UNIQUE(lockFunc), lockFunction); \
 FrgVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func)));\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
 MAKE_UNIQUE(thread).at(i)->start();\
 }\
 FrgVector<QEventLoop*> MAKE_UNIQUE(eventLoop);\
@@ -75,6 +77,27 @@ if (!MAKE_UNIQUE(thread).at(i)->isFinished())\
 MAKE_UNIQUE(eventLoop).at(i)->exec();\
 }
 
-#define FrgExecuteFunctionInProcess(parentMainWindow, function) FrgExecuteFunctionInMultiProcess(parentMainWindow, 1, function)
+#define FrgExecuteFunctionInMultiProcessMoveToThread(parentMainWindow, N, function, Mutex, lockFunction, moveTothread)\
+FrgDefineProcessFunction(MAKE_UNIQUE(func), function); \
+FrgDefineProcessFunction(MAKE_UNIQUE(lockFunc), lockFunction); \
+FrgVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
+for(int i = 0; i < N; i++)\
+{\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
+if(moveTothread)\
+moveTothread->moveToThread(MAKE_UNIQUE(thread)[i]);\
+MAKE_UNIQUE(thread).at(i)->start();\
+}\
+FrgVector<QEventLoop*> MAKE_UNIQUE(eventLoop);\
+for(int i = 0; i < N; i++)\
+{\
+MAKE_UNIQUE(eventLoop).push_back(FrgNew QEventLoop());\
+QObject::connect(MAKE_UNIQUE(thread).at(i), SIGNAL(finished()), MAKE_UNIQUE(eventLoop).at(i), SLOT(quit())); \
+if (!MAKE_UNIQUE(thread).at(i)->isFinished())\
+MAKE_UNIQUE(eventLoop).at(i)->exec();\
+}
+
+#define FrgExecuteFunctionInProcess(parentMainWindow, function, Mutex, lockFunction) FrgExecuteFunctionInMultiProcess(parentMainWindow, 1, function, Mutex, lockFunction)
+#define FrgExecuteFunctionInProcessMoveToThread(parentMainWindow, function, Mutex, lockFunction, moveTothread) FrgExecuteFunctionInMultiProcess(parentMainWindow, 1, function, Mutex, lockFunction, moveTothread)
 
 #endif // !_FrgBaseGlobalsThread_Header
