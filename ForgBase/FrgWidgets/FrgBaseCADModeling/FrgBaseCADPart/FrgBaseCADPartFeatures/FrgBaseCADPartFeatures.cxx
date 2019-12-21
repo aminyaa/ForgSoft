@@ -43,7 +43,7 @@ void ForgBaseLib::FrgBaseCADPartFeatureBase::DoAfterConstruct()
 	this->GetContextMenu()->AddItem(SplitByPatchPartString);
 	QObject::connect
 	(
-		this->GetContextMenu()->GetItem(SplitByPatchPartString.remove('&'))
+		this->GetContextMenu()->GetItem(SplitByPatchPartString)
 		, SIGNAL(triggered(bool))
 		, this->GetParentTree()
 		, SLOT(SplitByPatchPartSlot(bool))
@@ -54,11 +54,25 @@ void ForgBaseLib::FrgBaseCADPartFeatureBase::DoAfterConstruct()
 	this->GetContextMenu()->AddItem(SplitByNonContiguousString);
 	QObject::connect
 	(
-		this->GetContextMenu()->GetItem(SplitByNonContiguousString.remove('&'))
+		this->GetContextMenu()->GetItem(SplitByNonContiguousString)
 		, SIGNAL(triggered(bool))
 		, this->GetParentTree()
 		, SLOT(SplitByNonContiguousPartSlot(bool))
 	);
+
+	this->GetContextMenu()->addSeparator();
+
+	FrgString CombineString = "Combine";
+
+	this->GetContextMenu()->AddItem(CombineString);
+	QObject::connect
+	(
+		this->GetContextMenu()->GetItem(CombineString)
+		, SIGNAL(triggered(bool))
+		, this->GetParentTree()
+		, SLOT(CombinePartSlot(bool))
+	);
+	this->GetContextMenu()->GetItem(CombineString)->setEnabled(FrgFalse);
 }
 
 QList<ForgBaseLib::FrgBase_CADScene_TreeItem*> ForgBaseLib::FrgBaseCADPartFeatureBase::GetPointerToCADSceneTreeItems() const

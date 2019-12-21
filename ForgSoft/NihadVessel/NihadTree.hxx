@@ -72,6 +72,7 @@ public slots:
 	void AnalyzePartSlot(bool);
 	void SplitByPatchPartSlot(bool);
 	void SplitByNonContiguousPartSlot(bool);
+	void CombinePartSlot(bool);
 	void SelectAllPartFeatureEntities(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
@@ -92,6 +93,8 @@ private:
 public slots:
 
 	void itemInSplitTreeClickedSlot(FrgBaseTree* tree, QTreeWidgetItem* item, int column);
+
+	virtual void showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos) override;
 
 };
 

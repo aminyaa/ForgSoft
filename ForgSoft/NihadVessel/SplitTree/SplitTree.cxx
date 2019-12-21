@@ -181,12 +181,12 @@ void ForgBaseLib::SplitTree::CreateButtonClickedSlot()
 		{
 			if (selected.size() == nbTreeChildren)
 			{
-				part->GetModel()->Faces()->RenameBlock(blockName);
+				part->GetModel()->Faces()->RenameBlock(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetSurfacesEntity(), blockName.c_str()).toStdString().c_str());
 				theParentSplitWidget_->CloseButtonClickedSlot();
 			}
 			else
 			{
-				part->GetModel()->Faces()->Split(blockName);
+				part->GetModel()->Faces()->Split(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetSurfacesEntity(), blockName.c_str()).toStdString().c_str());
 				part->GetModel()->Faces()->SelectBlockEntity(theSurfaceBlock_->Name());
 			}
 		}
@@ -194,12 +194,12 @@ void ForgBaseLib::SplitTree::CreateButtonClickedSlot()
 		{
 			if (selected.size() == nbTreeChildren)
 			{
-				part->GetModel()->Segments()->RenameBlock(blockName);
+				part->GetModel()->Segments()->RenameBlock(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetCurvesEntity(), blockName.c_str()).toStdString().c_str());
 				theParentSplitWidget_->CloseButtonClickedSlot();
 			}
 			else
 			{
-				part->GetModel()->Segments()->Split(blockName);
+				part->GetModel()->Segments()->Split(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetCurvesEntity(), blockName.c_str()).toStdString().c_str());
 				part->GetModel()->Segments()->SelectBlockEntity(theCurveBlock_->Name());
 			}
 		}
