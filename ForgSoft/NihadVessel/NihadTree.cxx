@@ -864,9 +864,17 @@ void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
 
 	if (surfaceItem)
+	{
 		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+		if (surfaceItem->GetEntity()->NbEntities() == 1)
+			return;
+	}
 	else if (curveItem)
+	{
 		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+		if (curveItem->GetEntity()->NbEntities() == 1)
+			return;
+	}
 
 	SplitWidget* splitWidget = FrgNew SplitWidget
 	(
@@ -892,9 +900,17 @@ void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
 	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
 
 	if (surfaceItem)
+	{
 		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+		if (surfaceItem->GetEntity()->NbEntities() == 1)
+			return;
+	}
 	else if (curveItem)
+	{
 		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+		if (curveItem->GetEntity()->NbEntities() == 1)
+			return;
+	}
 
 	SplitWidget* splitWidget = FrgNew SplitWidget
 	(
@@ -944,8 +960,6 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			surfaceManager->SelectBlockEntity(surfaceBlockEntity->Name());
 		}
 
-		surfaceManager->Print();
-
 		surfaceManager->Combine(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetSurfacesEntity(),"Combined").toStdString().c_str());
 
 		for (int iSelected = 0; iSelected < selectedPartFeatures.size(); iSelected++)
@@ -989,7 +1003,6 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			surfaceManager->SelectBlockEntity(addedBlocks[iAdded]->Name());
 			surfaceManager->RenameBlock(surfaceFeature->text(0).toStdString().c_str());*/
 		}
-		surfaceManager->Print();
 	}
 
 	if (partCurveFeature)

@@ -16,6 +16,8 @@ void AutLib::Cad_EntityManager<EntityType>::Import
 		Import(theName + "(1)", theBlock);
 		return;
 	}
+	else
+		theBlock->SetName(theName);
 }
 
 template<class EntityType>

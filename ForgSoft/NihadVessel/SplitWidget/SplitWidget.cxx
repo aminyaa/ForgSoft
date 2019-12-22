@@ -114,9 +114,8 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedForSurfaces()
 
 		surfaceFeature->GetParentPart() = part;
 
-		/*surfaceManager->UnSelectAll();
-		surfaceManager->SelectBlockEntity(surfaceBlocks[iBlock]->Name());
-		surfaceManager->RenameBlock(surfaceFeature->text(0).toStdString().c_str());*/
+		surfaceManager->UnSelectAll();
+		surfaceManager->RenameBlock(surfaceBlocks[iBlock], surfaceFeature->text(0).toStdString().c_str());
 	}
 
 	part->GetSurfaces() = surfaceBlocks;
@@ -187,7 +186,8 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedForCurves()
 
 		curveFeature->GetParentPart() = part;
 
-		curveBlocks[iBlock]->SetName(curveFeature->text(0).toStdString().c_str());
+		curveManager->UnSelectAll();
+		curveManager->RenameBlock(curveBlocks[iBlock], curveFeature->text(0).toStdString().c_str());
 	}
 
 	part->GetCurves() = curveBlocks;
