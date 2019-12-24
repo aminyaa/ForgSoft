@@ -19,59 +19,84 @@ BeginFrgBaseLib
 class FrgBaseCADPart_Entity;
 class FrgBaseMainWindow;
 class FrgBaseCADScene;
-class SplitWidget;
 class FrgBaseCADPart_Entity;
 
-typedef AutLib::Cad_BlockEntity<AutLib::TModel_Surface> SurfaceBlock;
-typedef std::shared_ptr<SurfaceBlock> SurfaceBlockPtr;
-typedef AutLib::Cad_BlockEntity<AutLib::TModel_Paired> CurveBlock;
-typedef std::shared_ptr<CurveBlock> CurveBlockPtr;
-
-class SplitTree : public FrgBaseTree
+class SplitTree_Base : public FrgBaseTree
 {
 
 	Q_OBJECT
 
-private:
-
-	SurfaceBlockPtr theSurfaceBlock_ = FrgNullPtr;
-	CurveBlockPtr theCurveBlock_ = FrgNullPtr;
+protected:
 
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
-	SplitWidget* theParentSplitWidget_ = FrgNullPtr;
 	FrgBaseCADPart_Entity* theParentPart_ = FrgNullPtr;
-
 	QList<FrgBaseCADScene*> thePointerToScenes_;
+
+public:
+
+	SplitTree_Base
+	(
+		FrgBaseMainWindow* parent,
+		QList<FrgBaseCADScene*> pointerToScenes,
+		FrgBaseCADPart_Entity* parentPart
+	);
+
+	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
+	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);
+
+	virtual void FormTree() override {}
+
+private slots:
+
+	void itemInSplitTreeClickedSlot(QTreeWidgetItem*, int);
+	void CreateButtonClickedSlot();
+
+protected:
+
+	virtual void CreateButtonClicked() {}
+};
+
+template<class Entity>
+class SplitWidget;
+
+template<class Entity>
+class FrgBaseCADPartFeatureEntity;
+
+template<class BlockEntity>
+class SplitTree : protected SplitTree_Base
+{
+public:
+
+	typedef typename BlockEntity::Entity entityType;
+
+private:
+
+	FrgBaseCADPartFeatureEntity<Entity>* theFeatureEntity_ = FrgNullPtr;
+	SplitWidget<Entity>* theParentSplitWidget_ = FrgNullPtr;
 
 public:
 
 	SplitTree
 	(
 		FrgBaseMainWindow* parent,
-		SurfaceBlockPtr surfaceBlock,
-		CurveBlockPtr curveBlock,
+		FrgBaseCADPartFeatureEntity<BlockEntity> featureEntity,
 		QList<FrgBaseCADScene*> pointerToScenes,
-		SplitWidget* parentSplitWidget,
+		SplitWidget<BlockEntity>* parentSplitWidget,
 		FrgBaseCADPart_Entity* parentPart
 	);
 
+	FrgGetMacro(FrgBaseCADPartFeatureEntity<Entity>*, FeatureEntity, theFeatureEntity_);
+
 	virtual void FormTree() override;
 
-	FrgGetMacro(FrgBaseCADPart_Entity*, ParentPart, theParentPart_);
-	FrgGetMacro(SurfaceBlockPtr, SurfaceBlock, theSurfaceBlock_);
-	FrgGetMacro(CurveBlockPtr, CurveBlock, theCurveBlock_);
-	FrgGetMacro(QList<FrgBaseCADScene*>, PointerToScenes, thePointerToScenes_);
+protected:
 
-private slots:
-
-	void itemInSplitTreeClickedSlot(QTreeWidgetItem*, int);
-
-private slots:
-
-	void CreateButtonClickedSlot();
+	virtual void CreateButtonClicked() override;
 
 };
 
 EndFrgBaseLib
+
+#include <SplitTreeI.hxx>
 
 #endif // !_SplitTree_Header

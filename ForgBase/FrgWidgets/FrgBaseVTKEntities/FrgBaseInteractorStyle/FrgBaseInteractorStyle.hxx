@@ -69,6 +69,8 @@ private:
 	void SetCursorShapeToDefault();
 	void SetCursorShapeToMove();
 	void SetCursorShapeToRotateXYZ();
+	void SetCursorShapeToZoomIn();
+	void SetCursorShapeToZoomOut();
 
 public:
 

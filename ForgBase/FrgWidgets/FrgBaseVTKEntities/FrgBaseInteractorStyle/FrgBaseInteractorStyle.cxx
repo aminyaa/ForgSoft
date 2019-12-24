@@ -599,3 +599,17 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToRotateXYZ()
 	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
 	theParent_->setCursor(cursor_default);
 }
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToZoomIn()
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->setCursor(cursor_default);
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToZoomOut()
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->setCursor(cursor_default);
+}

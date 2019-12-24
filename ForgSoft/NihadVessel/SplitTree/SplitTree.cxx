@@ -19,21 +19,15 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QDockWidget>
 
-ForgBaseLib::SplitTree::SplitTree
+ForgBaseLib::SplitTree_Base::SplitTree_Base
 (
 	FrgBaseMainWindow* parent,
-	SurfaceBlockPtr surfaceBlock,
-	CurveBlockPtr curveBlock,
 	QList<FrgBaseCADScene*> pointerToScenes,
-	SplitWidget* parentSplitWidget,
 	FrgBaseCADPart_Entity* parentPart
 )
 	: FrgBaseTree(parent)
-	, theSurfaceBlock_(surfaceBlock)
-	, theCurveBlock_(curveBlock)
 	, theParentMainWindow_(parent)
 	, thePointerToScenes_(pointerToScenes)
-	, theParentSplitWidget_(parentSplitWidget)
 	, theParentPart_(parentPart)
 {
 	connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemInSplitTreeClickedSlot(QTreeWidgetItem*, int)));
@@ -41,7 +35,7 @@ ForgBaseLib::SplitTree::SplitTree
 	FormTree();
 }
 
-void ForgBaseLib::SplitTree::FormTree()
+void ForgBaseLib::SplitTree_Base::FormTree()
 {
 	std::vector<std::shared_ptr<AutLib::TModel_Surface>> surfaces;
 	std::vector<std::shared_ptr<AutLib::TModel_Paired>> curves;

@@ -15,62 +15,82 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
 
-ForgBaseLib::SplitWidget::SplitWidget
+ForgBaseLib::SplitWidget_Base::SplitWidget_Base
 (
 	FrgString name,
 	FrgBaseMainWindow* parentMainWindow,
-	SurfaceBlockPtr surfaceBlock,
-	CurveBlockPtr curveBlock,
 	QList<FrgBaseCADScene*> pointerToScenes,
 	FrgBaseCADPart_Entity* parentPart
 )
-	: QWidget(parentMainWindow)
-	, theParentMainWindow_(parentMainWindow)
+	: QWidget(theParentMainWindow_)
 {
-	QVBoxLayout* mainLayout = new QVBoxLayout();
-	QHBoxLayout* nameLayout = new QHBoxLayout();
-	QHBoxLayout* buttonsLayout = new QHBoxLayout();
-
-	theTree_ = FrgNew SplitTree(theParentMainWindow_, surfaceBlock, curveBlock, pointerToScenes, this, parentPart);
-
-	QLabel* nameLabel = new QLabel("Name");
-	theNameLineEdit_ = new QLineEdit();
-	nameLayout->addWidget(nameLabel);
-	nameLayout->addWidget(theNameLineEdit_);
-
-	theCreateButton_ = new QPushButton("Create");
-	theCloseButton_ = new QPushButton("Close");
-	buttonsLayout->addStretch(1);
-	buttonsLayout->addWidget(theCreateButton_);
-	buttonsLayout->addWidget(theCloseButton_);
-
-	mainLayout->addWidget(theTree_);
-	mainLayout->addLayout(nameLayout);
-	mainLayout->addLayout(buttonsLayout);
-	
-	QWidget* mainWidget = new QWidget();
-	mainWidget->setLayout(mainLayout);
-
-	theDockWidget_ = new QDockWidget("Split " + name, theParentMainWindow_);
-	theDockWidget_->setTitleBarWidget(new QWidget);
-	theParentMainWindow_->tabifyDockWidget(theParentMainWindow_->GetTreeWidget()->theDockWidget_, theDockWidget_);
-	theParentMainWindow_->tabifiedDockWidgetActivated(theDockWidget_);
-	theParentMainWindow_->GetTreeWidget()->theDockWidget_->setEnabled(false);
-	theDockWidget_->setWidget(mainWidget);
-
-	theDockWidget_->show();
-	theDockWidget_->raise();
-
-	connect(theCreateButton_, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
-	connect(theCloseButton_, SIGNAL(clicked()), this, SLOT(CloseButtonClickedSlot()));
 }
 
-void ForgBaseLib::SplitWidget::CloseButtonClickedSlot()
+//ForgBaseLib::SplitWidget::SplitWidget
+//(
+//	FrgString name,
+//	FrgBaseMainWindow* parentMainWindow,
+//	SurfaceBlockPtr surfaceBlock,
+//	CurveBlockPtr curveBlock,
+//	QList<FrgBaseCADScene*> pointerToScenes,
+//	FrgBaseCADPart_Entity* parentPart
+//)
+//	: QWidget(parentMainWindow)
+//	, theParentMainWindow_(parentMainWindow)
+//{
+//	theWidgetItems_ = new WidgetItemsStruct;
+//
+//	theWidgetItems_->theMainLayout_ = new QVBoxLayout(this);
+//	theWidgetItems_->theNameLayout_ = new QHBoxLayout(this);
+//	theWidgetItems_->theButtonsLayout_ = new QHBoxLayout(this);
+//
+//	theTree_ = FrgNew SplitTree(theParentMainWindow_, surfaceBlock, curveBlock, pointerToScenes, this, parentPart);
+//
+//	theWidgetItems_->theNameLabel_ = new QLabel("Name");
+//	theNameLineEdit_ = new QLineEdit(this);
+//	theWidgetItems_->theNameLayout_->addWidget(theWidgetItems_->theNameLabel_);
+//	theWidgetItems_->theNameLayout_->addWidget(theNameLineEdit_);
+//
+//	theCreateButton_ = new QPushButton("Create", this);
+//	theCloseButton_ = new QPushButton("Close", this);
+//	theWidgetItems_->theButtonsLayout_->addStretch(1);
+//	theWidgetItems_->theButtonsLayout_->addWidget(theCreateButton_);
+//	theWidgetItems_->theButtonsLayout_->addWidget(theCloseButton_);
+//
+//	theWidgetItems_->theMainLayout_->addWidget(theTree_);
+//	theWidgetItems_->theMainLayout_->addLayout(theWidgetItems_->theNameLayout_);
+//	theWidgetItems_->theMainLayout_->addLayout(theWidgetItems_->theButtonsLayout_);
+//
+//	theWidgetItems_->theMainWidget_ = new QWidget(this);
+//	theWidgetItems_->theMainWidget_->setLayout(theWidgetItems_->theMainLayout_);
+//
+//	theDockWidget_ = new QDockWidget("Split " + name, theParentMainWindow_);
+//	theDockWidget_->setTitleBarWidget(new QWidget(this));
+//	theParentMainWindow_->tabifyDockWidget(theParentMainWindow_->GetTreeWidget()->theDockWidget_, theDockWidget_);
+//	theParentMainWindow_->tabifiedDockWidgetActivated(theDockWidget_);
+//	theParentMainWindow_->GetTreeWidget()->theDockWidget_->setEnabled(false);
+//	theDockWidget_->setWidget(theWidgetItems_->theMainWidget_);
+//
+//	theDockWidget_->show();
+//	theDockWidget_->raise();
+//
+//	connect(theCreateButton_, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
+//	connect(theCloseButton_, SIGNAL(clicked()), this, SLOT(CloseButtonClickedSlot()));
+//}
+
+//ForgBaseLib::SplitWidget::~SplitWidget()
+//{
+//	this->deleteLater();
+//}
+
+void ForgBaseLib::SplitWidget_Base::CloseButtonClickedSlot()
 {
-	if (theTree_->GetSurfaceBlock())
+	CloseButtonClicked();
+
+	/*if (theTree_->GetSurfaceBlock())
 		CloseButtonClickedForSurfaces();
 	if (theTree_->GetCurveBlock())
-		CloseButtonClickedForCurves();
+		CloseButtonClickedForCurves();*/
 }
 
 void ForgBaseLib::SplitWidget::CloseButtonClickedForSurfaces()
@@ -141,8 +161,6 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedForSurfaces()
 
 	for (int i = 0; i < theTree_->GetPointerToScenes().size(); i++)
 		theTree_->GetPointerToScenes()[i]->GetParentTree() = theParentMainWindow_->GetTree();
-
-	this->deleteLater();
 }
 
 void ForgBaseLib::SplitWidget::CloseButtonClickedForCurves()
@@ -211,6 +229,4 @@ void ForgBaseLib::SplitWidget::CloseButtonClickedForCurves()
 
 	for (int i = 0; i < theTree_->GetPointerToScenes().size(); i++)
 		theTree_->GetPointerToScenes()[i]->GetParentTree() = theParentMainWindow_->GetTree();
-
-	this->deleteLater();
 }

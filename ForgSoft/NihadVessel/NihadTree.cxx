@@ -939,6 +939,8 @@ void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
 	}
 
 	emit splitWidget->GetCloseButton()->click();
+
+	delete splitWidget;
 }
 
 void ForgBaseLib::NihadTree::CombinePartSlot(bool)
@@ -954,17 +956,21 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 		auto surfaceManager = part->GetModel()->Faces();
 		surfaceManager->UnSelectAll();
 
+		QList<FrgBaseCADScene*> pointerToScenes;
+
 		for (int iSurface = 0; iSurface < selectedPartFeatures.size(); iSurface++)
 		{
-			auto surfaceBlockEntity= dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(selectedPartFeatures[iSurface])->GetEntity();
+			auto surfaceBlockEntity = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(selectedPartFeatures[iSurface])->GetEntity();
 			surfaceManager->SelectBlockEntity(surfaceBlockEntity->Name());
 		}
 
-		surfaceManager->Combine(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetSurfacesEntity(),"Combined").toStdString().c_str());
+		surfaceManager->Combine(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetSurfacesEntity(), "Combined").toStdString().c_str());
 
 		for (int iSelected = 0; iSelected < selectedPartFeatures.size(); iSelected++)
 		{
 			auto surfaceBlock = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(selectedPartFeatures[iSelected]);
+
+			pointerToScenes = surfaceBlock->GetPointerToScenes();
 
 			part->GetFeatures()->GetSurfacesEntity()->removeChild(surfaceBlock);
 			part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().removeOne(surfaceBlock);
@@ -974,6 +980,8 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 		std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>> addedBlocks;
 		surfaceManager->RetrieveTo(addedBlocks);
 		auto surfaces = part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
+
+		FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* surfaceFeature;
 
 		for (int iAdded = 0; iAdded < surfaceManager->NbBlocks(); iAdded++)
 		{
@@ -989,7 +997,9 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			if (contains)
 				continue;
 
-			auto surfaceFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(addedBlocks[iAdded]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity());
+			surfaceFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(addedBlocks[iAdded]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity());
+
+			surfaceFeature->GetPointerToScenes() = pointerToScenes;
 
 			GetItems().push_back(surfaceFeature);
 			part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().push_back(surfaceFeature);
@@ -998,11 +1008,22 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			surfaceFeature->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
 
 			surfaceFeature->GetParentPart() = part;
-
-			/*surfaceManager->UnSelectAll();
-			surfaceManager->SelectBlockEntity(addedBlocks[iAdded]->Name());
-			surfaceManager->RenameBlock(surfaceFeature->text(0).toStdString().c_str());*/
 		}
+
+		SplitWidget* splitWidget = FrgNew SplitWidget
+		(
+			theLastRightClicked_->text(0),
+			GetParentMainWindow(),
+			(surfaceFeature ? surfaceFeature->GetEntity() : FrgNullPtr),
+			FrgNullPtr,
+			surfaceFeature->GetPointerToScenes(),
+			surfaceFeature->GetParentPart()
+		);
+
+		splitWidget->setHidden(FrgTrue);
+		splitWidget->CloseButtonClickedSlot();
+
+		delete splitWidget;
 	}
 
 	if (partCurveFeature)
@@ -1011,17 +1032,21 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 		auto curveManager = part->GetModel()->Segments();
 		curveManager->UnSelectAll();
 
+		QList<FrgBaseCADScene*> pointerToScenes;
+
 		for (int iCurve = 0; iCurve < selectedPartFeatures.size(); iCurve++)
 		{
 			auto curveBlockEntity = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(selectedPartFeatures[iCurve])->GetEntity();
 			curveManager->SelectBlockEntity(curveBlockEntity->Name());
 		}
 
-		curveManager->Combine();
+		curveManager->Combine(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetCurvesEntity(), "Combined").toStdString().c_str());
 
 		for (int iSelected = 0; iSelected < selectedPartFeatures.size(); iSelected++)
 		{
 			auto curveBlock = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(selectedPartFeatures[iSelected]);
+
+			pointerToScenes = curveBlock->GetPointerToScenes();
 
 			part->GetFeatures()->GetCurvesEntity()->removeChild(curveBlock);
 			part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity().removeOne(curveBlock);
@@ -1031,6 +1056,9 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 		std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>> addedBlocks;
 		curveManager->RetrieveTo(addedBlocks);
 		auto curves = part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity();
+
+		FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* curveFeature;
+
 		for (int iAdded = 0; iAdded < curveManager->NbBlocks(); iAdded++)
 		{
 			FrgBool contains = FrgFalse;
@@ -1045,16 +1073,33 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			if (contains)
 				continue;
 
-			auto curveFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>(addedBlocks[iAdded]->Name().c_str(), part->GetFeatures()->GetCurvesEntity());
+			curveFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>(addedBlocks[iAdded]->Name().c_str(), part->GetFeatures()->GetCurvesEntity());
 
 			GetItems().push_back(curveFeature);
 			part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity().push_back(curveFeature);
+
+			curveFeature->GetPointerToScenes() = pointerToScenes;
 
 			curveFeature->GetEntity() = addedBlocks[iAdded];
 			curveFeature->setIcon(0, QIcon(FrgICONTreeItemPartCurve));
 
 			curveFeature->GetParentPart() = part;
 		}
+
+		SplitWidget* splitWidget = FrgNew SplitWidget
+		(
+			theLastRightClicked_->text(0),
+			GetParentMainWindow(),
+			FrgNullPtr,
+			(curveFeature ? curveFeature->GetEntity() : FrgNullPtr),
+			curveFeature->GetPointerToScenes(),
+			curveFeature->GetParentPart()
+		);
+
+		splitWidget->setHidden(FrgTrue);
+		splitWidget->CloseButtonClickedSlot();
+
+		delete splitWidget;
 	}
 }
 
