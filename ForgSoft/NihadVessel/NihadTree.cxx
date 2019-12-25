@@ -5,6 +5,7 @@
 #include <FrgBasePlot2D.hxx>
 #include <FrgBaseTabWidget.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBaseCADPart.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADScene.hxx>
 #include <FrgMenu_Models.hxx>
@@ -46,7 +47,6 @@
 
 #include <vtkActor.h>
 #include <FrgBaseInteractorStyle.hxx>
-#include <FrgBaseCADPartFeatures.hxx>
 
 #include <FrgBaseGlobalsThread.hxx>
 
@@ -868,22 +868,33 @@ void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
 		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
 		if (surfaceItem->GetEntity()->NbEntities() == 1)
 			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				surfaceItem,
+				part->GetModel()->Faces(),
+				surfaceItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
 	}
 	else if (curveItem)
 	{
 		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
 		if (curveItem->GetEntity()->NbEntities() == 1)
 			return;
-	}
 
-	SplitWidget* splitWidget = FrgNew SplitWidget
-	(
-		theLastRightClicked_->text(0),
-		GetParentMainWindow(), (surfaceItem ? surfaceItem->GetEntity() : FrgNullPtr),
-		(curveItem ? curveItem->GetEntity() : FrgNullPtr),
-		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes()),
-		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
-	);
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				curveItem,
+				part->GetModel()->Segments(),
+				curveItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
+	}
 }
 
 void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
@@ -904,24 +915,35 @@ void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
 		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
 		if (surfaceItem->GetEntity()->NbEntities() == 1)
 			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				surfaceItem,
+				part->GetModel()->Faces(),
+				surfaceItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
 	}
 	else if (curveItem)
 	{
 		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
 		if (curveItem->GetEntity()->NbEntities() == 1)
 			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				curveItem,
+				part->GetModel()->Segments(),
+				curveItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
 	}
 
-	SplitWidget* splitWidget = FrgNew SplitWidget
-	(
-		theLastRightClicked_->text(0),
-		GetParentMainWindow(), (surfaceItem ? surfaceItem->GetEntity() : FrgNullPtr),
-		(curveItem ? curveItem->GetEntity() : FrgNullPtr),
-		(surfaceItem ? surfaceItem->GetPointerToScenes() : curveItem->GetPointerToScenes()),
-		dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
-	);
-
-	splitWidget->setHidden(FrgTrue);
+	/*splitWidget->setHidden(FrgTrue);
 	int nbTreeChildren = splitWidget->GetTree()->topLevelItemCount();
 
 	for (int i = 0; i < nbTreeChildren; i++)
@@ -940,7 +962,7 @@ void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
 
 	emit splitWidget->GetCloseButton()->click();
 
-	delete splitWidget;
+	delete splitWidget;*/
 }
 
 void ForgBaseLib::NihadTree::CombinePartSlot(bool)
@@ -1010,7 +1032,7 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			surfaceFeature->GetParentPart() = part;
 		}
 
-		SplitWidget* splitWidget = FrgNew SplitWidget
+		/*SplitWidget* splitWidget = FrgNew SplitWidget
 		(
 			theLastRightClicked_->text(0),
 			GetParentMainWindow(),
@@ -1023,7 +1045,7 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 		splitWidget->setHidden(FrgTrue);
 		splitWidget->CloseButtonClickedSlot();
 
-		delete splitWidget;
+		delete splitWidget;*/
 	}
 
 	if (partCurveFeature)
@@ -1086,7 +1108,7 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 			curveFeature->GetParentPart() = part;
 		}
 
-		SplitWidget* splitWidget = FrgNew SplitWidget
+		/*SplitWidget* splitWidget = FrgNew SplitWidget
 		(
 			theLastRightClicked_->text(0),
 			GetParentMainWindow(),
@@ -1099,7 +1121,7 @@ void ForgBaseLib::NihadTree::CombinePartSlot(bool)
 		splitWidget->setHidden(FrgTrue);
 		splitWidget->CloseButtonClickedSlot();
 
-		delete splitWidget;
+		delete splitWidget;*/
 	}
 }
 

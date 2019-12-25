@@ -4,22 +4,13 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseTree.hxx>
-
-namespace AutLib
-{
-	template <class Entity>
-	class Cad_BlockEntity;
-
-	class TModel_Surface;
-	class TModel_Paired;
-}
+#include <SplitTree_Traits.hxx>
 
 BeginFrgBaseLib
 
 class FrgBaseCADPart_Entity;
 class FrgBaseMainWindow;
 class FrgBaseCADScene;
-class FrgBaseCADPart_Entity;
 
 class SplitTree_Base : public FrgBaseTree
 {
@@ -56,38 +47,41 @@ protected:
 	virtual void CreateButtonClicked() {}
 };
 
-template<class Entity>
+template<class T>
 class SplitWidget;
 
-template<class Entity>
+template<class T>
 class FrgBaseCADPartFeatureEntity;
 
 template<class BlockEntity>
-class SplitTree : protected SplitTree_Base
+class SplitTree : public SplitTree_Base
 {
 public:
 
-	typedef typename BlockEntity::Entity entityType;
+	//typedef typename BlockEntity::Entity entityType;
 
 private:
 
-	FrgBaseCADPartFeatureEntity<Entity>* theFeatureEntity_ = FrgNullPtr;
-	SplitWidget<Entity>* theParentSplitWidget_ = FrgNullPtr;
+	FrgBaseCADPartFeatureEntity<BlockEntity>* theFeatureEntity_ = FrgNullPtr;
+	std::shared_ptr<typename Entity_From_BlockEntity<BlockEntity>::typeManager> theEntityManager_;
+	SplitWidget<BlockEntity>* theParentSplitWidget_ = FrgNullPtr;
 
 public:
 
 	SplitTree
 	(
 		FrgBaseMainWindow* parent,
-		FrgBaseCADPartFeatureEntity<BlockEntity> featureEntity,
+		FrgBaseCADPartFeatureEntity<BlockEntity>* featureEntity,
+		std::shared_ptr<typename Entity_From_BlockEntity<BlockEntity>::typeManager> manager,
 		QList<FrgBaseCADScene*> pointerToScenes,
 		SplitWidget<BlockEntity>* parentSplitWidget,
 		FrgBaseCADPart_Entity* parentPart
 	);
 
-	FrgGetMacro(FrgBaseCADPartFeatureEntity<Entity>*, FeatureEntity, theFeatureEntity_);
+	FrgGetMacro(FrgBaseCADPartFeatureEntity<BlockEntity>*, FeatureEntity, theFeatureEntity_);
+	FrgGetMacro(std::shared_ptr<typename Entity_From_BlockEntity<BlockEntity>::typeManager>, EntityManager, theEntityManager_);
 
-	virtual void FormTree() override;
+	void FormTree() override;
 
 protected:
 

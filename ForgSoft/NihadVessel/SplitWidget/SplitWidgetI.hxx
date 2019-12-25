@@ -1,11 +1,30 @@
 #pragma once
 #include <SplitWidget.hxx>
+#include <FrgBaseMainWindow.hxx>
+#include <SplitTree.hxx>
+#include <FrgBaseCADScene.hxx>
+#include <CADPartItem.hxx>
+#include <NihadTree.hxx>
+#include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBase_CADScene_TreeItem.hxx>
+#include <FrgBaseCADScene.hxx>
+#include <FrgBaseCADPart.hxx>
+#include <FrgBaseTreeItem.hxx>
 
-template<class Entity>
-ForgBaseLib::SplitWidget<Entity>::SplitWidget
+#include <QtWidgets/QDockWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QLabel>
+
+template<class BlockEntity>
+ForgBaseLib::SplitWidget<BlockEntity>::SplitWidget
 (
 	FrgString name,
 	FrgBaseMainWindow* parentMainWindow,
+	FrgBaseCADPartFeatureEntity<BlockEntity>* featureEntity,
+	std::shared_ptr<typename Entity_From_BlockEntity<BlockEntity>::typeManager> manager,
 	QList<FrgBaseCADScene*> pointerToScenes,
 	FrgBaseCADPart_Entity* parentPart
 )
@@ -17,7 +36,7 @@ ForgBaseLib::SplitWidget<Entity>::SplitWidget
 	theWidgetItems_->theNameLayout_ = new QHBoxLayout(this);
 	theWidgetItems_->theButtonsLayout_ = new QHBoxLayout(this);
 
-	theTree_ = FrgNew SplitTree(theParentMainWindow_, surfaceBlock, curveBlock, pointerToScenes, this, parentPart);
+	theTree_ = FrgNew SplitTree<BlockEntity>(theParentMainWindow_, featureEntity, manager, pointerToScenes, this, parentPart);
 
 	theWidgetItems_->theNameLabel_ = new QLabel("Name");
 	theNameLineEdit_ = new QLineEdit(this);
@@ -48,58 +67,61 @@ ForgBaseLib::SplitWidget<Entity>::SplitWidget
 	theDockWidget_->raise();
 
 	QObject::connect(theCreateButton_, SIGNAL(clicked()), theTree_, SLOT(CreateButtonClickedSlot()));
-	QObject::connect(theCloseButton_, SIGNAL(clicked()), dynamic_cast<SplitWidget_Base*>(this), SLOT(CloseButtonClickedSlot()));
+	QObject::connect(theCloseButton_, SIGNAL(clicked()), this, SLOT(CloseButtonClickedSlot()));
 }
 
-template<class Entity>
-inline void ForgBaseLib::SplitWidget<Entity>::CloseButtonClicked()
+template<class BlockEntity>
+inline void ForgBaseLib::SplitWidget<BlockEntity>::CloseButtonClicked()
 {
-	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theTree_->GetParentPart());
+	/*auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theTree_->GetParentPart());
 	if (!part)
 	{
 		std::cout << "The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in SplitTree::CloseButtonClickedForSurfaces()\n";
 		return;
-	}
+	}*/
 
 	QList<QTreeWidgetItem*> items;
-	items.push_back(part);
-	auto scenes = part->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(0)->GetPointerToCADSceneTreeItems();
+	items.push_back(theTree_->GetParentPart());
+	auto scenes = theTree_->GetFeatureEntity()->GetPointerToCADSceneTreeItems();
 
 	theParentMainWindow_->GetTreeWidget()->theDockWidget_->setEnabled(true);
 	theParentMainWindow_->GetTreeWidget()->theDockWidget_->show();
 	theParentMainWindow_->GetTreeWidget()->theDockWidget_->raise();
 	theParentMainWindow_->removeDockWidget(theDockWidget_);
 
-	auto listOfSurfaces = part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
-	for (int iSurface = 0; iSurface < listOfSurfaces.size(); iSurface++)
+	auto listOfEntities = theTree_->GetFeatureEntity()->GetParentEntities()->GetFeatureListEntity();
+	for (int iEntity = 0; iEntity < listOfEntities.size(); iEntity++)
 	{
-		theParentMainWindow_->GetTree()->GetItems().removeOne(listOfSurfaces[iSurface]);
-		part->GetFeatures()->GetSurfacesEntity()->removeChild(listOfSurfaces[iSurface]);
+		theParentMainWindow_->GetTree()->GetItems().removeOne(listOfEntities[iEntity]);
+		theTree_->GetFeatureEntity()->GetParentEntities()->removeChild(listOfEntities[iEntity]);
+		std::cout << "iEntity = " << iEntity << std::endl;
 	}
-	part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().clear();
+	listOfEntities.clear();
 
-	std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>> surfaceBlocks;
-	auto surfaceManager = part->GetModel()->Faces();
-	surfaceManager->RetrieveTo(surfaceBlocks);
+	std::vector<std::shared_ptr<BlockEntity>> entityBlocks;
+	theTree_->GetEntityManager()->RetrieveTo(entityBlocks);
 
-	for (int iBlock = 0; iBlock < surfaceManager->NbBlocks(); iBlock++)
+	for (int iBlock = 0; iBlock < theTree_->GetEntityManager()->NbBlocks(); iBlock++)
 	{
-		auto surfaceFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(surfaceBlocks[iBlock]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity());
-		theParentMainWindow_->GetTree()->GetItems().push_back(surfaceFeature);
-		part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().push_back(surfaceFeature);
+		auto entityFeature = FrgNew FrgBaseCADPartFeatureEntity<BlockEntity>(entityBlocks[iBlock]->Name().c_str(), theTree_->GetFeatureEntity()->GetParentEntities());
+		theParentMainWindow_->GetTree()->GetItems().push_back(entityFeature);
+		listOfEntities.push_back(entityFeature);
 
-		surfaceFeature->GetEntity() = surfaceBlocks[iBlock];
-		surfaceFeature->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
+		entityFeature->GetEntity() = entityBlocks[iBlock];
+		entityFeature->setIcon(0, QIcon(Entity_From_BlockEntity<BlockEntity>::GetIcon()));
 
-		surfaceFeature->GetParentPart() = part;
+		entityFeature->GetParentPart() = theTree_->GetParentPart();
+		entityFeature->GetParentEntities() = theTree_->GetFeatureEntity()->GetParentEntities();
+		entityFeature->GetPointerToScenes() = thePointerToScenes_;
 
-		surfaceManager->UnSelectAll();
-		surfaceManager->RenameBlock(surfaceBlocks[iBlock], surfaceFeature->text(0).toStdString().c_str());
+		theTree_->GetEntityManager()->UnSelectAll();
+		theTree_->GetEntityManager()->RenameBlock(entityBlocks[iBlock], entityFeature->text(0).toStdString().c_str());
 	}
 
-	part->GetSurfaces() = surfaceBlocks;
+	theTree_->GetFeatureEntity()->GetParentEntities()->GetParentEntitiesStored() = entityBlocks;
+	//listOfEntities->Get part->GetSurfaces() = entityBlocks;
 
-	part->GetModel()->Faces()->UnSelectAll();
+	theTree_->GetEntityManager()->UnSelectAll();
 
 
 

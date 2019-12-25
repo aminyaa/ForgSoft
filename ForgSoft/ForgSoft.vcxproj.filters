@@ -71,6 +71,9 @@
     <Filter Include="NihadVessel\AnalyzePart">
       <UniqueIdentifier>{51f8c2dd-9b7c-4143-91ea-0985d87dcc14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\SplitTree\Traits">
+      <UniqueIdentifier>{2060f6dc-acad-4799-8492-41ec1db45e00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -173,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\SplitTree\SplitTreeI.hxx">
       <Filter>NihadVessel\SplitTree</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitTree\Traits\SplitTree_Traits.hxx">
+      <Filter>NihadVessel\SplitTree\Traits</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

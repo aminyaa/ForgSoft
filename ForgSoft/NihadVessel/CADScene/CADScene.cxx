@@ -37,6 +37,7 @@
 #include <FastDiscrete.hxx>
 #include <Poly_Triangulation.hxx>
 #include <Cad_Tools.hxx>
+#include <Cad_BlockEntity.hxx>hxx
 #include <TModel_Surface.hxx>
 #include <TModel_Paired.hxx>
 #include <TModel_Edge.hxx>

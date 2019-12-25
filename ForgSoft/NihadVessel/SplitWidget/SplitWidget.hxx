@@ -3,6 +3,7 @@
 #define _SplitWidget_Header
 
 #include <FrgBaseGlobals.hxx>
+#include <SplitTree_Traits.hxx>
 
 #include <QtWidgets/QWidget>
 
@@ -13,31 +14,18 @@ class QVBoxLayout;
 class QHBoxLayout;
 class QLabel;
 
-namespace AutLib
-{
-	template <class Entity>
-	class Cad_BlockEntity;
-
-	class TModel_Surface;
-	class TModel_Paired;
-}
-
 BeginFrgBaseLib
 
 class FrgBaseMainWindow;
 class FrgBaseCADPart_Entity;
-
-typedef AutLib::Cad_BlockEntity<AutLib::TModel_Surface> SurfaceBlock;
-typedef std::shared_ptr<SurfaceBlock> SurfaceBlockPtr;
-typedef AutLib::Cad_BlockEntity<AutLib::TModel_Paired> CurveBlock;
-typedef std::shared_ptr<CurveBlock> CurveBlockPtr;
-
-template<class Entity>
-class SplitTree;
 class FrgBaseCADScene;
 
 class SplitWidget_Base : public QWidget
 {
+
+	Q_OBJECT
+
+protected:
 
 	struct WidgetItemsStruct
 	{
@@ -48,11 +36,8 @@ class SplitWidget_Base : public QWidget
 		QWidget* theMainWidget_ = FrgNullPtr;
 	};
 
-	Q_OBJECT
-
-protected:
-
 	FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
+	QList<FrgBaseCADScene*> thePointerToScenes_;
 	QDockWidget* theDockWidget_ = FrgNullPtr;
 
 	QLineEdit* theNameLineEdit_ = FrgNullPtr;
@@ -80,15 +65,21 @@ protected:
 	virtual void CloseButtonClicked() {}
 };
 
-template<class Entity>
-class SplitWidget : protected SplitWidget_Base
+template<class T>
+class FrgBaseCADPartFeatureEntity;
+
+template<class T>
+class SplitTree;
+
+template<class BlockEntity>
+class SplitWidget : public SplitWidget_Base
 {
 
 private:
 
-	SplitTree<Entity>* theTree_ = FrgNullPtr;
+	SplitTree<BlockEntity>* theTree_ = FrgNullPtr;
 
-	const std::shared_ptr<AutLib::Cad_EntityManager<Entity>>& GetManager() const;
+	//const std::shared_ptr<AutLib::Cad_EntityManager<Entity>>& GetManager() const;
 
 	/*FrgBaseMainWindow* theParentMainWindow_ = FrgNullPtr;
 	SplitTree* theTree_ = FrgNullPtr;
@@ -100,7 +91,7 @@ private:
 
 	WidgetItemsStruct* theWidgetItems_ = FrgNullPtr;*/
 
-	virtual void CloseButtonClicked() override;
+	void CloseButtonClicked() override;
 
 public:
 
@@ -108,14 +99,16 @@ public:
 	(
 		FrgString name,
 		FrgBaseMainWindow* parentMainWindow,
+		FrgBaseCADPartFeatureEntity<BlockEntity>* featureEntity,
+		std::shared_ptr<typename Entity_From_BlockEntity<BlockEntity>::typeManager> manager,
 		QList<FrgBaseCADScene*> pointerToScenes,
 		FrgBaseCADPart_Entity* parentPart
 	);
 
-	~SplitWidget();
+	~SplitWidget() {}
 
 	FrgGetMacro(QLineEdit*, NameLineEdit, theNameLineEdit_);
-	FrgGetMacro(SplitTree*, Tree, theTree_);
+	FrgGetMacro(SplitTree<BlockEntity>*, Tree, theTree_);
 	FrgGetMacro(QPushButton*, CreateButton, theCreateButton_);
 	FrgGetMacro(QPushButton*, CloseButton, theCloseButton_);
 };

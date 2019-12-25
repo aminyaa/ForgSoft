@@ -7,6 +7,9 @@
 
 namespace AutLib
 {
+	template <class T>
+	class Cad_BlockEntity;
+
 	class TModel_Surface;
 	class TModel_Paired;
 }
