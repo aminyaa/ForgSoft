@@ -48,6 +48,9 @@ public:
 	QList<FrgBase_CADScene_TreeItem*> GetPointerToCADSceneTreeItems();
 };
 
+template <class T>
+class FrgBaseCADPartFeaturesEntity;
+
 template <class Entity>
 class FrgBaseCADPartFeatureEntity : public FrgBaseCADPartFeatureBase
 {
@@ -55,6 +58,7 @@ class FrgBaseCADPartFeatureEntity : public FrgBaseCADPartFeatureBase
 private:
 
 	FrgSharedPtr<Entity> theEntity_ = FrgNullPtr;
+	FrgBaseCADPartFeaturesEntity<Entity>* theParentEntities_ = FrgNullPtr;
 
 public:
 
@@ -71,6 +75,7 @@ public:
 	);
 
 	FrgGetMacro(FrgSharedPtr<Entity>, Entity, theEntity_);
+	FrgGetMacro(FrgBaseCADPartFeaturesEntity<Entity>*, ParentEntities, theParentEntities_);
 };
 
 class FORGBASE_EXPORT FrgBaseCADPartFeaturesEntity_Base : public FrgBaseTreeItem
@@ -95,6 +100,8 @@ private:
 
 	QList<FrgBaseCADPartFeatureEntity<Entity>*> theFeatureEntities_;
 
+	std::vector<std::shared_ptr<Entity>> theParentEntitiesStored_;
+
 public:
 
 	FrgBaseCADPartFeaturesEntity
@@ -107,6 +114,7 @@ public:
 
 	const FrgBaseCADPartFeatureEntity<Entity>*& GetFeatureEntity(int index) const { return theFeatureEntities_[index]; }
 	FrgBaseCADPartFeatureEntity<Entity>*& GetFeatureEntity(int index) { return theFeatureEntities_[index]; }
+	FrgGetMacro(std::vector<std::shared_ptr<Entity>>, ParentEntitiesStored, theParentEntitiesStored_);
 
 	FrgGetMacro(QList<FrgBaseCADPartFeatureEntity<Entity>*>, FeatureListEntity, theFeatureEntities_);
 };

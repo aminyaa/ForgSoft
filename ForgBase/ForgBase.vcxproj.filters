@@ -100,6 +100,15 @@
     <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures">
       <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCAD">
+      <UniqueIdentifier>{bdf1a998-c7e0-45bb-b366-3239bb328bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part">
+      <UniqueIdentifier>{9902e00b-17f8-4667-a1cf-d78d4d8572f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features">
+      <UniqueIdentifier>{7ff57060-2327-4210-86e7-080b433cdb46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -170,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.cxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCAD_Part.cxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_Features.cxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +266,12 @@
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPart.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
     </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCAD_PartI.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_FeaturesI.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx">
@@ -276,6 +297,12 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBaseCADScene.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCAD_Part.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_Features.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

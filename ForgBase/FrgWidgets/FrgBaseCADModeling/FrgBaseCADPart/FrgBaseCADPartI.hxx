@@ -71,6 +71,10 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface)->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
 
 		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface)->GetParentPart() = this;
+
+		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface)->GetParentEntities() = theFeatures_->GetSurfacesEntity();
+
+		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface) = theSurfaces_;
 	}
 
 	for (int iCurve = 0; iCurve < theCurves_.size(); iCurve++)
@@ -81,5 +85,9 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->setIcon(0, QIcon(FrgICONTreeItemPartCurve));
 
 		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->GetParentPart() = this;
+
+		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->GetParentEntities() = theFeatures_->GetCurvesEntity();
+
+		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve) = theCurves_;
 	}
 }
