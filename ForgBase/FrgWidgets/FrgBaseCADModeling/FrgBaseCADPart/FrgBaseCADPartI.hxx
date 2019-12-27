@@ -74,7 +74,7 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 
 		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface)->GetParentEntities() = theFeatures_->GetSurfacesEntity();
 
-		theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface) = theSurfaces_;
+		//theFeatures_->GetSurfacesEntity()->GetFeatureEntity(iSurface) = theSurfaces_;
 	}
 
 	for (int iCurve = 0; iCurve < theCurves_.size(); iCurve++)
@@ -88,6 +88,6 @@ inline void ForgBaseLib::FrgBaseCADPart<SurfaceEntity, CurveEntity>::DoAfterCons
 
 		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve)->GetParentEntities() = theFeatures_->GetCurvesEntity();
 
-		theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve) = theCurves_;
+		//theFeatures_->GetCurvesEntity()->GetFeatureEntity(iCurve) = theCurves_;
 	}
 }

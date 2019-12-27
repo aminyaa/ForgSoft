@@ -8,7 +8,7 @@ ForgBaseLib::FrgBaseCAD_Part_Base::FrgBaseCAD_Part_Base
 )
 	: FrgBaseTreeItem(title, parent, (parent ? parent->GetParentTree() : FrgNullPtr), (parent ? parent->GetParentMainWindow() : FrgNullPtr))
 {
-
+	DoAfterConstruct();
 }
 
 ForgBaseLib::FrgBaseCAD_Part_Base::FrgBaseCAD_Part_Base
@@ -18,5 +18,10 @@ ForgBaseLib::FrgBaseCAD_Part_Base::FrgBaseCAD_Part_Base
 )
 	: FrgBaseTreeItem(title, FrgNullPtr, parentTree, (parentTree ? parentTree->GetParentMainWindow() : FrgNullPtr))
 {
+	DoAfterConstruct();
+}
 
+void ForgBaseLib::FrgBaseCAD_Part_Base::DoAfterConstruct()
+{
+	
 }
