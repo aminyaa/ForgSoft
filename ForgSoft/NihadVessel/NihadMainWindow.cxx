@@ -5,6 +5,8 @@
 #include <NihadVesselPartTreeItem.hxx>
 #include <FrgBaseGlobalsThread.hxx>
 #include <CADPartItem.hxx>
+#include <CAD_PartItem.hxx>
+#include <SplitPart_Feature.hxx>
 
 #include <IO_IGES.hxx>
 #include <IO_STEP.hxx>
@@ -78,6 +80,22 @@ void ForgBaseLib::NihadMainWindow::FileImportActionSlot()
 					CorrectName<FrgBaseTreeItem>(GetTree()->GetTreeItem("Parts"), bareFileName), GetTree()->GetTreeItem("Parts"), solid
 				)
 			);
+
+			std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>> blocksForSurfaces;
+			std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>> blocksForCurves;
+			solid->Faces()->RetrieveTo(blocksForSurfaces);
+			solid->Segments()->RetrieveTo(blocksForCurves);
+
+			CAD_PartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* ex_part =
+				new CAD_PartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+				("ex_part", GetTree()->GetTreeItem("Parts"), solid);
+
+			/*FrgBaseCAD_Part<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* ex_part =
+				new FrgBaseCAD_Part<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+				("ex_part", GetTree()->GetTreeItem("Parts"), blocksForSurfaces, blocksForCurves);*/
+
+			SplitPart_Feature<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* spl = FrgNew SplitPart_Feature<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>
+				(this, ex_part->GetSurfacesFeatures()->GetFeature(0), solid->Faces());
 
 			/*((NihadTree*)GetTree())->GetPartTreeItems().push_back
 			(

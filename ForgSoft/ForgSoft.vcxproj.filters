@@ -74,6 +74,21 @@
     <Filter Include="NihadVessel\SplitTree\Traits">
       <UniqueIdentifier>{2060f6dc-acad-4799-8492-41ec1db45e00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature">
+      <UniqueIdentifier>{b5b99601-0901-49f8-babd-1864793af241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree">
+      <UniqueIdentifier>{61f9260c-4a5a-48c3-bd24-231570144c2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature\Traits">
+      <UniqueIdentifier>{e3446008-3c7f-4f92-a417-669de66184d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget">
+      <UniqueIdentifier>{9a747f85-5e4a-4bd1-a170-0571cb5a973e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\CAD_PartItem">
+      <UniqueIdentifier>{fdf85b07-4825-4a40-817a-9f47b803c6b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -142,6 +157,12 @@
     <ClCompile Include="NihadVessel\AnalyzePart\AnalyzePart.cxx">
       <Filter>NihadVessel\AnalyzePart</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_Widget.cxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_Tree.cxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -179,6 +200,27 @@
     </ClInclude>
     <ClInclude Include="NihadVessel\SplitTree\Traits\SplitTree_Traits.hxx">
       <Filter>NihadVessel\SplitTree\Traits</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPart_Feature.hxx">
+      <Filter>NihadVessel\SplitPart_Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_TreeI.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\Traits\SplitPartFeature_Traits.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\Traits</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_WidgetI.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPart_FeatureI.hxx">
+      <Filter>NihadVessel\SplitPart_Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CAD_PartItem\CAD_PartItem.hxx">
+      <Filter>NihadVessel\CAD_PartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CAD_PartItem\CAD_PartItemI.hxx">
+      <Filter>NihadVessel\CAD_PartItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +268,12 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\AnalyzePart\AnalyzePart.hxx">
       <Filter>NihadVessel\AnalyzePart</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_Tree.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_Widget.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
