@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgSoft", "ForgSoft\ForgSo
 		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE} = {81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgVisual", "ForgVisual\ForgVisual.vcxproj", "{BE0152F1-13DC-4034-A9BB-EBBF172048C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -30,6 +32,12 @@ Global
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|x64
+		{BE0152F1-13DC-4034-A9BB-EBBF172048C4}.Debug|x64.ActiveCfg = Debug|x64
+		{BE0152F1-13DC-4034-A9BB-EBBF172048C4}.Debug|x64.Build.0 = Debug|x64
+		{BE0152F1-13DC-4034-A9BB-EBBF172048C4}.Debug|x86.ActiveCfg = Debug|x64
+		{BE0152F1-13DC-4034-A9BB-EBBF172048C4}.Release|x64.ActiveCfg = Release|x64
+		{BE0152F1-13DC-4034-A9BB-EBBF172048C4}.Release|x64.Build.0 = Release|x64
+		{BE0152F1-13DC-4034-A9BB-EBBF172048C4}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
