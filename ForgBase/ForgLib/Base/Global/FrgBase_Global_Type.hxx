@@ -9,8 +9,8 @@ typedef int FrgInt;
 typedef QString FrgString;
 typedef bool FrgBool;
 
-#define True true
-#define False false
-#define New new
+#define FrgTrue true
+#define FrgFalse false
+#define FrgNew new
 
 #endif // !_FrgBase_Global_Type_Header

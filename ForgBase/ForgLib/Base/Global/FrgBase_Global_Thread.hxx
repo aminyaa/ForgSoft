@@ -56,13 +56,13 @@ DefineProcessFunction(MAKE_UNIQUE(lockFunc), lockFunction); \
 StdVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(New FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
 MAKE_UNIQUE(thread).at(i)->start();\
 }\
 StdVector<QEventLoop*> MAKE_UNIQUE(eventLoop);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(eventLoop).push_back(New QEventLoop());\
+MAKE_UNIQUE(eventLoop).push_back(FrgNew QEventLoop());\
 QObject::connect(MAKE_UNIQUE(thread).at(i), SIGNAL(finished()), MAKE_UNIQUE(eventLoop).at(i), SLOT(quit())); \
 if (!MAKE_UNIQUE(thread).at(i)->isFinished())\
 MAKE_UNIQUE(eventLoop).at(i)->exec();\
@@ -74,7 +74,7 @@ DefineProcessFunction(MAKE_UNIQUE(lockFunc), lockFunction); \
 StdVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(New FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
 if(moveTothread)\
 moveTothread->moveToThread(MAKE_UNIQUE(thread)[i]);\
 MAKE_UNIQUE(thread).at(i)->start();\
@@ -82,7 +82,7 @@ MAKE_UNIQUE(thread).at(i)->start();\
 FrgVector<QEventLoop*> MAKE_UNIQUE(eventLoop);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(eventLoop).push_back(New QEventLoop());\
+MAKE_UNIQUE(eventLoop).push_back(FrgNew QEventLoop());\
 QObject::connect(MAKE_UNIQUE(thread).at(i), SIGNAL(finished()), MAKE_UNIQUE(eventLoop).at(i), SLOT(quit())); \
 if (!MAKE_UNIQUE(thread).at(i)->isFinished())\
 MAKE_UNIQUE(eventLoop).at(i)->exec();\

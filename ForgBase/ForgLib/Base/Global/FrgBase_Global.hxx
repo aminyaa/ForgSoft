@@ -79,7 +79,7 @@ ptr = NullPtr;\
 for(int iPointer=0; iPointer < vec.size(); iPointer++)\
 FreePointer(vec[iPointer]);
 
-#define FrgAreSameType(listOfItems, Type, result)\
+#define AreSameType(listOfItems, Type, result)\
 if(listOfItems.size() == 1)\
 result = False;\
 else\
