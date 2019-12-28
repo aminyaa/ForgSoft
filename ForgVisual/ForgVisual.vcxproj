@@ -105,6 +105,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -118,7 +119,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClInclude Include="ForgLib\Visual\Plot\3D\FrgVisual_Plot3D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx" />
   </ItemGroup>

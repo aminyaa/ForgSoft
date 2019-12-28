@@ -11,6 +11,7 @@
 #include <vtkCoordinate.h>
 #include <vtkActorCollection.h>
 #include <vtkAssemblyPath.h>
+#include <vtkRenderer.h>
 
 #include <QtGui/QColor>
 #include <QtGui/QCursor>

@@ -73,6 +73,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
+      <Filter>ForgLib\Visual\Scene\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -98,14 +101,16 @@
     <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx">
       <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
-      <Filter>ForgLib\Visual\Scene\3D</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
       <Filter>ForgLib\Visual\Scene</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
+      <Filter>ForgLib\Visual\Scene\3D</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
