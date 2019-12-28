@@ -69,6 +69,8 @@ private:
 	void SetCursorShapeToDefault();
 	void SetCursorShapeToMove();
 	void SetCursorShapeToRotateXYZ();
+	void SetCursorShapeToZoomIn();
+	void SetCursorShapeToZoomOut();
 
 public:
 
@@ -88,24 +90,18 @@ public:
 	void SetGeometriesOpacity(double opacity = 1.0);
 
 	virtual void OnLeftButtonUp() override;
-
 	virtual void OnLeftButtonDown() override;
-
 	virtual void OnMouseWheelForward() override;
-
 	virtual void OnMouseWheelBackward() override;
-
 	virtual void OnMiddleButtonDown() override;
-
 	virtual void OnRightButtonDown() override;
-
 	virtual void OnRightButtonUp() override;
-
 	virtual void OnMouseMove() override;
-
 	virtual void OnChar() override;
 
 	void SelectActor(vtkActor* actor, int isControlKeyPressed, FrgBool isFromTree = FrgFalse);
+	void SelectActors(QList<vtkActor*> actors, FrgBool isFromTree = FrgFalse);
+	void UnSelectAllActors();
 
 	FrgGetMacro(QList<FrgBaseActor*>, SelectedActors, theSelectedActors_);
 	FrgGetMacro(FrgBaseCADScene*, ParentScene, theParent_);
@@ -122,6 +118,8 @@ public:
 	void SetViewToXZPlane();
 	void SetViewToYZPlane();
 	void SetViewToXYZ();
+
+	void ShowMesh(FrgBool condition);
 };
 
 EndFrgBaseLib

@@ -59,6 +59,36 @@
     <Filter Include="NihadVessel\CustomWindowType">
       <UniqueIdentifier>{e51dd308-aa98-480e-b94a-f65333fce277}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NihadVessel\CADPartItem">
+      <UniqueIdentifier>{fb570034-6f27-4676-a49d-c4065f17efe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitTree">
+      <UniqueIdentifier>{42db662d-ac6a-4a80-9696-9c807791f02a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitWidget">
+      <UniqueIdentifier>{f7af29d1-90cc-493f-91b2-121c9ccf6e4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\AnalyzePart">
+      <UniqueIdentifier>{51f8c2dd-9b7c-4143-91ea-0985d87dcc14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitTree\Traits">
+      <UniqueIdentifier>{2060f6dc-acad-4799-8492-41ec1db45e00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature">
+      <UniqueIdentifier>{b5b99601-0901-49f8-babd-1864793af241}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree">
+      <UniqueIdentifier>{61f9260c-4a5a-48c3-bd24-231570144c2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature\Traits">
+      <UniqueIdentifier>{e3446008-3c7f-4f92-a417-669de66184d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget">
+      <UniqueIdentifier>{9a747f85-5e4a-4bd1-a170-0571cb5a973e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NihadVessel\CAD_PartItem">
+      <UniqueIdentifier>{fdf85b07-4825-4a40-817a-9f47b803c6b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NihadVessel\NihadMainWindow.cxx">
@@ -118,6 +148,21 @@
     <ClCompile Include="NihadVessel\CustomWindowType\WindowButton.cxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
     </ClCompile>
+    <ClCompile Include="NihadVessel\SplitTree\SplitTree.cxx">
+      <Filter>NihadVessel\SplitTree</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\SplitWidget\SplitWidget.cxx">
+      <Filter>NihadVessel\SplitWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\AnalyzePart\AnalyzePart.cxx">
+      <Filter>NihadVessel\AnalyzePart</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_Widget.cxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_Tree.cxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NihadVessel\NihadMainWindow.hxx">
@@ -138,8 +183,44 @@
     <ClInclude Include="NihadVessel\ViewPorts\ViewPorts.hxx">
       <Filter>NihadVessel\ViewPorts</Filter>
     </ClInclude>
-    <ClInclude Include="NihadVessel\CADScene\CADScene.hxx">
-      <Filter>NihadVessel\CADScene</Filter>
+    <ClInclude Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
+      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CADPartItem\CADPartItemI.hxx">
+      <Filter>NihadVessel\CADPartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CADPartItem\CADPartItem.hxx">
+      <Filter>NihadVessel\CADPartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitWidget\SplitWidgetI.hxx">
+      <Filter>NihadVessel\SplitWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitTree\SplitTreeI.hxx">
+      <Filter>NihadVessel\SplitTree</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitTree\Traits\SplitTree_Traits.hxx">
+      <Filter>NihadVessel\SplitTree\Traits</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPart_Feature.hxx">
+      <Filter>NihadVessel\SplitPart_Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_TreeI.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\Traits\SplitPartFeature_Traits.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\Traits</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_WidgetI.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\SplitPart_Feature\SplitPart_FeatureI.hxx">
+      <Filter>NihadVessel\SplitPart_Feature</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CAD_PartItem\CAD_PartItem.hxx">
+      <Filter>NihadVessel\CAD_PartItem</Filter>
+    </ClInclude>
+    <ClInclude Include="NihadVessel\CAD_PartItem\CAD_PartItemI.hxx">
+      <Filter>NihadVessel\CAD_PartItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +248,6 @@
     <QtMoc Include="NihadVessel\NihadEntities\NihadPartSurfaceEntity\NihadPartSurfaceEntity.hxx">
       <Filter>NihadVessel\NihadEntities\NihadPartSurfaceEntity</Filter>
     </QtMoc>
-    <QtMoc Include="NihadVessel\NihadEntities\NihadPartCurveEntity\NihadPartCurveEntity.hxx">
-      <Filter>NihadVessel\NihadEntities\NihadPartCurveEntity</Filter>
-    </QtMoc>
     <QtMoc Include="NihadVessel\CustomWindowType\WindowTitleBar.hxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
     </QtMoc>
@@ -178,6 +256,24 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\CustomWindowType\WindowButton.hxx">
       <Filter>NihadVessel\CustomWindowType</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitTree\SplitTree.hxx">
+      <Filter>NihadVessel\SplitTree</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitWidget\SplitWidget.hxx">
+      <Filter>NihadVessel\SplitWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\CADScene\CADScene.hxx">
+      <Filter>NihadVessel\CADScene</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\AnalyzePart\AnalyzePart.hxx">
+      <Filter>NihadVessel\AnalyzePart</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_Tree.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
+    </QtMoc>
+    <QtMoc Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_Widget.hxx">
+      <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -7,6 +7,7 @@
 #include <Entity_StaticData.hxx>
 #include <Entity_Connectivity.hxx>
 #include <Geo_ApprxCurveInfo.hxx>
+#include <Geo_CascadeTraits.hxx>
 
 #include <memory>
 
@@ -19,7 +20,8 @@ namespace AutLib
 	{
 
 		typedef typename remove_pointer<CurveType>::type CurveTypeR;
-		typedef typename down_cast_point<typename CurveTypeR::ptType>::type Point;
+		//typedef typename down_cast_point<typename CurveTypeR::ptType>::type Point;
+		typedef typename cascadeLib::pt_type_from_curve<CurveTypeR>::ptType Point;
 
 		typedef Entity_StaticData<Point, connectivity::dual> chain;
 		typedef std::shared_ptr<chain> chain_ptr;
@@ -33,6 +35,8 @@ namespace AutLib
 		Standard_Real theFirst_;
 		Standard_Real theLast_;
 
+		std::shared_ptr<info> theInfo_;
+
 		chain_ptr theChain_;
 
 	public:
@@ -44,21 +48,18 @@ namespace AutLib
 		(
 			const CurveType& theCurve,
 			const Standard_Real theFirst,
-			const Standard_Real theLast
+			const Standard_Real theLast,
+			const std::shared_ptr<info>& theInfo
 		)
 			: theCurve_(theCurve)
 			, theFirst_(theFirst)
 			, theLast_(theLast)
+			, theInfo_(theInfo)
 		{}
 
-		const Geo_ApprxCurveInfo& Info() const
+		const std::shared_ptr<info>& Info() const
 		{
-			return *this;
-		}
-
-		Geo_ApprxCurveInfo& Info()
-		{
-			return *this;
+			return theInfo_;
 		}
 
 		const CurveType& Curve() const
@@ -90,7 +91,8 @@ namespace AutLib
 		(
 			const CurveType& theCurve,
 			const Standard_Real theFirst,
-			const Standard_Real theLast
+			const Standard_Real theLast,
+			const std::shared_ptr<info>& theInfo
 		)
 		{
 			theCurve_ = theCurve;
@@ -98,10 +100,12 @@ namespace AutLib
 			theFirst_ = theFirst;
 			theLast_ = theLast;
 
+			theInfo_ = theInfo;
+
 			Change_IsDone() = Standard_False;
 		}
 
-		void Perform(const info& theInfo);
+		void Perform();
 
 		void Reset();
 	};

@@ -3,6 +3,7 @@
 #define _Marine_StillWaterProfile_Header
 
 #include <Marine_WaveProfile.hxx>
+#include <Global_AccessMethod.hxx>
 
 namespace AutLib
 {
@@ -13,24 +14,35 @@ namespace AutLib
 
 		/*Private Data*/
 
+		Standard_Real theH0_;
+		Standard_Real theH1_;
+
 	public:
 
 		Marine_StillWaterProfile
 		(
 			const Standard_Real theDraft
 		)
-			: Marine_WaveProfile(theDraft, theDraft, theDraft)
+			: theH0_(theDraft)
+			, theH1_(theDraft)
 		{}
 
 		Marine_StillWaterProfile
 		(
-			const Standard_Real theTa, 
-			const Standard_Real theTf
+			const Standard_Real theH0, 
+			const Standard_Real theH1
 		)
-			: Marine_WaveProfile(theTa, theTf)
+			: theH0_(theH0)
+			, theH1_(theH1)
 		{}
 
 		Standard_Real Value(const Standard_Real x) const override;
+
+
+		//- Macros
+
+		GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, H0)
+			GLOBAL_ACCESS_PRIM_SINGLE(Standard_Real, H1)
 	};
 }
 

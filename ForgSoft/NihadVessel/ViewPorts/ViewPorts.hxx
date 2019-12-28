@@ -13,8 +13,10 @@ class QToolButton;
 BeginFrgBaseLib
 
 class CADScene;
-class NihadVesselPartTreeItem;
+//class NihadVesselPartTreeItem;
+class FrgBaseCADPart_Entity;
 class FrgBaseMainWindow;
+class FrgBase_CADScene_TreeItem;
 
 class ViewPorts : public QMainWindow
 {
@@ -31,7 +33,7 @@ private:
 
 public:
 
-	ViewPorts(FrgBaseMainWindow* parent = FrgNullPtr);
+	ViewPorts(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseMainWindow* parent = FrgNullPtr);
 
 	FrgGetMacro(QList<CADScene*>, Scenes, theScenes_);
 	FrgGetMacro(QMdiArea*, MdiArea, theMdiArea_);
@@ -40,11 +42,11 @@ public:
 
 	void SetLogoText(FrgString text);
 
-	void CreateActor(NihadVesselPartTreeItem* part);
+	void CreateActor(FrgBaseCADPart_Entity* part);
 
 	void ClearScenes();
 
-	void RenderScenes();
+	void RenderScenes(FrgBool resetCamera = FrgTrue);
 
 	void AddScene(CADScene* scene, Qt::WindowFlags flags = Qt::WindowFlags());
 

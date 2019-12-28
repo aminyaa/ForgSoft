@@ -5,9 +5,11 @@
 #include <FrgBasePlot2D.hxx>
 #include <FrgBaseTabWidget.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBaseCADPart.hxx>
 #include <FrgBaseTreeItem.hxx>
 #include <FrgBaseCADScene.hxx>
 #include <FrgMenu_Models.hxx>
+#include <CADPartItem.hxx>
 #include <ViewPorts.hxx>
 #include <qtpropertybrowser.h>
 
@@ -16,6 +18,8 @@
 #include <NihadVesselPartTreeItem.hxx>
 #include <NihadVesselScenePartTreeItem.hxx>
 #include <NihadVesselScenePreviewTreeItem.hxx>
+#include <SplitTree.hxx>
+#include <AnalyzePart.hxx>
 
 #include <Pnt2d.hxx>
 #include <Entity2d_Box.hxx>
@@ -30,15 +34,19 @@
 #include <TModel_Tools.hxx>
 #include <Cad3d_TModel.hxx>
 #include <Cad_Tools.hxx>
+#include <Cad_BlockEntity.hxx>
+#include <TModel_Surface.hxx>
+#include <TModel_Paired.hxx>
 
 #include <QtWidgets/QAction>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QLayout>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLineEdit>
+#include <SplitWidget.hxx>
 
 #include <vtkActor.h>
 #include <FrgBaseInteractorStyle.hxx>
-#include <FrgBaseCADPartFeatures.hxx>
 
 #include <FrgBaseGlobalsThread.hxx>
 
@@ -119,6 +127,17 @@ void ForgBaseLib::NihadTree::FormTree()
 
 void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 {
+	auto myItem = dynamic_cast<FrgBaseTreeItem*>(item);
+	if (!myItem)
+		return;
+
+	/*auto tree = dynamic_cast<NihadTree*>(myItem->GetParentTree());
+	if (!tree)
+	{
+		itemInSplitTreeClickedSlot(tree, item, column);
+		return;
+	}*/
+
 	FrgBaseTree::itemClickedSlot(item, column);
 	auto& SelectedItems = this->selectedItems();
 	for (int iItem = 0; iItem < SelectedItems.size(); iItem++)
@@ -133,14 +152,76 @@ void ForgBaseLib::NihadTree::itemClickedSlot(QTreeWidgetItem* item, int column)
 				for (int iScene = 0; iScene < scenes.size(); iScene++)
 				{
 					auto actor = (scenes.at(iScene))->GetPartFeatureToActor().value(feature);
+
 					if (SelectedItems.size() > 1)
+					{
+						if (iItem == 0)
+							scenes[iScene]->GetInteractorStyle()->UnSelectAllActors();
+
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
+					}
 					else
 						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 0, FrgTrue);
 				}
 			}
 		}
 	}
+}
+
+void ForgBaseLib::NihadTree::itemInSplitTreeClickedSlot(FrgBaseTree* tree, QTreeWidgetItem* item, int column)
+{
+	auto& SelectedItems = tree->selectedItems();
+	for (int iItem = 0; iItem < SelectedItems.size(); iItem++)
+	{
+		auto feature = dynamic_cast<FrgBaseCADPartFeatureBase*>(SelectedItems[iItem]);
+
+		if (feature)
+		{
+			auto scenes = feature->GetPointerToScenes();
+			if (!scenes.isEmpty())
+			{
+				for (int iScene = 0; iScene < scenes.size(); iScene++)
+				{
+					auto actor = (scenes.at(iScene))->GetPartFeatureToActor().value(feature);
+					if (SelectedItems.size() > 1)
+					{
+						if (iItem == 0)
+							scenes[iScene]->GetInteractorStyle()->UnSelectAllActors();
+
+						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 1, FrgTrue);
+					}
+					else
+						scenes.at(iScene)->GetInteractorStyle()->SelectActor(actor.Get(), 0, FrgTrue);
+				}
+			}
+		}
+	}
+}
+
+void ForgBaseLib::NihadTree::showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos)
+{
+	auto selectedParts = this->selectedItems();
+
+	FrgBool areSameTypeSurface = FrgFalse;
+	FrgBool areSameTypeCurve = FrgFalse;
+	FrgAreSameType(selectedParts, FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>, areSameTypeSurface);
+	FrgAreSameType(selectedParts, FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>, areSameTypeCurve);
+	if (areSameTypeSurface)
+		for (int i = 0; i < selectedParts.size(); i++)
+			dynamic_cast<FrgBaseCADPartFeatureBase*>(selectedParts[i])->GetContextMenu()->GetItem("Combine")->setEnabled(FrgTrue);
+	if (areSameTypeCurve)
+		for (int i = 0; i < selectedParts.size(); i++)
+			dynamic_cast<FrgBaseCADPartFeatureBase*>(selectedParts[i])->GetContextMenu()->GetItem("Combine")->setEnabled(FrgTrue);
+	
+	FrgBaseTree::showContextMenu(item, globalPos);
+
+	if (areSameTypeSurface)
+		for (int i = 0; i < selectedParts.size(); i++)
+			dynamic_cast<FrgBaseCADPartFeatureBase*>(selectedParts[i])->GetContextMenu()->GetItem("Combine")->setEnabled(FrgFalse);
+
+	if (areSameTypeCurve)
+		for (int i = 0; i < selectedParts.size(); i++)
+			dynamic_cast<FrgBaseCADPartFeatureBase*>(selectedParts[i])->GetContextMenu()->GetItem("Combine")->setEnabled(FrgFalse);
 }
 
 void ForgBaseLib::NihadTree::NewGeometryShipClickedSlot(bool)
@@ -150,6 +231,7 @@ void ForgBaseLib::NihadTree::NewGeometryShipClickedSlot(bool)
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Nihad2_BareHull)();
 
 	FrgBaseTreeItem* NihadGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	NihadGeometryTreeItem->setIcon(0, QIcon(FrgICON_Menu_Models_Ship));
 	FrgSharedPtr<AutLib::Leg_Nihad2_BareHull> patch = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	patch->FwdSection().Tightness0()->SetValue(0.9);
@@ -260,6 +342,7 @@ void ForgBaseLib::NihadTree::NewGeometryPropellerClickedSlot(bool b)
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Model_PropNo1)();
 
 	FrgBaseTreeItem* PropellerGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	PropellerGeometryTreeItem->setIcon(0, QIcon(FrgICON_Menu_Models_Propeller));
 	FrgSharedPtr<AutLib::Leg_Model_PropNo1> patch = std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	auto PropellerProperties = PropellerGeometryTreeItem->GetProperties();
@@ -357,6 +440,7 @@ void ForgBaseLib::NihadTree::NewGeometryDuctClickedSlot(bool b)
 	theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity() = FrgMakeSharedPtr(AutLib::Leg_Model_DuctNo1)();
 
 	FrgBaseTreeItem* DuctGeometryTreeItem = theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1);
+	DuctGeometryTreeItem->setIcon(0, QIcon(FrgICON_Menu_Models_Duct));
 	FrgSharedPtr<AutLib::Leg_Model_DuctNo1> patch = std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(theGeometryTreeItems_.at(theGeometryTreeItems_.size() - 1)->GetEntity());
 
 	auto DuctProperties = DuctGeometryTreeItem->GetProperties();
@@ -644,19 +728,33 @@ void ForgBaseLib::NihadTree::GeometryPropertyValueChangedSlot(QtProperty* proper
 
 void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 {
-	if(std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
-		std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	auto geometryItem = dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_);
 
-	if (std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
-		std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	auto shipItem = std::dynamic_pointer_cast<AutLib::Leg_Nihad2_BareHull>(geometryItem->GetEntity());
+	if (shipItem)
+		shipItem->Perform();
 
-	if (std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity()))
-		std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(((NihadVesselGeometryTreeItem*)theLastRightClicked_)->GetEntity())->Perform();
+	auto propellerItem = std::dynamic_pointer_cast<AutLib::Leg_Model_PropNo1>(geometryItem->GetEntity());
+	if (propellerItem)
+		propellerItem->Perform();
+
+	auto ductItem = std::dynamic_pointer_cast<AutLib::Leg_Model_DuctNo1>(geometryItem->GetEntity());
+	if (ductItem)
+		ductItem->Perform();
 
 	auto solid = AutLib::Cad3d_TModel::MakeSolid((dynamic_cast<NihadVesselGeometryTreeItem*>(theLastRightClicked_))->GetTopoDS_Shape(), 1.0e-6);
 
-	thePartTreeItems_.push_back
+	/*thePartTreeItems_.push_back
 	(FrgNew NihadVesselPartTreeItem
+	(
+		theLastRightClicked_->text(0),
+		GetTreeItem("Parts"),
+		solid
+	)
+	);*/
+
+	thePartTreeItems_.push_back
+	(FrgNew CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
 	(
 		theLastRightClicked_->text(0),
 		GetTreeItem("Parts"),
@@ -664,10 +762,17 @@ void ForgBaseLib::NihadTree::CreatePartFromGeometryClickedSlot(bool b)
 	)
 	);
 
+	if (shipItem)
+		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Ship));
+	if (propellerItem)
+		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Propeller));
+	if (ductItem)
+		thePartTreeItems_.last()->setIcon(0, QIcon(FrgICON_Menu_Models_Duct));
+
 	ScrollToItem(thePartTreeItems_.at(thePartTreeItems_.size() - 1));
 }
 
-void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
+void ForgBaseLib::NihadTree::ExportPart(const TopoDS_Shape& shape)
 {
 	QList<QString> QfileTypes;
 	QfileTypes.push_back("IGES (*.igs)");
@@ -693,11 +798,11 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 	{
 		if (*ext == "IGES (*.igs)")
 		{
-			AutLib::Cad_Tools::ExportToIGES("MM", ((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
+			AutLib::Cad_Tools::ExportToIGES("MM", shape, fileName.toStdString());
 		}
 		else if (*ext == "STEP (*.stp; *.step)")
 		{
-			AutLib::Cad_Tools::ExportToSTEP(((NihadVesselPartTreeItem*)(theLastRightClicked_))->GetModel()->Shape(), fileName.toStdString());
+			AutLib::Cad_Tools::ExportToSTEP(shape, fileName.toStdString());
 		}
 		else if (*ext == "Tecplot (*.plt)")
 		{
@@ -705,7 +810,357 @@ void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
 		}
 	}
 
-	GetParentMainWindow()->ParseInfoToConsole("\"" + theLastRightClicked_->text(0) + "\" saved successfully at\"" + fileName + "\"");
+	GetParentMainWindow()->ParseInfoToConsole("The part exported successfully at\"" + fileName + "\"");
+}
+
+void ForgBaseLib::NihadTree::ExportPartSlot(bool b)
+{
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
+
+	if (!part)
+	{
+		std::cout << "theLastRightClicked_ is null in NihadTree::ExportPartSlot(bool b)\n";
+		return;
+	}
+
+	ExportPart(part->GetModel()->Shape());
+}
+
+void ForgBaseLib::NihadTree::AnalyzePartSlot(bool)
+{
+	auto castedPart = dynamic_cast<FrgBaseCADPart_Entity*>(theLastRightClicked_);
+	if (!castedPart)
+	{
+		std::cout << "castedPart is null in NihadTree::AnalyzePartSlot(bool)\n";
+		return;
+	}
+
+	auto castedPartToEntity = dynamic_cast<FrgBaseCADPart<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(castedPart);
+	if (!castedPartToEntity)
+	{
+		std::cout << "castedPartToEntity is null in NihadTree::AnalyzePartSlot(bool)\n";
+		return;
+	}
+
+	QList<FrgBaseCADScene*> pointerToScenes = castedPartToEntity->GetFeatures()->GetSurfacesEntity()->GetFeatureEntity(0)->GetPointerToScenes();
+
+	AnalyzePart* analyze = FrgNew AnalyzePart(castedPart->text(0), GetParentMainWindow(), castedPart, pointerToScenes);
+}
+
+void ForgBaseLib::NihadTree::SplitByPatchPartSlot(bool)
+{
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>
+		(dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart());
+	if (!part)
+	{
+		std::cout << " Error! ==> The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in NihadTree::SplitByPatchPartSlot(bool)\n";
+		return;
+	}
+
+	/*part->GetFeatures()->GetSurfacesEntity()->get
+	part->GetModel()->Faces()->SelectBlockEntity("")*/
+
+	auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
+	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
+
+	if (surfaceItem)
+	{
+		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+		if (surfaceItem->GetEntity()->NbEntities() == 1)
+			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				surfaceItem,
+				part->GetModel()->Faces(),
+				surfaceItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
+	}
+	else if (curveItem)
+	{
+		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+		if (curveItem->GetEntity()->NbEntities() == 1)
+			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				curveItem,
+				part->GetModel()->Segments(),
+				curveItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
+	}
+}
+
+void ForgBaseLib::NihadTree::SplitByNonContiguousPartSlot(bool)
+{
+	auto part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>
+		(dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart());
+	if (!part)
+	{
+		std::cout << " Error! ==> The part is not type of CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>> in NihadTree::SplitByNonContiguousPartSlot(bool)\n";
+		return;
+	}
+
+	auto surfaceItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
+	auto curveItem = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
+
+	if (surfaceItem)
+	{
+		part->GetModel()->Faces()->SelectBlockEntity(surfaceItem->GetEntity()->Name());
+		if (surfaceItem->GetEntity()->NbEntities() == 1)
+			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				surfaceItem,
+				part->GetModel()->Faces(),
+				surfaceItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
+	}
+	else if (curveItem)
+	{
+		part->GetModel()->Segments()->SelectBlockEntity(curveItem->GetEntity()->Name());
+		if (curveItem->GetEntity()->NbEntities() == 1)
+			return;
+
+		SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* splitWidget = FrgNew SplitWidget<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>
+			(
+				theLastRightClicked_->text(0),
+				GetParentMainWindow(),
+				curveItem,
+				part->GetModel()->Segments(),
+				curveItem->GetPointerToScenes(),
+				dynamic_cast<FrgBaseCADPartFeatureBase*>(theLastRightClicked_)->GetParentPart()
+				);
+	}
+
+	/*splitWidget->setHidden(FrgTrue);
+	int nbTreeChildren = splitWidget->GetTree()->topLevelItemCount();
+
+	for (int i = 0; i < nbTreeChildren; i++)
+	{
+		FrgString entityName = (surfaceItem ? "Surface" : "Curve");
+		FrgString name;
+		splitWidget->GetTree()->setItemSelected(splitWidget->GetTree()->topLevelItem(0), true);
+
+		if(i < 9)
+			name = entityName + " 0" + FrgString::number(i + 1);
+		else
+			name = entityName + " " + FrgString::number(i + 1);
+		splitWidget->GetNameLineEdit()->setText(name);
+		emit splitWidget->GetCreateButton()->click();
+	}
+
+	emit splitWidget->GetCloseButton()->click();
+
+	delete splitWidget;*/
+}
+
+void ForgBaseLib::NihadTree::CombinePartSlot(bool)
+{
+	auto partSurfaceFeature = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(theLastRightClicked_);
+	auto partCurveFeature = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(theLastRightClicked_);
+
+	auto selectedPartFeatures = this->selectedItems();
+
+	if (partSurfaceFeature)
+	{
+		const auto& part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(partSurfaceFeature->GetParentPart());
+		auto surfaceManager = part->GetModel()->Faces();
+		surfaceManager->UnSelectAll();
+
+		QList<FrgBaseCADScene*> pointerToScenes;
+
+		for (int iSurface = 0; iSurface < selectedPartFeatures.size(); iSurface++)
+		{
+			auto surfaceBlockEntity = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(selectedPartFeatures[iSurface])->GetEntity();
+			surfaceManager->SelectBlockEntity(surfaceBlockEntity->Name());
+		}
+
+		surfaceManager->Combine(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetSurfacesEntity(), "Combined").toStdString().c_str());
+
+		for (int iSelected = 0; iSelected < selectedPartFeatures.size(); iSelected++)
+		{
+			auto surfaceBlock = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(selectedPartFeatures[iSelected]);
+
+			pointerToScenes = surfaceBlock->GetPointerToScenes();
+
+			part->GetFeatures()->GetSurfacesEntity()->removeChild(surfaceBlock);
+			part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().removeOne(surfaceBlock);
+			GetItems().removeOne(surfaceBlock);
+		}
+
+		std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>> addedBlocks;
+		surfaceManager->RetrieveTo(addedBlocks);
+		auto surfaces = part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity();
+
+		FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>* surfaceFeature;
+
+		for (int iAdded = 0; iAdded < surfaceManager->NbBlocks(); iAdded++)
+		{
+			FrgBool contains = FrgFalse;
+			for (int iSurface = 0; iSurface < surfaces.size(); iSurface++)
+			{
+				if (surfaces[iSurface]->GetEntity() == addedBlocks[iAdded])
+				{
+					contains = FrgTrue;
+					break;
+				}
+			}
+			if (contains)
+				continue;
+
+			surfaceFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>(addedBlocks[iAdded]->Name().c_str(), part->GetFeatures()->GetSurfacesEntity());
+
+			surfaceFeature->GetPointerToScenes() = pointerToScenes;
+
+			GetItems().push_back(surfaceFeature);
+			part->GetFeatures()->GetSurfacesEntity()->GetFeatureListEntity().push_back(surfaceFeature);
+
+			surfaceFeature->GetEntity() = addedBlocks[iAdded];
+			surfaceFeature->setIcon(0, QIcon(FrgICONTreeItemPartSurface));
+
+			surfaceFeature->GetParentPart() = part;
+		}
+
+		/*SplitWidget* splitWidget = FrgNew SplitWidget
+		(
+			theLastRightClicked_->text(0),
+			GetParentMainWindow(),
+			(surfaceFeature ? surfaceFeature->GetEntity() : FrgNullPtr),
+			FrgNullPtr,
+			surfaceFeature->GetPointerToScenes(),
+			surfaceFeature->GetParentPart()
+		);
+
+		splitWidget->setHidden(FrgTrue);
+		splitWidget->CloseButtonClickedSlot();
+
+		delete splitWidget;*/
+	}
+
+	if (partCurveFeature)
+	{
+		const auto& part = dynamic_cast<CADPartItem<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>, AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(partCurveFeature->GetParentPart());
+		auto curveManager = part->GetModel()->Segments();
+		curveManager->UnSelectAll();
+
+		QList<FrgBaseCADScene*> pointerToScenes;
+
+		for (int iCurve = 0; iCurve < selectedPartFeatures.size(); iCurve++)
+		{
+			auto curveBlockEntity = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(selectedPartFeatures[iCurve])->GetEntity();
+			curveManager->SelectBlockEntity(curveBlockEntity->Name());
+		}
+
+		curveManager->Combine(CorrectName<FrgBaseTreeItem>(part->GetFeatures()->GetCurvesEntity(), "Combined").toStdString().c_str());
+
+		for (int iSelected = 0; iSelected < selectedPartFeatures.size(); iSelected++)
+		{
+			auto curveBlock = dynamic_cast<FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(selectedPartFeatures[iSelected]);
+
+			pointerToScenes = curveBlock->GetPointerToScenes();
+
+			part->GetFeatures()->GetCurvesEntity()->removeChild(curveBlock);
+			part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity().removeOne(curveBlock);
+			GetItems().removeOne(curveBlock);
+		}
+
+		std::vector<std::shared_ptr<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>> addedBlocks;
+		curveManager->RetrieveTo(addedBlocks);
+		auto curves = part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity();
+
+		FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>* curveFeature;
+
+		for (int iAdded = 0; iAdded < curveManager->NbBlocks(); iAdded++)
+		{
+			FrgBool contains = FrgFalse;
+			for (int iCurve = 0; iCurve < curves.size(); iCurve++)
+			{
+				if (curves[iCurve]->GetEntity() == addedBlocks[iAdded])
+				{
+					contains = FrgTrue;
+					break;
+				}
+			}
+			if (contains)
+				continue;
+
+			curveFeature = FrgNew FrgBaseCADPartFeatureEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>(addedBlocks[iAdded]->Name().c_str(), part->GetFeatures()->GetCurvesEntity());
+
+			GetItems().push_back(curveFeature);
+			part->GetFeatures()->GetCurvesEntity()->GetFeatureListEntity().push_back(curveFeature);
+
+			curveFeature->GetPointerToScenes() = pointerToScenes;
+
+			curveFeature->GetEntity() = addedBlocks[iAdded];
+			curveFeature->setIcon(0, QIcon(FrgICONTreeItemPartCurve));
+
+			curveFeature->GetParentPart() = part;
+		}
+
+		/*SplitWidget* splitWidget = FrgNew SplitWidget
+		(
+			theLastRightClicked_->text(0),
+			GetParentMainWindow(),
+			FrgNullPtr,
+			(curveFeature ? curveFeature->GetEntity() : FrgNullPtr),
+			curveFeature->GetPointerToScenes(),
+			curveFeature->GetParentPart()
+		);
+
+		splitWidget->setHidden(FrgTrue);
+		splitWidget->CloseButtonClickedSlot();
+
+		delete splitWidget;*/
+	}
+}
+
+void ForgBaseLib::NihadTree::SelectAllPartFeatureEntities(bool)
+{
+	auto partFeature = dynamic_cast<FrgBaseCADPartFeaturesEntity_Base*>(theLastRightClicked_);
+
+	if (!partFeature)
+	{
+		std::cout << "partFeature is null in NihadTree::SelectAllPartFeatureEntities(bool)\n";
+		return;
+	}
+
+	auto surfacesFeature = dynamic_cast<FrgBaseCADPartFeaturesEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Surface>>*>(partFeature);
+	auto curvesFeature = dynamic_cast<FrgBaseCADPartFeaturesEntity<AutLib::Cad_BlockEntity<AutLib::TModel_Paired>>*>(partFeature);
+
+	QList<FrgBaseTreeItem*> items;
+
+	if (surfacesFeature)
+	{
+		auto listOfSurfaces = surfacesFeature->GetFeatureListEntity();
+		for (int i = 0; i < listOfSurfaces.size(); i++)
+		{
+			items.push_back(listOfSurfaces[i]);
+		}
+
+		this->ScrollToItems(items);
+	}
+
+	if (curvesFeature)
+	{
+		auto listOfCurves = curvesFeature->GetFeatureListEntity();
+		for (int i = 0; i < listOfCurves.size(); i++)
+		{
+			items.push_back(listOfCurves[i]);
+		}
+
+		this->ScrollToItems(items);
+	}
 }
 
 ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTreeItem(FrgBaseTreeItem* item)
@@ -717,7 +1172,7 @@ ForgBaseLib::NihadVesselGeometryTreeItem* ForgBaseLib::NihadTree::GetGeometryTre
 	}
 }
 
-ForgBaseLib::NihadVesselPartTreeItem* ForgBaseLib::NihadTree::GetPartTreeItem(FrgBaseTreeItem* item)
+ForgBaseLib::FrgBaseCADPart_Entity* ForgBaseLib::NihadTree::GetPartTreeItem(FrgBaseTreeItem* item)
 {
 	for (int i = 0; i < thePartTreeItems_.size(); i++)
 	{
@@ -738,11 +1193,11 @@ void ForgBaseLib::NihadTree::UpdateTree()
 
 void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> selectedItems)
 {
-	QList<NihadVesselPartTreeItem*> output;
+	QList<FrgBaseCADPart_Entity*> output;
 
 	for (int i = 0; i < selectedItems.size(); i++)
 	{
-		output.push_back(dynamic_cast<NihadVesselPartTreeItem*>(selectedItems.at(i)));
+		output.push_back(dynamic_cast<FrgBaseCADPart_Entity*>(selectedItems.at(i)));
 	}
 
 	auto scene = (dynamic_cast<NihadVesselScenePartTreeItem*>(theLastLeftClicked_));
@@ -752,8 +1207,54 @@ void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetI
 		scene->GetPartsPointer() = output;
 		scene->RenderSceneSlot();
 
+		int index = GetParentMainWindow()->GetTabWidget()->indexOf(scene->GetViewPorts());
+		if (index >= 0)
+			return;
 		GetParentMainWindow()->GetTabWidget()->addTab(scene->GetViewPorts(), scene->text(0));
 		GetParentMainWindow()->GetTabWidget()->setCurrentWidget(scene->GetViewPorts());
+		
+	}
+}
+
+void ForgBaseLib::NihadTree::ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*> parts, QList<FrgBase_CADScene_TreeItem*> scenes, FrgBool resetCamera)
+{
+	QList<FrgBaseCADPart_Entity*> output;
+
+	for (int i = 0; i < parts.size(); i++)
+	{
+		output.push_back(dynamic_cast<FrgBaseCADPart_Entity*>(parts.at(i)));
+	}
+
+	for (int iScene = 0; iScene < scenes.size(); iScene++)
+	{
+		auto scene = (dynamic_cast<NihadVesselScenePartTreeItem*>(scenes[iScene]));
+
+		if (scene)
+		{
+			/*auto partsPointer = scene->GetPartsPointer();
+			for (int i = 0; i < partsPointer.size(); i++)
+			{
+				for (int j = 0; j < output.size(); j++)
+				{
+					if (partsPointer[i] == output[j])
+					{
+						std::cout << "Continue;\n";
+						continue;
+					}
+					std::cout << "Not Continue;\n";
+					scene->GetPartsPointer().push_back(output[j]);
+				}
+			}*/
+
+			//scene->GetPartsPointer() = output;
+			scene->RenderSceneSlot(resetCamera);
+
+			int index = GetParentMainWindow()->GetTabWidget()->indexOf(scene->GetViewPorts());
+			if (index >= 0)
+				return;
+			GetParentMainWindow()->GetTabWidget()->addTab(scene->GetViewPorts(), scene->text(0));
+			GetParentMainWindow()->GetTabWidget()->setCurrentWidget(scene->GetViewPorts());
+		}
 	}
 }
 

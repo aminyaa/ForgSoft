@@ -34,6 +34,9 @@ namespace AutLib
 
 	public:
 
+		typedef Cad_CurveInfo infoType;
+		typedef Geom2d_Curve geomType;
+
 		TModel_parCurve
 		(
 			const Standard_Real theFirst,

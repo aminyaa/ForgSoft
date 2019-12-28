@@ -11,7 +11,11 @@ namespace AutLib
 
 	struct Aft2d_ElementTraits;
 
-	typedef Aft_Element<Aft2d_ElementTraits, Mesh_ElementType_Triangle2D>
+	typedef Aft_Element
+		<
+		Aft2d_ElementTraits, 
+		Mesh_ElementType_Triangle2D
+		>
 		Aft2d_Element;
 }
 

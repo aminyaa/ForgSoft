@@ -2,7 +2,7 @@
 #ifndef _Aft2d_ElementSurfaceFwd_Header
 #define _Aft2d_ElementSurfaceFwd_Header
 
-#include <Aft_Element.hxx>
+#include <Aft_ElementFwd.hxx>
 
 namespace AutLib
 {

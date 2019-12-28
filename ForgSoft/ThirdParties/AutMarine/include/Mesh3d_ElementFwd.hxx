@@ -11,7 +11,7 @@ namespace AutLib
 
 	struct Mesh3d_ElementTraits;
 
-	template<class ElementTraits, Mesh_ElementType ElmType = Mesh_ElementType_Tetrahedron>
+	template<class ElementTraits, Mesh_ElementType ElmType>
 	class Mesh_Element;
 
 	typedef Mesh_Element<Mesh3d_ElementTraits, Mesh_ElementType_Tetrahedron>

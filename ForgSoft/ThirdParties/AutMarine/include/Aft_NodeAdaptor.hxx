@@ -12,8 +12,7 @@ namespace AutLib
 
 	template<class EdgeType, class ElementType, class FacetType = void>
 	class Aft_NodeAdaptor
-		: public Mesh_NodeAdaptor<EdgeType, ElementType, FacetType>
-		, public Mesh_NodeToFrontEdgeAdaptor<EdgeType>
+		: public Mesh_NodeToFrontEdgeAdaptor<EdgeType>
 		, public Mesh_NodeToFrontFacetAdaptor<FacetType>
 	{
 
@@ -32,8 +31,7 @@ namespace AutLib
 
 	template<class EdgeType, class ElementType>
 	class Aft_NodeAdaptor<EdgeType, ElementType, void>
-		: public Mesh_NodeAdaptor<EdgeType, ElementType>
-		, public Mesh_NodeToFrontEdgeAdaptor<EdgeType>
+		: public Mesh_NodeToFrontEdgeAdaptor<EdgeType>
 	{
 
 		/*Private Data*/

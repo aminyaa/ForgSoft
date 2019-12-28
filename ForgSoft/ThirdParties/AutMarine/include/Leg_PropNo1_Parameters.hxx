@@ -42,9 +42,9 @@ namespace AutLib
 			return RemoveHubApex_;
 		}
 
-		void SetToRemoveHubApex(Standard_Boolean condition)
+		void SetToRemoveHubApex(const Standard_Boolean remove)
 		{
-			RemoveHubApex_ = condition;
+			RemoveHubApex_ = remove;
 		}
 
 		//- Macros

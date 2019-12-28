@@ -1,11 +1,11 @@
 #include <NihadVesselPartTreeItem.hxx>
 #include <NihadVesselGeometryTreeItem.hxx>
-#include <NihadTree.hxx>
+#include <FrgBaseTree.hxx>
 
 #include <FrgBaseMenu.hxx>
 #include <FrgBaseMainWindow.hxx>
-#include <NihadPartSurfaceEntity.hxx>
-#include <NihadPartCurveEntity.hxx>
+//#include <NihadPartSurfaceEntity.hxx>
+//#include <NihadPartCurveEntity.hxx>
 
 #include <Cad3d_TModel.hxx>
 

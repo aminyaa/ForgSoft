@@ -21,11 +21,25 @@ namespace AutLib
 	class TModel_Shell;
 	class TModel_Curve;
 	class TModel_parCurve;
+	class Cad3d_TModel;
+	class Geo_ApprxCurveInfo;
 
 	class TModel_Tools
 	{
 
 	public:
+
+		static void DicreteEdges
+		(
+			const TModel_Surface& theSurface,
+			const std::shared_ptr<Geo_ApprxCurveInfo>& theInfo
+		);
+
+		static void DicreteEdges
+		(
+			const Cad3d_TModel& theModel, 
+			const std::shared_ptr<Geo_ApprxCurveInfo>& theInfo
+		);
 
 		static std::shared_ptr<Entity2d_Polygon> 
 			UniformDiscrete
@@ -77,6 +91,8 @@ namespace AutLib
 			(
 				const std::vector<std::shared_ptr<TModel_Surface>>& theSurfaces
 			);
+
+
 	};
 }
 

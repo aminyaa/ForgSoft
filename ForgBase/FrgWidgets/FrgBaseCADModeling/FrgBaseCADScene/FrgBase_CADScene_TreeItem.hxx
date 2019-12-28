@@ -18,6 +18,9 @@ public:
 		const FrgString& title,
 		FrgBaseTreeItem* parent
 	);
+
+	virtual ~FrgBase_CADScene_TreeItem()
+	{}
 };
 
 EndFrgBaseLib

@@ -22,6 +22,7 @@ typedef FrgInt Int;
 typedef FrgDouble Double;
 typedef FrgString String;
 typedef QPointF PointF;
+typedef QColor Color;
 //typedef QVector3D Vector2D;
 //typedef QVector3D Vector3D;
 //typedef QVector3D Vector4D;
@@ -135,6 +136,7 @@ public:
 	MACROAddProperty(Double);
 	MACROAddProperty(String);
 	MACROAddProperty(PointF);
+	MACROAddProperty(Color);
 
 	MACROSetAttributeProperty(minimum);
 	MACROSetAttributeProperty(maximum);

@@ -95,6 +95,7 @@ public:
 
 	//FrgGetMacro(FrgSharedPtr<FrgMenus>, Menus, theMenus_);
 	FrgGetMacro(FrgBaseTree*, Tree, theTreeWidget_->theTree_);
+	FrgGetMacro(TreeWidgetStruct*, TreeWidget, theTreeWidget_);
 	FrgGetMacro(PropertiesWidgetStruct*, PropertyWidget, thePropertyWidget_);
 	FrgGetMacro(FrgBaseTabWidget*, TabWidget, theTabWidget_);
 

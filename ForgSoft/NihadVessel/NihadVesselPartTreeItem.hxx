@@ -4,6 +4,7 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseCADPart.hxx>
+#include <FrgBaseTree.hxx>
 
 namespace AutLib
 {

@@ -78,7 +78,5 @@ QAction* ForgBaseLib::FrgBaseMenu::GetItem(const FrgString& title)
 		}
 	}
 
-	GetParentMainWindow()->ParseErrorToConsole(title + " not found.");
-
 	return FrgNullPtr;
 }

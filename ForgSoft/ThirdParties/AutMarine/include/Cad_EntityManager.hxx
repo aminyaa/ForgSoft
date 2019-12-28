@@ -92,7 +92,7 @@ namespace AutLib
 
 		void UnSelectAll();
 
-		void Combine();
+		block_ptr Combine();
 
 		void Combine(const word& Blockname);
 
@@ -101,6 +101,8 @@ namespace AutLib
 		void Split(const word& BlockName);
 
 		void RenameBlock(const word& theName);
+
+		void RenameBlock(const block_ptr& theBlock, const word& theName);
 
 		void RetrieveTo(entityList& theEntities) const;
 

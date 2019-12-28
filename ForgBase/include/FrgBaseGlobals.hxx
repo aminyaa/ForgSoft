@@ -79,4 +79,16 @@ ptr = FrgNullPtr;\
 for(int iPointer=0; iPointer < vec.size(); iPointer++)\
 FreePointer(vec[iPointer]);
 
+#define FrgAreSameType(listOfItems, Type, result)\
+if(listOfItems.size() == 1)\
+result = FrgFalse;\
+else\
+{for (int iSameType = 0; iSameType < listOfItems.size(); iSameType++)\
+{\
+if (!dynamic_cast<Type*>(listOfItems[iSameType]))\
+{result = FrgFalse; break;}\
+else\
+{result = FrgTrue; }\
+}}
+
 #endif // !_FrgBaseGlobals_Header

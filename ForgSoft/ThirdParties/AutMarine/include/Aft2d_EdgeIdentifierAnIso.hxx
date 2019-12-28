@@ -8,14 +8,14 @@
 namespace AutLib
 {
 
-	struct Aft2d_EdgeIdentifierAnIsoNodeTraits
+	struct Aft2d_EdgeIdentifierAnIso_Traits
 	{
 		typedef Pnt2d ptType;
 	};
 
 	template<>
 	class Aft_EntityIdentifier<Aft2d_NodeAnIso, true>
-		: public Aft_EntityIdentifier<Aft2d_EdgeIdentifierAnIsoNodeTraits, true>
+		: public Aft_EntityIdentifier<Aft2d_EdgeIdentifierAnIso_Traits, true>
 	{
 
 		typedef Entity2d_Metric1 metric;

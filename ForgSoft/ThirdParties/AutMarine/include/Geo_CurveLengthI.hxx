@@ -20,7 +20,7 @@ namespace AutLib
 		{
 			Numeric_AdaptIntegration
 				<
-				Geo_CurveIntegrand_Function<gCurveType, MetricPrcsrType, false>
+				Geo_CurveIntegrand_Function<gCurveType, MetricPrcsrType, true>
 				>
 				Integration(theIntegrand, theU0, theU1, theInfo);
 

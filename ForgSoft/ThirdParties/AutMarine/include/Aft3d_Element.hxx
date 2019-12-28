@@ -8,7 +8,11 @@
 namespace AutLib
 {
 
-	typedef Aft_Element<Aft3d_ElementTraits> Aft3d_Element;
+	typedef Aft_Element
+		<
+		Aft3d_ElementTraits, 
+		Mesh_ElementType_Tetrahedron
+		> Aft3d_Element;
 }
 
 #endif // !_Aft3d_Element_Header

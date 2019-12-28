@@ -16,7 +16,7 @@ namespace AutLib
 		: public Mesh_Entity
 		, public Mesh_EdgeAdaptor
 		<
-		typename EdgeTraits::elementType, 
+		typename EdgeTraits::elementType,
 		typename EdgeTraits::facetType
 		>
 	{
@@ -125,6 +125,16 @@ namespace AutLib
 				const Point& theCoord
 			) const;
 
+		template<class U = Standard_Real>
+		resolvedType<is_two_dimension<(int)Point::dim>::value, U> Oriented
+		(
+			const Point& theCoord
+		) const;
+
+		Standard_Real CalcDistance(const Point& theCoord) const;
+
+		Standard_Real CalcSquareDistance(const Point& theCoord) const;
+
 
 		//- Static functions and operators
 
@@ -151,5 +161,7 @@ namespace AutLib
 		}
 	};
 }
+
+#include <Mesh_EdgeI.hxx>
 
 #endif // !_Mesh_Edge_Header

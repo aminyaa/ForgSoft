@@ -18,6 +18,8 @@ namespace AutLib
 	// Forward Declarations
 	class GModel_Wire;
 	class GModel_parCurve;
+	class GModel_parWire;
+	class GModel_Plane;
 	class Cad3d_GModel;
 	class Numeric_AdaptIntegrationInfo;
 	class Entity2d_Metric1;
@@ -47,6 +49,12 @@ namespace AutLib
 		Entity2d_Box CalcParametricBoundingBox() const;
 
 	public:
+
+		typedef GModel_parCurve parCurveType;
+		typedef GModel_Plane planeType;
+		typedef GModel_parWire parWireType;
+
+		typedef GModel_Wire wireType;
 
 		GModel_Surface
 		(

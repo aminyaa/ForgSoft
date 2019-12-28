@@ -21,7 +21,10 @@ namespace AutLib
 	// Forward Declarations
 	class TModel_Edge;
 	class TModel_Wire;
+	class TModel_Plane;
+	class TModel_parWire;
 	class Entity2d_Metric1;
+	class TModel_parCurve;
 
 	class TModel_Surface
 		: public TModel_Entity
@@ -58,6 +61,12 @@ namespace AutLib
 		Entity3d_Box CalcBoundingBox() const;
 
 	public:
+
+		typedef TModel_parCurve parCurveType;
+		typedef TModel_Plane planeType;
+		typedef TModel_parWire parWireType;
+
+		typedef TModel_Wire wireType;
 
 		TModel_Surface
 		(
@@ -112,6 +121,8 @@ namespace AutLib
 		{
 			return theGeom_;
 		}
+
+		Handle(Poly_Triangulation) RetrieveTriangulation() const;
 
 		const Handle(Poly_Triangulation)& Triangulation() const
 		{

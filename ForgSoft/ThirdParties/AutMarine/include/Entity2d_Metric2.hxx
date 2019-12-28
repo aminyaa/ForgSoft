@@ -12,6 +12,9 @@
 namespace AutLib
 {
 
+	// Forward Declarations
+	class Entity2d_Metric1;
+
 	class Entity2d_Metric2
 	{
 
@@ -91,12 +94,18 @@ namespace AutLib
 			return theE2_;
 		}
 
-		Standard_Boolean IsDegenerated(const Standard_Real theTol) const
+		Standard_Boolean IsDegenerated
+		(
+			const Standard_Real theTol
+		) const
 		{
 			return E1().Crossed(E2()) <= theTol;
 		}
 
-		void SetH1(const Standard_Real theH1)
+		void SetH1
+		(
+			const Standard_Real theH1
+		)
 		{
 			if (theH1 <= gp::Resolution())
 			{
@@ -107,7 +116,10 @@ namespace AutLib
 			theH1_ = theH1;
 		}
 
-		void SetH2(const Standard_Real theH2)
+		void SetH2
+		(
+			const Standard_Real theH2
+		)
 		{
 			if (theH2 <= gp::Resolution())
 			{
@@ -118,15 +130,28 @@ namespace AutLib
 			theH2_ = theH2;
 		}
 
-		void SetE1(const gp_Dir2d& theE1)
+		void SetE1
+		(
+			const gp_Dir2d& theE1
+		)
 		{
 			theE1_ = theE1;
 		}
 
-		void SetE2(const gp_Dir2d& theE2)
+		void SetE2
+		(
+			const gp_Dir2d& theE2
+		)
 		{
 			theE2_ = theE2;
 		}
+
+		// static functions and operators
+
+		static Entity2d_Metric1 ConvertTo1
+		(
+			const Entity2d_Metric2& theMetric
+		);
 	};
 }
 
