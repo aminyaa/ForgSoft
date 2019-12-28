@@ -11,22 +11,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{BE0152F1-13DC-4034-A9BB-EBBF172048C4}</ProjectGuid>
-    <Keyword>QtVS</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectGuid>{09FAA12B-7698-41FE-85C6-4FDBD685C868}</ProjectGuid>
+    <Keyword>QtVS_v301</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
     <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -45,11 +52,11 @@
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;opengl;openglextensions</QtModules>
+    <QtModules>core;gui;opengl;openglextensions;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;opengl;openglextensions</QtModules>
+    <QtModules>core;gui;opengl;openglextensions;widgets</QtModules>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -57,21 +64,63 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ForgVisual.cpp" />
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ForgVisual.h" />
-    <ClInclude Include="forgvisual_global.h" />
+    <QtRcc Include="ForgVisual.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global.hxx" />
+    <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Build.hxx" />
+    <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Plot\3D\FrgVisual_Plot3D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

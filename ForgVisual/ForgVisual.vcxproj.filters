@@ -10,28 +10,102 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
     </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="ForgLib">
+      <UniqueIdentifier>{82135406-310e-49db-bbc0-943090b10116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual">
+      <UniqueIdentifier>{28c8f1d3-0340-4183-9785-c499cbfdb6fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Global">
+      <UniqueIdentifier>{9d048c45-f835-474c-95cd-b4825c452327}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot">
+      <UniqueIdentifier>{84866419-0bcb-4778-a9f3-a0109eb53f48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene">
+      <UniqueIdentifier>{bf52bd17-ff64-4878-aea3-06421cadc4eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D">
+      <UniqueIdentifier>{05e8f0dd-d7c8-44ca-a3c9-b21f972bef7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\3D">
+      <UniqueIdentifier>{1ce1f2ad-a406-4b36-a98e-b40ae2052e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D">
+      <UniqueIdentifier>{0a670151-bc19-47bf-ae12-02ff6b2e68c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D">
+      <UniqueIdentifier>{14460e5f-0c40-4dda-a910-7a915e5b8ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools">
+      <UniqueIdentifier>{c5fff3f5-9ced-408e-9d4f-4932ec94856e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools">
+      <UniqueIdentifier>{1e3ce1ca-b19c-4f28-87d9-869b26a8290a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle">
+      <UniqueIdentifier>{8a8fad95-8a09-451f-9e7b-4f3fa41bbd7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools">
+      <UniqueIdentifier>{a2cfebd6-5175-4864-949e-1f275c12463f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle">
+      <UniqueIdentifier>{386d3d5c-4c78-4624-8714-271b704c3f04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ForgVisual.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ForgVisual.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <QtRcc Include="ForgVisual.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="forgvisual_global.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global.hxx">
+      <Filter>ForgLib\Visual\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Build.hxx">
+      <Filter>ForgLib\Visual\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
+      <Filter>ForgLib\Visual\Plot\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Plot\3D\FrgVisual_Plot3D.hxx">
+      <Filter>ForgLib\Visual\Plot\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx">
+      <Filter>ForgLib\Visual\Scene\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
+      <Filter>ForgLib\Visual\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
+      <Filter>ForgLib\Visual\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
