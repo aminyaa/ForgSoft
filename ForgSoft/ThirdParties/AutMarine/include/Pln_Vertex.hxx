@@ -28,6 +28,8 @@ namespace AutLib
 
 	public:
 
+		static const std::shared_ptr<Pln_Vertex> null;
+
 		typedef Pnt2d ptType;
 
 		Pln_Vertex()

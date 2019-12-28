@@ -16,6 +16,8 @@ void AutLib::Cad_EntityManager<EntityType>::Import
 		Import(theName + "(1)", theBlock);
 		return;
 	}
+	else
+		theBlock->SetName(theName);
 }
 
 template<class EntityType>
@@ -112,10 +114,15 @@ void AutLib::Cad_EntityManager<EntityType>::UnSelectAll()
 }
 
 template<class EntityType>
-void AutLib::Cad_EntityManager<EntityType>::Combine()
+typename AutLib::Cad_EntityManager<EntityType>::block_ptr 
+AutLib::Cad_EntityManager<EntityType>::Combine()
 {
 	if (theSelected_.size() < 2)
-		return;
+	{
+		FatalErrorIn("block_ptr combine()")
+			<< "Invalid data" << endl
+			<< abort(FatalError);
+	}
 
 	auto blockName = theSelected_.front();
 	theSelected_.pop_front();
@@ -125,6 +132,9 @@ void AutLib::Cad_EntityManager<EntityType>::Combine()
 
 	while (NOT theSelected_.empty())
 	{
+		blockName = theSelected_.front();
+		theSelected_.pop_front();
+
 		auto iter = theBlocks_.find(blockName);
 		Debug_If_Condition(iter IS_EQUAL theBlocks_.end());
 
@@ -136,6 +146,7 @@ void AutLib::Cad_EntityManager<EntityType>::Combine()
 
 		theBlocks_.erase(iter);
 	}
+	return std::move(block->second);
 }
 
 template<class EntityType>
@@ -144,9 +155,10 @@ void AutLib::Cad_EntityManager<EntityType>::Combine
 	const word & Blockname
 )
 {
-	Combine();
+	auto block = Combine();
 
-	RenameBlock(Blockname);
+	//SelectBlockEntity(block->Name());
+	RenameBlock(block, Blockname);
 }
 
 template<class EntityType>
@@ -210,6 +222,18 @@ void AutLib::Cad_EntityManager<EntityType>::RenameBlock
 		block->SetName(theName);
 
 		Import(block->Name(), block);
+	}
+}
+
+template<class EntityType>
+void AutLib::Cad_EntityManager<EntityType>::RenameBlock(const block_ptr& theBlock, const word& theName)
+{
+	if (theBlock)
+	{
+		theBlocks_.erase(theBlock->Name());
+		theBlock->SetName(theName);
+
+		Import(theBlock->Name(), theBlock);
 	}
 }
 

@@ -4,7 +4,9 @@
 
 #include <Global_Named.hxx>
 #include <Global_Indexed.hxx>
-#include <TModel_EntityManager.hxx>
+#include <TModel_VertexManager.hxx>
+#include <TModel_PairedManager.hxx>
+#include <TModel_SurfaceManager.hxx>
 #include <Entity3d_Box.hxx>
 #include <OFstream.hxx>
 
@@ -33,16 +35,15 @@ namespace AutLib
 
 		typedef std::shared_ptr<TModel_Shell> shell_ptr;
 		typedef std::vector<shell_ptr> shellList;
-		typedef TModel_EntityManager entityManager;
 
 		typedef shell_ptr outer;
 		typedef std::shared_ptr<shellList> inner;
 
 		/*Private Data*/
 
-		std::shared_ptr<entityManager> theVertices_;
-		std::shared_ptr<entityManager> theEdges_;
-		std::shared_ptr<entityManager> theSurfaces_;
+		std::shared_ptr<TModel_VertexManager> theVertices_;
+		std::shared_ptr<TModel_PairedManager> theEdges_;
+		std::shared_ptr<TModel_SurfaceManager> theSurfaces_;
 
 
 		outer theOuter_;
@@ -73,17 +74,17 @@ namespace AutLib
 			return theBoundingBox_;
 		}
 
-		const std::shared_ptr<entityManager>& Corners() const
+		const std::shared_ptr<TModel_VertexManager>& Corners() const
 		{
 			return theVertices_;
 		}
 
-		const std::shared_ptr<entityManager>& Segments() const
+		const std::shared_ptr<TModel_PairedManager>& Segments() const
 		{
 			return theEdges_;
 		}
 
-		const std::shared_ptr<entityManager>& Faces() const
+		const std::shared_ptr<TModel_SurfaceManager>& Faces() const
 		{
 			return theSurfaces_;
 		}

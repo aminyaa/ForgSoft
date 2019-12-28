@@ -10,6 +10,7 @@
 #include <QtWidgets/QLabel>
 #include <FrgMenu_View.hxx>
 #include <FrgBaseGlobalsICONS.hxx>
+#include <FrgBaseCADPart.hxx>
 
 class SliderWithTextWidget : public QWidget
 {
@@ -40,7 +41,7 @@ public:
 	FrgGetMacro(QSlider*, Slider, theSlider_);
 };
 
-ForgBaseLib::ViewPorts::ViewPorts(FrgBaseMainWindow* parent)
+ForgBaseLib::ViewPorts::ViewPorts(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseMainWindow* parent)
 	: QMainWindow()
 	, theParentMainWindow_(parent)
 {
@@ -49,7 +50,7 @@ ForgBaseLib::ViewPorts::ViewPorts(FrgBaseMainWindow* parent)
 	theMdiArea_ = FrgNew QMdiArea(this);
 	theToolBar_ = FrgNew QToolBar(this);
 
-	AddScene(FrgNew CADScene(parent->GetTree()), Qt::FramelessWindowHint);
+	AddScene(FrgNew CADScene(parentCADSceneTreeItem, parent->GetTree()), Qt::FramelessWindowHint);
 	SetToolBar();
 
 	this->setCentralWidget(theMdiArea_);
@@ -63,7 +64,7 @@ void ForgBaseLib::ViewPorts::SetLogoText(FrgString text)
 		scene->GetLogoActor()->SetInput(text.toStdString().c_str());
 }
 
-void ForgBaseLib::ViewPorts::CreateActor(NihadVesselPartTreeItem * part)
+void ForgBaseLib::ViewPorts::CreateActor(FrgBaseCADPart_Entity* part)
 {
 	for (auto scene : theScenes_)
 		scene->CreateActor(part);
@@ -75,16 +76,14 @@ void ForgBaseLib::ViewPorts::ClearScenes()
 		scene->ClearScene();
 }
 
-void ForgBaseLib::ViewPorts::RenderScenes()
+void ForgBaseLib::ViewPorts::RenderScenes(FrgBool resetCamera)
 {
 	for (auto scene : theScenes_)
-		scene->Render();
+		scene->Render(resetCamera);
 
 	for (int i = 0; i < theMdiArea_->subWindowList().size(); i++)
 	{
 		theMdiArea_->subWindowActivated(theMdiArea_->subWindowList()[i]);
-
-		theParentMainWindow_->ParseErrorToConsole("Activated!");
 	}
 }
 
@@ -118,6 +117,19 @@ void ForgBaseLib::ViewPorts::SetToolBar()
 	}*/
 	for (int i = 0; i < theScenes_[0]->GetMenus().size(); i++)
 	{
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Screenshot..."))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Export Selected Parts"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Random Colors"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Show Mesh"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Hide"))
+			continue;
+		if (theScenes_[0]->GetMenus()[i]->GetItem("Show Hidden Parts"))
+			continue;
+
 		theToolButtons_.push_back(FrgNew QToolButton(this));
 		theToolButtons_.last()->setPopupMode(QToolButton::InstantPopup);
 		theToolButtons_.last()->setMenu(theScenes_[0]->GetMenus()[i]);

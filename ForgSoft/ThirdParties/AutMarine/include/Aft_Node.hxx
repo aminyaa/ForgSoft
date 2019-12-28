@@ -16,7 +16,7 @@ namespace AutLib
 		, public Aft_NodeAdaptor
 		<
 		typename NodeTraits::edgeType,
-		typename NodeTraits::elementType, 
+		typename NodeTraits::elementType,
 		typename NodeTraits::facetType
 		>
 	{
@@ -40,11 +40,11 @@ namespace AutLib
 
 		typedef ptType Point;
 
-		enum Merge_Alg
+		enum class Merge_Alg
 		{
-			Merge_Alg_New = 0,
-			Merge_Alg_FirstPreferred,
-			Merge_Alg_SecondPreferred
+			New = 0,
+			FirstPreferred,
+			SecondPreferred
 		};
 
 		static const std::shared_ptr<Aft_Node> null_ptr;

@@ -29,22 +29,20 @@ namespace AutLib
 
 		Geo_MetricFunction
 		(
-			const Standard_Integer theIndex, 
-			const word& theName
+			const Entity_Box<Point>& theBox
 		)
-			: Global_Indexed(theIndex)
-			, Global_Named(theName)
+			: theBoundingBox_(theBox)
 		{}
 
 		Geo_MetricFunction
 		(
 			const Standard_Integer theIndex,
 			const word& theName,
-			const Entity_Box<Point>& theBoundingBox
+			const Entity_Box<Point>& theBox
 		)
 			: Global_Indexed(theIndex)
 			, Global_Named(theName)
-			, theBoundingBox_(theBoundingBox)
+			, theBoundingBox_(theBox)
 		{}
 
 
@@ -57,6 +55,11 @@ namespace AutLib
 
 		typedef Point ptType;
 		typedef typename metric_type_from_point<Point>::metricType metricType;
+
+		const Entity_Box<Point>& BoundingBox() const
+		{
+			return theBoundingBox_;
+		}
 
 		virtual metricType Value(const Point& theCoord) const = 0;
 

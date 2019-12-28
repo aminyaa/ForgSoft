@@ -66,7 +66,7 @@ public Q_SLOTS:
 
 	void onCustomContextMenuRequested(const QPoint& pos);
 
-	void showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos);
+	virtual void showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos);
 
 	void DeleteTreeItemSlot(bool);
 

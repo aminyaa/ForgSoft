@@ -11,6 +11,7 @@ class vtkCamera;
 class vtkActor;
 class vtkGenericOpenGLRenderWindow;
 class vtkTextActor;
+class vtkProp;
 class QPoint;
 
 BeginFrgBaseLib
@@ -26,6 +27,7 @@ struct GridActor
 {
 	vtkSmartPointer<vtkActor> theMajorActor_ = FrgNullPtr;
 	vtkSmartPointer<vtkActor> theMinorActor_ = FrgNullPtr;
+	vtkSmartPointer<vtkActor> theMiddleLines_ = FrgNullPtr;
 
 	int theNbMajorDivision_;
 	int theNbMinorDivision_;
@@ -36,6 +38,7 @@ struct GridActor
 class FrgBaseMainWindow;
 class FrgBaseInteractorStyle;
 class FrgBaseCADPartFeatureBase;
+class FrgBase_CADScene_TreeItem;
 
 typedef QMap<vtkSmartPointer<vtkActor>, FrgBaseCADPartFeatureBase*> QMapActorToPartFeature;
 typedef QMap<FrgBaseCADPartFeatureBase*, vtkSmartPointer<vtkActor>> QMapPartFeatureToActor;
@@ -70,10 +73,13 @@ private:
 	QMapPartFeatureToActor thePartFeatureToActor_;
 
 	FrgBaseTree* theParentTree_;
+	FrgBase_CADScene_TreeItem* theParentCADSceneTreeItem_ = FrgNullPtr;
 
 	void Init();
 
 	void DrawGrid(vtkSmartPointer<vtkActor> actor, int nbDivision, FrgBool isMajor, double* bounds, GridDrawPlane plane = XY);
+
+	void DrawGridMiddleLines(vtkSmartPointer<vtkActor> actor, double* bounds, GridDrawPlane plane = XY);
 
 	void CreateContextMenuInScene();
 
@@ -81,7 +87,7 @@ private:
 
 public:
 
-	FrgBaseCADScene(FrgBaseTree* parentTree);
+	FrgBaseCADScene(FrgBase_CADScene_TreeItem* parentCADSceneTreeItem, FrgBaseTree* parentTree);
 
 	void StartScene();
 
@@ -96,14 +102,19 @@ public:
 	FrgGetMacro(QMapPartFeatureToActor, PartFeatureToActor, thePartFeatureToActor_);
 	FrgGetMacro(FrgBaseMenu*, ContextMenuInScene, theContextMenuInScene_);
 	FrgGetMacro(QList<FrgBaseMenu*>, Menus, theMenus_);
+	FrgGetMacro(FrgBase_CADScene_TreeItem*, ParentCADSceneTreeItem, theParentCADSceneTreeItem_);
 
-	void Render();
+	QAction* GetActionItemInScene(FrgString actionName);
+
+	void Render(FrgBool resetCamera = FrgTrue);
 
 	FrgGetMacro(FrgBaseTree*, ParentTree, theParentTree_);
 
 	void DrawGrid(int nbDivision, int nbMinorDivision, GridDrawPlane plane = XY);
 
 	void ClearGrid();
+
+	void RemoveActor(vtkProp* prop);
 
 public slots:
 
@@ -114,6 +125,12 @@ public slots:
 	void SetViewToXYZSlot(bool);
 	void GridOpacityChangedSlot(int);
 	void DrawGridSlot(bool);
+	void ScreenshotSlot(bool);
+	void RandomColorsSlot(bool);
+	void ShowMeshSlot(bool condition);
+	void HideActorsSlot(bool);
+	void ShowHiddenPartsSlot(bool);
+	virtual void ExportSelectedPartClickedSlot(bool) {}
 
 	void SelectIconSelectedSlot(bool);
 	void MoveIconSelectedSlot(bool);
@@ -121,6 +138,10 @@ public slots:
 	void RotateYIconSelectedSlot(bool);
 	void RotateZIconSelectedSlot(bool);
 	void RotateXYZIconSelectedSlot(bool);
+
+signals:
+
+	void ActorSelectedSignal(bool);
 };
 
 EndFrgBaseLib

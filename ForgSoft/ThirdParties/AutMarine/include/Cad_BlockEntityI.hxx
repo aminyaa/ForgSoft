@@ -52,6 +52,7 @@ AutLib::Cad_BlockEntity<EntityType>::SplitByPatch()
 {
 	if (NOT theSelected_.size())
 		return nullptr;
+		std::cout << "block name is = " << theSelected_.front() <<std::endl;
 
 	auto block = std::make_shared<Cad_BlockEntity<EntityType>>();
 	while (NOT theSelected_.empty())

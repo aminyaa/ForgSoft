@@ -4,6 +4,7 @@
 
 #include <Global_AccessMethod.hxx>
 #include <Leg_Model_Propeller.hxx>
+#include <Pnt2d.hxx>
 
 class TopoDS_Shape;
 

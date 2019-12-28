@@ -15,14 +15,15 @@ void ForgBaseLib::FrgBaseThread::run()
 	if (theMutex_)
 	{
 		theMutex_->lock();
-		(*theLockFunction_)();
+		if(theLockFunction_)
+			(*theLockFunction_)();
 		theMutex_->unlock();
 	}
 	else
 		if (theParentMainWindow_)
 			theParentMainWindow_->ParseWarningToConsole("Running process in non mutex form!");
-
-	(*theFunction_)();
+	if(theFunction_)
+		(*theFunction_)();
 }
 
 void ForgBaseLib::FrgBaseThread::start()

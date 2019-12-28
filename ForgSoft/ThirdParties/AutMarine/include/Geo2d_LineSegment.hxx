@@ -17,9 +17,18 @@ namespace AutLib
 
 	public:
 
-		Geo2d_LineSegment(const Pnt2d& theP0, const Pnt2d& theP1);
+		Geo2d_LineSegment
+		(
+			const Pnt2d& theP0,
+			const Pnt2d& theP1
+		);
 
-		Geo2d_LineSegment(const Pnt2d& theP0, const Standard_Real theLength, const Dir2d& theDir);
+		Geo2d_LineSegment
+		(
+			const Pnt2d& theP0,
+			const Dir2d& theDir, 
+			const Standard_Real theLength
+		);
 
 	};
 }

@@ -7,6 +7,7 @@
 
 class QVariant;
 class QtProperty;
+class TopoDS_Shape;
 
 namespace AutLib
 {
@@ -17,7 +18,8 @@ BeginFrgBaseLib
 
 class FrgBaseMenu;
 class NihadVesselGeometryTreeItem;
-class NihadVesselPartTreeItem;
+//class NihadVesselPartTreeItem;
+class FrgBaseCADPart_Entity;
 class FrgBase_CADScene_TreeItem;
 class FrgBasePlot2D;
 
@@ -29,7 +31,8 @@ class NihadTree : public FrgBaseTree
 private:
 
 	QList<NihadVesselGeometryTreeItem*> theGeometryTreeItems_;
-	QList<NihadVesselPartTreeItem*> thePartTreeItems_;
+	QList<FrgBaseCADPart_Entity*> thePartTreeItems_;
+	//QList<NihadVesselPartTreeItem*> thePartTreeItems_;
 	QList<FrgBase_CADScene_TreeItem*> theSceneTreeItems_;
 	QList<FrgBasePlot2D*> thePlotsItems_;
 
@@ -40,10 +43,14 @@ public:
 	void FormTree() override;
 
 	FrgGetMacro(QList<NihadVesselGeometryTreeItem*>, GeometryTreeItems, theGeometryTreeItems_);
-	FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartTreeItems, thePartTreeItems_);
+	//FrgGetMacro(QList<NihadVesselPartTreeItem*>, PartTreeItems, thePartTreeItems_);
+	FrgGetMacro(QList<FrgBaseCADPart_Entity*>, PartTreeItems, thePartTreeItems_);
 
 	NihadVesselGeometryTreeItem* GetGeometryTreeItem(FrgBaseTreeItem* item);
-	NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
+	//NihadVesselPartTreeItem* GetPartTreeItem(FrgBaseTreeItem* item);
+	FrgBaseCADPart_Entity* GetPartTreeItem(FrgBaseTreeItem* item);
+
+	void ExportPart(const TopoDS_Shape& shape);
 
 protected Q_SLOTS:
 
@@ -62,8 +69,14 @@ public slots:
 	void CreatePartFromGeometryClickedSlot(bool b);
 
 	void ExportPartSlot(bool b);
+	void AnalyzePartSlot(bool);
+	void SplitByPatchPartSlot(bool);
+	void SplitByNonContiguousPartSlot(bool);
+	void CombinePartSlot(bool);
+	void SelectAllPartFeatureEntities(bool);
 
 	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>);
+	void ObjectsSelectedUpdateInSceneSlot(QList<QTreeWidgetItem*>parts, QList<FrgBase_CADScene_TreeItem*> scenes, FrgBool resetCamera = FrgTrue);
 
 	void PreviewGeometryClickedSlot(bool);
 
@@ -76,6 +89,12 @@ public slots:
 private:
 
 	void UpdateTree();
+
+public slots:
+
+	void itemInSplitTreeClickedSlot(FrgBaseTree* tree, QTreeWidgetItem* item, int column);
+
+	virtual void showContextMenu(FrgBaseTreeItem* item, const QPoint& globalPos) override;
 
 };
 

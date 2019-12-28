@@ -46,7 +46,10 @@ namespace AutLib
 
 		void SplitByWires();
 
-		void Make(const std::vector<std::shared_ptr<Pln_Curve>>& theCurves);
+		void Make
+		(
+			const std::vector<std::shared_ptr<Pln_Curve>>& theCurves
+		);
 
 	public:
 
@@ -156,6 +159,32 @@ namespace AutLib
 		void Report(Standard_OStream& Ostream = cout) const;
 
 		void ExportToPlt(OFstream& File) const;
+
+
+		//- static functions and operators
+		static const std::shared_ptr<Pln_Wire>& RetrieveOuterWire
+		(
+			const std::vector<std::shared_ptr<Pln_Wire>>& theWires
+		);
+
+		static void CheckOuterWire
+		(
+			const std::shared_ptr<Pln_Wire>& theOuter,
+			const std::vector<std::shared_ptr<Pln_Wire>>& theWires
+		);
+
+		static void CheckWires
+		(
+			const std::vector<std::shared_ptr<Pln_Wire>>& theWires
+		);
+
+		static std::shared_ptr<Cad2d_Plane> MakeBox(const Pnt2d& theCorner, const Standard_Real theDx, const Standard_Real theDy);
+
+		static std::shared_ptr<Cad2d_Plane> MakeBox(const Pnt2d& theP0, const Pnt2d& theP1);
+
+		static std::shared_ptr<Cad2d_Plane> MakeCircle(const gp_Ax22d& A, const Standard_Real Radius);
+
+		static std::shared_ptr<Cad2d_Plane> MakeCircle(const gp_Ax2d& A, const Standard_Real Radius, const Standard_Boolean Sense = Standard_True);
 	};
 }
 

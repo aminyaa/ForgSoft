@@ -76,9 +76,6 @@
     <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene">
       <UniqueIdentifier>{a1a7d96f-0b74-492c-ae99-0ebc46ea3080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx">
-      <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_File">
       <UniqueIdentifier>{60e62489-50a4-4a52-be50-f5482c595cd0}</UniqueIdentifier>
     </Filter>
@@ -99,6 +96,90 @@
     </Filter>
     <Filter Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help">
       <UniqueIdentifier>{4485987f-3a00-48c7-9e7f-a10d91189d01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures">
+      <UniqueIdentifier>{4ef72719-f1ce-4e4a-bc99-19512fffd017}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCAD">
+      <UniqueIdentifier>{bdf1a998-c7e0-45bb-b366-3239bb328bd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part">
+      <UniqueIdentifier>{9902e00b-17f8-4667-a1cf-d78d4d8572f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features">
+      <UniqueIdentifier>{7ff57060-2327-4210-86e7-080b433cdb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib">
+      <UniqueIdentifier>{228f58fc-f5e5-403b-9ac1-353e2e914302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base">
+      <UniqueIdentifier>{acec5696-ec60-4a94-bd00-aaa6e99ca3d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Global">
+      <UniqueIdentifier>{558399ec-6eb8-4d25-ae3d-b631e837d34e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets">
+      <UniqueIdentifier>{151cdec4-e7ce-482c-8ae3-3d39d4ead94f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tree">
+      <UniqueIdentifier>{f5f249d6-7487-4188-9984-f8a9af6f03bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\MainWindow">
+      <UniqueIdentifier>{a33d8920-532b-4f81-b8b4-67dc3560806c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu">
+      <UniqueIdentifier>{52b463e6-77aa-4772-a7f9-b6bca26672f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu\File">
+      <UniqueIdentifier>{33ecb358-5072-44a9-9fed-176dce9a9d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu\Edit">
+      <UniqueIdentifier>{7c1183d9-446a-4e7a-b302-f8b7cbb67d9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu\Help">
+      <UniqueIdentifier>{b349aa63-a220-4dac-8c26-087ae299d7e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu\Window">
+      <UniqueIdentifier>{85b314bb-9c77-4eb6-a109-89b3ef19b293}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu\Tools">
+      <UniqueIdentifier>{5b221303-a64b-460a-a69d-da8f48bf53f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\TabWindow">
+      <UniqueIdentifier>{9b01a4e5-587e-4368-89c3-d90f75d44cc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\TabWindow\TabBar">
+      <UniqueIdentifier>{1a496f10-c42e-4c0f-a8de-23b0a9660004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\TabWindow\TabWidget">
+      <UniqueIdentifier>{0fd88195-272e-43a4-9b5c-2dcb45c733b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core">
+      <UniqueIdentifier>{a281becb-19d8-4ce6-8783-05f556839d11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Thread">
+      <UniqueIdentifier>{2c338c59-fc31-4c8c-92d0-25e9747b167f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\TreeItem">
+      <UniqueIdentifier>{b1160f4d-dad1-4505-80b0-bcf03d0ec5c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\TreeItem\Properties">
+      <UniqueIdentifier>{b716c9ed-1202-4799-8d6c-7012b2a63776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Dialogs">
+      <UniqueIdentifier>{f1528b03-8f4d-4a74-8df7-30d8f7a54444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Dialogs\New">
+      <UniqueIdentifier>{0dc55f40-eda7-48b0-afd5-e0cb9376e868}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Dialogs\Load">
+      <UniqueIdentifier>{d25a0070-c2ab-4827-b89f-8d7ae10713ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Dialogs\YesNo">
+      <UniqueIdentifier>{72dd2823-76e7-46ab-9405-6556a9ee5454}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Console">
+      <UniqueIdentifier>{5f930cd5-6701-48f2-9737-f66b5b57fb66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +249,15 @@
     <ClCompile Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help\FrgMenu_Help.cxx">
       <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Help</Filter>
     </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.cxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCAD_Part.cxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part</Filter>
+    </ClCompile>
+    <ClCompile Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_Features.cxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -209,17 +299,14 @@
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry\FrgBaseCADGeometryI.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADGeometry</Filter>
     </ClInclude>
-    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPart.hxx">
-      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
-    </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartI.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.hxx">
-      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeaturesI.hxx">
-      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures.hxx</Filter>
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures</Filter>
     </ClInclude>
     <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBase_CADScene_TreeItem.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
@@ -248,6 +335,84 @@
     <ClInclude Include="FrgWidgets\FrgBaseMenu\FrgMenu_Help\FrgMenu_Help.hxx">
       <Filter>FrgWidgets\FrgBaseMenu\FrgMenu_Help</Filter>
     </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPart.hxx">
+      <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCAD_PartI.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part</Filter>
+    </ClInclude>
+    <ClInclude Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_FeaturesI.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
+      <Filter>ForgLib\Base\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Global\FrgBase_Global_Build.hxx">
+      <Filter>ForgLib\Base\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Global\FrgBase_Global_Icons.hxx">
+      <Filter>ForgLib\Base\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Global\FrgBase_Global_Thread.hxx">
+      <Filter>ForgLib\Base\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Global\FrgBase_Global_Type.hxx">
+      <Filter>ForgLib\Base\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Tree\FrgBase_Tree.hxx">
+      <Filter>ForgLib\Base\Widgets\Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\MainWindow\FrgBase_MainWindow.hxx">
+      <Filter>ForgLib\Base\Widgets\MainWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Menu\FrgBase_Menu.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Menu\File\FrgBase_MenuFile.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu\File</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Menu\Edit\FrgBase_MenuEdit.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Menu\Help\FrgBase_MenuHelp.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Help</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Menu\Window\FrgBase_MenuWindow.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Menu\Tools\FrgBase_MenuTools.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.hxx">
+      <Filter>ForgLib\Base\Widgets\TabWindow\TabBar</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.hxx">
+      <Filter>ForgLib\Base\Widgets\TabWindow\TabWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Thread\FrgBase_Thread.hxx">
+      <Filter>ForgLib\Base\Core\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.hxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\Properties\FrgBase_TreeItem_Properties.hxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Dialogs\New\FrgBase_DlgNew.hxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\New</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Dialogs\Load\FrgBase_DlgLoad.hxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\Load</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Dialogs\FrgBase_Dlg.hxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Dialogs\YesNo\FrgBase_DlgYesNo.hxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\YesNo</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Console\FrgBase_Console.hxx">
+      <Filter>ForgLib\Base\Widgets\Console</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx">
@@ -273,6 +438,12 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene\FrgBaseCADScene.hxx">
       <Filter>FrgWidgets\FrgBaseCADModeling\FrgBaseCADScene</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCAD_Part.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part</Filter>
+    </QtMoc>
+    <QtMoc Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_Features.hxx">
+      <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -144,7 +144,7 @@ void ForgBaseLib::NihadVesselScenePreviewTreeItem::RenderSceneSlot()
 {
 	CreateActor();
 
-	GetViewPorts()->SetLogoText("Tonb");
+	GetViewPorts()->SetLogoText("TONB");
 
 	for (auto scene : GetViewPorts()->GetScenes())
 	{

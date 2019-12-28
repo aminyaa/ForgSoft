@@ -2,8 +2,8 @@
 namespace AutLib
 {
 
-	template<class MshPlnCurve>
-	Entity2d_Box Mesh_PlnWire<MshPlnCurve>::CalcParametricBoundingBox() const
+	template<class PlnCurve>
+	Entity2d_Box Mesh_PlnWire<PlnCurve>::CalcParametricBoundingBox() const
 	{
 		const auto& curves = Curves();
 
@@ -15,14 +15,14 @@ namespace AutLib
 		return std::move(box);
 	}
 
-	template<class MshPlnCurve>
-	std::vector<std::shared_ptr<MshPlnCurve>> 
-		Mesh_PlnWire<MshPlnCurve>::RetrieveCurvesFrom
-	(
-		const std::vector<std::shared_ptr<Mesh_PlnWire>>& theWires
-	)
+	template<class PlnCurve>
+	std::vector<std::shared_ptr<PlnCurve>>
+		Mesh_PlnWire<PlnCurve>::RetrieveCurvesFrom
+		(
+			const std::vector<std::shared_ptr<Mesh_PlnWire>>& theWires
+		)
 	{
-		std::vector<std::shared_ptr<MshPlnCurve>> merged;
+		std::vector<std::shared_ptr<PlnCurve>> merged;
 		Standard_Integer nbcurves = 0;
 		for (const auto& x : theWires)
 		{

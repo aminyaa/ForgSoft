@@ -68,6 +68,8 @@ void ForgBaseLib::FrgBaseInteractorStyle::AddActorToSelectedActors(vtkActor* act
 	ta->theProperty_ = vtkProperty::New();
 
 	theSelectedActors_.push_back(ta);
+
+	emit theParent_->ActorSelectedSignal(true);
 }
 
 void ForgBaseLib::FrgBaseInteractorStyle::HideSelectedActors()
@@ -84,6 +86,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::HideSelectedActors()
 	theSelectedActors_.clear();
 	//theParent_->UpdateExportContextMenu();
 	SetGeometriesOpacity(1.0);
+	UnSelectAllActors();
 	//TonbPlot tp;
 }
 
@@ -296,71 +299,6 @@ void ForgBaseLib::FrgBaseInteractorStyle::OnChar()
 		std::cout << "The up arrow was pressed." << std::endl;
 	}
 
-	// Handle w key
-	if (key == "m" || key == "M")
-	{
-		static int iForM = 1;
-
-		if (iForM == 1)
-		{
-			vtkRenderWindowInteractor* rwi = this->Interactor;
-			vtkActorCollection* ac;
-			vtkActor* anActor, * aPart;
-			vtkAssemblyPath* path;
-			this->FindPokedRenderer(rwi->GetEventPosition()[0],
-				rwi->GetEventPosition()[1]);
-			if (this->CurrentRenderer != nullptr)
-			{
-				ac = this->CurrentRenderer->GetActors();
-				vtkCollectionSimpleIterator ait;
-				for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
-				{
-					for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
-					{
-						aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
-						//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
-						aPart->GetProperty()->EdgeVisibilityOn();
-					}
-				}
-			}
-			else
-			{
-				vtkWarningMacro(<< "no current renderer on the interactor style.");
-			}
-			rwi->Render();
-		}
-		else if (iForM == -1)
-		{
-			vtkRenderWindowInteractor* rwi = this->Interactor;
-			vtkActorCollection* ac;
-			vtkActor* anActor, * aPart;
-			vtkAssemblyPath* path;
-			this->FindPokedRenderer(rwi->GetEventPosition()[0],
-				rwi->GetEventPosition()[1]);
-			if (this->CurrentRenderer != nullptr)
-			{
-				ac = this->CurrentRenderer->GetActors();
-				vtkCollectionSimpleIterator ait;
-				for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
-				{
-					for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
-					{
-						aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
-						//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
-						aPart->GetProperty()->EdgeVisibilityOff();
-					}
-				}
-			}
-			else
-			{
-				vtkWarningMacro(<< "no current renderer on the interactor style.");
-			}
-			rwi->Render();
-		}
-
-		iForM *= -1;
-	}
-
 	if (theRotationEnabled_ == FrgTrue)
 	{
 		if (key == "s" || key == "S")
@@ -465,11 +403,7 @@ void ForgBaseLib::FrgBaseInteractorStyle::SelectActor(vtkActor* actor, int isCon
 
 	if (actor == FrgNullPtr && !isControlKeyPressed)
 	{
-		for (int i = 0; i < theParent_->GetActors().size(); i++)
-		{
-			theParent_->GetActors()[i]->GetProperty()->SetOpacity(1.0);
-		}
-		theSelectedActors_.clear();
+		UnSelectAllActors();
 
 		return;
 	}
@@ -518,6 +452,40 @@ void ForgBaseLib::FrgBaseInteractorStyle::SelectActor(vtkActor* actor, int isCon
 		theParent_->GetParentTree()->ScrollToItems(items);
 
 	this->Interactor->Render();
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SelectActors(QList<vtkActor*> actors, FrgBool isFromTree)
+{
+	UnSelectAllActors();
+
+	for (int i = 0; i < actors.size(); i++)
+	{
+		SelectActor(actors[i], 1, isFromTree);
+	}
+
+	emit theParent_->ActorSelectedSignal(true);
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::UnSelectAllActors()
+{
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		// If we picked something before, reset its property
+		if (this->theSelectedActors_[i]->theActor_)
+		{
+			this->theSelectedActors_[i]->theActor_->GetProperty()->DeepCopy(this->theSelectedActors_[i]->theProperty_);
+		}
+	}
+
+	for (int i = 0; i < theParent_->GetActors().size(); i++)
+	{
+		theParent_->GetActors()[i]->GetProperty()->SetOpacity(1.0);
+	}
+	theSelectedActors_.clear();
+
+	this->Interactor->Render();
+
+	emit theParent_->ActorSelectedSignal(false);
 }
 
 void ForgBaseLib::FrgBaseInteractorStyle::SetViewToXYPlane()
@@ -584,6 +552,35 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetViewToXYZ()
 	GetParentScene()->GetRenderWindow()->Render();
 }
 
+void ForgBaseLib::FrgBaseInteractorStyle::ShowMesh(FrgBool condition)
+{
+	vtkRenderWindowInteractor* rwi = this->Interactor;
+	vtkActorCollection* ac;
+	vtkActor* anActor, * aPart;
+	vtkAssemblyPath* path;
+	this->FindPokedRenderer(rwi->GetEventPosition()[0],
+		rwi->GetEventPosition()[1]);
+	if (this->CurrentRenderer != nullptr)
+	{
+		ac = this->CurrentRenderer->GetActors();
+		vtkCollectionSimpleIterator ait;
+		for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
+		{
+			for (anActor->InitPathTraversal(); (path = anActor->GetNextPath()); )
+			{
+				aPart = static_cast<vtkActor*>(path->GetLastNode()->GetViewProp());
+				//aPart->GetProperty()->SetEdgeColor(0, 0, 0);
+				aPart->GetProperty()->SetEdgeVisibility(condition);
+			}
+		}
+	}
+	else
+	{
+		vtkWarningMacro(<< "no current renderer on the interactor style.");
+	}
+	rwi->Render();
+}
+
 void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToDefault()
 {
 	theParent_->setCursor(QCursor());
@@ -597,6 +594,20 @@ void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToMove()
 }
 
 void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToRotateXYZ()
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->setCursor(cursor_default);
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToZoomIn()
+{
+	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
+	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);
+	theParent_->setCursor(cursor_default);
+}
+
+void ForgBaseLib::FrgBaseInteractorStyle::SetCursorShapeToZoomOut()
 {
 	QPixmap cursor_pixmap = QPixmap(FrgICON_Menu_Scene_RotateXYZ);
 	QCursor cursor_default = QCursor(cursor_pixmap, 0, 0);

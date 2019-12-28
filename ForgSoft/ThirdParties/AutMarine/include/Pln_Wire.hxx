@@ -36,7 +36,7 @@ namespace AutLib
 		std::shared_ptr<Entity2d_Box> theBoundingBox_;
 
 
-		void CalcBoundingBox();
+		void CalcBoundingBox(const edgeList& theEdges);
 
 		void CheckWire(const edgeList& theEdges) const;
 
@@ -45,11 +45,8 @@ namespace AutLib
 	public:
 
 		Pln_Wire(const std::shared_ptr<Pln_CmpEdge>& theEdges)
-			: theEdges_(theEdges)
 		{
 			CreateWire(theEdges);
-
-			CalcBoundingBox();
 		}
 
 		Pln_Wire
@@ -57,12 +54,9 @@ namespace AutLib
 			const Standard_Integer theIndex,
 			const std::shared_ptr<Pln_CmpEdge>& theEdges
 		)
-			: theEdges_(theEdges)
-			, Pln_Entity(theIndex)
+			: Pln_Entity(theIndex)
 		{
 			CreateWire(theEdges);
-
-			CalcBoundingBox();
 		}
 
 		Pln_Wire
@@ -71,12 +65,9 @@ namespace AutLib
 			const word& theName,
 			const std::shared_ptr<Pln_CmpEdge>& theEdges
 		)
-			: theEdges_(theEdges)
-			, Pln_Entity(theIndex, theName)
+			: Pln_Entity(theIndex, theName)
 		{
 			CreateWire(theEdges);
-
-			CalcBoundingBox();
 		}
 
 		Standard_Integer NbEdges() const

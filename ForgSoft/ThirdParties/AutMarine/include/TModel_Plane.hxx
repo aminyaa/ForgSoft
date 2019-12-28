@@ -30,6 +30,9 @@ namespace AutLib
 
 	public:
 
+		typedef TModel_parWire parWireType;
+		typedef TModel_parCurve parCurveType;
+
 		TModel_Plane
 		(
 			const Standard_Integer theIndex,

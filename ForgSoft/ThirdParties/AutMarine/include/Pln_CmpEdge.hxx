@@ -13,6 +13,7 @@ namespace AutLib
 	// Forward Declarations
 	class Pln_Edge;
 	class Pln_Wire;
+	class Pln_Tools;
 
 	class Pln_CmpEdge
 		: public Pln_Entity
@@ -22,23 +23,14 @@ namespace AutLib
 
 		friend class Pln_Edge;
 		friend class Pln_Wire;
+		friend class Pln_Tools;
 
 		/*Private Data*/
 
 		edgeList theEdges_;
 
-	protected:
+	protected:	
 
-		Pln_CmpEdge()
-		{}
-
-		Pln_CmpEdge
-		(
-			const Standard_Integer theIndex, 
-			const word& theName
-		)
-			: Pln_Entity(theIndex, theName)
-		{}
 
 		void Insert(const std::shared_ptr<Pln_Edge>& theEdge)
 		{
@@ -47,6 +39,17 @@ namespace AutLib
 
 	public:
 
+
+		Pln_CmpEdge()
+		{}
+
+		Pln_CmpEdge
+		(
+			const Standard_Integer theIndex,
+			const word& theName
+		)
+			: Pln_Entity(theIndex, theName)
+		{}
 
 		Standard_Integer NbEdges() const
 		{
@@ -58,7 +61,7 @@ namespace AutLib
 			return theEdges_;
 		}
 
-
+		void Reverse();
 	};
 }
 

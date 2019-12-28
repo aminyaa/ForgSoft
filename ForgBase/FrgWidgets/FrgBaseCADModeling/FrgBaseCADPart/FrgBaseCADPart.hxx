@@ -4,11 +4,38 @@
 
 #include <FrgBaseGlobals.hxx>
 #include <FrgBaseCADPartFeatures.hxx>
+#include <FrgBaseTree.hxx>
 
 BeginFrgBaseLib
 
+class FrgBaseCADPart_Entity : public FrgBaseTreeItem
+{
+
+public:
+
+	FrgBaseCADPart_Entity
+	(
+		const FrgString& title,
+		FrgBaseTreeItem* parent
+	)
+		: FrgBaseTreeItem(title, parent, parent->GetParentTree(), parent->GetParentMainWindow())
+	{}
+
+	FrgBaseCADPart_Entity
+	(
+		const FrgString& title,
+		FrgBaseTree* parentTree
+	)
+		: FrgBaseTreeItem(title, FrgNullPtr, parentTree, parentTree->GetParentMainWindow())
+	{}
+
+//public slots:
+
+	//virtual void SplitByPatchPartSlot(bool);
+};
+
 template <class SurfaceEntity, class CurveEntity>
-class FrgBaseCADPart : public FrgBaseTreeItem
+class FrgBaseCADPart : public FrgBaseCADPart_Entity
 {
 
 private:

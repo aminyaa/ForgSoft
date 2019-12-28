@@ -21,6 +21,7 @@ namespace AutLib
 	class TModel_Paired;
 	class TModel_Surface;
 	class TModel_Wire;
+	class Geo_ApprxCurveInfo;
 
 	class TModel_Edge
 		: public TModel_Entity
@@ -36,6 +37,8 @@ namespace AutLib
 
 		std::shared_ptr<TModel_Curve> theCurve_;
 
+		mutable std::shared_ptr<Entity3d_Chain> theMesh_;
+
 
 		std::weak_ptr<TModel_Surface> theSurface_;
 		std::weak_ptr<TModel_Paired> thePaired_;
@@ -45,6 +48,12 @@ namespace AutLib
 		Standard_Boolean theSense_;
 
 		TopoDS_Edge theTEdge_;
+
+
+		std::shared_ptr<Entity3d_Chain>& ChangeMesh() const
+		{
+			return theMesh_;
+		}
 
 	public:
 
@@ -151,6 +160,12 @@ namespace AutLib
 			return thePar_;
 		}
 
+		const std::shared_ptr<Entity3d_Chain>& Mesh() const
+		{
+			return theMesh_;
+		}
+
+		void Discrete(const std::shared_ptr<Geo_ApprxCurveInfo>& theInfo) const;
 
 		//- virtual functions and operators
 

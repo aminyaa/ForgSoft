@@ -27,10 +27,7 @@ namespace AutLib
 
 		typedef typename BndNodeTraits::nodeType base;
 
-		enum
-		{
-			hierarchy = 1
-		};
+		using nodeType::Merge_Alg;
 
 		Aft_BndNode()
 		{}
@@ -49,9 +46,6 @@ namespace AutLib
 		)
 			: nodeType(theIndex, theCoord)
 		{}
-
-
-
 	};
 }
 
