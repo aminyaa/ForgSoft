@@ -65,6 +65,12 @@
     <Filter Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle">
       <UniqueIdentifier>{386d3d5c-4c78-4624-8714-271b704c3f04}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\TreeItem">
+      <UniqueIdentifier>{14f53153-3091-4090-93fa-da80847988f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\TreeItem">
+      <UniqueIdentifier>{953cccae-88b1-4fc5-8826-b231a5b5a196}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -106,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
       <Filter>ForgLib\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2DTItem.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

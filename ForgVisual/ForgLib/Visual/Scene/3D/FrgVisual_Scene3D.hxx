@@ -20,7 +20,8 @@ class vtkSmartPointer;
 
 BeginForgVisualLib
 
-class FrgBase_Tree;
+class FrgBase_MainWindow;
+//class FrgBase_Tree;
 class FrgBase_Menu;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene3D
@@ -65,7 +66,8 @@ private:
 	GridActor* theGridActor_ = FrgNullPtr;
 
 	/* Parents */
-	FrgBase_Tree* theParentTree_;
+	FrgBase_MainWindow* theParentMainWindow_ = FrgNullPtr;
+	//FrgBase_Tree* theParentTree_;
 
 	void Init();
 	void DrawGrid(vtkSmartPointer<vtkActor> actor, int nbDivision, FrgBool isMajor, double* bounds, GridDrawPlane plane = XY);
@@ -75,7 +77,7 @@ private:
 
 public:
 
-	FrgVisual_Scene3D();
+	FrgVisual_Scene3D(FrgBase_MainWindow* parentMainWindow);
 
 	void StartScene();
 
@@ -91,7 +93,8 @@ public:
 	FrgGetMacro(FrgBase_Menu*, ContextMenuInScene, theContextMenuInScene_);
 	FrgGetMacro(QList<FrgBase_Menu*>, Menus, theMenus_);
 	//FrgGetMacro(FrgBase_CADScene_TreeItem*, ParentCADSceneTreeItem, theParentCADSceneTreeItem_);
-	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
+	//FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
+	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 
 	void Render(FrgBool resetCamera = FrgTrue);
 	QAction* GetActionItemInScene(FrgString actionName);

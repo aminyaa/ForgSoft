@@ -3,6 +3,7 @@
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Tree.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgBase_MainWindow.hxx>
 
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMainWindow>
@@ -38,6 +39,12 @@ VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
 VTK_MODULE_INIT(vtkRenderingOpenGL2)
 VTK_MODULE_INIT(vtkInteractionStyle)
 VTK_MODULE_INIT(vtkRenderingFreeType)
+
+ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D(FrgBase_MainWindow * parentMainWindow)
+	: QVTKOpenGLNativeWidget(parentMainWindow)
+{
+
+}
 
 ForgVisualLib::FrgVisual_Scene3D::GridActor::GridActor(int nbMajorDivision, int nbMinorDivision, double MajorColor[3], double MinorColor[3])
 {
