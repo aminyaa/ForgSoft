@@ -181,6 +181,9 @@
     <Filter Include="ForgLib\Base\Widgets\Console">
       <UniqueIdentifier>{5f930cd5-6701-48f2-9737-f66b5b57fb66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Object">
+      <UniqueIdentifier>{f9860860-8b76-492d-9436-abdedc01e01b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -257,6 +260,15 @@
     </ClCompile>
     <ClCompile Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_Features.cxx">
       <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Object\FrgBase_Object.cxx">
+      <Filter>ForgLib\Base\Core\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Menu\FrgBase_Menu.cxx">
+      <Filter>ForgLib\Base\Widgets\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +377,6 @@
     <ClInclude Include="ForgLib\Base\Widgets\MainWindow\FrgBase_MainWindow.hxx">
       <Filter>ForgLib\Base\Widgets\MainWindow</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Menu\FrgBase_Menu.hxx">
-      <Filter>ForgLib\Base\Widgets\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Menu\File\FrgBase_MenuFile.hxx">
       <Filter>ForgLib\Base\Widgets\Menu\File</Filter>
     </ClInclude>
@@ -392,12 +401,6 @@
     <ClInclude Include="ForgLib\Base\Core\Thread\FrgBase_Thread.hxx">
       <Filter>ForgLib\Base\Core\Thread</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.hxx">
-      <Filter>ForgLib\Base\Widgets\TreeItem</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\Properties\FrgBase_TreeItem_Properties.hxx">
-      <Filter>ForgLib\Base\Widgets\TreeItem\Properties</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Dialogs\New\FrgBase_DlgNew.hxx">
       <Filter>ForgLib\Base\Widgets\Dialogs\New</Filter>
     </ClInclude>
@@ -412,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Console\FrgBase_Console.hxx">
       <Filter>ForgLib\Base\Widgets\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\Properties\FrgBase_TItem_Properties.hxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem\Properties</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -444,6 +450,15 @@
     </QtMoc>
     <QtMoc Include="FrgWidgets\FrgBase_CAD\FrgBaseCAD_Part\FrgBaseCADPart_Features\FrgBaseCADPart_Features.hxx">
       <Filter>FrgWidgets\FrgBaseCAD\FrgBaseCAD_Part\FrgBaseCADPart_Features</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Core\Object\FrgBase_Object.hxx">
+      <Filter>ForgLib\Base\Core\Object</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Menu\FrgBase_Menu.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.hxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
