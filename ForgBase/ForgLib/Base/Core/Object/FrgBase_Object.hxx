@@ -8,32 +8,32 @@
 BeginForgBaseLib
 
 class FORGBASE_EXPORT FrgBase_Object
-	: public QObject
+	//: public QObject
 {
 
-	Q_OBJECT
+	//Q_OBJECT
 
 private:
 
-	FrgBool theIsObjectModified_ = FrgFalse;
+	//FrgBool theIsObjectModified_ = FrgFalse;
 
 public:
 
 	FrgBase_Object();
 
-public slots:
+//public slots:
 
-	void UpdateObject_Slot();
+	//void UpdateObject_Slot();
 
-signals:
+//signals:
 
 
 
 public:
 
-	virtual void UpdateObject() {}
-	inline FrgBool IsObjectModified() { return theIsObjectModified_; }
-	inline void SetObjectModified(FrgBool condition) { theIsObjectModified_ = condition; UpdateObject(); }
+	//virtual void UpdateObject() {}
+	//inline FrgBool IsObjectModified() { return theIsObjectModified_; }
+	//inline void SetObjectModified(FrgBool condition) { theIsObjectModified_ = condition; }
 };
 
 EndForgBaseLib

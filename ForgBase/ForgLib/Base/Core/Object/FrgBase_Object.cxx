@@ -6,7 +6,7 @@ ForgBaseLib::FrgBase_Object::FrgBase_Object
 
 }
 
-ForgBaseLib::FrgBase_Object::UpdateObject_Slot()
-{
-	UpdateObject();
-}
+//ForgBaseLib::FrgBase_Object::UpdateObject_Slot()
+//{
+//	UpdateObject();
+//}
