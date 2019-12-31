@@ -6,7 +6,6 @@
 #include <FrgBase_Object.hxx>
 
 #include <QtWidgets/QMenu>
-#include <QtCore/QObject>
 
 class QAction;
 class QToolBar;
@@ -16,20 +15,19 @@ BeginForgBaseLib
 class FrgBase_MainWindow;
 
 class FORGBASE_EXPORT FrgBase_Menu
-	: public QObject
-	, public QMenu
+	: public QMenu
 	, public FrgBase_Object
 {
 	Q_OBJECT
 
 private:
 
-	FrgBase_MainWindow* theParentMainWindow_ = FrgNullPtr;
-	QToolBar* theToolBar_ = FrgNullPtr;
+	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
+	QToolBar* theToolBar_ = NullPtr;
 
 public:
 
-	FrgBase_Menu(const FrgString& menuTitle, FrgBase_MainWindow* parentMainWindow);
+	FrgBase_Menu(const FrgString& menuTitle, FrgBase_MainWindow* parentMainWindow, FrgBool addTitleAsAnAction = FrgFalse);
 	FrgBase_Menu(FrgBase_MainWindow* parentMainWindow);
 
 	QAction* AddItem(const FrgString& itemTitle, FrgBool isInToolBar = FrgTrue);

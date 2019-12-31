@@ -11,8 +11,8 @@
 #include <map>
 
 #define FrgGetMacro(type, name, object)\
-type Get##name##() const {return object;}\
-type& Get##name##() {return object;}
+type Get##name##() const {return object;}
+//type& Get##name##() {return object;}
 
 template<typename T>
 using StdVector = std::vector<T>;

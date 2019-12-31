@@ -12,30 +12,31 @@ BeginForgBaseLib
 
 class FrgBase_Tree;
 class FrgBase_MainWindow;
-class FrgBase_TItem_Properties;
+class FrgBase_Properties;
 class FrgBase_Menu;
 
 class FORGBASE_EXPORT FrgBase_TreeItem
-	: public QTreeWidgetItem
+	: public QObject
+	, public QTreeWidgetItem
 	, public FrgBase_Object
 {
 
 	Q_OBJECT
 		
-	Q_PROPERTY(QString name READ GetTItemName WRITE SetTItemName NOTIFY TItemChanged)
+	//Q_PROPERTY(QString name READ GetTItemName WRITE SetTItemName NOTIFY TItemNameChanged)
 
 private:
 
-	FrgBase_Tree* theParentTree_ = FrgNullPtr;
-	FrgBase_MainWindow* theParentMainWindow_ = FrgNullPtr;
-	FrgBase_TItem_Properties* theProperties_ = FrgNullPtr;
-	FrgBase_Menu* theContextMenu_ = FrgNullPtr;
+	FrgBase_Tree* theParentTree_ = NullPtr;
+	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
+	FrgBase_Properties* theProperties_ = NullPtr;
+	FrgBase_Menu* theContextMenu_ = NullPtr;
 
 	QString theTItemName_;
 
 signals:
 
-	void TItemChanged(const QString&);
+	void TItemNameChanged(const QString&);
 
 public:
 
@@ -48,22 +49,20 @@ public:
 
 	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
-	FrgGetMacro(FrgBase_TItem_Properties*, Properties, theProperties_);
+	FrgGetMacro(FrgBase_Properties*, Properties, theProperties_);
 	FrgGetMacro(FrgBase_Menu*, ContextMenu, theContextMenu_);
+
+	QList<FrgBase_TreeItem*> GetChildren();
+	FrgBase_TreeItem* GetChild(const QString& name);
 
 	virtual void DoAfterConstruct() {}
 
-	void UpdateObject() override;
+	QString GetTItemName() const;
+	void SetTItemName(const QString& name);
 
-	QString GetTItemName() const { return theTItemName_; }
-	void SetTItemName(const QString& name)
-	{
-		if (theTItemName_ != name)
-		{
-			theTItemName_ = name;
-			emit TItemChanged(theTItemName_);
-		}
-	}
+public slots:
+
+	void RenameTItemSlot();
 };
 
 EndForgBaseLib

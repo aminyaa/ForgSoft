@@ -7,15 +7,22 @@
 ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 (
 	const FrgString & menuTitle,
-	FrgBase_MainWindow * parentMainWindow
+	FrgBase_MainWindow * parentMainWindow,
+	FrgBool addTitleAsAnAction
 )
 	: QMenu(menuTitle, parentMainWindow)
 {
 	theToolBar_ = FrgNew QToolBar(menuTitle, parentMainWindow);
 	
-	AddItem(menuTitle, FrgFalse)->setEnabled(FrgFalse);
-	this->addSeparator();
-	this->theNumberOfItems_
+	if (addTitleAsAnAction)
+	{
+		auto action = AddItem(menuTitle, FrgFalse);
+		action->setEnabled(FrgFalse);
+		action->font().setBold(true);
+		action->font().setItalic(true);
+		action->font().setUnderline(true);
+		this->addSeparator();
+	}
 }
 
 ForgBaseLib::FrgBase_Menu::FrgBase_Menu
@@ -50,7 +57,10 @@ QAction* ForgBaseLib::FrgBase_Menu::AddItem
 )
 {
 	QIcon icon(iconAddress);
-	AddItem(itemTitle, isInToolBar)->setIcon(icon);
+	auto action = AddItem(itemTitle, isInToolBar);
+	action->setIcon(icon);
+
+	return action;
 }
 
 QAction* ForgBaseLib::FrgBase_Menu::AddItem
@@ -60,7 +70,10 @@ QAction* ForgBaseLib::FrgBase_Menu::AddItem
 	FrgBool isInToolBar
 )
 {
-	AddItem(itemTitle, isInToolBar)->setIcon(icon);
+	auto action = AddItem(itemTitle, isInToolBar);
+	action->setIcon(icon);
+
+	return action;
 }
 
 QAction* ForgBaseLib::FrgBase_Menu::GetItem
@@ -75,5 +88,5 @@ QAction* ForgBaseLib::FrgBase_Menu::GetItem
 		if (listOfActions[iAction]->text() == itemTitle)
 			return listOfActions[iAction];
 	}
-	return FrgNullPtr;
+	return NullPtr;
 }
