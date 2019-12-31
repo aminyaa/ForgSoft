@@ -9,7 +9,7 @@ BeginForgVisualLib
 
 class FrgVisual_Scene3D;
 
-class FrgVisual_Scene3DTItem
+class FORGBASE_EXPORT FrgVisual_Scene3DTItem
 	: public FrgBase_TreeItem
 {
 
