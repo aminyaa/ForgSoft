@@ -21,6 +21,8 @@ public:
 
 	FrgBase_Object();
 
+	virtual ~FrgBase_Object();
+
 //public slots:
 
 	//void UpdateObject_Slot();
