@@ -119,10 +119,8 @@
     <ClInclude Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2DTItem.hxx">
       <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
+    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
-    </QtMoc>
+    </ClInclude>
   </ItemGroup>
 </Project>
