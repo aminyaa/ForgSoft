@@ -22,7 +22,7 @@ ForgBaseLib::FrgBase_DlgRenameTItem::FrgBase_DlgRenameTItem
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::setupLayout()
 {
-	/*theMainLayout_ = new QVBoxLayout;
+	theMainLayout_ = new QVBoxLayout;
 	theButtonsLayout_ = new QHBoxLayout;
 	theNameLayout_ = new QHBoxLayout;
 
@@ -46,7 +46,7 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::setupLayout()
 	QObject::connect(theCloseButton_, SIGNAL(clicked()), this, SLOT(reject()));
 
 	theOKButton_->setFocus();
-	this->setModal(FrgTrue);*/
+	this->setModal(FrgTrue);
 }
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::keyPressEvent(QKeyEvent* event)
@@ -55,11 +55,16 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::keyPressEvent(QKeyEvent* event)
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::showEvent(QShowEvent*)
 {
-	//move(x() - (GetParentMainWindow()->geometry().center().x()), y() - (GetParentMainWindow()->geometry().center().y()));
+	move(x() - (GetParentMainWindow()->geometry().center().x()), y() - (GetParentMainWindow()->geometry().center().y()));
 }
 
 QString ForgBaseLib::FrgBase_DlgRenameTItem::GetLineEditName() const
 {
-	//return theNameLineEdit_->text();
+	return theNameLineEdit_->text();
 	return "";
+}
+
+void ForgBaseLib::FrgBase_DlgRenameTItem::onOK()
+{
+
 }

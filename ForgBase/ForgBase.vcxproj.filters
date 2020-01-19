@@ -187,6 +187,75 @@
     <Filter Include="ForgLib\Base\Widgets\Dialogs\RenameTItem">
       <UniqueIdentifier>{7b8caaf7-31a0-4943-86ec-4f51e312fb45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Settings">
+      <UniqueIdentifier>{ab317871-8624-4b52-af13-fdb728c2b799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Application">
+      <UniqueIdentifier>{84e6a285-3997-4f82-a231-8c41e1bd1bfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Application\ApplicationCore">
+      <UniqueIdentifier>{172f9f61-33f5-4091-97cc-e452c463d402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\UndoStack">
+      <UniqueIdentifier>{15e18609-0fc8-4cb6-9edd-d76060008221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Panel">
+      <UniqueIdentifier>{64ce7335-bf76-490d-acca-7fb822e645b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Delegates">
+      <UniqueIdentifier>{b5966c14-6ee9-4cb3-be9a-0b094ae418d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Delegates\Base">
+      <UniqueIdentifier>{957c7f14-fa57-4d4d-b725-12a25d826520}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Delegates\Double">
+      <UniqueIdentifier>{bb5fad93-bcab-4333-9e07-48e09ea14c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Delegates\Int">
+      <UniqueIdentifier>{63b3127d-997d-45d6-84a4-068d85f019cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Editors">
+      <UniqueIdentifier>{f5201bf1-5f6f-47bc-a46a-be7de6a73eb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Editors\Double">
+      <UniqueIdentifier>{c7a4ac40-7627-4897-82e2-89b7f4b5f629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Editors\Base">
+      <UniqueIdentifier>{0ba4f6fb-614d-499b-800d-731337184941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Editors\Int">
+      <UniqueIdentifier>{6092dafb-a77a-4892-80c5-2a55c1ed69b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants">
+      <UniqueIdentifier>{6d43bbe1-6b5f-4935-8094-1a8e5ff85c21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Int">
+      <UniqueIdentifier>{c2cf811a-5357-40af-8cc4-f37d99cc22f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Double">
+      <UniqueIdentifier>{4abdd5a5-edb7-4fc5-aa58-f24b124c5222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets">
+      <UniqueIdentifier>{c3c941c1-20f3-4d79-b400-23b9936fe4d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Int">
+      <UniqueIdentifier>{d9486575-989b-460b-a933-16ec3218512a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\OneValue">
+      <UniqueIdentifier>{b74213b2-d270-475f-a42b-5349d42a8933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\String">
+      <UniqueIdentifier>{09dea075-93e6-49a9-afb4-9805720f60b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue">
+      <UniqueIdentifier>{647a72d1-c79c-432a-a9df-6605547342b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Double">
+      <UniqueIdentifier>{6664d69e-efcd-413a-9bfb-1179dc8bf700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\String">
+      <UniqueIdentifier>{78842293-16e2-4fa3-8291-87d5da257bd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -290,6 +359,57 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Menu\Edit\FrgBase_MenuEdit.cxx">
       <Filter>ForgLib\Base\Widgets\Menu\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Settings\FrgBase_Settings.cxx">
+      <Filter>ForgLib\Base\Core\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Application\FrgBase_Application.cxx">
+      <Filter>ForgLib\Base\Core\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Application\ApplicationCore\FrgBase_ApplicationCore.cxx">
+      <Filter>ForgLib\Base\Core\Application\ApplicationCore</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\UndoStack\FrgBase_UndoStack.cxx">
+      <Filter>ForgLib\Base\Core\UndoStack</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Panel\FrgBase_PropertiesPanel.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Editors\Double\FrgBase_PrptsEditorDouble.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Editors\Double</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Editors\Int\FrgBase_PrptsEditorInt.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Editors\Int</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Delegates\Double\FrgBase_PrptsDelegateDouble.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Delegates\Double</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Delegates\Base\FrgBase_PrptsDelegateBase.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Delegates\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Editors\Base\FrgBase_PrptsEditorBase.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Editors\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Delegates\Int\FrgBase_PrptsDelegateInt.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Delegates\Int</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Int\FrgBase_PrptsVrntInt.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Int</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Double\FrgBase_PrptsVrntDouble.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Double</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Int\FrgBase_PrptsWdgInt.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Int</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\String</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Double\FrgBase_PrptsWdgDouble.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Double</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\String\FrgBase_PrptsWdgString.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\String</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -428,11 +548,44 @@
     <ClInclude Include="ForgLib\Base\Widgets\Console\FrgBase_Console.hxx">
       <Filter>ForgLib\Base\Widgets\Console</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\FrgBase_Properties.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Object\FrgBase_Object.hxx">
       <Filter>ForgLib\Base\Core\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Application\FrgBase_Application.hxx">
+      <Filter>ForgLib\Base\Core\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Application\ApplicationCore\FrgBase_ApplicationCore.hxx">
+      <Filter>ForgLib\Base\Core\Application\ApplicationCore</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Int\FrgBase_PrptsVrntInt.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Int</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Double\FrgBase_PrptsVrntDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Double</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValue.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValueI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\String</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValue.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\OneValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValueI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\OneValue</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Int\FrgBase_PrptsDelegateInt.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Delegates\Int</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Double\FrgBase_PrptsDelegateDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Delegates\Double</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Base\FrgBase_PrptsDelegateBase.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Delegates\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,6 +636,33 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\MainWindow\FrgBase_MainWindow.hxx">
       <Filter>ForgLib\Base\Widgets\MainWindow</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Core\Settings\FrgBase_Settings.hxx">
+      <Filter>ForgLib\Base\Core\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Core\UndoStack\FrgBase_UndoStack.hxx">
+      <Filter>ForgLib\Base\Core\UndoStack</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Panel\FrgBase_PropertiesPanel.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Panel</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Editors\Base\FrgBase_PrptsEditorBase.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Editors\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Editors\Double\FrgBase_PrptsEditorDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Editors\Double</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Editors\Int\FrgBase_PrptsEditorInt.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Editors\Int</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Int\FrgBase_PrptsWdgInt.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Int</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Double\FrgBase_PrptsWdgDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Double</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\String\FrgBase_PrptsWdgString.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\String</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
