@@ -9,12 +9,18 @@
 BeginForgBaseLib
 
 class FORGBASE_EXPORT FrgBase_PrptsVrntString
-	: public FrgBase_PrptsVrntOneValue<QString>
+	: public FrgBase_PrptsVrntOneValue<QString, false>
 {
 
 public:
 
-	explicit FrgBase_PrptsVrntString(const QString& text = "", const char* prefix = "", const char* suffix = "");
+	explicit FrgBase_PrptsVrntString
+	(
+		const char* displayName = "",
+		const QString& value = "",
+		const char* prefix = "",
+		const char* suffix = ""
+	);
 };
 
 EndForgBaseLib

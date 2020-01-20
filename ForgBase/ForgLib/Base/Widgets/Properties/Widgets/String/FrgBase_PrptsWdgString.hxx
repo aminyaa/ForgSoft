@@ -13,20 +13,24 @@ BeginForgBaseLib
 class FrgBase_PrptsVrntString;
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgString
-	: public FrgBase_PrptsWdgOneValue<QString>
+	: public FrgBase_PrptsWdgOneValue<QString, false>
 {
 	Q_OBJECT
 
 public:
 
-	FrgBase_PrptsWdgString(QWidget* parent = nullptr, FrgBase_PrptsVrntString* variant = nullptr);
+	FrgBase_PrptsWdgString
+	(
+		QWidget* parent = nullptr,
+		FrgBase_PrptsVrntString* variant = nullptr
+	);
 
 	void SetValue(const QString& value) override;
 
 	void SetPrefix(const char* prefix) override;
 	void SetSuffix(const char* suffix) override;
 
-	void SetVariant(const FrgBase_PrptsVrntOneValue<QString>& variant) override;
+	void SetVariant(const FrgBase_PrptsVrntOneValue<QString, false>& variant) override;
 
 	void FormWidget();
 

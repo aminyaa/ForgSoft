@@ -8,6 +8,7 @@
 #include <FrgBase_PrptsVrntInt.hxx>
 #include <FrgBase_PrptsVrntDouble.hxx>
 #include <FrgBase_PrptsVrntString.hxx>
+#include <FrgBase_PrptsVrntBool.hxx>
 
 class AA
 	: public QWidget
@@ -17,20 +18,19 @@ class AA
 	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntInt* myInt READ GetMyInt WRITE SetMyInt)
 	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* myDouble READ GetMyDouble WRITE SetMyDouble)
 	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntString* myString READ GetMyString WRITE SetMyString)
+	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntString* myString2 READ GetMyString2 WRITE SetMyString2)
+	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntBool* myBool READ GetMyBool WRITE SetMyBool)
 
 public:
 
 	AA() 
 	{
 		this->setObjectName("MyObject");
-		//ForgBaseLib::FrgBase_PrptsVrntInt castedMyInt = qvariant_cast<ForgBaseLib::FrgBase_PrptsVrntInt>("myInt");
-		theMyInt_ = new ForgBaseLib::FrgBase_PrptsVrntInt(15, -1, 22, 1, "", "[mm]");
-
-		//ForgBaseLib::FrgBase_PrptsVrntDouble castedMyDouble = qvariant_cast<ForgBaseLib::FrgBase_PrptsVrntDouble>("myDouble");
-		theMyDouble_ = new ForgBaseLib::FrgBase_PrptsVrntDouble(1.23, 0.0, 17.5, 0.01, "", "[ft]");
-
-		//ForgBaseLib::FrgBase_PrptsVrntString castedMyString = qvariant_cast<ForgBaseLib::FrgBase_PrptsVrntString>("myString");
-		theMyString_ = new ForgBaseLib::FrgBase_PrptsVrntString("salam khoobi?", "", "");
+		theMyInt_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Number of items", 15, 0, 22, 1, "", "[mm]");
+		theMyDouble_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("Ship length", 1.23, 0.0, 17.5, 0.01, "", "[ft]");
+		theMyString_ = new ForgBaseLib::FrgBase_PrptsVrntString("Your text", "salam khoobi?", "", "");
+		theMyString2_ = new ForgBaseLib::FrgBase_PrptsVrntString("Your text2", "salam khoobi2?", "", "");
+		theMyBool_ = new ForgBaseLib::FrgBase_PrptsVrntBool("Is alive", true, "", "");
 	}
 
 	ForgBaseLib::FrgBase_PrptsVrntInt* GetMyInt() const { return theMyInt_; }
@@ -42,11 +42,19 @@ public:
 	ForgBaseLib::FrgBase_PrptsVrntString* GetMyString() const { return theMyString_; }
 	void SetMyString(ForgBaseLib::FrgBase_PrptsVrntString* value) { theMyString_ = value; }
 
+	ForgBaseLib::FrgBase_PrptsVrntString* GetMyString2() const { return theMyString2_; }
+	void SetMyString2(ForgBaseLib::FrgBase_PrptsVrntString* value) { theMyString2_ = value; }
+
+	ForgBaseLib::FrgBase_PrptsVrntBool* GetMyBool() const { return theMyBool_; }
+	void SetMyBool(ForgBaseLib::FrgBase_PrptsVrntBool* value) { theMyBool_ = value; }
+
 private:
 
 	ForgBaseLib::FrgBase_PrptsVrntInt* theMyInt_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theMyDouble_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntString* theMyString_ = nullptr;
+	ForgBaseLib::FrgBase_PrptsVrntString* theMyString2_ = nullptr;
+	ForgBaseLib::FrgBase_PrptsVrntBool* theMyBool_ = nullptr;
 };
 
 class QToolButton;

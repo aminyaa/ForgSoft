@@ -256,6 +256,12 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\String">
       <UniqueIdentifier>{78842293-16e2-4fa3-8291-87d5da257bd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Bool">
+      <UniqueIdentifier>{ea267ed7-2cf6-4a91-8daa-efb2874fd13d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Bool">
+      <UniqueIdentifier>{e2a4f0eb-5996-4c06-bb99-5cdf57c26b0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -410,6 +416,12 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\String\FrgBase_PrptsWdgString.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\String</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Bool\FrgBase_PrptsVrntBool.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Bool</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Bool\FrgBase_PrptsWdgBool.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Bool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,6 +599,9 @@
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Base\FrgBase_PrptsDelegateBase.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Delegates\Base</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Bool\FrgBase_PrptsVrntBool.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Bool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx">
@@ -663,6 +678,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\String\FrgBase_PrptsWdgString.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\String</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Bool\FrgBase_PrptsWdgBool.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Bool</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

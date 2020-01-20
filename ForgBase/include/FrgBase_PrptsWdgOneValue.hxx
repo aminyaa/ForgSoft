@@ -9,29 +9,29 @@
 
 BeginForgBaseLib
 
-template <typename T>
+template <typename Type, bool IsBounded = true>
 class FORGBASE_EXPORT FrgBase_PrptsWdgOneValue
 	: public QWidget
 {
 
 public:
 	
-	FrgBase_PrptsWdgOneValue(QWidget* parent = nullptr, FrgBase_PrptsVrntOneValue<T>* variant = nullptr);
+	FrgBase_PrptsWdgOneValue(QWidget* parent = nullptr, FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant = nullptr);
 
-	virtual const T& GetValue() const;
-	virtual void SetValue(const T& value);
+	virtual const Type& GetValue() const;
+	virtual void SetValue(const Type& value);
 
 	virtual const char* GetPrefix() const;
 	virtual void SetPrefix(const char* prefix);
 	virtual const char* GetSuffix() const;
 	virtual void SetSuffix(const char* suffix);
 
-	virtual const FrgBase_PrptsVrntOneValue<T>& GetVariant() const;
-	virtual void SetVariant(const FrgBase_PrptsVrntOneValue<T>& variant);
+	virtual const FrgBase_PrptsVrntOneValue<Type, IsBounded>& GetVariant() const;
+	virtual void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
 
 protected:
 
-	FrgBase_PrptsVrntOneValue<T>* theVariant_ = nullptr;
+	FrgBase_PrptsVrntOneValue<Type, IsBounded>* theVariant_ = nullptr;
 };
 
 EndForgBaseLib

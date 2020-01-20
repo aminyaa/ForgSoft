@@ -16,6 +16,7 @@ public:
 
 	explicit FrgBase_PrptsVrntInt
 	(
+		const char* displayName = "",
 		int value = 0,
 		int min = 0,
 		int max = 100,

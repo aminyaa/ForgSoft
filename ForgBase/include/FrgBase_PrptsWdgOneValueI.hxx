@@ -1,58 +1,58 @@
 #include "FrgBase_PrptsWdgOneValue.hxx"
 #pragma once
 
-template<typename T>
-inline ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::FrgBase_PrptsWdgOneValue(QWidget * parent, ForgBaseLib::FrgBase_PrptsVrntOneValue<T>* variant)
+template<typename Type, bool IsBounded>
+inline ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::FrgBase_PrptsWdgOneValue(QWidget * parent, ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant)
 	: QWidget(parent)
 	, theVariant_(variant)
 {
 
 }
 
-template<typename T>
-inline const T& ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::GetValue() const
+template<typename Type, bool IsBounded>
+inline const Type& ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetValue() const
 {
 	return theVariant_->GetValue();
 }
 
-template<typename T>
-inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::SetValue(const T& value)
+template<typename Type, bool IsBounded>
+inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetValue(const Type& value)
 {
 	theVariant_->SetValue(value);
 }
 
-template<typename T>
-inline const char * ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::GetPrefix() const
+template<typename Type, bool IsBounded>
+inline const char * ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetPrefix() const
 {
 	return theVariant_->GetPrefix();
 }
 
-template<typename T>
-inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::SetPrefix(const char * prefix)
+template<typename Type, bool IsBounded>
+inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetPrefix(const char * prefix)
 {
 	theVariant_->SetPrefix(prefix);
 }
 
-template<typename T>
-inline const char * ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::GetSuffix() const
+template<typename Type, bool IsBounded>
+inline const char * ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetSuffix() const
 {
 	return theVariant_->GetSuffix();
 }
 
-template<typename T>
-inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::SetSuffix(const char * suffix)
+template<typename Type, bool IsBounded>
+inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetSuffix(const char * suffix)
 {
 	theVariant_->SetSuffix(suffix);
 }
 
-template<typename T>
-inline const ForgBaseLib::FrgBase_PrptsVrntOneValue<T>& ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::GetVariant() const
+template<typename Type, bool IsBounded>
+inline const ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>& ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetVariant() const
 {
 	return *theVariant_;
 }
 
-template<typename T>
-inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<T>::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<T>& variant)
+template<typename Type, bool IsBounded>
+inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant)
 {
 	theVariant_->SetVariant(variant);
 }

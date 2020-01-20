@@ -58,13 +58,13 @@ void ForgBaseLib::FrgBase_PrptsWdgString::FormWidget()
 
 void ForgBaseLib::FrgBase_PrptsWdgString::SetValue(const QString & value)
 {
-	FrgBase_PrptsWdgOneValue<QString>::SetValue(value);
+	FrgBase_PrptsWdgOneValue<QString, false>::SetValue(value);
 	theLineEdit_->setText(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgString::SetPrefix(const char * prefix)
 {
-	FrgBase_PrptsWdgOneValue<QString>::SetPrefix(prefix);
+	FrgBase_PrptsWdgOneValue<QString, false>::SetPrefix(prefix);
 
 	if (!thePrefixLabel_)
 		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
@@ -74,7 +74,7 @@ void ForgBaseLib::FrgBase_PrptsWdgString::SetPrefix(const char * prefix)
 
 void ForgBaseLib::FrgBase_PrptsWdgString::SetSuffix(const char * suffix)
 {
-	FrgBase_PrptsWdgOneValue<QString>::SetSuffix(suffix);
+	FrgBase_PrptsWdgOneValue<QString, false>::SetSuffix(suffix);
 
 	if (!theSuffixLabel_)
 		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
@@ -82,8 +82,8 @@ void ForgBaseLib::FrgBase_PrptsWdgString::SetSuffix(const char * suffix)
 		theSuffixLabel_->setText(suffix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgString::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<QString>& variant)
+void ForgBaseLib::FrgBase_PrptsWdgString::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<QString, false>& variant)
 {
-	FrgBase_PrptsWdgOneValue<QString>::SetVariant(variant);
+	FrgBase_PrptsWdgOneValue<QString, false>::SetVariant(variant);
 	theLineEdit_->setText(variant.GetValue());
 }

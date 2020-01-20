@@ -2,9 +2,11 @@
 #include <FrgBase_PrptsWdgDouble.hxx>
 #include <FrgBase_PrptsWdgInt.hxx>
 #include <FrgBase_PrptsWdgString.hxx>
+#include <FrgBase_PrptsWdgBool.hxx>
 #include <FrgBase_PrptsVrntDouble.hxx>
 #include <FrgBase_PrptsVrntInt.hxx>
 #include <FrgBase_PrptsVrntString.hxx>
+#include <FrgBase_PrptsVrntBool.hxx>
 
 #include <QtCore/QMetaObject>
 #include <QtCore/QMetaProperty>
@@ -34,15 +36,20 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentWid
 		const char* name = metaproperty.name();
 		QVariant value = theParentWidget_->property(name);
 
-		std::cout << i << std::endl;
-
 		SetTableData(i + 1, name, 0, value);
 	}
 
-	for (int i = 0; i < nbRow + 1; i++)
+	for (int i = 0; i < this->rowCount(); i++)
 	{
-		this->item(i, 0)->setFlags(Qt::ItemIsEnabled);
-		this->item(i, 1)->setFlags(Qt::ItemIsEnabled);
+		for (int j = 0; j < this->columnCount(); j++)
+		{
+			this->item(i, 0)->setFlags(Qt::ItemIsEnabled);
+			this->item(i, 1)->setFlags(Qt::ItemIsEnabled);
+
+			if (i % 2 == 0)
+				this->item(i, j)->setBackgroundColor(QColor(220, 220, 220));
+		}
+
 	}
 
 	this->resizeColumnsToContents();
@@ -53,40 +60,63 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentWid
 
 void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * name, int role, const QVariant & value)
 {
-	QTableWidgetItem* propertyName = new QTableWidgetItem(name);
-	this->setItem(row, 0, propertyName);
 
 	if (value.canConvert<FrgBase_PrptsVrntDouble*>())
 	{
-		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsVrntDouble* myVariant = qvariant_cast<FrgBase_PrptsVrntDouble*>(value);
-		FrgBase_PrptsWdgDouble* myWidget = new FrgBase_PrptsWdgDouble(this, myVariant);
 
+		QTableWidgetItem* propertyName = new QTableWidgetItem(myVariant->GetDisplayName());
+		this->setItem(row, 0, propertyName);
+
+		QTableWidgetItem* item = new QTableWidgetItem;
+		FrgBase_PrptsWdgDouble* myWidget = new FrgBase_PrptsWdgDouble(this, myVariant);
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 	}
 	else if (value.canConvert<FrgBase_PrptsVrntInt*>())
 	{
-		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsVrntInt* myVariant = qvariant_cast<FrgBase_PrptsVrntInt*>(value);
-		FrgBase_PrptsWdgInt* myWidget = new FrgBase_PrptsWdgInt(this, myVariant);
 
+		QTableWidgetItem* propertyName = new QTableWidgetItem(myVariant->GetDisplayName());
+		this->setItem(row, 0, propertyName);
+
+		QTableWidgetItem* item = new QTableWidgetItem;
+		FrgBase_PrptsWdgInt* myWidget = new FrgBase_PrptsWdgInt(this, myVariant);
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 	}
 	else if (value.canConvert<FrgBase_PrptsVrntString*>())
 	{
-		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsVrntString* myVariant = qvariant_cast<FrgBase_PrptsVrntString*>(value);
-		FrgBase_PrptsWdgString* myWidget = new FrgBase_PrptsWdgString(this, myVariant);
 
+		QTableWidgetItem* propertyName = new QTableWidgetItem(myVariant->GetDisplayName());
+		this->setItem(row, 0, propertyName);
+
+		QTableWidgetItem* item = new QTableWidgetItem;
+		FrgBase_PrptsWdgString* myWidget = new FrgBase_PrptsWdgString(this, myVariant);
+		this->setItem(row, 1, item);
+		this->setCellWidget(row, 1, myWidget);
+	}
+	else if (value.canConvert<FrgBase_PrptsVrntBool*>())
+	{
+		FrgBase_PrptsVrntBool* myVariant = qvariant_cast<FrgBase_PrptsVrntBool*>(value);
+
+		QTableWidgetItem* propertyName = new QTableWidgetItem(myVariant->GetDisplayName());
+		this->setItem(row, 0, propertyName);
+
+		QTableWidgetItem* item = new QTableWidgetItem;
+		FrgBase_PrptsWdgBool* myWidget = new FrgBase_PrptsWdgBool(this, myVariant);
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 	}
 	else if (value.type() == QVariant::String)
 	{
+		QTableWidgetItem* propertyName = new QTableWidgetItem(name);
+		this->setItem(row, 0, propertyName);
+
 		QTableWidgetItem* item = new QTableWidgetItem;
-		FrgBase_PrptsVrntString* myVariant = new FrgBase_PrptsVrntString(value.toString().toStdString().c_str());
+		FrgBase_PrptsVrntString* myVariant = new FrgBase_PrptsVrntString("", value.toString().toStdString().c_str());
+		std::cout << value.toString().toStdString() << std::endl;
 		FrgBase_PrptsWdgString* myWidget = new FrgBase_PrptsWdgString(this, myVariant);
 
 		this->setItem(row, 1, item);

@@ -15,6 +15,7 @@ public:
 
 	explicit FrgBase_PrptsVrntDouble
 	(
+		const char* displayName = "",
 		double value = 0.0,
 		double min = 0.0,
 		double max = 1.0,

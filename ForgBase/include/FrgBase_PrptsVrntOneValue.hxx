@@ -4,78 +4,76 @@
 
 #include <FrgBase_Global.hxx>
 
-class QString;
-
 BeginForgBaseLib
 
-template <typename T>
+template <typename Type, bool IsBounded = true>
 class FrgBase_PrptsVrntOneValue
 {
 
 public:
 
+	typedef int IntType;
+	typedef double DoubleType;
+	typedef float FloatType;
+	typedef bool  BoolType;
+
 	/*==============================================================================================================================*/
 	/* using enable_if template for different types*/
 	template <typename T1>
-	using is_number = std::integral_constant<bool, std::is_same_v<int, T1> || std::is_same_v<double, T1> || std::is_same_v<float, T1>>;
+	using is_number = std::integral_constant<bool, std::is_same_v<IntType, T1> || std::is_same_v<DoubleType, T1> || std::is_same_v<FloatType, T1>>;
 
 	template <typename T1>
-	using resolveNumberType = std::enable_if_t<std::is_same_v<int, T1> || std::is_same_v<double, T1> || std::is_same_v<float, T1>>;
-
-	template <typename T1>
-	using resolveIntType = std::enable_if_t<std::is_same_v<int, T1>>;
-
-	template <typename T1>
-	using resolveDoubleType = std::enable_if_t<std::is_same_v<double, T1>>;
-
-	template <typename T1>
-	using resolveStringType = std::enable_if_t<std::is_same_v<QString, T1>>;
+	using resolveNumberType = std::enable_if_t<std::is_same_v<IntType, T1> || std::is_same_v<DoubleType, T1> || std::is_same_v<FloatType, T1>>;
 	/*==============================================================================================================================*/
 	/* Constructors*/
-	template <typename = resolveNumberType<T>>
-	FrgBase_PrptsVrntOneValue(T value, T min, T max, T step, const char* prefix, const char* suffix);
+	template <typename  = typename std::enable_if_t<IsBounded>>
+	FrgBase_PrptsVrntOneValue(const char* displayName, Type value, Type min, Type max, Type step, const char* prefix, const char* suffix);
 
-	template <typename = resolveStringType<T>>
-	FrgBase_PrptsVrntOneValue(T value, const char* prefix, const char* suffix);
+	template <typename = typename std::enable_if_t<!IsBounded>>
+	FrgBase_PrptsVrntOneValue(const char* displayName, Type value, const char* prefix, const char* suffix);
 	/*==============================================================================================================================*/
 
 	virtual ~FrgBase_PrptsVrntOneValue() {}
 
-	const T& GetValue() const;
-	void SetValue(const T& value);
+	const char* GetDisplayName() const;
+	void SetDisplayName(const char* name);
 
-	template <typename = resolveNumberType<T>>
-	const T& GetMinimumValue() const;
+	const Type& GetValue() const;
+	void SetValue(const Type& value);
 
-	template <typename = resolveNumberType<T>>
-	void SetMinimumValue(const T& minValue);
+	template <typename = typename std::enable_if_t<IsBounded>>
+	const Type& GetMinimumValue() const;
 
-	template <typename = resolveNumberType<T>>
-	const T& GetMaximumValue() const;
+	template <typename = typename std::enable_if_t<IsBounded>>
+	void SetMinimumValue(const Type& minValue);
 
-	template <typename = resolveNumberType<T>>
-	void SetMaximumValue(const T& maxValue);
+	template <typename = typename std::enable_if_t<IsBounded>>
+	const Type& GetMaximumValue() const;
 
-	template <typename = resolveNumberType<T>>
-	const T& GetStepValue() const;
+	template <typename = typename std::enable_if_t<IsBounded>>
+	void SetMaximumValue(const Type& maxValue);
 
-	template <typename = resolveNumberType<T>>
-	void SetStepValue(const T& stepValue);
+	template <typename = typename std::enable_if_t<IsBounded>>
+	const Type& GetStepValue() const;
+
+	template <typename = typename std::enable_if_t<IsBounded>>
+	void SetStepValue(const Type& stepValue);
 
 	const char* GetPrefix() const;
 	void SetPrefix(const char* prefix);
 	const char* GetSuffix() const;
 	void SetSuffix(const char* suffix);
 
-	void SetVariant(const FrgBase_PrptsVrntOneValue<T>& variant);
+	void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
 
 private:
 
-	T theValue_;
+	const char* theDisplayName_ = "";
+	Type theValue_;
 
-	T theMinValue_;
-	T theMaxValue_;
-	T theStepValue_;
+	Type theMinValue_;
+	Type theMaxValue_;
+	Type theStepValue_;
 
 	const char* thePrefix_ = "";
 	const char* theSuffix_ = "";
