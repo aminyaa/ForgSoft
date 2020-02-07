@@ -10,15 +10,15 @@ ForgBaseLib::FrgBase_MenuEdit::FrgBase_MenuEdit
 )
 	: FrgBase_Menu("&Edit", parentMainWindow)
 {
-	auto undoAction = AddItem(ICON_Menu_Edit_Undo, "&Undo");
-	auto redoAction = AddItem(ICON_Menu_Edit_Redo, "&Redo");
+	auto undoAction = AddItem(ICON_Menu_Edit_Undo, FrgString("&Undo"));
+	auto redoAction = AddItem(ICON_Menu_Edit_Redo, FrgString("&Redo"));
 	addSeparator();
-	auto cutAction = AddItem(ICON_Menu_Edit_Cut, "Cu&t");
-	auto copyAction = AddItem(ICON_Menu_Edit_Copy, "&Copy");
-	auto pasteAction = AddItem(ICON_Menu_Edit_Paste, "&Paste");
-	auto deleteAction = AddItem(ICON_Menu_Edit_Delete, "&Delete");
+	auto cutAction = AddItem(ICON_Menu_Edit_Cut, FrgString("Cu&t"));
+	auto copyAction = AddItem(ICON_Menu_Edit_Copy, FrgString("&Copy"));
+	auto pasteAction = AddItem(ICON_Menu_Edit_Paste, FrgString("&Paste"));
+	auto deleteAction = AddItem(ICON_Menu_Edit_Delete, FrgString("&Delete"));
 	addSeparator();
-	auto selectAllAction = AddItem(ICON_Menu_Edit_SelectAll, "Select &All");
+	auto selectAllAction = AddItem(ICON_Menu_Edit_SelectAll, FrgString("Select &All"));
 
 	undoAction->setShortcut(QMainWindow::tr("Ctrl+Z"));
 	redoAction->setShortcut(QMainWindow::tr("Ctrl+Y"));

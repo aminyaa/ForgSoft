@@ -46,6 +46,7 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::FormWidget()
 	theSpinBox_->setSingleStep(GetStepValue());
 	theSpinBox_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	theSpinBox_->setFixedWidth(100);
+	theSpinBox_->setKeyboardTracking(false);
 	myLayout->addWidget(theSpinBox_);
 	myLayout->addStretch(1);
 
@@ -57,7 +58,7 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::FormWidget()
 
 	this->setLayout(myLayout);
 
-	connect(theSpinBox_, SIGNAL(valueChanged(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+	connect(theSpinBox_, SIGNAL(valueChanged(double)), this, SIGNAL(valueChanged(double)));
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::SetValue(const double & value)

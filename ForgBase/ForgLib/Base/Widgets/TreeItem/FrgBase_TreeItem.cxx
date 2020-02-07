@@ -2,17 +2,27 @@
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Tree.hxx>
 #include <FrgBase_DlgRenameTItem.hxx>
+#include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_MainWindow.hxx>
+#include <FrgBase_Global_Icons.hxx>
 
 #include <QtWidgets/QToolBar>
 #include <QtCore/QMetaProperty>
 
 ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 (
-	const FrgString & itemTitle, FrgBase_TreeItem * parentItem, FrgBase_Tree * parentTree
+	const FrgString & itemTitle,
+	FrgBase_TreeItem * parentItem,
+	FrgBase_Tree * parentTree
 )
 	: QTreeWidgetItem(parentItem)
 	, theParentTree_(parentTree)
+	, theParentMainWindow_(theParentTree_->GetParentMainWindow())
 {
+	this->setText(0, itemTitle);
+	this->setIcon(0, QIcon(ICON_Menu_File_Load));
+	this->setObjectName(itemTitle);
+
 	theContextMenu_ = FrgNew FrgBase_Menu(itemTitle, theParentMainWindow_, FrgTrue);
 	theContextMenu_->GetToolBar()->setHidden(FrgTrue);
 
@@ -20,7 +30,7 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	{
 		parentItem->addChild(this);
 		auto action = theContextMenu_->AddItem("Rename", FrgFalse);
-		action->setEnabled(FrgFalse);
+		//action->setEnabled(FrgFalse);
 
 		QObject::connect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
 	}
@@ -32,6 +42,8 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 		}
 		else
 			parentTree->addTopLevelItem(this);
+
+	thePropertiesPanel_ = new FrgBase_PropertiesPanel(GetParentMainWindow(), this);
 }
 
 //void ForgBaseLib::FrgBase_TreeItem::UpdateObject()
@@ -41,7 +53,7 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 
 QString ForgBaseLib::FrgBase_TreeItem::GetTItemName() const
 {
-	return theTItemName_;
+	return objectName();
 }
 
 void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name)
@@ -49,17 +61,18 @@ void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name)
 	FrgString str = name;
 	str = str.simplified();
 
-	if (theTItemName_ != str)
+	if (objectName() != str)
 	{
 		if (QTreeWidgetItem::parent())
 		{
 			while (GetChild(str))
-				str += " (Copy)";}
+				str += " (Copy)";
+		}
 
-		theTItemName_ = str;
-		this->setText(0, str);
+		this->setObjectName(str);
+		this->setText(0, objectName());
 
-		emit TItemNameChanged(theTItemName_);
+		emit TItemNameChanged(objectName());
 	}
 }
 

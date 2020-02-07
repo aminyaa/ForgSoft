@@ -128,6 +128,7 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
     <ClCompile Include="ForgLib\Base\Widgets\Menu\Edit\FrgBase_MenuEdit.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Menu\File\FrgBase_MenuFile.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Menu\FrgBase_Menu.cxx" />
+    <ClCompile Include="ForgLib\Base\Widgets\Menu\Help\FrgBase_MenuHelp.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Delegates\Base\FrgBase_PrptsDelegateBase.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Delegates\Double\FrgBase_PrptsDelegateDouble.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Delegates\Int\FrgBase_PrptsDelegateInt.cxx" />

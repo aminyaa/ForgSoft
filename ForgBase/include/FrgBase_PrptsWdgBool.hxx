@@ -10,6 +10,8 @@ class QLabel;
 
 BeginForgBaseLib
 
+class FrgBase_PropertiesPanel;
+
 class FORGBASE_EXPORT FrgBase_PrptsVrntBool;
 
 class FrgBase_PrptsWdgBool
@@ -33,17 +35,30 @@ public:
 
 	void SetVariant(const FrgBase_PrptsVrntOneValue<bool, false>& variant) override;
 
+	QCheckBox* GetCheckBox() const { return theCheckBox_; }
+
 	void FormWidget();
+
+protected:
+
+	//void mouseReleaseEvent(QMouseEvent *event) override;
+	//bool eventFilter(QObject *obj, QEvent *event) override;
 
 signals:
 
 	void valueChanged(bool);
+
+private slots:
+
+	void valueChangedSlot(bool checked);
 
 private:
 
 	QCheckBox* theCheckBox_ = nullptr;
 	QLabel* thePrefixLabel_ = nullptr;
 	QLabel* theSuffixLabel_ = nullptr;
+	
+	FrgBase_PropertiesPanel* theParentPropertiesPanel_ = nullptr;
 };
 
 EndForgBaseLib

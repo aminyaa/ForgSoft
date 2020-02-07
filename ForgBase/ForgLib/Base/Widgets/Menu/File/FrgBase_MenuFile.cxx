@@ -11,18 +11,18 @@ ForgBaseLib::FrgBase_MenuFile::FrgBase_MenuFile
 )
 	: FrgBase_Menu("&File", parentMainWindow)
 {
-	auto newAction = AddItem(ICON_Menu_File_New, "&New");
-	auto loadAction = AddItem(ICON_Menu_File_Load, "&Load");
+	auto newAction = AddItem(ICON_Menu_File_New, FrgString("&New"));
+	auto loadAction = AddItem(ICON_Menu_File_Load, FrgString("&Load"));
 	addSeparator();
-	auto saveAction = AddItem(ICON_Menu_File_Save, "&Save");
-	auto saveAsAction = AddItem(ICON_Menu_File_SaveAs, "Save As...");
-	addSeparator();
-
-	auto importAction = AddItem(ICON_Menu_File_Import, "&Import");
-	auto exportAction = AddItem(ICON_Menu_File_Export, "&Export");
+	auto saveAction = AddItem(ICON_Menu_File_Save, FrgString("&Save"));
+	auto saveAsAction = AddItem(ICON_Menu_File_SaveAs, FrgString("Save As..."));
 	addSeparator();
 
-	auto exitAction = AddItem(ICON_Menu_File_Exit, "E&xit");
+	auto importAction = AddItem(ICON_Menu_File_Import, FrgString("&Import"), false);
+	auto exportAction = AddItem(ICON_Menu_File_Export, FrgString("&Export"), false);
+	addSeparator();
+
+	auto exitAction = AddItem(ICON_Menu_File_Exit, FrgString("E&xit"), false);
 
 	newAction->setShortcut(QMainWindow::tr("Ctrl+N"));
 	loadAction->setShortcut(QMainWindow::tr("Ctrl+L"));

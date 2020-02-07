@@ -4,6 +4,10 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QLabel>
+#include <QtCore/QEvent>
+#include <QtGui/QMouseEvent>
+#include <QtWidgets/QApplication>
+#include <FrgBase_PropertiesPanel.hxx>
 
 ForgBaseLib::FrgBase_PrptsWdgBool::FrgBase_PrptsWdgBool
 (
@@ -11,6 +15,7 @@ ForgBaseLib::FrgBase_PrptsWdgBool::FrgBase_PrptsWdgBool
 	FrgBase_PrptsVrntBool * variant
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
+	, theParentPropertiesPanel_(dynamic_cast<FrgBase_PropertiesPanel*>(parent))
 {
 	if (variant)
 	{
@@ -37,7 +42,7 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()
 		myLayout->addWidget(thePrefixLabel_);
 	}
 
-	theCheckBox_ = new QCheckBox;
+	theCheckBox_ = new QCheckBox(this);
 	theCheckBox_->setChecked(GetValue());
 	myLayout->addWidget(theCheckBox_);
 	myLayout->addStretch(1);
@@ -51,6 +56,9 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()
 	this->setLayout(myLayout);
 
 	connect(theCheckBox_, SIGNAL(toggled(bool)), this, SIGNAL(valueChanged(bool)));
+	connect(theCheckBox_, SIGNAL(toggled(bool)), this, SLOT(valueChangedSlot(bool)));
+
+	theCheckBox_->installEventFilter(this);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::SetValue(const bool & value)
@@ -84,3 +92,34 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::SetVariant(const FrgBase_PrptsVrntOneVal
 	FrgBase_PrptsWdgOneValue<bool, false>::SetVariant(variant);
 	theCheckBox_->setChecked(variant.GetValue());
 }
+
+void ForgBaseLib::FrgBase_PrptsWdgBool::valueChangedSlot(bool checked)
+{
+	theVariant_->SetValue(checked);
+
+	/*QEvent* event = new QEvent(QEvent::MouseButtonRelease);
+
+	if(theParentPropertiesPanel_)
+		theParentPropertiesPanel_->eventFilter(this, event);*/
+}
+
+//void ForgBaseLib::FrgBase_PrptsWdgBool::mouseReleaseEvent(QMouseEvent * event)
+//{
+//	std::cout << "event->button() = " << event->button() << std::endl;
+//	if (event->button() == Qt::MouseButton::LeftButton)
+//	{
+//		theCheckBox_->click();
+//	}
+//}
+
+//bool ForgBaseLib::FrgBase_PrptsWdgBool::eventFilter(QObject * obj, QEvent * event)
+//{
+//	//std::cout << "theCheckBox_ = " << theCheckBox_ << ", obj = " << obj << std::endl;
+//	////std::cout << "object = " << obj->metaObject()->className() << ", event = " << event->type() << std::endl;
+//	//if (obj == theCheckBox_ && event->type() == QEvent::MouseButtonRelease)
+//	//{
+//	//	theCheckBox_->setChecked(!theCheckBox_->isChecked());
+//	//	//return true;
+//	//}
+//	return FrgBase_PrptsWdgOneValue<bool, false>::eventFilter(obj, event);
+//}

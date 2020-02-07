@@ -19,8 +19,6 @@ class FrgBase_Dlg
 
 private:
 
-	virtual void setupLayout() {}
-
 	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
 
 public:

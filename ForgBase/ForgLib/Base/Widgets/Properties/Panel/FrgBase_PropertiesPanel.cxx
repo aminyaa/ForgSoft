@@ -13,14 +13,19 @@
 #include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QCheckBox>
+#include <QtCore/QEvent>
 
-ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentWidget)
-	: QTableWidget(parentWidget)
-	, theParentWidget_(parentWidget)
+ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMainWindow, QObject* parentObject)
+	: QTableWidget(parentMainWindow)
+	, theParentWidget_(parentMainWindow)
 {
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
 
-	const QMetaObject *metaobject = theParentWidget_->metaObject();
+	if (parentObject == nullptr)
+		return;
+
+	const QMetaObject *metaobject = parentObject->metaObject();
 	int nbRow = metaobject->propertyCount() - metaobject->propertyOffset();
 	int nbColumn = 2;
 
@@ -28,13 +33,14 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentWid
 	this->setColumnCount(nbColumn);
 	this->setHorizontalHeaderLabels({ "Property", "Value" });
 
-	SetTableData(0, "Name", 0, theParentWidget_->property("objectName"));
+	SetTableData(0, "Name", 0, parentObject->property("objectName"));
+	this->cellWidget(0, 1)->setEnabled(false);
 
 	for (int i = 0; i < nbRow; ++i)
 	{
 		QMetaProperty metaproperty = metaobject->property(i + metaobject->propertyOffset());
 		const char* name = metaproperty.name();
-		QVariant value = theParentWidget_->property(name);
+		QVariant value = parentObject->property(name);
 
 		SetTableData(i + 1, name, 0, value);
 	}
@@ -56,6 +62,8 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentWid
 	this->resizeRowsToContents();
 
 	this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+
+	this->setHidden(true);
 }
 
 void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * name, int role, const QVariant & value)
@@ -84,6 +92,8 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 		FrgBase_PrptsWdgInt* myWidget = new FrgBase_PrptsWdgInt(this, myVariant);
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
+
+		//this->installEventFilter(myWidget);
 	}
 	else if (value.canConvert<FrgBase_PrptsVrntString*>())
 	{
@@ -108,6 +118,7 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 		FrgBase_PrptsWdgBool* myWidget = new FrgBase_PrptsWdgBool(this, myVariant);
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
+		myWidget->installEventFilter(this);
 	}
 	else if (value.type() == QVariant::String)
 	{
@@ -129,3 +140,19 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 		this->setItem(row, 1, propertyValue);
 	}
 }
+
+//bool ForgBaseLib::FrgBase_PropertiesPanel::eventFilter(QObject * obj, QEvent * event)
+//{
+//	if (event->type() == QEvent::MouseButtonRelease)
+//	{
+//		FrgBase_PrptsWdgBool* boolObj = dynamic_cast<FrgBase_PrptsWdgBool*>(obj);
+//		if (boolObj)
+//		{
+//			std::cout << obj->metaObject()->className() << " = " << boolObj->GetValue() << std::endl;
+//			//std::cout << "From PrptsPanel() " << obj->metaObject()->className() << std::endl;
+//			return true;
+//		}
+//	}
+//
+//	return QTableWidget::eventFilter(obj, event);
+//}

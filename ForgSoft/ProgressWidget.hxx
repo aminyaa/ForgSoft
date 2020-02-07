@@ -25,12 +25,13 @@ public:
 
 	AA() 
 	{
-		this->setObjectName("MyObject");
-		theMyInt_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Number of items", 15, 0, 22, 1, "", "[mm]");
-		theMyDouble_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("Ship length", 1.23, 0.0, 17.5, 0.01, "", "[ft]");
-		theMyString_ = new ForgBaseLib::FrgBase_PrptsVrntString("Your text", "salam khoobi?", "", "");
-		theMyString2_ = new ForgBaseLib::FrgBase_PrptsVrntString("Your text2", "salam khoobi2?", "", "");
-		theMyBool_ = new ForgBaseLib::FrgBase_PrptsVrntBool("Is alive", true, "", "");
+		// Initialization
+		this->setObjectName("MyPropeller");
+		theMyInt_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Number of blades", 4, 2, 7, 1, "", "[-]");
+		theMyDouble_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("Diameter", 1.25, 0.1, 5.0, 0.01, "", "[m]");
+		theMyString_ = new ForgBaseLib::FrgBase_PrptsVrntString("Your text", "My Propeller", "", "");
+		theMyString2_ = new ForgBaseLib::FrgBase_PrptsVrntString("Your text2", "My Blades", "", "");
+		theMyBool_ = new ForgBaseLib::FrgBase_PrptsVrntBool("Clockwise", true, "", "");
 	}
 
 	ForgBaseLib::FrgBase_PrptsVrntInt* GetMyInt() const { return theMyInt_; }

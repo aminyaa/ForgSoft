@@ -11,6 +11,7 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 	FrgBool addTitleAsAnAction
 )
 	: QMenu(menuTitle, parentMainWindow)
+	, theParentMainWindow_(parentMainWindow)
 {
 	theToolBar_ = FrgNew QToolBar(menuTitle, parentMainWindow);
 	
@@ -18,9 +19,11 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 	{
 		auto action = AddItem(menuTitle, FrgFalse);
 		action->setEnabled(FrgFalse);
-		action->font().setBold(true);
-		action->font().setItalic(true);
-		action->font().setUnderline(true);
+		QFont myFont;
+		myFont.setBold(true);
+		myFont.setItalic(true);
+		myFont.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, 2);
+		action->setFont(myFont);
 		this->addSeparator();
 	}
 }

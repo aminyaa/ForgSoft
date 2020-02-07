@@ -8,5 +8,5 @@ ForgBaseLib::FrgBase_Dlg::FrgBase_Dlg
 	: QDialog(parentMainWindow)
 	, theParentMainWindow_(parentMainWindow)
 {
-	setupLayout();
+
 }

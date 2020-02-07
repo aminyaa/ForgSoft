@@ -19,7 +19,7 @@ BeginForgBaseLib
 
 class FrgBase_MainWindow;
 
-class FrgBase_DlgRenameTItem
+class FORGBASE_EXPORT FrgBase_DlgRenameTItem
 	: public FrgBase_Dlg
 {
 	Q_OBJECT
@@ -38,7 +38,7 @@ private:
 
 	QString theCurrentName_ = "";
 
-	void setupLayout() override;
+	void setupLayout();
 
 public:
 

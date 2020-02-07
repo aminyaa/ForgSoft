@@ -5,6 +5,20 @@
 #include <FrgBase_MenuTools.hxx>
 #include <FrgBase_MenuWindow.hxx>
 #include <FrgBase_MenuHelp.hxx>
+#include <FrgBase_Tree.hxx>
+#include <FrgBase_PropertiesPanel.hxx>
+
+#include <QtWidgets/QDockWidget>
+
+#include <QtilitiesLogging/QtilitiesLogging>
+#include <QtilitiesLogging/Qtilities>
+#include <QtilitiesCore/QtilitiesCore>
+#include <QtilitiesCoreGui/QtilitiesCoreGui>
+#include <QtilitiesCoreGui/QtilitiesApplication>
+#include <QtilitiesCoreGui/WidgetLoggerEngine>
+
+using namespace QtilitiesLogging;
+using namespace Qtilities::CoreGui;
 
 ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 (
@@ -14,21 +28,41 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 {
 	this->window()->setWindowIcon(QIcon(ICONLogo));
 
-	FormMenus();
-
 	this->setCentralWidget(FrgNew QWidget);
+
+	InitMainWindow();
+}
+
+void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
+{
+	FormMenus();
 	SetMainWindowStyleSheet();
+
+	theTree_ = new FrgBase_Tree(this);
+	thePropertiesPanel_ = new FrgBase_PropertiesPanel(this, nullptr);
+
+	theTreeDockWidget_ = new QDockWidget("Tree", this);
+	theTreeDockWidget_->setWidget(theTree_);
+	theTreeDockWidget_->setTitleBarWidget(new QWidget);
+	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, theTreeDockWidget_);
+
+	thePropertiesPanelDockWidget_ = new QDockWidget("Properties", this);
+	thePropertiesPanelDockWidget_->setWidget(thePropertiesPanel_);
+	thePropertiesPanelDockWidget_->setTitleBarWidget(new QWidget);
+	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thePropertiesPanelDockWidget_);
+
+	CreateConsoleOutput();
 }
 
 void ForgBaseLib::FrgBase_MainWindow::FormMenus()
 {
 	theMainWindowMenus_ = new MainWindowMenus_Struct;
 
-	/*theMainWindowMenus_->theFileMenu_ = new FrgBase_MenuFile(this);
+	theMainWindowMenus_->theFileMenu_ = new FrgBase_MenuFile(this);
 	theMainWindowMenus_->theEditMenu_ = new FrgBase_MenuEdit(this);
-	theMainWindowMenus_->theToolsMenu_ = new FrgBase_MenuTools;
-	theMainWindowMenus_->theWindowMenu_ = new FrgBase_MenuWindow;
-	theMainWindowMenus_->theHelpMenu_ = new FrgBase_MenuHelp;*/
+	/*theMainWindowMenus_->theToolsMenu_ = new FrgBase_MenuTools;
+	theMainWindowMenus_->theWindowMenu_ = new FrgBase_MenuWindow;*/
+	theMainWindowMenus_->theHelpMenu_ = new FrgBase_MenuHelp(this);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetMainWindowStyleSheet()
@@ -61,4 +95,53 @@ void ForgBaseLib::FrgBase_MainWindow::AddMainWindowStyleSheet(const QString& sty
 	QString str = this->styleSheet();
 	str += styleSheet;
 	this->setStyleSheet(str);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::CreateConsoleOutput()
+{
+	Log->setLoggerSettingsEnabled(true);
+	LOG_INITIALIZE();
+	Log->setGlobalLogLevel(Logger::Fatal);
+	Log->toggleQtMsgEngine(true);
+	Log->toggleConsoleEngine(true);
+	Log->toggleQtMsgEngine(false);
+
+	theConsoleEngineName_ = "Console Output";
+
+	auto consoleDockWidget = LoggerGui::createLogDockWidget
+	(
+		&theConsoleEngineName_,
+		WidgetLoggerEngine::AllMessagesPlainTextEdit |
+		WidgetLoggerEngine::WarningsPlainTextEdit |
+		WidgetLoggerEngine::ErrorsPlainTextEdit,
+		"",
+		true,
+		Logger::Info | Logger::Warning | Logger::Error
+	);
+	consoleDockWidget->setTitleBarWidget(new QWidget);
+
+	this->addDockWidget(Qt::BottomDockWidgetArea, consoleDockWidget);
+	this->setCorner(Qt::Corner::BottomLeftCorner, Qt::LeftDockWidgetArea);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsole(const FrgString & info)
+{
+	LOG_INFO_E(theConsoleEngineName_, info);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::PrintWarningToConsole(const FrgString & warning)
+{
+	LOG_WARNING_E(theConsoleEngineName_, warning);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::PrintErrorToConsole(const FrgString & error)
+{
+	LOG_ERROR_E(theConsoleEngineName_, error);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::SetPropertiesPanel(FrgBase_PropertiesPanel * propertiesPanel)
+{
+	thePropertiesPanel_ = propertiesPanel;
+
+	thePropertiesPanelDockWidget_->setWidget(thePropertiesPanel_);
 }

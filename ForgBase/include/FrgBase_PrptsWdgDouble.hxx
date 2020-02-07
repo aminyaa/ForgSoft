@@ -38,7 +38,7 @@ public:
 
 signals:
 
-	void valueChanged(const QString&);
+	void valueChanged(double);
 
 private:
 

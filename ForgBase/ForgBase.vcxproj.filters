@@ -423,6 +423,9 @@
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Bool\FrgBase_PrptsWdgBool.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\Bool</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Menu\Help\FrgBase_MenuHelp.cxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Help</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">

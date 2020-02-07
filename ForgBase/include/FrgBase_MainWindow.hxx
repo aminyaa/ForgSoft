@@ -7,9 +7,13 @@
 
 #include <QtWidgets/QMainWindow>
 
+class QDockWidget;
+
 BeginForgBaseLib
 
 class FrgBase_Menu;
+class FrgBase_Tree;
+class FrgBase_PropertiesPanel;
 
 class FORGBASE_EXPORT FrgBase_MainWindow
 	: public QMainWindow
@@ -30,14 +34,32 @@ private:
 	};
 
 	MainWindowMenus_Struct* theMainWindowMenus_ = NullPtr;
+	FrgBase_Tree* theTree_ = NullPtr;
+	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 
+	QDockWidget* theTreeDockWidget_ = NullPtr;
+	QDockWidget* thePropertiesPanelDockWidget_ = NullPtr;
+
+	FrgString theConsoleEngineName_;
+
+private:
+
+	void InitMainWindow();
 	void FormMenus();
 	void SetMainWindowStyleSheet();
 	void AddMainWindowStyleSheet(const QString& styleSheet);
+	void CreateConsoleOutput();
 
 public:
 
 	FrgBase_MainWindow(QWidget* parent = NullPtr);
+
+	void PrintInfoToConsole(const FrgString& info);
+	void PrintWarningToConsole(const FrgString& info);
+	void PrintErrorToConsole(const FrgString& info);
+
+	FrgBase_PropertiesPanel* GetPropertiesPanel() const { return thePropertiesPanel_; }
+	void SetPropertiesPanel(FrgBase_PropertiesPanel* propertiesPanel);
 
 protected slots:
 

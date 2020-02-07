@@ -14,7 +14,7 @@ class FORGBASE_EXPORT FrgBase_PropertiesPanel
 
 public:
 
-	FrgBase_PropertiesPanel(QWidget* parentWidget);
+	FrgBase_PropertiesPanel(QWidget* parentMainWindow, QObject* parentObject);
 
 signals:
 
@@ -23,8 +23,13 @@ signals:
 private:
 
 	QWidget* theParentWidget_ = nullptr;
+	QObject* theParentObject_ = nullptr;
 
 	void SetTableData(int row, const char* name, int role, const QVariant& value);
+
+public:
+
+	//bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 EndForgBaseLib

@@ -10,7 +10,7 @@
 BeginForgBaseLib
 
 template <typename Type, bool IsBounded = true>
-class FORGBASE_EXPORT FrgBase_PrptsWdgOneValue
+class FrgBase_PrptsWdgOneValue
 	: public QWidget
 {
 

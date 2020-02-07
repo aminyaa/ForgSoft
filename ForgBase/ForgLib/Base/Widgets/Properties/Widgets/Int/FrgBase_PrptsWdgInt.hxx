@@ -7,6 +7,8 @@
 
 class QSpinBox;
 class QLabel;
+class QEvent;
+class QObject;
 
 BeginForgBaseLib
 
@@ -36,9 +38,18 @@ public:
 
 	void FormWidget();
 
+protected:
+
+	bool event(QEvent *event) override;
+	bool eventFilter(QObject *obj, QEvent *event) override;
+
 signals:
 
-	void valueChanged(const QString&);
+	void valueChanged(int);
+
+public slots:
+
+	void editingFinished();
 
 private:
 

@@ -12,7 +12,7 @@ BeginForgBaseLib
 
 class FrgBase_Tree;
 class FrgBase_MainWindow;
-class FrgBase_Properties;
+class FrgBase_PropertiesPanel;
 class FrgBase_Menu;
 
 class FORGBASE_EXPORT FrgBase_TreeItem
@@ -29,10 +29,10 @@ private:
 
 	FrgBase_Tree* theParentTree_ = NullPtr;
 	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
-	FrgBase_Properties* theProperties_ = NullPtr;
+	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 	FrgBase_Menu* theContextMenu_ = NullPtr;
 
-	QString theTItemName_;
+	//QString theTItemName_;
 
 signals:
 
@@ -49,7 +49,7 @@ public:
 
 	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
-	FrgGetMacro(FrgBase_Properties*, Properties, theProperties_);
+	FrgGetMacro(FrgBase_PropertiesPanel*, PropertiesPanel, thePropertiesPanel_);
 	FrgGetMacro(FrgBase_Menu*, ContextMenu, theContextMenu_);
 
 	QList<FrgBase_TreeItem*> GetChildren();

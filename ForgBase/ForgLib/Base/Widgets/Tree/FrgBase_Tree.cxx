@@ -2,6 +2,7 @@
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_TreeItem.hxx>
 #include <FrgBase_Menu.hxx>
+#include <FrgBase_PropertiesPanel.hxx>
 
 #include <QtWidgets/QHeaderView>
 #include <QtGui/QKeyEvent>
@@ -11,6 +12,7 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 	FrgBase_MainWindow* parentMainWindow
 )
 	: QTreeWidget(parentMainWindow)
+	, theParentMainWindow_(parentMainWindow)
 {
 	this->setColumnCount(1);
 	this->setHeaderLabel(tr("Simulation"));
@@ -47,10 +49,22 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 
 	QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
 	QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
+
+	connect(this,
+		SIGNAL(customContextMenuRequested(const QPoint&)),
+		SLOT(onCustomContextMenuRequested(const QPoint&)));
+
+	FormTree();
 }
 
 void ForgBaseLib::FrgBase_Tree::FormTree()
 {
+	auto geometryTItem = new FrgBase_TreeItem("Geometry", nullptr, this);
+	new FrgBase_TreeItem("Parts", geometryTItem, this);
+	new FrgBase_TreeItem("Continua", nullptr, this);
+	new FrgBase_TreeItem("Regions", nullptr, this);
+	new FrgBase_TreeItem("Plots", nullptr, this);
+	new FrgBase_TreeItem("Scenes", nullptr, this);
 }
 
 void ForgBaseLib::FrgBase_Tree::keyPressEvent
@@ -81,6 +95,8 @@ void ForgBaseLib::FrgBase_Tree::itemClickedSlot
 )
 {
 	theLastLeftClickedTItem_ = dynamic_cast<FrgBase_TreeItem*>(item);
+	if (theLastLeftClickedTItem_)
+		theParentMainWindow_->SetPropertiesPanel(theLastLeftClickedTItem_->GetPropertiesPanel());
 }
 
 void ForgBaseLib::FrgBase_Tree::itemDoubleClickedSlot

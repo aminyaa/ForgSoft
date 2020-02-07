@@ -4,6 +4,8 @@
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QHBoxLayout>
+#include <QtCore/QEvent>
+#include <QtGui/QKeyEvent>
 
 #include <string.h>
 
@@ -39,13 +41,14 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()
 		myLayout->addWidget(thePrefixLabel_);
 	}
 	
-	theSpinBox_ = new QSpinBox;
+	theSpinBox_ = new QSpinBox(this);
 	theSpinBox_->setValue(GetValue());
 	theSpinBox_->setMinimum(GetMinimumValue());
 	theSpinBox_->setMaximum(GetMaximumValue());
 	theSpinBox_->setSingleStep(GetStepValue());
 	theSpinBox_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	theSpinBox_->setFixedWidth(100);
+	theSpinBox_->setKeyboardTracking(false);
 	myLayout->addWidget(theSpinBox_);
 	myLayout->addStretch(1);
 
@@ -57,7 +60,8 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()
 
 	this->setLayout(myLayout);
 
-	connect(theSpinBox_, SIGNAL(valueChanged(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+	connect(theSpinBox_, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged(int)));
+	connect(theSpinBox_, SIGNAL(editingFinished()), this, SLOT(editingFinished()));
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgInt::SetValue(const int& value)
@@ -123,4 +127,36 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::SetVariant(const FrgBase_PrptsVrntOneValu
 {
 	FrgBase_PrptsWdgOneValue<int>::SetVariant(variant);
 	theSpinBox_->setValue(variant.GetValue());
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgInt::editingFinished()
+{
+	//std::cout << "Editing Finished\n";
+}
+
+bool ForgBaseLib::FrgBase_PrptsWdgInt::event(QEvent * event)
+{
+	//std::cout << "From WdgInt() " << event->type() << std::endl;
+	if (event->type() == QEvent::KeyPress)
+	{
+		QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+
+		
+	}
+
+	return FrgBase_PrptsWdgOneValue<int>::event(event);
+}
+
+bool ForgBaseLib::FrgBase_PrptsWdgInt::eventFilter(QObject * obj, QEvent * event)
+{
+	/*std::cout << "From WdgInt() " << obj->metaObject()->className() << std::endl;
+
+	if (event->type() == QEvent::KeyPress)
+	{
+		QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+
+		std::cout << obj->metaObject()->className() << " ====> " << keyEvent->key() << std::endl;
+	}
+
+	*/return FrgBase_PrptsWdgOneValue<int>::eventFilter(obj, event);
 }

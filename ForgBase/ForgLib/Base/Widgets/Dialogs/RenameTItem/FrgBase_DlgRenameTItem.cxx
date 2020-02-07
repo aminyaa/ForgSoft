@@ -17,7 +17,7 @@ ForgBaseLib::FrgBase_DlgRenameTItem::FrgBase_DlgRenameTItem
 	: FrgBase_Dlg(parentMainWindow)
 	, theCurrentName_(currentName.simplified())
 {
-
+	setupLayout();
 }
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::setupLayout()
@@ -55,7 +55,9 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::keyPressEvent(QKeyEvent* event)
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::showEvent(QShowEvent*)
 {
-	move(x() - (GetParentMainWindow()->geometry().center().x()), y() - (GetParentMainWindow()->geometry().center().y()));
+	//std::cout << "ParentMainWindow = " << GetParentMainWindow() << std::endl;
+	//this->move(x() + (GetParentMainWindow()->width() - this->width()) / 2, y() + (GetParentMainWindow()->height() - this->height()) / 2);
+	//move(x() - (GetParentMainWindow()->geometry().center().x()), y() - (GetParentMainWindow()->geometry().center().y()));
 }
 
 QString ForgBaseLib::FrgBase_DlgRenameTItem::GetLineEditName() const
@@ -66,5 +68,5 @@ QString ForgBaseLib::FrgBase_DlgRenameTItem::GetLineEditName() const
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::onOK()
 {
-
+	accept();
 }

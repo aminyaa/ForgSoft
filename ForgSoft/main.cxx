@@ -2,6 +2,7 @@
 //#include <ForgGuiMainWindow.hxx>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QDockWidget>
 //#include <QtWidgets/QTreeWidgetItem>
 //#include <NihadMainWindow.hxx>
 //#include <CustomWindow.hxx>
@@ -9,6 +10,8 @@
 #include <ProgressWidget.hxx>
 
 #include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_PrptsWdgInt.hxx>
+#include <FrgBase_MainWindow.hxx>
 
 class A : public QMainWindow 
 {
@@ -44,14 +47,32 @@ int main(int argc, char** argv)
 	//console->printCommand("Salam");
 	//console->printCommand("Salam2");*/
 
-	QMainWindow* w = new QMainWindow;
-	AA* aa = new AA;
+	//QMainWindow* w = new QMainWindow;
 
-	ForgBaseLib::FrgBase_PropertiesPanel* panel = new ForgBaseLib::FrgBase_PropertiesPanel(aa);
-	panel->show();
+	//QDockWidget* dockWidget = new QDockWidget("sdd", w);
 
-	w->setCentralWidget(panel);
-	w->show();
+	//ForgBaseLib::FrgBase_PropertiesPanel* panel = new ForgBaseLib::FrgBase_PropertiesPanel(new AA);
+	//dockWidget->setWidget(panel);
+	////panel->show();
+	//w->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, dockWidget);
+
+	//QWidget* centralWidget = new QWidget(w);
+	////centralWidget->installEventFilter(panel);
+
+	//w->setCentralWidget(centralWidget);
+	////w->installEventFilter(centralWidget);
+	////dockWidget->installEventFilter(panel);
+	////centralWidget->installEventFilter(panel);
+	////w->installEventFilter(panel);
+
+	///*for (int i = 0; i < panel->children().size(); i++)
+	//	std::cout << panel->children().at(i)->metaObject()->className() << std::endl;*/
+
+	//w->show();
+
+	ForgBaseLib::FrgBase_MainWindow* mainWindow = new ForgBaseLib::FrgBase_MainWindow;
+
+	mainWindow->show();
 
 	//ForgBaseLib::CustomWindow ww;
 	//ww.show();
