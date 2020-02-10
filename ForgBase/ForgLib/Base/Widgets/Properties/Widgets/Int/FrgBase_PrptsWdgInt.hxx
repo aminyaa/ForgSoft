@@ -43,13 +43,16 @@ protected:
 	bool event(QEvent *event) override;
 	bool eventFilter(QObject *obj, QEvent *event) override;
 
-signals:
+private slots:
 
-	void valueChanged(int);
-
-public slots:
-
-	void editingFinished();
+	void DisplayNameChangedSlot(const char* displayName);
+	void ValueChangedSlot(const int& value);
+	void MinimumValueChangedSlot(const int& value);
+	void MaximumValueChangedSlot(const int& value);
+	void StepValueChangedSlot(const int& value);
+	void PrefixChangedSlot(const char* prefix);
+	void SuffixChangedSlot(const char* suffix);
+	void WdgValueChangedSlot();
 
 private:
 

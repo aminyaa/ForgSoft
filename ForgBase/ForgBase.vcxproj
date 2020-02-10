@@ -209,13 +209,13 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Double\FrgBase_PrptsDelegateDouble.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Base\FrgBase_PrptsDelegateBase.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Int\FrgBase_PrptsDelegateInt.hxx" />
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Bool\FrgBase_PrptsVrntBool.hxx" />
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Double\FrgBase_PrptsVrntDouble.hxx" />
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Int\FrgBase_PrptsVrntInt.hxx" />
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Bool\FrgBase_PrptsVrntBool.hxx" />
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Double\FrgBase_PrptsVrntDouble.hxx" />
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Int\FrgBase_PrptsVrntInt.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Int\FrgBase_PrptsWdgInt.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValue.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValueI.hxx" />
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.hxx" />
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Double\FrgBase_PrptsWdgDouble.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Bool\FrgBase_PrptsWdgBool.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValue.hxx" />

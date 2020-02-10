@@ -1,5 +1,7 @@
 #include <FrgBase_PrptsWdgString.hxx>
 #include <FrgBase_PrptsVrntString.hxx>
+#include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_MainWindow.hxx>
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
@@ -28,6 +30,11 @@ void ForgBaseLib::FrgBase_PrptsWdgString::FormWidget()
 		return;
 	}
 
+	connect(dynamic_cast<FrgBase_PrptsVrntString*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntString*>(theVariant_), SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(ValueChangedSlot(const QString&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntString*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntString*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
+
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
 	myLayout->setSpacing(0);
@@ -53,37 +60,57 @@ void ForgBaseLib::FrgBase_PrptsWdgString::FormWidget()
 
 	this->setLayout(myLayout);
 
-	connect(theLineEdit_, SIGNAL(textChanged(const QString&)), this, SIGNAL(valueChanged(const QString&)));
+	connect(theLineEdit_, SIGNAL(editingFinished()), this, SLOT(WdgValueChangedSlot()));
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgString::SetValue(const QString & value)
 {
 	FrgBase_PrptsWdgOneValue<QString, false>::SetValue(value);
-	theLineEdit_->setText(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgString::SetPrefix(const char * prefix)
 {
 	FrgBase_PrptsWdgOneValue<QString, false>::SetPrefix(prefix);
+}
 
+void ForgBaseLib::FrgBase_PrptsWdgString::SetSuffix(const char * suffix)
+{
+	FrgBase_PrptsWdgOneValue<QString, false>::SetSuffix(suffix);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgString::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<QString, false>& variant)
+{
+	FrgBase_PrptsWdgOneValue<QString, false>::SetVariant(variant);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgString::DisplayNameChangedSlot(const char* displayName)
+{
+
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgString::ValueChangedSlot(const QString& value)
+{
+	theLineEdit_->setText(value);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgString::PrefixChangedSlot(const char * prefix)
+{
 	if (!thePrefixLabel_)
 		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
 	else
 		thePrefixLabel_->setText(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgString::SetSuffix(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgString::SuffixChangedSlot(const char * suffix)
 {
-	FrgBase_PrptsWdgOneValue<QString, false>::SetSuffix(suffix);
-
 	if (!theSuffixLabel_)
 		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
 	else
 		theSuffixLabel_->setText(suffix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgString::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<QString, false>& variant)
+void ForgBaseLib::FrgBase_PrptsWdgString::WdgValueChangedSlot()
 {
-	FrgBase_PrptsWdgOneValue<QString, false>::SetVariant(variant);
-	theLineEdit_->setText(variant.GetValue());
+	if(theLineEdit_->isModified())
+		SetValue(theLineEdit_->text());
 }

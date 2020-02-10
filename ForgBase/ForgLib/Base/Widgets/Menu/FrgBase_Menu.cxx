@@ -17,13 +17,13 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 	
 	if (addTitleAsAnAction)
 	{
-		auto action = AddItem(menuTitle, FrgFalse);
-		action->setEnabled(FrgFalse);
+		theTitleAsAnAction_ = AddItem(menuTitle, FrgFalse);
+		theTitleAsAnAction_->setEnabled(FrgFalse);
 		QFont myFont;
 		myFont.setBold(true);
 		myFont.setItalic(true);
 		myFont.setLetterSpacing(QFont::SpacingType::AbsoluteSpacing, 2);
-		action->setFont(myFont);
+		theTitleAsAnAction_->setFont(myFont);
 		this->addSeparator();
 	}
 }
@@ -92,4 +92,12 @@ QAction* ForgBaseLib::FrgBase_Menu::GetItem
 			return listOfActions[iAction];
 	}
 	return NullPtr;
+}
+
+void ForgBaseLib::FrgBase_Menu::MenuTitleChangedSlot(const QString& name)
+{
+	this->setTitle(name);
+
+	if (theTitleAsAnAction_)
+		theTitleAsAnAction_->setText(name);
 }

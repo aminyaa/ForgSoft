@@ -49,5 +49,7 @@
         <file>Icons/Scenes/Axes/YZ.png</file>
         <file>Icons/Scenes/Axes/XYZ.png</file>
         <file>Fonts/swissek.ttf</file>
+        <file>Icons/TreeStyle/P Icon.png</file>
+        <file>Icons/TreeStyle/P Sub Icon.png</file>
     </qresource>
 </RCC>

@@ -16,6 +16,8 @@ public:
 
 	FrgBase_PropertiesPanel(QWidget* parentMainWindow, QObject* parentObject);
 
+	QWidget* GetParentWidget() const { return theParentWidget_; }
+
 signals:
 
 	void valueChanged(const QString&);

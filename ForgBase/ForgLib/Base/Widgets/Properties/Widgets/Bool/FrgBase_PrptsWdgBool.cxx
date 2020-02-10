@@ -31,6 +31,11 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()
 		return;
 	}
 
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(ValueChangedSignal(const bool&)), this, SLOT(ValueChangedSlot(const bool&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
+
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
 	myLayout->setSpacing(0);
@@ -55,8 +60,7 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()
 
 	this->setLayout(myLayout);
 
-	connect(theCheckBox_, SIGNAL(toggled(bool)), this, SIGNAL(valueChanged(bool)));
-	connect(theCheckBox_, SIGNAL(toggled(bool)), this, SLOT(valueChangedSlot(bool)));
+	connect(theCheckBox_, SIGNAL(toggled(bool)), this, SLOT(WdgValueChangedSlot(bool)));
 
 	theCheckBox_->installEventFilter(this);
 }
@@ -64,43 +68,22 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()
 void ForgBaseLib::FrgBase_PrptsWdgBool::SetValue(const bool & value)
 {
 	FrgBase_PrptsWdgOneValue<bool, false>::SetValue(value);
-	theCheckBox_->setChecked(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::SetPrefix(const char * prefix)
 {
 	FrgBase_PrptsWdgOneValue<bool, false>::SetPrefix(prefix);
-
-	if (!thePrefixLabel_)
-		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
-	else
-		thePrefixLabel_->setText(prefix);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::SetSuffix(const char * suffix)
 {
 	FrgBase_PrptsWdgOneValue<bool, false>::SetSuffix(suffix);
-
-	if (!theSuffixLabel_)
-		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
-	else
-		theSuffixLabel_->setText(suffix);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::SetVariant(const FrgBase_PrptsVrntOneValue<bool, false>& variant)
 {
 	FrgBase_PrptsWdgOneValue<bool, false>::SetVariant(variant);
 	theCheckBox_->setChecked(variant.GetValue());
-}
-
-void ForgBaseLib::FrgBase_PrptsWdgBool::valueChangedSlot(bool checked)
-{
-	theVariant_->SetValue(checked);
-
-	/*QEvent* event = new QEvent(QEvent::MouseButtonRelease);
-
-	if(theParentPropertiesPanel_)
-		theParentPropertiesPanel_->eventFilter(this, event);*/
 }
 
 //void ForgBaseLib::FrgBase_PrptsWdgBool::mouseReleaseEvent(QMouseEvent * event)
@@ -123,3 +106,39 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::valueChangedSlot(bool checked)
 //	//}
 //	return FrgBase_PrptsWdgOneValue<bool, false>::eventFilter(obj, event);
 //}
+
+void ForgBaseLib::FrgBase_PrptsWdgBool::DisplayNameChangedSlot(const char* displayName)
+{
+
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgBool::ValueChangedSlot(const bool& value)
+{
+	theCheckBox_->setChecked(value);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgBool::PrefixChangedSlot(const char * prefix)
+{
+	if (!thePrefixLabel_)
+		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
+	else
+		thePrefixLabel_->setText(prefix);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgBool::SuffixChangedSlot(const char * suffix)
+{
+	if (!theSuffixLabel_)
+		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
+	else
+		theSuffixLabel_->setText(suffix);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgBool::WdgValueChangedSlot(bool checked)
+{
+	SetValue(checked);
+
+	/*QEvent* event = new QEvent(QEvent::MouseButtonRelease);
+
+	if(theParentPropertiesPanel_)
+		theParentPropertiesPanel_->eventFilter(this, event);*/
+}

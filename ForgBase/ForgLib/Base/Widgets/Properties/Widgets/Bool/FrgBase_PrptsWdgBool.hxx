@@ -39,18 +39,20 @@ public:
 
 	void FormWidget();
 
+private slots:
+
+	void DisplayNameChangedSlot(const char* displayName);
+	void ValueChangedSlot(const bool& value);
+	void PrefixChangedSlot(const char* prefix);
+	void SuffixChangedSlot(const char* suffix);
+	void WdgValueChangedSlot(bool checked);
+
 protected:
 
 	//void mouseReleaseEvent(QMouseEvent *event) override;
 	//bool eventFilter(QObject *obj, QEvent *event) override;
 
-signals:
-
-	void valueChanged(bool);
-
 private slots:
-
-	void valueChangedSlot(bool checked);
 
 private:
 

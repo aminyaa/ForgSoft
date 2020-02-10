@@ -4,6 +4,8 @@
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_Object.hxx>
+#include <FrgBase_PrptsVrntString.hxx>
+#include <FrgBase_PrptsVrntInt.hxx>
 
 #include <QtWidgets/QTreeWidgetItem>
 #include <QtCore/QObject>
@@ -23,16 +25,16 @@ class FORGBASE_EXPORT FrgBase_TreeItem
 
 	Q_OBJECT
 		
-	//Q_PROPERTY(QString name READ GetTItemName WRITE SetTItemName NOTIFY TItemNameChanged)
+	Q_PROPERTY(FrgBase_PrptsVrntString* TItemName READ GetTItemName WRITE SetTItemName NOTIFY TItemNameChanged)
 
-private:
+protected:
 
 	FrgBase_Tree* theParentTree_ = NullPtr;
 	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
 	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 	FrgBase_Menu* theContextMenu_ = NullPtr;
 
-	//QString theTItemName_;
+	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
 
 signals:
 
@@ -54,15 +56,21 @@ public:
 
 	QList<FrgBase_TreeItem*> GetChildren();
 	FrgBase_TreeItem* GetChild(const QString& name);
+	bool IsSameNameTItem(const QString& name);
 
 	virtual void DoAfterConstruct() {}
 
-	QString GetTItemName() const;
+	FrgBase_PrptsVrntString* GetTItemName() const { return theTItemName_; }
+	void SetTItemName(FrgBase_PrptsVrntString* variant) { theTItemName_ = variant; }
+
+private:
+
 	void SetTItemName(const QString& name);
 
 public slots:
 
 	void RenameTItemSlot();
+	void RenameTItemSlot(const QString& name);
 };
 
 EndForgBaseLib

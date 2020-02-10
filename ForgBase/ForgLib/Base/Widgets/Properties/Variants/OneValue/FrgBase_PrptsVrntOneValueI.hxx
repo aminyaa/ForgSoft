@@ -50,6 +50,7 @@ template<typename Type, bool IsBounded>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetDisplayName(const char * name)
 {
 	theDisplayName_ = name;
+	DisplayNameChanged();
 }
 
 template<typename Type, bool IsBounded>
@@ -62,6 +63,7 @@ template<typename Type, bool IsBounded>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetValue(const Type & value)
 {
 	theValue_ = value;
+	ValueChanged();
 }
 
 template<typename Type, bool IsBounded>
@@ -76,6 +78,7 @@ template<typename>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetMinimumValue(const Type & minValue)
 {
 	theMinValue_ = minValue;
+	MinimumValueChanged();
 }
 
 template<typename Type, bool IsBounded>
@@ -90,6 +93,7 @@ template<typename>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetMaximumValue(const Type & maxValue)
 {
 	theMaxValue_ = maxValue;
+	MaximumValueChanged();
 }
 
 template<typename Type, bool IsBounded>
@@ -104,6 +108,7 @@ template<typename>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetStepValue(const Type & stepValue)
 {
 	theStepValue_ = stepValue;
+	StepValueChanged();
 }
 
 template<typename Type, bool IsBounded>
@@ -116,6 +121,7 @@ template<typename Type, bool IsBounded>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetPrefix(const char * prefix)
 {
 	thePrefix_ = prefix;
+	PrefixChanged();
 }
 
 template<typename Type, bool IsBounded>
@@ -128,6 +134,7 @@ template<typename Type, bool IsBounded>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetSuffix(const char * suffix)
 {
 	theSuffix_ = suffix;
+	SuffixChanged();
 }
 
 template<typename Type, bool IsBounded>

@@ -19,12 +19,17 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	, theParentTree_(parentTree)
 	, theParentMainWindow_(theParentTree_->GetParentMainWindow())
 {
-	this->setText(0, itemTitle);
+	theTItemName_ = new FrgBase_PrptsVrntString("Name", itemTitle);
+
+	this->setText(0, theTItemName_->GetValue());
 	this->setIcon(0, QIcon(ICON_Menu_File_Load));
 	this->setObjectName(itemTitle);
 
 	theContextMenu_ = FrgNew FrgBase_Menu(itemTitle, theParentMainWindow_, FrgTrue);
 	theContextMenu_->GetToolBar()->setHidden(FrgTrue);
+
+	QObject::connect(this, SIGNAL(TItemNameChanged(const QString&)), theContextMenu_, SLOT(MenuTitleChangedSlot(const QString&)));
+	connect(theTItemName_, SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(RenameTItemSlot(const QString&)));
 
 	if (parentItem)
 	{
@@ -43,7 +48,15 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 		else
 			parentTree->addTopLevelItem(this);
 
-	thePropertiesPanel_ = new FrgBase_PropertiesPanel(GetParentMainWindow(), this);
+	//thePropertiesPanel_ = new FrgBase_PropertiesPanel(GetParentMainWindow(), this);
+
+	/*QObject::connect
+	(
+		this,
+		SIGNAL(objectNameChanged(const QString &)),
+		this,
+		SLOT(objectNameChangedSlot(const QString &))
+	);*/
 }
 
 //void ForgBaseLib::FrgBase_TreeItem::UpdateObject()
@@ -51,28 +64,27 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 //
 //}
 
-QString ForgBaseLib::FrgBase_TreeItem::GetTItemName() const
-{
-	return objectName();
-}
-
 void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name)
 {
 	FrgString str = name;
 	str = str.simplified();
 
-	if (objectName() != str)
+	if (str == "")
+		return;
+
+	if (this->text(0) != str)
 	{
 		if (QTreeWidgetItem::parent())
 		{
-			while (GetChild(str))
+			while (IsSameNameTItem(str))
 				str += " (Copy)";
 		}
 
 		this->setObjectName(str);
-		this->setText(0, objectName());
+		theTItemName_->SetValue(str);
+		this->setText(0, str);
 
-		emit TItemNameChanged(objectName());
+		emit TItemNameChanged(theTItemName_->GetValue());
 	}
 }
 
@@ -95,7 +107,6 @@ ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_TreeItem::GetChild(const QSt
 
 	FrgString str = name;
 	str = str.simplified();
-	str.replace(" ", "");
 
 	for (int iItem = 0; iItem < listOfItems.size(); iItem++)
 	{
@@ -106,6 +117,14 @@ ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_TreeItem::GetChild(const QSt
 	return NullPtr;
 }
 
+bool ForgBaseLib::FrgBase_TreeItem::IsSameNameTItem(const QString & name)
+{
+	if (dynamic_cast<FrgBase_TreeItem*>(QTreeWidgetItem::parent())->GetChild(name))
+		return true;
+
+	return false;
+}
+
 void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot()
 {
 	std::shared_ptr<FrgBase_DlgRenameTItem> dlg = std::make_shared<FrgBase_DlgRenameTItem>(this->text(0), theParentMainWindow_);
@@ -114,4 +133,15 @@ void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot()
 	{
 		SetTItemName(dlg->GetLineEditName());
 	}
+}
+
+void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString & name)
+{
+	if (sender() == theTItemName_)
+		theTItemName_->blockSignals(true);
+
+	SetTItemName(name);
+
+	if (sender() == theTItemName_)
+		theTItemName_->blockSignals(false);
 }

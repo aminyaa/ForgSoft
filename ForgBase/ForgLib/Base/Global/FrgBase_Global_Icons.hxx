@@ -53,5 +53,7 @@
 #define ICONTreeItemGeometry ":/Icons/Scenes/Geometry_Scene_Icon.png"
 #define ICONTreeItemPartSurface ":/Icons/TreeStyle/Surface.png"
 #define ICONTreeItemPartCurve ":/Icons/TreeStyle/Curve.png"
+#define ICONTreeItemPIcon ":/Icons/TreeStyle/P Icon.png"
+#define ICONTreeItemPSubIcon ":/Icons/TreeStyle/P Sub Icon.png"
 
 #endif // !_FrgBase_Global_Icons_Header

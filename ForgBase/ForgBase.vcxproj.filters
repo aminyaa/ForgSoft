@@ -572,20 +572,8 @@
     <ClInclude Include="ForgLib\Base\Core\Application\ApplicationCore\FrgBase_ApplicationCore.hxx">
       <Filter>ForgLib\Base\Core\Application\ApplicationCore</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Int\FrgBase_PrptsVrntInt.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties\Variants\Int</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Double\FrgBase_PrptsVrntDouble.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties\Variants\Double</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValue.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValueI.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties\Variants\String</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValue.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\OneValue</Filter>
@@ -602,8 +590,8 @@
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Delegates\Base\FrgBase_PrptsDelegateBase.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Delegates\Base</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\Bool\FrgBase_PrptsVrntBool.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties\Variants\Bool</Filter>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValue.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -684,6 +672,18 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Bool\FrgBase_PrptsWdgBool.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\Bool</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Int\FrgBase_PrptsVrntInt.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Int</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Bool\FrgBase_PrptsVrntBool.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Bool</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Double\FrgBase_PrptsVrntDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Double</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\String</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

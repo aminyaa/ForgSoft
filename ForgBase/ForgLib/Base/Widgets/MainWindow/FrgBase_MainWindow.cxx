@@ -29,8 +29,6 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 	this->window()->setWindowIcon(QIcon(ICONLogo));
 
 	this->setCentralWidget(FrgNew QWidget);
-
-	InitMainWindow();
 }
 
 void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()

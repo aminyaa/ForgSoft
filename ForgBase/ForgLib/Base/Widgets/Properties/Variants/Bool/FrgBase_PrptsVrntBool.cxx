@@ -11,3 +11,23 @@ ForgBaseLib::FrgBase_PrptsVrntBool::FrgBase_PrptsVrntBool
 {
 
 }
+
+void ForgBaseLib::FrgBase_PrptsVrntBool::DisplayNameChanged()
+{
+	emit DisplayNameChangedSignal(GetDisplayName());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntBool::ValueChanged()
+{
+	emit ValueChangedSignal(GetValue());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntBool::PrefixChanged()
+{
+	emit PrefixChangedSignal(GetPrefix());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntBool::SuffixChanged()
+{
+	emit SuffixChangedSignal(GetSuffix());
+}

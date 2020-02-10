@@ -29,12 +29,13 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 	int nbRow = metaobject->propertyCount() - metaobject->propertyOffset();
 	int nbColumn = 2;
 
-	this->setRowCount(nbRow + 1);
+	//this->setRowCount(nbRow + 1);
+	this->setRowCount(nbRow);
 	this->setColumnCount(nbColumn);
 	this->setHorizontalHeaderLabels({ "Property", "Value" });
 
-	SetTableData(0, "Name", 0, parentObject->property("objectName"));
-	this->cellWidget(0, 1)->setEnabled(false);
+	//SetTableData(0, "Name", 0, parentObject->property("objectName"));
+	//this->cellWidget(0, 1)->setEnabled(false);
 
 	for (int i = 0; i < nbRow; ++i)
 	{
@@ -42,7 +43,8 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 		const char* name = metaproperty.name();
 		QVariant value = parentObject->property(name);
 
-		SetTableData(i + 1, name, 0, value);
+		//SetTableData(i + 1, name, 0, value);
+		SetTableData(i, name, 0, value);
 	}
 
 	for (int i = 0; i < this->rowCount(); i++)
@@ -78,6 +80,7 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 
 		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsWdgDouble* myWidget = new FrgBase_PrptsWdgDouble(this, myVariant);
+
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 	}
@@ -90,6 +93,7 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 
 		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsWdgInt* myWidget = new FrgBase_PrptsWdgInt(this, myVariant);
+
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 
@@ -104,8 +108,14 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 
 		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsWdgString* myWidget = new FrgBase_PrptsWdgString(this, myVariant);
+
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
+
+		if (!std::strcmp(myVariant->GetDisplayName(), "Name"))
+		{
+			this->cellWidget(row, 1)->setEnabled(false);
+		}
 	}
 	else if (value.canConvert<FrgBase_PrptsVrntBool*>())
 	{
@@ -127,7 +137,6 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 
 		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsVrntString* myVariant = new FrgBase_PrptsVrntString("", value.toString().toStdString().c_str());
-		std::cout << value.toString().toStdString() << std::endl;
 		FrgBase_PrptsWdgString* myWidget = new FrgBase_PrptsWdgString(this, myVariant);
 
 		this->setItem(row, 1, item);

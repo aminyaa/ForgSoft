@@ -22,7 +22,7 @@ class FORGBASE_EXPORT FrgBase_MainWindow
 
 	Q_OBJECT
 
-private:
+protected:
 
 	struct MainWindowMenus_Struct
 	{
@@ -42,9 +42,9 @@ private:
 
 	FrgString theConsoleEngineName_;
 
-private:
+protected:
 
-	void InitMainWindow();
+	virtual void InitMainWindow();
 	void FormMenus();
 	void SetMainWindowStyleSheet();
 	void AddMainWindowStyleSheet(const QString& styleSheet);

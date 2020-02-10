@@ -36,9 +36,16 @@ public:
 
 	void FormWidget();
 
-signals:
+private slots:
 
-	void valueChanged(double);
+	void DisplayNameChangedSlot(const char* displayName);
+	void ValueChangedSlot(const double& value);
+	void MinimumValueChangedSlot(const double& value);
+	void MaximumValueChangedSlot(const double& value);
+	void StepValueChangedSlot(const double& value);
+	void PrefixChangedSlot(const char* prefix);
+	void SuffixChangedSlot(const char* suffix);
+	void WdgValueChangedSlot();
 
 private:
 

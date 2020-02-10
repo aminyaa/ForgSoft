@@ -13,3 +13,38 @@ ForgBaseLib::FrgBase_PrptsVrntInt::FrgBase_PrptsVrntInt
 {
 
 }
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::DisplayNameChanged()
+{
+	emit DisplayNameChangedSignal(GetDisplayName());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::ValueChanged()
+{
+	emit ValueChangedSignal(GetValue());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::MinimumValueChanged()
+{
+	emit MinimumValueChangedSignal(GetMinimumValue());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::MaximumValueChanged()
+{
+	emit MaximumValueChangedSignal(GetMaximumValue());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::StepValueChanged()
+{
+	emit StepValueChangedSignal(GetStepValue());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::PrefixChanged()
+{
+	emit PrefixChangedSignal(GetPrefix());
+}
+
+void ForgBaseLib::FrgBase_PrptsVrntInt::SuffixChanged()
+{
+	emit SuffixChangedSignal(GetSuffix());
+}

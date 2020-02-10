@@ -34,9 +34,13 @@ public:
 
 	void FormWidget();
 
-signals:
+private slots:
 
-	void valueChanged(const QString&);
+	void DisplayNameChangedSlot(const char* displayName);
+	void ValueChangedSlot(const QString& value);
+	void PrefixChangedSlot(const char* prefix);
+	void SuffixChangedSlot(const char* suffix);
+	void WdgValueChangedSlot();
 
 private:
 

@@ -66,6 +66,16 @@ public:
 
 	void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
 
+protected:
+
+	virtual void DisplayNameChanged() {}
+	virtual void ValueChanged() {}
+	virtual void MinimumValueChanged() {}
+	virtual void MaximumValueChanged() {}
+	virtual void StepValueChanged() {}
+	virtual void PrefixChanged() {}
+	virtual void SuffixChanged() {}
+
 private:
 
 	const char* theDisplayName_ = "";

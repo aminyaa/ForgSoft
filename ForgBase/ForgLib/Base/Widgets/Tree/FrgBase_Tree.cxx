@@ -53,8 +53,6 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 	connect(this,
 		SIGNAL(customContextMenuRequested(const QPoint&)),
 		SLOT(onCustomContextMenuRequested(const QPoint&)));
-
-	FormTree();
 }
 
 void ForgBaseLib::FrgBase_Tree::FormTree()
@@ -77,6 +75,8 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 	{
 	case Qt::Key_Up:
 	case Qt::Key_Down:
+	case Qt::Key_Left:
+	case Qt::Key_Right:
 	case Qt::Key_Home:
 	case Qt::Key_End:
 	case Qt::Key_PageUp:
@@ -85,6 +85,15 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 		{
 			emit QTreeWidget::itemClicked(currentItem(), 0);
 		}
+		break;
+	case Qt::Key_F2:
+		if (this->selectedItems().size() == 1)
+		{
+			auto TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
+			if (TItem->GetContextMenu()->GetItem("Rename"))
+				TItem->RenameTItemSlot();
+		}
+		break;
 	}
 }
 

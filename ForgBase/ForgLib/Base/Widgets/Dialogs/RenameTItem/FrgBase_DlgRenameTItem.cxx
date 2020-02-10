@@ -17,6 +17,8 @@ ForgBaseLib::FrgBase_DlgRenameTItem::FrgBase_DlgRenameTItem
 	: FrgBase_Dlg(parentMainWindow)
 	, theCurrentName_(currentName.simplified())
 {
+	this->setWindowTitle("Rename Item");
+
 	setupLayout();
 }
 
@@ -42,15 +44,24 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::setupLayout()
 	this->setLayout(theMainLayout_);
 
 	QObject::connect(theOKButton_, SIGNAL(clicked()), this, SLOT(onOK()));
-	QObject::connect(theNameLineEdit_, SIGNAL(editingFinished()), this, SLOT(onOK()));
 	QObject::connect(theCloseButton_, SIGNAL(clicked()), this, SLOT(reject()));
+	QObject::connect(theNameLineEdit_, SIGNAL(returnPressed()), this, SLOT(onOK()));
 
 	theOKButton_->setFocus();
+	theNameLineEdit_->setFocus();
 	this->setModal(FrgTrue);
+
+	this->adjustSize();
 }
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::keyPressEvent(QKeyEvent* event)
 {
+	switch (event->key())
+	{
+	case Qt::Key_Escape:
+		reject();
+		break;
+	}
 }
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::showEvent(QShowEvent*)
@@ -63,10 +74,12 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::showEvent(QShowEvent*)
 QString ForgBaseLib::FrgBase_DlgRenameTItem::GetLineEditName() const
 {
 	return theNameLineEdit_->text();
-	return "";
 }
 
 void ForgBaseLib::FrgBase_DlgRenameTItem::onOK()
 {
+	if (theNameLineEdit_->text().simplified() == "")
+		return;
+
 	accept();
 }

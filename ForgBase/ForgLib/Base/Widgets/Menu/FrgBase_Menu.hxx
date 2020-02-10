@@ -25,6 +25,8 @@ private:
 	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
 	QToolBar* theToolBar_ = NullPtr;
 
+	QAction* theTitleAsAnAction_ = NullPtr;
+
 public:
 
 	FrgBase_Menu(const FrgString& menuTitle, FrgBase_MainWindow* parentMainWindow, FrgBool addTitleAsAnAction = FrgFalse);
@@ -38,6 +40,10 @@ public:
 
 	FrgGetMacro(QToolBar*, ToolBar, theToolBar_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
+
+public slots:
+
+	void MenuTitleChangedSlot(const QString& name);
 };
 
 EndForgBaseLib
