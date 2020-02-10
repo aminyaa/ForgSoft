@@ -144,6 +144,8 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Double\FrgBase_PrptsWdgDouble.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Int\FrgBase_PrptsWdgInt.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\String\FrgBase_PrptsWdgString.cxx" />
+    <ClCompile Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.cxx" />
+    <ClCompile Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Tree\FrgBase_Tree.cxx" />
     <ClCompile Include="FrgWidgets\FrgBaseCADModeling\FrgBaseCADPart\FrgBaseCADPartFeatures\FrgBaseCADPartFeatures.cxx" />
@@ -221,8 +223,8 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValue.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValueI.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\String\FrgBase_PrptsWdgString.hxx" />
-    <ClInclude Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.hxx" />
-    <ClInclude Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.hxx" />
+    <QtMoc Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.hxx" />
+    <QtMoc Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Tree\FrgBase_Tree.hxx" />
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx" />

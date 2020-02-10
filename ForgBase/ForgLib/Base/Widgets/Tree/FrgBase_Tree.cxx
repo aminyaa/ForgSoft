@@ -115,6 +115,8 @@ void ForgBaseLib::FrgBase_Tree::itemDoubleClickedSlot
 )
 {
 	theLastLeftClickedTItem_ = dynamic_cast<FrgBase_TreeItem*>(item);
+	if (theLastLeftClickedTItem_)
+		theLastLeftClickedTItem_->TItemDoubleClickedSlot();
 }
 
 void ForgBaseLib::FrgBase_Tree::onCustomContextMenuRequested

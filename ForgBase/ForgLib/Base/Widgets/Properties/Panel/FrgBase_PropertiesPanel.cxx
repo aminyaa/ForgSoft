@@ -64,6 +64,7 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 	this->resizeRowsToContents();
 
 	this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+	this->horizontalHeader()->setStretchLastSection(true);
 
 	this->setHidden(true);
 }

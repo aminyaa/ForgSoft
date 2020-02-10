@@ -90,7 +90,8 @@ void ForgBaseLib::FrgBase_PrptsWdgString::DisplayNameChangedSlot(const char* dis
 
 void ForgBaseLib::FrgBase_PrptsWdgString::ValueChangedSlot(const QString& value)
 {
-	theLineEdit_->setText(value);
+	if(theLineEdit_->text() != value)
+		theLineEdit_->setText(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgString::PrefixChangedSlot(const char * prefix)

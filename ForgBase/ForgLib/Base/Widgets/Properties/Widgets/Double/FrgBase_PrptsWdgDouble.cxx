@@ -128,22 +128,26 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::DisplayNameChangedSlot(const char* dis
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::ValueChangedSlot(const double & value)
 {
-	theSpinBox_->setValue(value);
+	if(theSpinBox_->value() != value)
+		theSpinBox_->setValue(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::MinimumValueChangedSlot(const double & value)
 {
-	theSpinBox_->setMinimum(value);
+	if(theSpinBox_->minimum() != value)
+		theSpinBox_->setMinimum(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::MaximumValueChangedSlot(const double & value)
 {
-	theSpinBox_->setMaximum(value);
+	if(theSpinBox_->maximum() != value)
+		theSpinBox_->setMaximum(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::StepValueChangedSlot(const double & stepValue)
 {
-	theSpinBox_->setSingleStep(stepValue);
+	if(theSpinBox_->singleStep() != stepValue)
+		theSpinBox_->setSingleStep(stepValue);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::PrefixChangedSlot(const char * prefix)

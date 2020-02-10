@@ -55,5 +55,6 @@
 #define ICONTreeItemPartCurve ":/Icons/TreeStyle/Curve.png"
 #define ICONTreeItemPIcon ":/Icons/TreeStyle/P Icon.png"
 #define ICONTreeItemPSubIcon ":/Icons/TreeStyle/P Sub Icon.png"
+#define ICONTreeItemEye ":/Icons/TreeStyle/Eye.png"
 
 #endif // !_FrgBase_Global_Icons_Header

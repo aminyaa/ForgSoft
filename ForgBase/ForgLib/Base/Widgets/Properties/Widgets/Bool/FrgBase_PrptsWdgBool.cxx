@@ -114,7 +114,8 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::DisplayNameChangedSlot(const char* displ
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::ValueChangedSlot(const bool& value)
 {
-	theCheckBox_->setChecked(value);
+	if(theCheckBox_->isChecked() != value)
+		theCheckBox_->setChecked(value);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::PrefixChangedSlot(const char * prefix)

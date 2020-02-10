@@ -63,6 +63,8 @@ public:
 	FrgBase_PrptsVrntString* GetTItemName() const { return theTItemName_; }
 	void SetTItemName(FrgBase_PrptsVrntString* variant) { theTItemName_ = variant; }
 
+	void AddRenameOptionInContextMenu();
+
 private:
 
 	void SetTItemName(const QString& name);
@@ -71,6 +73,7 @@ public slots:
 
 	void RenameTItemSlot();
 	void RenameTItemSlot(const QString& name);
+	virtual void TItemDoubleClickedSlot() {}
 };
 
 EndForgBaseLib

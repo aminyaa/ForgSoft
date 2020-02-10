@@ -34,10 +34,6 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	if (parentItem)
 	{
 		parentItem->addChild(this);
-		auto action = theContextMenu_->AddItem("Rename", FrgFalse);
-		//action->setEnabled(FrgFalse);
-
-		QObject::connect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
 	}
 	else
 		if (!parentTree)
@@ -144,4 +140,10 @@ void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString & name)
 
 	if (sender() == theTItemName_)
 		theTItemName_->blockSignals(false);
+}
+
+void ForgBaseLib::FrgBase_TreeItem::AddRenameOptionInContextMenu()
+{
+	auto action = theContextMenu_->AddItem("Rename", FrgFalse);
+	QObject::connect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
 }

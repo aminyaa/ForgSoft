@@ -426,6 +426,12 @@
     <ClCompile Include="ForgLib\Base\Widgets\Menu\Help\FrgBase_MenuHelp.cxx">
       <Filter>ForgLib\Base\Widgets\Menu\Help</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.cxx">
+      <Filter>ForgLib\Base\Widgets\TabWindow\TabBar</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.cxx">
+      <Filter>ForgLib\Base\Widgets\TabWindow\TabWidget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -541,12 +547,6 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Menu\Tools\FrgBase_MenuTools.hxx">
       <Filter>ForgLib\Base\Widgets\Menu\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.hxx">
-      <Filter>ForgLib\Base\Widgets\TabWindow\TabBar</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.hxx">
-      <Filter>ForgLib\Base\Widgets\TabWindow\TabWidget</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Thread\FrgBase_Thread.hxx">
       <Filter>ForgLib\Base\Core\Thread</Filter>
@@ -684,6 +684,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\String\FrgBase_PrptsVrntString.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Variants\String</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\TabWindow\TabBar\FrgBase_TabBar.hxx">
+      <Filter>ForgLib\Base\Widgets\TabWindow\TabBar</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.hxx">
+      <Filter>ForgLib\Base\Widgets\TabWindow\TabWidget</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
