@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C9FD82EE-2529-469D-BF47-12073605AD71}</ProjectGuid>
+    <Keyword>QtVS_v302</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)D</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>msvc2017_64</QtInstall>
+    <QtModules>core;gui;opengl;widgets</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>msvc2017_64</QtInstall>
+    <QtModules>core;gui;opengl;widgets</QtModules>
+  </PropertyGroup>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MSBuildProjectDirectory)\ThirdParties\Tonb\include;$(MSBuildProjectDirectory)\ForgLib\Marine\Global;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\MainWindow;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Tree;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Analysis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FORGMARINE_LIB;WM_DP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OPENCASCADE_INCLUDELIB);$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(BOOST_INCLUDELIB);$(MSBuildProjectDirectory)\ThirdParties\Armadillo\lib_win64;$(MSBuildProjectDirectory)\ThirdParties\MPI\Lib\x64;$(MSBuildProjectDirectory)\ThirdParties\Libraries\zLib\lib;$(MSBuildProjectDirectory)\ThirdParties\Libraries\dlfcn\lib;$(MSBuildProjectDirectory)\ThirdParties\Libraries\pcre\lib;$(MSBuildProjectDirectory)\ThirdParties\Libraries\pthreads\lib;$(MSBuildProjectDirectory)\ThirdParties\Tonb\lib\Debug;%(AdditionalLibraryDirectories);$(SolutionDir)$(Platform)\$(Configuration)\;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlibstatd.lib;dld.lib;libboost_serialization-vc141-mt-gd-x64-1_69.lib;libgmp-10.lib;libmpfr-4.lib;msmpi.lib;msmpifec.lib;msmpifmc.lib;psapi.lib;Qt5Cored.lib;Qt5Widgetsd.lib;TnbBase.lib;TnbCad.lib;TnbCad2d.lib;TnbCadModel.lib;TnbFiniteVolume.lib;TnbGeo.lib;TnbHydrostatic.lib;TnbIO.lib;TnbMarineBase.lib;TnbMeshBase.lib;TnbNumAlg.lib;TKBin.lib;TKBinL.lib;TKBinTObj.lib;TKBinXCAF.lib;TKBO.lib;TKBool.lib;TKBRep.lib;TKCAF.lib;TKCDF.lib;TKD3DHost.lib;TKDCAF.lib;TKDFBrowser.lib;TKDraw.lib;TKernel.lib;TKFeat.lib;TKFillet.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKHLR.lib;TKIGES.lib;TKIVtk.lib;TKIVtkDraw.lib;TKLCAF.lib;TKMath.lib;TKMesh.lib;TKMeshVS.lib;TKOffset.lib;TKOpenGl.lib;TKPrim.lib;TKQADraw.lib;TKService.lib;TKShapeView.lib;TKShHealing.lib;TKStd.lib;TKStdL.lib;TKSTEP.lib;TKSTEP209.lib;TKSTEPAttr.lib;TKSTEPBase.lib;TKSTL.lib;TKTInspector.lib;TKTInspectorAPI.lib;TKTObj.lib;TKTObjDRAW.lib;TKToolsDraw.lib;TKTopAlgo.lib;TKTopTest.lib;TKTreeModel.lib;TKV3d.lib;TKVCAF.lib;TKView.lib;TKViewerTest.lib;TKVInspector.lib;TKVRML.lib;TKXCAF.lib;TKXDEDRAW.lib;TKXDEIGES.lib;TKXDESTEP.lib;TKXMesh.lib;TKXml.lib;TKXmlL.lib;TKXmlTObj.lib;TKXmlXCAF.lib;TKXSBase.lib;TKXSDRAW.lib;tbb.lib;tbb_debug.lib;tbb_preview.lib;tbb_preview_debug.lib;tbbmalloc.lib;tbbmalloc_debug.lib;tbbmalloc_debug_s.lib;tbbmalloc_proxy.lib;tbbmalloc_proxy_debug.lib;tbbmalloc_s.lib;tbbproxy.lib;tbbproxy_debug.lib;lapack_win64_MT.lib;blas_win64_MT.lib;ForgBaseD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MSBuildProjectDirectory)\ThirdParties\Tonb\include;$(MSBuildProjectDirectory)\ForgLib\Marine\Global;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\MainWindow;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Tree;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Analysis;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FORGMARINE_LIB;WM_DP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OPENCASCADE_INCLUDELIB);$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(BOOST_INCLUDELIB);$(MSBuildProjectDirectory)\ThirdParties\Armadillo\lib_win64;$(MSBuildProjectDirectory)\ThirdParties\MPI\Lib\x64;$(MSBuildProjectDirectory)\ThirdParties\Libraries\zLib\lib;$(MSBuildProjectDirectory)\ThirdParties\Libraries\dlfcn\lib;$(MSBuildProjectDirectory)\ThirdParties\Libraries\pcre\lib;$(MSBuildProjectDirectory)\ThirdParties\Libraries\pthreads\lib;$(MSBuildProjectDirectory)\ForgMarine\ThirdParties\Tonb\lib\Release;%(AdditionalLibraryDirectories);$(SolutionDir)$(Platform)\$(Configuration)\;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlibstatd.lib;dld.lib;libboost_serialization-vc141-mt-gd-x64-1_69.lib;libgmp-10.lib;libmpfr-4.lib;msmpi.lib;msmpifec.lib;msmpifmc.lib;psapi.lib;Qt5Cored.lib;Qt5Widgetsd.lib;TnbBase.lib;TnbCad.lib;TnbCad2d.lib;TnbCadModel.lib;TnbFiniteVolume.lib;TnbGeo.lib;TnbHydrostatic.lib;TnbIO.lib;TnbMarineBase.lib;TnbMeshBase.lib;TnbNumAlg.lib;TKBin.lib;TKBinL.lib;TKBinTObj.lib;TKBinXCAF.lib;TKBO.lib;TKBool.lib;TKBRep.lib;TKCAF.lib;TKCDF.lib;TKD3DHost.lib;TKDCAF.lib;TKDFBrowser.lib;TKDraw.lib;TKernel.lib;TKFeat.lib;TKFillet.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKHLR.lib;TKIGES.lib;TKIVtk.lib;TKIVtkDraw.lib;TKLCAF.lib;TKMath.lib;TKMesh.lib;TKMeshVS.lib;TKOffset.lib;TKOpenGl.lib;TKPrim.lib;TKQADraw.lib;TKService.lib;TKShapeView.lib;TKShHealing.lib;TKStd.lib;TKStdL.lib;TKSTEP.lib;TKSTEP209.lib;TKSTEPAttr.lib;TKSTEPBase.lib;TKSTL.lib;TKTInspector.lib;TKTInspectorAPI.lib;TKTObj.lib;TKTObjDRAW.lib;TKToolsDraw.lib;TKTopAlgo.lib;TKTopTest.lib;TKTreeModel.lib;TKV3d.lib;TKVCAF.lib;TKView.lib;TKViewerTest.lib;TKVInspector.lib;TKVRML.lib;TKXCAF.lib;TKXDEDRAW.lib;TKXDEIGES.lib;TKXDESTEP.lib;TKXMesh.lib;TKXml.lib;TKXmlL.lib;TKXmlTObj.lib;TKXmlXCAF.lib;TKXSBase.lib;TKXSDRAW.lib;tbb.lib;tbb_debug.lib;tbb_preview.lib;tbb_preview_debug.lib;tbbmalloc.lib;tbbmalloc_debug.lib;tbbmalloc_debug_s.lib;tbbmalloc_proxy.lib;tbbmalloc_proxy_debug.lib;tbbmalloc_s.lib;tbbproxy.lib;tbbproxy_debug.lib;lapack_win64_MT.lib;blas_win64_MT.lib;ForgBase.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <QtRcc Include="ForgMarine.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ForgLib\Marine\Widgets\MainWindow\FrgMarine_MainWindow.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\FrgMarine_TItem_Geom.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\FrgMarine_TItemGeom_ParMdls.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\FrgMarine_TItemGeomParMdlsShip_01.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions\FrgMarine_Ship01Params_Dimensions.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\FrgMarine_Ship01_Params.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\FrgMarine_Ship01Params_Hull.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section\FrgMarine_Ship01ParamsHull_Section.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel\FrgMarine_Ship01Params_Keel.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem\FrgMarine_Ship01Params_Stem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom\FrgMarine_Ship01Params_Transom.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\FrgMarine_TItemGeomParMdls_Ship.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Tree\FrgMarine_Tree.cxx" />
+    <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global.hxx" />
+    <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global_Build.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\FrgMarine_TItem_Geom.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\FrgMarine_Ship01_Params.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem\FrgMarine_Ship01Params_Stem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom\FrgMarine_Ship01Params_Transom.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel\FrgMarine_Ship01Params_Keel.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\FrgMarine_Ship01Params_Hull.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section\FrgMarine_Ship01ParamsHull_Section.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions\FrgMarine_Ship01Params_Dimensions.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\FrgMarine_TItemGeomParMdlsShip_01.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\FrgMarine_TItemGeomParMdls_Ship.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\FrgMarine_TItemGeom_ParMdls.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\MainWindow\FrgMarine_MainWindow.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Tree\FrgMarine_Tree.hxx" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
