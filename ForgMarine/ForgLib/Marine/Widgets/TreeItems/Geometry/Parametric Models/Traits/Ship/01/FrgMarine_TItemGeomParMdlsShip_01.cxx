@@ -13,7 +13,13 @@ ForgMarineLib::FrgMarine_TItemGeomParMdlsShip_01::FrgMarine_TItemGeomParMdlsShip
 	: FrgMarine_TItemGeomParMdls_Ship(itemTitle, parentItem, parentTree)
 {
 	theModel_ = std::make_shared<tnbLib::LegModel_DispNo1>();
-	theModel_->Parameters().Draft() = std::make_shared<tnbLib::LegModel_ConstParameter>(1110, "Draft", 1.0);
+	auto shipModel = std::dynamic_pointer_cast<tnbLib::LegModel_DispNo1>(theModel_);
 
-	theParameters_ = new FrgMarine_Ship01_Params("Parameters", this, parentTree, theModel_);
+	//shipModel->Parameters().Draft() = std::make_shared<tnbLib::LegModel_ConstParameter>(1110, "Draft", 1.0);
+
+	theParameters_ = new FrgMarine_Ship01_Params("Parameters", this, parentTree, shipModel);
+
+	connect(theParameters_, SIGNAL(ModelPerformedToPreviewSignal()), this, SIGNAL(ModelPerformedToPreviewSignal()));
+
+	shipModel->PerformToPreview();
 }

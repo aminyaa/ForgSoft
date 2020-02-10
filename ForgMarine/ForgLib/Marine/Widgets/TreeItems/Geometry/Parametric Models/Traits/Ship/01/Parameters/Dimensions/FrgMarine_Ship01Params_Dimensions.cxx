@@ -2,6 +2,7 @@
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgMarine_Ship01_Params.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
@@ -10,19 +11,21 @@ ForgMarineLib::FrgMarine_Ship01Params_Dimensions::FrgMarine_Ship01Params_Dimensi
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
-	std::shared_ptr<tnbLib::LegModel_DispNo1> model
+	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
+	FrgMarine_Ship01_Params* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
+	, theParametersTItem_(parametersTItem)
 {
 	this->setIcon(0, QIcon(ICONTreeItemPSubIcon));
 
-	double minValue = 0.1, maxValue = 100.0, stepValue = 0.05;
+	double minValue = 0.1, maxValue = 500.0, stepValue = 0.5;
 	const char* suffixDimensioned = "[m]";
 	const char* suffixNonDimensioned = "[-]";
 
-	theDraft_ = new ForgBaseLib::FrgBase_PrptsVrntDouble
-	("Draft", theModel_->Parameters().Draft()->Value(), minValue, maxValue, stepValue, "", suffixDimensioned);
+	/*theDraft_ = new ForgBaseLib::FrgBase_PrptsVrntDouble
+	("Draft", theModel_->Parameters().Draft()->Value(), minValue, maxValue, stepValue, "", suffixDimensioned);*/
 	
 	theTransomHeight_ = new ForgBaseLib::FrgBase_PrptsVrntDouble
 	("Transom Height", theModel_->Parameters().TransomHeight()->Value(), minValue, maxValue, stepValue, "", suffixDimensioned);
@@ -45,7 +48,7 @@ ForgMarineLib::FrgMarine_Ship01Params_Dimensions::FrgMarine_Ship01Params_Dimensi
 	theNbNetColumns_ = new ForgBaseLib::FrgBase_PrptsVrntInt
 	("Number of Net Columns", theModel_->Parameters().NbNetColumns(), 5, 90, 1, "", suffixNonDimensioned);
 
-	connect(theDraft_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(DraftValueChangedSlot()));
+	//connect(theDraft_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(DraftValueChangedSlot()));
 	connect(theTransomHeight_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(TransomHeightValueChangedSlot()));
 	connect(theDepthAtBow_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(DepthAtBowValueChangedSlot()));
 	connect(theDepthAtTransom_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(DepthAtTransomValueChangedSlot()));
@@ -57,55 +60,78 @@ ForgMarineLib::FrgMarine_Ship01Params_Dimensions::FrgMarine_Ship01Params_Dimensi
 	thePropertiesPanel_ = new ForgBaseLib::FrgBase_PropertiesPanel(GetParentMainWindow(), dynamic_cast<QObject*>(this));
 }
 
-void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::DraftValueChangedSlot()
-{
-	theModel_->Parameters().Draft()->Value() = theDraft_->GetValue();
-	PerformToPreview();
-}
+//void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::DraftValueChangedSlot()
+//{
+//	theModel_->Parameters().Draft()->Value() = theDraft_->GetValue();
+//	PerformToPreview();
+//}
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::TransomHeightValueChangedSlot()
 {
-	theModel_->Parameters().TransomHeight()->Value() = theTransomHeight_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().TransomHeight()->Value() != theTransomHeight_->GetValue())
+	{
+		theModel_->Parameters().TransomHeight()->Value() = theTransomHeight_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::DepthAtBowValueChangedSlot()
 {
-	theModel_->Parameters().DepthAtBow()->Value() = theDepthAtBow_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().DepthAtBow()->Value() != theDepthAtBow_->GetValue())
+	{
+		theModel_->Parameters().DepthAtBow()->Value() = theDepthAtBow_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::DepthAtTransomValueChangedSlot()
 {
-	theModel_->Parameters().DepthAtTransom()->Value() = theDepthAtTransom_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().DepthAtTransom()->Value() != theDepthAtTransom_->GetValue())
+	{
+		theModel_->Parameters().DepthAtTransom()->Value() = theDepthAtTransom_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::BeamOnDeckValueChangedSlot()
 {
-	theModel_->Parameters().BeamOnDeck()->Value() = theBeamOnDeck_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().BeamOnDeck()->Value() != theBeamOnDeck_->GetValue())
+	{
+		theModel_->Parameters().BeamOnDeck()->Value() = theBeamOnDeck_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::LengthOnDeckValueChangedSlot()
 {
-	theModel_->Parameters().LengthOnDeck()->Value() = theLengthOnDeck_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().LengthOnDeck()->Value() != theLengthOnDeck_->GetValue())
+	{
+		theModel_->Parameters().LengthOnDeck()->Value() = theLengthOnDeck_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::NbNetRowsValueChangedSlot()
 {
-	theModel_->Parameters().NbNetRows() = theNbNetRows_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().NbNetRows() != theNbNetRows_->GetValue())
+	{
+		theModel_->Parameters().NbNetRows() = theNbNetRows_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::NbNetColumnsValueChangedSlot()
 {
-	theModel_->Parameters().NbNetColumns() = theNbNetColumns_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().NbNetColumns() != theNbNetColumns_->GetValue())
+	{
+		theModel_->Parameters().NbNetColumns() = theNbNetColumns_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::PerformToPreview()
 {
 	theModel_->PerformToPreview();
+
+	emit theParametersTItem_->ModelPerformedToPreviewSignal();
 }

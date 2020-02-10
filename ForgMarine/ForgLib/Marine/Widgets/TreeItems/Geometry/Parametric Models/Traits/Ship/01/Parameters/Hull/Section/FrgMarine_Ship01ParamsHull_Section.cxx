@@ -2,6 +2,7 @@
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgMarine_Ship01_Params.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
@@ -11,11 +12,13 @@ ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::FrgMarine_Ship01ParamsHull_Se
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-	tnbLib::LegModel_DispNo1_SectionParamsBase* modelSection
+	tnbLib::LegModel_DispNo1_SectionParamsBase* modelSection,
+	FrgMarine_Ship01_Params* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
 	, theModelSection_(modelSection)
+	, theParametersTItem_(parametersTItem)
 {
 	this->setIcon(0, QIcon(ICONTreeItemPSubIcon));
 
@@ -44,29 +47,43 @@ ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::FrgMarine_Ship01ParamsHull_Se
 
 void ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::TightnessValueChangedSlot()
 {
-	theModelSection_->Tightness()->Value() = theTightness_->GetValue();
-	PerformToPreview();
+	if (theModelSection_->Tightness()->Value() != theTightness_->GetValue())
+	{
+		theModelSection_->Tightness()->Value() = theTightness_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::DeadriseValueChangedSlot()
 {
-	theModelSection_->Deadrise()->Value() = theDeadrise_->GetValue();
-	PerformToPreview();
+	if (theModelSection_->Deadrise()->Value() != theDeadrise_->GetValue())
+	{
+		theModelSection_->Deadrise()->Value() = theDeadrise_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::SideSlopeValueChangedSlot()
 {
-	theModelSection_->SideSlope()->Value() = theSideSlope_->GetValue();
-	PerformToPreview();
+	if (theModelSection_->SideSlope()->Value() != theSideSlope_->GetValue())
+	{
+		theModelSection_->SideSlope()->Value() = theSideSlope_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::FlareValueChangedSlot()
 {
-	theModelSection_->Flare()->Value() = theFlare_->GetValue();
-	PerformToPreview();
+	if (theModelSection_->Flare()->Value() != theFlare_->GetValue())
+	{
+		theModelSection_->Flare()->Value() = theFlare_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01ParamsHull_Section::PerformToPreview()
 {
 	theModel_->PerformToPreview();
+
+	emit theParametersTItem_->ModelPerformedToPreviewSignal();
 }

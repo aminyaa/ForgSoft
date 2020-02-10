@@ -2,6 +2,7 @@
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgMarine_Ship01_Params.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
@@ -10,10 +11,12 @@ ForgMarineLib::FrgMarine_Ship01Params_Keel::FrgMarine_Ship01Params_Keel
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
-	std::shared_ptr<tnbLib::LegModel_DispNo1> model
+	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
+	FrgMarine_Ship01_Params* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
+	, theParametersTItem_(parametersTItem)
 {
 	this->setIcon(0, QIcon(ICONTreeItemPSubIcon));
 
@@ -42,28 +45,42 @@ ForgMarineLib::FrgMarine_Ship01Params_Keel::FrgMarine_Ship01Params_Keel
 
 void ForgMarineLib::FrgMarine_Ship01Params_Keel::PositionValueChangedSlot()
 {
-	theModel_->Parameters().Position()->Value() = thePosition_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().Position()->Value() != thePosition_->GetValue())
+	{
+		theModel_->Parameters().Position()->Value() = thePosition_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Keel::RisePointValueChangedSlot()
 {
-	theModel_->Parameters().RisePoint()->Value() = theRisePoint_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().RisePoint()->Value() != theRisePoint_->GetValue())
+	{
+		theModel_->Parameters().RisePoint()->Value() = theRisePoint_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Keel::RiseSlopeValueChangedSlot()
 {
-	theModel_->Parameters().RiseSlope()->Value() = theRiseSlope_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().RiseSlope()->Value() != theRiseSlope_->GetValue())
+	{
+		theModel_->Parameters().RiseSlope()->Value() = theRiseSlope_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Keel::TransomSlopeValueChangedSlot()
 {
-	theModel_->Parameters().TransomSlope()->Value() = theTransomSlope_->GetValue();
-	PerformToPreview();
+	if (theModel_->Parameters().TransomSlope()->Value() != theTransomSlope_->GetValue())
+	{
+		theModel_->Parameters().TransomSlope()->Value() = theTransomSlope_->GetValue();
+		PerformToPreview();
+	}
 }
 void ForgMarineLib::FrgMarine_Ship01Params_Keel::PerformToPreview()
 {
 	theModel_->PerformToPreview();
+
+	emit theParametersTItem_->ModelPerformedToPreviewSignal();
 }

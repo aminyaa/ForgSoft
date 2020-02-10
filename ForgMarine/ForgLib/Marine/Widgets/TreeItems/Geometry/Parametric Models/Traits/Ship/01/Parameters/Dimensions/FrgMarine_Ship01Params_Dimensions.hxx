@@ -14,12 +14,14 @@ namespace tnbLib
 
 BeginForgMarineLib
 
+class FrgMarine_Ship01_Params;
+
 class FORGMARINE_EXPORT FrgMarine_Ship01Params_Dimensions
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
 
-		Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* Draft READ GetDraft WRITE SetDraft)
+		//Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* Draft READ GetDraft WRITE SetDraft)
 		Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* TransomHeight READ GetTransomHeight WRITE SetTransomHeight)
 		Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* DepthAtBow READ GetDepthAtBow WRITE SetDepthAtBow)
 		Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* DepthAtTransom READ GetDepthAtTransom WRITE SetDepthAtTransom)
@@ -35,11 +37,12 @@ public:
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
-		std::shared_ptr<tnbLib::LegModel_DispNo1> model
+		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
+		FrgMarine_Ship01_Params* parametersTItem
 	);
 
-	ForgBaseLib::FrgBase_PrptsVrntDouble* GetDraft() const { return theDraft_; }
-	void SetDraft(ForgBaseLib::FrgBase_PrptsVrntDouble* draft) { theDraft_ = draft; }
+	/*ForgBaseLib::FrgBase_PrptsVrntDouble* GetDraft() const { return theDraft_; }
+	void SetDraft(ForgBaseLib::FrgBase_PrptsVrntDouble* draft) { theDraft_ = draft; }*/
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetTransomHeight() const { return theTransomHeight_; }
 	void SetTransomHeight(ForgBaseLib::FrgBase_PrptsVrntDouble* transomHeight) { theTransomHeight_ = transomHeight; }
@@ -66,7 +69,7 @@ private:
 
 	std::shared_ptr<tnbLib::LegModel_DispNo1> theModel_;
 
-	ForgBaseLib::FrgBase_PrptsVrntDouble* theDraft_ = NullPtr;
+	//ForgBaseLib::FrgBase_PrptsVrntDouble* theDraft_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theTransomHeight_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theDepthAtBow_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theDepthAtTransom_ = NullPtr;
@@ -76,9 +79,11 @@ private:
 	ForgBaseLib::FrgBase_PrptsVrntInt* theNbNetRows_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntInt* theNbNetColumns_ = NullPtr;
 
+	FrgMarine_Ship01_Params* theParametersTItem_ = NullPtr;
+
 private slots:
 
-	void DraftValueChangedSlot();
+	//void DraftValueChangedSlot();
 	void TransomHeightValueChangedSlot();
 	void DepthAtBowValueChangedSlot();
 	void DepthAtTransomValueChangedSlot();

@@ -7,7 +7,7 @@ ForgMarineLib::FrgMarine_TItemGeomParMdls_Ship::FrgMarine_TItemGeomParMdls_Ship
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree
 )
-	: FrgMarine_TItemGeom_ParMdls(itemTitle, parentItem, parentTree)
+	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
 	this->setIcon(0, QIcon(ICON_Menu_Models_Ship));
 }

@@ -2,6 +2,7 @@
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgMarine_Ship01_Params.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
@@ -10,10 +11,12 @@ ForgMarineLib::FrgMarine_Ship01Params_Transom::FrgMarine_Ship01Params_Transom
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
-	std::shared_ptr<tnbLib::LegModel_DispNo1> model
+	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
+	FrgMarine_Ship01_Params* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
+	, theParametersTItem_(parametersTItem)
 {
 	this->setIcon(0, QIcon(ICONTreeItemPSubIcon));
 
@@ -35,15 +38,25 @@ ForgMarineLib::FrgMarine_Ship01Params_Transom::FrgMarine_Ship01Params_Transom
 
 void ForgMarineLib::FrgMarine_Ship01Params_Transom::RakeValueChangedSlot()
 {
-	theModel_->Parameters().Rake()->Value() = theRake_->GetValue();
+	if (theModel_->Parameters().Rake()->Value() != theRake_->GetValue())
+	{
+		theModel_->Parameters().Rake()->Value() = theRake_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Transom::WidthValueChangedSlot()
 {
-	theModel_->Parameters().Width()->Value() = theWidth_->GetValue();
+	if (theModel_->Parameters().Width()->Value() != theWidth_->GetValue())
+	{
+		theModel_->Parameters().Width()->Value() = theWidth_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Transom::PerformToPreview()
 {
 	theModel_->PerformToPreview();
+
+	emit theParametersTItem_->ModelPerformedToPreviewSignal();
 }

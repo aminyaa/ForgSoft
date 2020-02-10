@@ -19,9 +19,9 @@ ForgMarineLib::FrgMarine_Ship01_Params::FrgMarine_Ship01_Params
 {
 	this->setIcon(0, QIcon(ICONTreeItemPIcon));
 
-	theDimension_ = new FrgMarine_Ship01Params_Dimensions("Dimensions", this, parentTree, model);
-	theHull_ = new FrgMarine_Ship01Params_Hull("Hull", this, parentTree, model);
-	theKeel_ = new FrgMarine_Ship01Params_Keel("Keel", this, parentTree, model);
-	theStem_ = new FrgMarine_Ship01Params_Stem("Stem", this, parentTree, model);
-	theTransom_ = new FrgMarine_Ship01Params_Transom("Transom", this, parentTree, model);
+	theDimension_ = new FrgMarine_Ship01Params_Dimensions("Dimensions", this, parentTree, model, this);
+	theHull_ = new FrgMarine_Ship01Params_Hull("Hull", this, parentTree, model, this);
+	theKeel_ = new FrgMarine_Ship01Params_Keel("Keel", this, parentTree, model, this);
+	theStem_ = new FrgMarine_Ship01Params_Stem("Stem", this, parentTree, model, this);
+	theTransom_ = new FrgMarine_Ship01Params_Transom("Transom", this, parentTree, model, this);
 }

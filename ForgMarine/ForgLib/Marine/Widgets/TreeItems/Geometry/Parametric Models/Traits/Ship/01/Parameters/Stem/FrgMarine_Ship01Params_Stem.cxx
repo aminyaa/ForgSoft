@@ -2,6 +2,7 @@
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgMarine_Ship01_Params.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
@@ -10,10 +11,12 @@ ForgMarineLib::FrgMarine_Ship01Params_Stem::FrgMarine_Ship01Params_Stem
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
-	std::shared_ptr<tnbLib::LegModel_DispNo1> model
+	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
+	FrgMarine_Ship01_Params* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel(model)
+	, theParametersTItem_(parametersTItem)
 {
 	this->setIcon(0, QIcon(ICONTreeItemPSubIcon));
 
@@ -39,23 +42,34 @@ ForgMarineLib::FrgMarine_Ship01Params_Stem::FrgMarine_Ship01Params_Stem
 
 void ForgMarineLib::FrgMarine_Ship01Params_Stem::BowRoundingValueChangedSlot()
 {
-	theModel->Parameters().BowRounding()->Value() = theBowRounding_->GetValue();
-	PerformToPreview();
+	if (theModel->Parameters().BowRounding()->Value() != theBowRounding_->GetValue())
+	{
+		theModel->Parameters().BowRounding()->Value() = theBowRounding_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Stem::StemRakeValueChangedSlot()
 {
-	theModel->Parameters().StemRake()->Value() = theStemRake_->GetValue();
-	PerformToPreview();
+	if (theModel->Parameters().StemRake()->Value() != theStemRake_->GetValue())
+	{
+		theModel->Parameters().StemRake()->Value() = theStemRake_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Stem::ForeFootShapeValueChangedSlot()
 {
-	theModel->Parameters().ForeFootShape()->Value() = theForeFootShape_->GetValue();
-	PerformToPreview();
+	if (theModel->Parameters().ForeFootShape()->Value() != theForeFootShape_->GetValue())
+	{
+		theModel->Parameters().ForeFootShape()->Value() = theForeFootShape_->GetValue();
+		PerformToPreview();
+	}
 }
 
 void ForgMarineLib::FrgMarine_Ship01Params_Stem::PerformToPreview()
 {
 	theModel->PerformToPreview();
+
+	emit theParametersTItem_->ModelPerformedToPreviewSignal();
 }

@@ -3,6 +3,10 @@
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgMarine_Tree.hxx>
+#include <FrgMarine_TItemGeomParMdls_Preview.hxx>
+
+#include <CadModel_Entity.hxx>
+#include <LegModel_DispNo1.hxx>
 
 ForgMarineLib::FrgMarine_TItemGeom_ParMdls::FrgMarine_TItemGeom_ParMdls
 (
@@ -38,7 +42,12 @@ ForgMarineLib::FrgMarine_TItemGeom_ParMdls::FrgMarine_TItemGeom_ParMdls
 void ForgMarineLib::FrgMarine_TItemGeom_ParMdls::Ship01CreateSlot()
 {
 	auto shipItem = new FrgMarine_TItemGeomParMdlsShip_01("", this, GetParentTree());
+	shipItem->AddRenameOptionInContextMenu();
 	shipItem->RenameTItemSlot("Ship Type 01");
 
 	GetParentTree()->ScrollToItem(shipItem);
+
+	auto previewItem = new FrgMarine_TItemGeomParMdls_Preview("Preview", shipItem, GetParentTree(), shipItem->GetModel());
+
+	connect(shipItem, SIGNAL(ModelPerformedToPreviewSignal()), previewItem, SLOT(UpdatePreviewSlot()));
 }
