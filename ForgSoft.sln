@@ -12,10 +12,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgSoft", "ForgSoft\ForgSo
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgVisual", "ForgVisual\ForgVisual.vcxproj", "{09FAA12B-7698-41FE-85C6-4FDBD685C868}"
+	ProjectSection(ProjectDependencies) = postProject
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE} = {81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgMarine", "ForgMarine\ForgMarine.vcxproj", "{C9FD82EE-2529-469D-BF47-12073605AD71}"
 	ProjectSection(ProjectDependencies) = postProject
 		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE} = {81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}
+		{09FAA12B-7698-41FE-85C6-4FDBD685C868} = {09FAA12B-7698-41FE-85C6-4FDBD685C868}
 	EndProjectSection
 EndProject
 Global

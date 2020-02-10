@@ -1,17 +1,17 @@
 //#include <ForgGlobals.hxx>
 //#include <ForgGuiMainWindow.hxx>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QDockWidget>
+//#include <QtWidgets/QMainWindow>
+//#include <QtWidgets/QDockWidget>
 //#include <QtWidgets/QTreeWidgetItem>
 //#include <NihadMainWindow.hxx>
 //#include <CustomWindow.hxx>
 //#include <Console.hxx>
-#include <ProgressWidget.hxx>
+//#include <ProgressWidget.hxx>
 
-#include <FrgBase_PropertiesPanel.hxx>
-#include <FrgBase_PrptsWdgInt.hxx>
-#include <FrgBase_MainWindow.hxx>
+//#include <FrgBase_PropertiesPanel.hxx>
+//#include <FrgBase_PrptsWdgInt.hxx>
+//#include <FrgBase_MainWindow.hxx>
 
 #include <FrgMarine_MainWindow.hxx>
 
@@ -19,6 +19,7 @@
 int main(int argc, char** argv)
 {
 	QApplication app(argc, argv);
+	QApplication::processEvents();
 	//ForgBaseLib::NihadMainWindow* w = FrgNew ForgBaseLib::NihadMainWindow();
 
 	/*pqProgressWidget* progress = new pqProgressWidget(w);
@@ -58,14 +59,15 @@ int main(int argc, char** argv)
 
 	//ForgBaseLib::FrgBase_MainWindow* mainWindow = new ForgBaseLib::FrgBase_MainWindow;
 
-	ForgMarineLib::FrgMarine_MainWindow* mainWindow = new ForgMarineLib::FrgMarine_MainWindow;
+	std::shared_ptr<ForgMarineLib::FrgMarine_MainWindow> mainWindow = std::make_shared<ForgMarineLib::FrgMarine_MainWindow>();
+	//ForgMarineLib::FrgMarine_MainWindow* mainWindow = new ForgMarineLib::FrgMarine_MainWindow;
 
 	mainWindow->show();
 
 	//ForgBaseLib::CustomWindow ww;
 	//ww.show();
 
-	app.exec();
+	return app.exec();
 }
 
 //#include <QtWidgets/QtWidgets>
