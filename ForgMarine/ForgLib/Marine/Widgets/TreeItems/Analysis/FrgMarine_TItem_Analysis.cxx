@@ -1,5 +1,6 @@
 #include <FrgMarine_TItem_Analysis.hxx>
 #include <FrgBase_Menu.hxx>
+#include <FrgMarine_TItemAnlys_Hydrostatics.hxx>
 
 ForgMarineLib::FrgMarine_TItem_Analysis::FrgMarine_TItem_Analysis
 (
@@ -14,4 +15,12 @@ ForgMarineLib::FrgMarine_TItem_Analysis::FrgMarine_TItem_Analysis
 	auto newHydrostaticsAction = newAnalyseMenu->AddItem("Hydrostatics", false);
 
 	theContextMenu_->addMenu(newAnalyseMenu);
+
+	connect(newHydrostaticsAction, SIGNAL(triggered()), this, SLOT(NewHydrostaticsClickedSlot()));
+}
+
+void ForgMarineLib::FrgMarine_TItem_Analysis::NewHydrostaticsClickedSlot()
+{
+	auto hydroItem = new FrgMarine_TItemAnlys_Hydrostatics("", this, GetParentTree());
+	hydroItem->RenameTItemSlot("Hydrostatics 01");
 }

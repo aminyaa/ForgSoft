@@ -8,6 +8,7 @@
 BeginForgMarineLib
 
 class FrgMarine_TItemGeom_ParMdls;
+class FrgMarine_TItemGeom_Parts;
 
 class FORGMARINE_EXPORT FrgMarine_TItem_Geom
 	: public ForgBaseLib::FrgBase_TreeItem
@@ -26,6 +27,7 @@ public:
 private:
 
 	FrgMarine_TItemGeom_ParMdls* theParametricModels_ = NullPtr;
+	FrgMarine_TItemGeom_Parts* theParts_ = NullPtr;
 };
 
 EndForgMarineLib

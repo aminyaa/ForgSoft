@@ -20,6 +20,10 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
+
+private slots:
+
+	void NewHydrostaticsClickedSlot();
 };
 
 EndForgMarineLib

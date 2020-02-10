@@ -14,6 +14,8 @@ namespace tnbLib
 
 BeginForgMarineLib
 
+class FrgMarine_Ship01_Params;
+
 class FORGMARINE_EXPORT FrgMarine_Ship01ParamsHull_Section
 	: public ForgBaseLib::FrgBase_TreeItem
 {
@@ -32,7 +34,8 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-		tnbLib::LegModel_DispNo1_SectionParamsBase* modelSection
+		tnbLib::LegModel_DispNo1_SectionParamsBase* modelSection,
+		FrgMarine_Ship01_Params* parametersTItem
 	);
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetTightness() const { return theTightness_; }
@@ -56,6 +59,8 @@ private:
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theDeadrise_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theSideSlope_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theFlare_ = NullPtr;
+
+	FrgMarine_Ship01_Params* theParametersTItem_ = NullPtr;
 
 private slots:
 

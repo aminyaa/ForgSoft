@@ -1,31 +1,27 @@
 #pragma once
-#ifndef _FrgMarine_TItem_Analysis_Header
-#define _FrgMarine_TItem_Analysis_Header
+#ifndef _FrgMarine_TItemAnlys_Hydrostatics_Header
+#define _FrgMarine_TItemAnlys_Hydrostatics_Header
 
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
 BeginForgMarineLib
 
-class FORGMARINE_EXPORT FrgMarine_TItem_Analysis
+class FORGMARINE_EXPORT FrgMarine_TItemAnlys_Hydrostatics
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
 
 public:
 
-	FrgMarine_TItem_Analysis
+	FrgMarine_TItemAnlys_Hydrostatics
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
-
-private slots:
-
-	void NewHydrostaticsClickedSlot();
 };
 
 EndForgMarineLib
 
-#endif // !_FrgMarine_TItem_Analysis_Header
+#endif // !_FrgMarine_TItemAnlys_Hydrostatics_Header

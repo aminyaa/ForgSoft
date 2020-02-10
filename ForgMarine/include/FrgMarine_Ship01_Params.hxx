@@ -33,6 +33,10 @@ public:
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model
 	);
 
+Q_SIGNALS:
+
+	void ModelPerformedToPreviewSignal();
+
 private:
 
 	std::shared_ptr<tnbLib::LegModel_DispNo1> theModel;

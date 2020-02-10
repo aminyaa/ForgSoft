@@ -13,6 +13,8 @@ namespace tnbLib
 
 BeginForgMarineLib
 
+class FrgMarine_Ship01_Params;
+
 class FORGMARINE_EXPORT FrgMarine_Ship01Params_Transom
 	: public ForgBaseLib::FrgBase_TreeItem
 {
@@ -28,7 +30,8 @@ public:
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
-		std::shared_ptr<tnbLib::LegModel_DispNo1> model
+		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
+		FrgMarine_Ship01_Params* parametersTItem
 	);
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetRake() const { return theRake_; }
@@ -43,6 +46,8 @@ private:
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theRake_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theWidth_ = NullPtr;
+
+	FrgMarine_Ship01_Params* theParametersTItem_ = NullPtr;
 
 private slots:
 

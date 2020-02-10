@@ -92,6 +92,15 @@
     <Filter Include="ForgLib\Marine\Widgets\TreeItems\Analysis">
       <UniqueIdentifier>{6bc55803-5f93-40ad-8579-9da743386fbd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics">
+      <UniqueIdentifier>{201927cc-c795-41e6-a734-b2518e0dd61d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Scenes">
+      <UniqueIdentifier>{b8b12b32-85cc-4cd4-86bb-fe2e9fe85504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview">
+      <UniqueIdentifier>{3a11c2ac-9770-4bf5-aace-37f011a35b67}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgMarine.qrc">
@@ -144,6 +153,15 @@
     <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.cxx">
       <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics\FrgMarine_TItemAnlys_Hydrostatics.cxx">
+      <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview\FrgMarine_TItemGeomParMdls_Preview.cxx">
+      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts\FrgMarine_TItemGeom_Parts.cxx">
+      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global.hxx">
@@ -195,6 +213,15 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.hxx">
       <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics\FrgMarine_TItemAnlys_Hydrostatics.hxx">
+      <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview\FrgMarine_TItemGeomParMdls_Preview.hxx">
+      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts\FrgMarine_TItemGeom_Parts.hxx">
+      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parts</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

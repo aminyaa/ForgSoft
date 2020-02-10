@@ -5,6 +5,11 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+namespace tnbLib
+{
+	class CadModel_Entity;
+}
+
 BeginForgMarineLib
 
 class FrgMarine_TItemGeomParMdlsShip_01;
