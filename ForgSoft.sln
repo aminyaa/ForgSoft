@@ -1,16 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.902
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgBase", "ForgBase\ForgBase.vcxproj", "{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgSoft", "ForgSoft\ForgSoft.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE} = {81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}
+		{C9FD82EE-2529-469D-BF47-12073605AD71} = {C9FD82EE-2529-469D-BF47-12073605AD71}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgVisual", "ForgVisual\ForgVisual.vcxproj", "{09FAA12B-7698-41FE-85C6-4FDBD685C868}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgMarine", "ForgMarine\ForgMarine.vcxproj", "{C9FD82EE-2529-469D-BF47-12073605AD71}"
+	ProjectSection(ProjectDependencies) = postProject
+		{81F5E528-F15D-4792-8C1B-84C8D6F3A8EE} = {81F5E528-F15D-4792-8C1B-84C8D6F3A8EE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +44,12 @@ Global
 		{09FAA12B-7698-41FE-85C6-4FDBD685C868}.Release|x64.ActiveCfg = Release|x64
 		{09FAA12B-7698-41FE-85C6-4FDBD685C868}.Release|x64.Build.0 = Release|x64
 		{09FAA12B-7698-41FE-85C6-4FDBD685C868}.Release|x86.ActiveCfg = Release|x64
+		{C9FD82EE-2529-469D-BF47-12073605AD71}.Debug|x64.ActiveCfg = Debug|x64
+		{C9FD82EE-2529-469D-BF47-12073605AD71}.Debug|x64.Build.0 = Debug|x64
+		{C9FD82EE-2529-469D-BF47-12073605AD71}.Debug|x86.ActiveCfg = Debug|x64
+		{C9FD82EE-2529-469D-BF47-12073605AD71}.Release|x64.ActiveCfg = Release|x64
+		{C9FD82EE-2529-469D-BF47-12073605AD71}.Release|x64.Build.0 = Release|x64
+		{C9FD82EE-2529-469D-BF47-12073605AD71}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

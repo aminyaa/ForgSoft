@@ -13,22 +13,8 @@
 #include <FrgBase_PrptsWdgInt.hxx>
 #include <FrgBase_MainWindow.hxx>
 
-class A : public QMainWindow 
-{
-	//Q_OBJECT
-	Q_PROPERTY(int age READ getAge WRITE setAge)
+#include <FrgMarine_MainWindow.hxx>
 
-public:
-
-	A(QWidget* parent = nullptr) : QMainWindow(parent) { theAge_ = 26; }
-
-	int getAge() const { return theAge_; }
-	void setAge(int age) { theAge_ = age; }
-
-private:
-
-	int theAge_;
-};
 
 int main(int argc, char** argv)
 {
@@ -70,7 +56,9 @@ int main(int argc, char** argv)
 
 	//w->show();
 
-	ForgBaseLib::FrgBase_MainWindow* mainWindow = new ForgBaseLib::FrgBase_MainWindow;
+	//ForgBaseLib::FrgBase_MainWindow* mainWindow = new ForgBaseLib::FrgBase_MainWindow;
+
+	ForgMarineLib::FrgMarine_MainWindow* mainWindow = new ForgMarineLib::FrgMarine_MainWindow;
 
 	mainWindow->show();
 
