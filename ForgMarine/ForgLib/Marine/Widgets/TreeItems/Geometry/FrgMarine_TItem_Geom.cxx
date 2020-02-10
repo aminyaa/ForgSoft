@@ -1,5 +1,6 @@
 #include <FrgMarine_TItem_Geom.hxx>
 #include <FrgMarine_TItemGeom_ParMdls.hxx>
+#include <FrgMarine_TItemGeom_Parts.hxx>
 
 ForgMarineLib::FrgMarine_TItem_Geom::FrgMarine_TItem_Geom
 (
@@ -10,4 +11,5 @@ ForgMarineLib::FrgMarine_TItem_Geom::FrgMarine_TItem_Geom
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
 	theParametricModels_ = new FrgMarine_TItemGeom_ParMdls("Parametric Models", this, parentTree);
+	theParts_ = new FrgMarine_TItemGeom_Parts("Parts", this, parentTree);
 }
