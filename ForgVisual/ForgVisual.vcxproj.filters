@@ -82,6 +82,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -113,13 +116,16 @@
     <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
       <Filter>ForgLib\Visual\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2DTItem.hxx">
       <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
+      <Filter>ForgLib\Visual\Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClInclude>
   </ItemGroup>

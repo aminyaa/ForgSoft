@@ -1,3 +1,130 @@
+#include <FrgVisual_Scene3D.hxx>
+#include <FrgBase_MainWindow.hxx>
+#include <FrgVisual_Scene_InterStyle3D.hxx>
+
+#include <vtkActor.h>
+#include <vtkProperty.h>
+#include <vtkRenderer.h>
+#include <vtkGenericOpenGLRenderWindow.h>
+#include <vtkAxesActor.h>
+#include <vtkOrientationMarkerWidget.h>
+#include <vtkTextActor.h>
+#include <vtkTextProperty.h>
+#include <vtkCamera.h>
+
+#include <vtkAutoInit.h>
+
+VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
+VTK_MODULE_INIT(vtkRenderingOpenGL2)
+VTK_MODULE_INIT(vtkInteractionStyle)
+VTK_MODULE_INIT(vtkRenderingFreeType)
+
+ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
+(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
+	: QVTKOpenGLNativeWidget(parentMainWindow)
+{
+	Init();
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::Init()
+{
+	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
+	theRenderer_->SetBackground(1.0, 1.0, 1.0);
+	theRenderer_->SetBackground2(0.7, 0.7, 0.7);
+	theRenderer_->SetGradientBackground(true);
+
+	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+
+	theRenderWindow_->AddRenderer(theRenderer_);
+
+	theRenderWindowInteractor_ = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	theRenderWindowInteractor_->SetRenderWindow(theRenderWindow_);
+
+	theInteractorStyle_ = vtkSmartPointer<FrgVisual_Scene_InterStyle3D>::New();
+
+	//theInteractorStyle_->SetParent(this);
+
+	theInteractorStyle_->SetMouseWheelMotionFactor(0.5);
+
+	theRenderWindowInteractor_->SetInteractorStyle(theInteractorStyle_);
+
+	vtkAxesActor* axes = vtkAxesActor::New();
+
+	axes->PickableOff();
+	axes->SetShaftTypeToLine();
+
+	vtkOrientationMarkerWidget* widget = vtkOrientationMarkerWidget::New();
+
+	widget->SetOutlineColor(0.9300, 0.5700, 0.1300);
+	widget->SetOrientationMarker(axes);
+	widget->SetInteractor(theRenderWindowInteractor_);
+	widget->SetViewport(0.0, 0.0, 0.4, 0.4);
+	widget->SetEnabled(1);
+	widget->InteractiveOff();
+
+	// Create a TextActor
+	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
+	theLogoActor_->SetInput("Forg Soft");
+	vtkTextProperty* tprop = theLogoActor_->GetTextProperty();
+	tprop->SetFontFamilyToArial();
+	tprop->ShadowOff();
+
+	tprop->SetLineSpacing(1.0);
+	tprop->SetFontSize(24);
+	//tprop->SetFontFamilyToArial();
+	tprop->BoldOn();
+	tprop->SetFontFile(":/Fonts/swissek.ttf");
+	tprop->ShadowOn();
+	tprop->SetColor(0.91, 0.91, 0.91); // (Black) Color
+
+	theLogoActor_->SetDisplayPosition(20, 20);
+	theRenderer_->AddActor2D(theLogoActor_);
+	//theRenderer_->AddActor(axes);
+
+	theCamera_ = vtkSmartPointer<vtkCamera>::New();
+	theRenderer_->LightFollowCameraOn();
+	theRenderer_->TwoSidedLightingOn();
+
+	RenderScene(true);
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
+{
+	if (resetCamera)
+	{
+		theCamera_->SetPosition(0, 1, 0);
+		theCamera_->SetFocalPoint(0, 0, 0);
+		theCamera_->SetViewUp(0, 0, 1);
+		theCamera_->Azimuth(-180);
+
+		theRenderer_->SetActiveCamera(theCamera_);
+		theRenderer_->ResetCamera();
+		theRenderer_->ResetCameraClippingRange();
+
+		this->SetRenderWindow(theRenderWindow_);
+
+		theRenderWindow_->Render();
+		theRenderWindowInteractor_->Initialize();
+	}
+	else
+		theRenderWindow_->Render();
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::RemoveAllActors()
+{
+	if (theRenderer_)
+	{
+		vtkActorCollection* ac = theRenderer_->GetActors();
+		vtkCollectionSimpleIterator ait;
+		vtkActor* anActor, *aPart;
+		vtkAssemblyPath* path;
+		for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
+		{
+			theRenderer_->RemoveActor(anActor);
+		}
+	}
+}
+
 //#include <FrgVisual_Scene3D.hxx>
 //#include <FrgVisual_Scene_InterStyle3D.hxx>
 //#include <FrgBase_Menu.hxx>
