@@ -3,7 +3,7 @@
 #define _FrgVisual_Scene3D_Header
 
 #include <FrgVisual_Global.hxx>
-#include <QVTKOpenGLNativeWidget.h>
+#include <FrgVisual_Scene.hxx>
 
 class vtkRenderer;
 class vtkGenericOpenGLRenderWindow;
@@ -21,10 +21,8 @@ namespace ForgBaseLib
 
 BeginForgVisualLib
 
-class FrgVisual_Scene_InterStyle3D;
-
 class FORGVISUAL_EXPORT FrgVisual_Scene3D
-	: public QVTKOpenGLNativeWidget
+	: public FrgVisual_Scene
 {
 	//Q_OBJECT
 
@@ -32,23 +30,11 @@ public:
 
 	FrgVisual_Scene3D(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
-	void Init();
-
 	template <typename Triangulation>
 	void AddTriangulations(std::vector<Triangulation> triangulations, bool resetCamera = true);
 	void RenderScene(bool resetCamera = true);
 
-	vtkSmartPointer<vtkRenderer> GetRenderer() { return theRenderer_; }
-	void RemoveAllActors();
-
-private:
-
-	vtkSmartPointer<vtkRenderer> theRenderer_;
-	vtkSmartPointer<vtkGenericOpenGLRenderWindow> theRenderWindow_;
-	vtkSmartPointer<vtkRenderWindowInteractor> theRenderWindowInteractor_;
-	vtkSmartPointer<FrgVisual_Scene_InterStyle3D> theInteractorStyle_;
-	vtkSmartPointer<vtkCamera> theCamera_;
-	vtkSmartPointer<vtkTextActor> theLogoActor_;
+	void Init() override;
 };
 
 EndForgVisualLib

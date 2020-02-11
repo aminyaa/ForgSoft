@@ -19,43 +19,60 @@
 ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMainWindow, QObject* parentObject)
 	: QTableWidget(parentMainWindow)
 	, theParentWidget_(parentMainWindow)
+	, theParentObject_(parentObject)
 {
-	this->setSelectionMode(QAbstractItemView::SingleSelection);
-
 	if (parentObject == nullptr)
 		return;
 
-	const QMetaObject *metaobject = parentObject->metaObject();
+	FormTableData();
+}
+
+void ForgBaseLib::FrgBase_PropertiesPanel::FormTableData()
+{
+	this->setSelectionMode(QAbstractItemView::SingleSelection);
+
+	const QMetaObject *metaobject = theParentObject_->metaObject();
 	int nbRow = metaobject->propertyCount() - metaobject->propertyOffset();
 	int nbColumn = 2;
 
-	//this->setRowCount(nbRow + 1);
-	this->setRowCount(nbRow);
 	this->setColumnCount(nbColumn);
+
+	int I;
+	if (metaobject->indexOfProperty("TItemName") - metaobject->propertyOffset() == 0)
+	{
+		this->setRowCount(nbRow);
+		I = 0;
+	}
+	else
+	{
+		this->setRowCount(nbRow + 1);
+		SetTableData(0, 0, theParentObject_->property("TItemName"));
+		this->cellWidget(0, 1)->setEnabled(false);
+		I = 1;
+	}
+
 	this->setHorizontalHeaderLabels({ "Property", "Value" });
 
-	//SetTableData(0, "Name", 0, parentObject->property("objectName"));
-	//this->cellWidget(0, 1)->setEnabled(false);
-
-	for (int i = 0; i < nbRow; ++i)
+	for (int i = 0; i < nbRow; i++, I++)
 	{
 		QMetaProperty metaproperty = metaobject->property(i + metaobject->propertyOffset());
 		const char* name = metaproperty.name();
-		QVariant value = parentObject->property(name);
+		QVariant value = theParentObject_->property(name);
 
-		//SetTableData(i + 1, name, 0, value);
-		SetTableData(i, name, 0, value);
+		SetTableData(I, 0, value);
 	}
 
 	for (int i = 0; i < this->rowCount(); i++)
 	{
 		for (int j = 0; j < this->columnCount(); j++)
 		{
-			this->item(i, 0)->setFlags(Qt::ItemIsEnabled);
-			this->item(i, 1)->setFlags(Qt::ItemIsEnabled);
+			if (this->item(i, j))
+			{
+				this->item(i, j)->setFlags(Qt::ItemIsEnabled);
 
-			if (i % 2 == 0)
-				this->item(i, j)->setBackgroundColor(QColor(220, 220, 220));
+				if (i % 2 == 0)
+					this->item(i, j)->setBackgroundColor(QColor(240, 240, 240));
+			}
 		}
 
 	}
@@ -69,7 +86,7 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 	this->setHidden(true);
 }
 
-void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * name, int role, const QVariant & value)
+void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, int role, const QVariant & value)
 {
 
 	if (value.canConvert<FrgBase_PrptsVrntDouble*>())
@@ -130,18 +147,6 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, const char * na
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 		myWidget->installEventFilter(this);
-	}
-	else if (value.type() == QVariant::String)
-	{
-		QTableWidgetItem* propertyName = new QTableWidgetItem(name);
-		this->setItem(row, 0, propertyName);
-
-		QTableWidgetItem* item = new QTableWidgetItem;
-		FrgBase_PrptsVrntString* myVariant = new FrgBase_PrptsVrntString("", value.toString().toStdString().c_str());
-		FrgBase_PrptsWdgString* myWidget = new FrgBase_PrptsWdgString(this, myVariant);
-
-		this->setItem(row, 1, item);
-		this->setCellWidget(row, 1, myWidget);
 	}
 	else
 	{

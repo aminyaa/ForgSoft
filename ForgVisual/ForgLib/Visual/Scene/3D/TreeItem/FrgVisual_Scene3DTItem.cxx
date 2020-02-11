@@ -7,7 +7,8 @@ ForgVisualLib::FrgVisual_Scene3DTItem::FrgVisual_Scene3DTItem
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree
 )
-	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
+	: FrgVisual_Scene_TItem(itemTitle, parentItem, parentTree)
 {
 	theScene_ = new FrgVisual_Scene3D(GetParentMainWindow());
+	theScene_->Init();
 }

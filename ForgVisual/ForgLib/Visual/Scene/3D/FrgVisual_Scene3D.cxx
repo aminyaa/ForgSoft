@@ -12,18 +12,11 @@
 #include <vtkTextProperty.h>
 #include <vtkCamera.h>
 
-#include <vtkAutoInit.h>
-
-VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
-VTK_MODULE_INIT(vtkRenderingOpenGL2)
-VTK_MODULE_INIT(vtkInteractionStyle)
-VTK_MODULE_INIT(vtkRenderingFreeType)
-
 ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 (ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
-	: QVTKOpenGLNativeWidget(parentMainWindow)
+	: FrgVisual_Scene(parentMainWindow)
 {
-	Init();
+	
 }
 
 void ForgVisualLib::FrgVisual_Scene3D::Init()
@@ -108,21 +101,6 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
 	}
 	else
 		theRenderWindow_->Render();
-}
-
-void ForgVisualLib::FrgVisual_Scene3D::RemoveAllActors()
-{
-	if (theRenderer_)
-	{
-		vtkActorCollection* ac = theRenderer_->GetActors();
-		vtkCollectionSimpleIterator ait;
-		vtkActor* anActor, *aPart;
-		vtkAssemblyPath* path;
-		for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
-		{
-			theRenderer_->RemoveActor(anActor);
-		}
-	}
 }
 
 //#include <FrgVisual_Scene3D.hxx>

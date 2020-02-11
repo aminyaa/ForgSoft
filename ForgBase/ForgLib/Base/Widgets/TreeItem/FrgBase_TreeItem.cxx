@@ -6,7 +6,6 @@
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Global_Icons.hxx>
 
-#include <QtWidgets/QToolBar>
 #include <QtCore/QMetaProperty>
 
 ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
@@ -19,14 +18,13 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	, theParentTree_(parentTree)
 	, theParentMainWindow_(theParentTree_->GetParentMainWindow())
 {
-	theTItemName_ = new FrgBase_PrptsVrntString("Name", itemTitle);
-
-	this->setText(0, theTItemName_->GetValue());
 	this->setIcon(0, QIcon(ICON_Menu_File_Load));
-	this->setObjectName(itemTitle);
 
-	theContextMenu_ = FrgNew FrgBase_Menu(itemTitle, theParentMainWindow_, FrgTrue);
-	theContextMenu_->GetToolBar()->setHidden(FrgTrue);
+	theTItemName_ = new FrgBase_PrptsVrntString("Name", "");
+	RenameTItemSlot(itemTitle);
+
+	theContextMenu_ = FrgNew FrgBase_Menu(theTItemName_->GetValue(), theParentMainWindow_, FrgTrue);
+	theContextMenu_->SetToolBarHidden(true);
 
 	QObject::connect(this, SIGNAL(TItemNameChanged(const QString&)), theContextMenu_, SLOT(MenuTitleChangedSlot(const QString&)));
 	connect(theTItemName_, SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(RenameTItemSlot(const QString&)));
@@ -45,6 +43,8 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 			parentTree->addTopLevelItem(this);
 
 	//thePropertiesPanel_ = new FrgBase_PropertiesPanel(GetParentMainWindow(), this);
+
+	FormPropertiesPanel();
 
 	/*QObject::connect
 	(
@@ -146,4 +146,29 @@ void ForgBaseLib::FrgBase_TreeItem::AddRenameOptionInContextMenu()
 {
 	auto action = theContextMenu_->AddItem("Rename", FrgFalse);
 	QObject::connect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
+}
+
+void ForgBaseLib::FrgBase_TreeItem::DeleteRenameOptionInContextMenu()
+{
+	auto action = theContextMenu_->GetItem("Rename");
+	
+	if (!action)
+	{
+		std::cout << "cannot delete Rename option in ForgBaseLib::FrgBase_TreeItem::DeleteRenameOptionInContextMenu()\n";
+		return;
+	}
+
+	QObject::disconnect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
+	theContextMenu_->removeAction(action);
+}
+
+void ForgBaseLib::FrgBase_TreeItem::FormPropertiesPanel()
+{
+	if (thePropertiesPanel_)
+	{
+		delete thePropertiesPanel_;
+		thePropertiesPanel_ = NullPtr;
+	}
+
+	thePropertiesPanel_ = new FrgBase_PropertiesPanel(theParentMainWindow_, this);
 }

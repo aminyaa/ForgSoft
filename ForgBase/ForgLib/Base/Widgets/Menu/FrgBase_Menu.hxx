@@ -38,6 +38,8 @@ public:
 
 	QAction* GetItem(const FrgString& itemTitle);
 
+	void SetToolBarHidden(bool condition);
+
 	FrgGetMacro(QToolBar*, ToolBar, theToolBar_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 

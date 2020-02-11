@@ -8,8 +8,8 @@
 BeginForgMarineLib
 
 class FrgMarine_MainWindow;
-class FrgMarine_TItem_Geom;
-class FrgMarine_TItem_Analysis;
+class FrgMarine_Geometry_TItem;
+class FrgMarine_Analyses_TItem;
 
 class FORGMARINE_EXPORT FrgMarine_Tree
 	: public ForgBaseLib::FrgBase_Tree
@@ -24,8 +24,8 @@ public:
 
 private:
 
-	FrgMarine_TItem_Geom* theGeometry_ = NullPtr;
-	FrgMarine_TItem_Analysis* theAnalysis_ = NullPtr;
+	FrgMarine_Geometry_TItem* theGeometry_ = NullPtr;
+	FrgMarine_Analyses_TItem* theAnalysis_ = NullPtr;
 
 };
 

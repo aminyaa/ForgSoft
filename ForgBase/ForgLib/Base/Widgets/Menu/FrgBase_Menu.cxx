@@ -101,3 +101,8 @@ void ForgBaseLib::FrgBase_Menu::MenuTitleChangedSlot(const QString& name)
 	if (theTitleAsAnAction_)
 		theTitleAsAnAction_->setText(name);
 }
+
+void ForgBaseLib::FrgBase_Menu::SetToolBarHidden(bool condition)
+{
+	theToolBar_->setHidden(condition);
+}

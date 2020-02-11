@@ -36,6 +36,8 @@ protected:
 
 	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
 
+	void FormPropertiesPanel();
+
 signals:
 
 	void TItemNameChanged(const QString&);
@@ -64,6 +66,7 @@ public:
 	void SetTItemName(FrgBase_PrptsVrntString* variant) { theTItemName_ = variant; }
 
 	void AddRenameOptionInContextMenu();
+	void DeleteRenameOptionInContextMenu();
 
 private:
 

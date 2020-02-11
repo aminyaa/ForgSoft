@@ -41,65 +41,80 @@
     <Filter Include="ForgLib\Marine\Widgets\MainWindow">
       <UniqueIdentifier>{0ca76bf2-5d69-4361-a3ea-8be5db4d4300}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems">
-      <UniqueIdentifier>{02ec0a9e-cae3-44ea-9994-523ebc214cac}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry">
+      <UniqueIdentifier>{9ac6b6a0-a58e-4be1-b844-8311c8d0b49f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry">
-      <UniqueIdentifier>{b40e3f01-d486-4f3c-8e7d-0591ee17cde2}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models">
+      <UniqueIdentifier>{c69af65a-d3c7-4088-a440-45dd827209aa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models">
-      <UniqueIdentifier>{618030c6-2263-48c9-b9da-a7edbcaa99fc}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parts">
+      <UniqueIdentifier>{b97c101d-28e3-46c4-94cd-9002d3982e3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits">
-      <UniqueIdentifier>{86fffb09-c5cd-4848-a817-55fa3e1de633}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Plots">
+      <UniqueIdentifier>{947c1209-6d2b-40a0-82e1-42fcfd7cadef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship">
-      <UniqueIdentifier>{4ff36ae6-007d-408c-a6a4-f5469c9a576d}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Scenes">
+      <UniqueIdentifier>{3546c8f4-d430-4c54-847a-819d7ac7453b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01">
-      <UniqueIdentifier>{44759143-3b3c-498e-a4ba-eec9bea25a78}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Scenes\Scene">
+      <UniqueIdentifier>{bb37f292-9c36-4b95-b6cb-1d150e22c6cd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters">
-      <UniqueIdentifier>{4c6a4af8-2031-434f-b75a-7fe89821076a}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model">
+      <UniqueIdentifier>{be10ff26-4910-4106-8750-4fd96d02741b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions">
-      <UniqueIdentifier>{9b720e12-f34a-40c3-9260-758733c51d50}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits">
+      <UniqueIdentifier>{c003711d-4e86-4d1e-a23a-f82f7469fa2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull">
-      <UniqueIdentifier>{cff7effd-bed5-42d5-8ffe-c9c6502b34aa}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Duct">
+      <UniqueIdentifier>{9f231d27-e462-480c-9565-a453180699be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem">
-      <UniqueIdentifier>{0a06c55f-a8c5-4841-8ad2-f71706f76e99}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Propeller">
+      <UniqueIdentifier>{0f1d9966-c57e-489e-b54c-df5742999085}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel">
-      <UniqueIdentifier>{84faa342-e07e-4a12-87e0-e30ae50255f7}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship">
+      <UniqueIdentifier>{aca1c717-e4dc-4fd6-bb9d-0da5b904c9d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom">
-      <UniqueIdentifier>{0036d240-63c4-4824-9de5-2c1ee8142c68}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01">
+      <UniqueIdentifier>{0abf1ac1-437f-4edd-acad-1a6a527a583e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section">
-      <UniqueIdentifier>{c737252a-a3cf-4479-b265-4827aa30d827}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters">
+      <UniqueIdentifier>{040372de-3d3d-4171-bee4-666bbe8a5a06}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Propeller">
-      <UniqueIdentifier>{5d3bae09-d181-4dd4-a482-ff5bbb689042}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions">
+      <UniqueIdentifier>{671e72a0-b729-47fd-b077-477c9c6e7138}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Duct">
-      <UniqueIdentifier>{459558dc-717b-4ffe-b3c5-e5c8cb15e0c6}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull">
+      <UniqueIdentifier>{4906ce52-8980-4ba1-9a47-ebe7a65fae89}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts">
-      <UniqueIdentifier>{20ed8469-b4c0-4ac2-b643-c1c74d5fbcad}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section">
+      <UniqueIdentifier>{f14cc77d-f3ab-4ec7-bbe4-6efee3fbc345}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Analysis">
-      <UniqueIdentifier>{6bc55803-5f93-40ad-8579-9da743386fbd}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel">
+      <UniqueIdentifier>{2c61bb89-2cf5-4c80-94ef-b045ac953bed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics">
-      <UniqueIdentifier>{201927cc-c795-41e6-a734-b2518e0dd61d}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem">
+      <UniqueIdentifier>{264ce5a3-55c9-43b5-ad5f-3295623f6eb7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Scenes">
-      <UniqueIdentifier>{b8b12b32-85cc-4cd4-86bb-fe2e9fe85504}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom">
+      <UniqueIdentifier>{346b7902-823e-428b-b57b-2cd4014776af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview">
-      <UniqueIdentifier>{3a11c2ac-9770-4bf5-aace-37f011a35b67}</UniqueIdentifier>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview">
+      <UniqueIdentifier>{a47696f7-06fe-4e5c-8af5-5d1e55e51781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses">
+      <UniqueIdentifier>{bebdf818-239b-43ce-ab9d-ff878a03c4a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis">
+      <UniqueIdentifier>{bb8c0166-8c76-466c-9af9-f32ae6dd3748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Plots\Plot">
+      <UniqueIdentifier>{a8437952-facf-4337-b383-3e39c23bb2f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Geometry\Parts\Part">
+      <UniqueIdentifier>{9a93fbf6-bcbd-4fb8-abc6-68ecf0afa41e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics">
+      <UniqueIdentifier>{257725a5-2151-428b-8df4-c24ea053157a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -117,50 +132,62 @@
     <ClCompile Include="ForgLib\Marine\Widgets\Tree\FrgMarine_Tree.cxx">
       <Filter>ForgLib\Marine\Widgets\Tree</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\FrgMarine_TItemGeom_ParMdls.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Scenes\FrgMaine_TItem_Scenes.cxx">
+      <Filter>ForgLib\Marine\Widgets\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\FrgMarine_TItemGeomParMdls_Ship.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\FrgMarine_Analyses_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\FrgMarine_TItemGeomParMdlsShip_01.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\FrgMarine_Geometry_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions\FrgMarine_Ship01Params_Dimensions.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parts\FrgMarine_GeomParts_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section\FrgMarine_Ship01ParamsHull_Section.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parts\Part\FrgMarine_GeomPart_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parts\Part</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\FrgMarine_Ship01Params_Hull.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\FrgMarine_GeomPModels_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel\FrgMarine_Ship01Params_Keel.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\FrgMarine_GeomPModel_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom\FrgMarine_Ship01Params_Transom.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview\FrgMarine_GeomPModelPView_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem\FrgMarine_Ship01Params_Stem.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\FrgMarine_GeomPModelShip_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\FrgMarine_Ship01_Params.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\FrgMarine_GeomPModelShipT01_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\FrgMarine_TItem_Geom.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\FrgMarine_GeomPModelShipT01Params_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions\FrgMarine_GeomPModelShipT01Params_Dimensions_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics\FrgMarine_TItemAnlys_Hydrostatics.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\FrgMarine_GeomPModelShipT01Params_Hull_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview\FrgMarine_TItemGeomParMdls_Preview.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section\FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts\FrgMarine_TItemGeom_Parts.cxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parts</Filter>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel\FrgMarine_GeomPModelShipT01Params_Keel_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom\FrgMarine_GeomPModelShipT01Params_Transom_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem\FrgMarine_GeomPModelShipT01Params_Stem_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\FrgMarine_AnalysisHStatics_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\FrgMarine_Analysis_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +197,9 @@
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global_Build.hxx">
       <Filter>ForgLib\Marine\Global</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Marine\Widgets\Scenes\Scene\FrgMaine_TItem_Scene.hxx">
+      <Filter>ForgLib\Marine\Widgets\Scenes\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Marine\Widgets\Tree\FrgMarine_Tree.hxx">
@@ -178,50 +208,62 @@
     <QtMoc Include="ForgLib\Marine\Widgets\MainWindow\FrgMarine_MainWindow.hxx">
       <Filter>ForgLib\Marine\Widgets\MainWindow</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\FrgMarine_TItemGeom_ParMdls.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Scenes\FrgMaine_TItem_Scenes.hxx">
+      <Filter>ForgLib\Marine\Widgets\Scenes</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\FrgMarine_TItemGeomParMdls_Ship.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\FrgMarine_Analyses_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\FrgMarine_TItemGeomParMdlsShip_01.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\FrgMarine_Geometry_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions\FrgMarine_Ship01Params_Dimensions.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parts\FrgMarine_GeomParts_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parts</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section\FrgMarine_Ship01ParamsHull_Section.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parts\Part\FrgMarine_GeomPart_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parts\Part</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\FrgMarine_Ship01Params_Hull.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\FrgMarine_GeomPModels_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel\FrgMarine_Ship01Params_Keel.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\FrgMarine_GeomPModel_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom\FrgMarine_Ship01Params_Transom.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview\FrgMarine_GeomPModelPView_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem\FrgMarine_Ship01Params_Stem.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\FrgMarine_GeomPModelShip_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\FrgMarine_Ship01_Params.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\FrgMarine_GeomPModelShipT01_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\FrgMarine_TItem_Geom.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\FrgMarine_GeomPModelShipT01Params_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions\FrgMarine_GeomPModelShipT01Params_Dimensions_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics\FrgMarine_TItemAnlys_Hydrostatics.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\FrgMarine_GeomPModelShipT01Params_Hull_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview\FrgMarine_TItemGeomParMdls_Preview.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section\FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts\FrgMarine_TItemGeom_Parts.hxx">
-      <Filter>ForgLib\Marine\Widgets\TreeItems\Geometry\Parts</Filter>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel\FrgMarine_GeomPModelShipT01Params_Keel_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom\FrgMarine_GeomPModelShipT01Params_Transom_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem\FrgMarine_GeomPModelShipT01Params_Stem_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\FrgMarine_AnalysisHStatics_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\FrgMarine_Analysis_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

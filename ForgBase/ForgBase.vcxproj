@@ -85,9 +85,11 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
 for /r "$(MSBuildProjectDirectory)\FrgBaseGlobals" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
 for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -111,9 +113,11 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
 for /r "$(MSBuildProjectDirectory)\FrgBaseGlobals" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
 for /r "$(MSBuildProjectDirectory)\FrgWidgets" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

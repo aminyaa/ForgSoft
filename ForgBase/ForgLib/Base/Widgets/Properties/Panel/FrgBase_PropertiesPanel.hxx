@@ -27,7 +27,8 @@ private:
 	QWidget* theParentWidget_ = nullptr;
 	QObject* theParentObject_ = nullptr;
 
-	void SetTableData(int row, const char* name, int role, const QVariant& value);
+	void FormTableData();
+	void SetTableData(int row, int role, const QVariant& value);
 
 public:
 

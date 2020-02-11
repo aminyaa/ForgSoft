@@ -68,7 +68,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -82,6 +82,7 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
 for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
 for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
@@ -92,7 +93,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -106,6 +107,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
+if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
 for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
 for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
@@ -114,6 +116,8 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\FrgVisual_Scene.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.cxx" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -130,8 +134,9 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClInclude Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2DTItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

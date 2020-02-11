@@ -3,16 +3,16 @@
 #define _FrgVisual_Scene3DTItem_Header
 
 #include <FrgVisual_Global.hxx>
-#include <FrgBase_TreeItem.hxx>
+#include <FrgVisual_Scene_TItem.hxx>
 
 BeginForgVisualLib
 
 class FrgVisual_Scene3D;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene3DTItem
-	: public ForgBaseLib::FrgBase_TreeItem
+	: public FrgVisual_Scene_TItem
 {
-	//Q_OBJECT
+	Q_OBJECT
 
 public:
 

@@ -94,6 +94,20 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 				TItem->RenameTItemSlot();
 		}
 		break;
+	case Qt::Key_Return:
+	case Qt::Key_Enter:
+	case Qt::Key_Space:
+		if (this->selectedItems().size() == 1)
+		{
+			auto TItem = this->selectedItems()[0];
+			if (this->isItemExpanded(TItem))
+				this->collapseItem(TItem);
+			else
+				this->expandItem(TItem);
+
+			this->itemDoubleClickedSlot(this->selectedItems()[0], 0);
+		}
+		break;
 	}
 }
 

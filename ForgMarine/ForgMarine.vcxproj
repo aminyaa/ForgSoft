@@ -66,7 +66,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(SolutionDir)ForgVisual\include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(MSBuildProjectDirectory)\ThirdParties\Tonb\include;$(MSBuildProjectDirectory)\ForgLib\Marine\Global;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\MainWindow;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Tree;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parts;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Analysis;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(SolutionDir)ForgVisual\include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(MSBuildProjectDirectory)\ThirdParties\Tonb\include;$(MSBuildProjectDirectory)\ForgLib\Marine\Global;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\MainWindow;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Tree;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parts;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parts\Part;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Analyses;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Analyses\Analysis;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Plots;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Plots\Plot;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Scenes;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Scenes\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORGMARINE_LIB;WM_DP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
@@ -80,7 +80,9 @@
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
+if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -89,7 +91,7 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(SolutionDir)ForgVisual\include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(MSBuildProjectDirectory)\ThirdParties\Tonb\include;$(MSBuildProjectDirectory)\ForgLib\Marine\Global;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\MainWindow;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Tree;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Geometry\Parts;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Analysis;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(SolutionDir)ForgVisual\include;$(SolutionDir)ForgBase\ThirdParties\VTK\include;$(MSBuildProjectDirectory)\ThirdParties\Tonb\include;$(MSBuildProjectDirectory)\ForgLib\Marine\Global;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\MainWindow;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Tree;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parts;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Geometry\Parts\Part;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Analyses;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Analyses\Analysis;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Plots;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Plots\Plot;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Scenes;$(MSBuildProjectDirectory)\ForgLib\Marine\Widgets\Scenes\Scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>FORGMARINE_LIB;WM_DP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -101,50 +103,61 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MS
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y</Command>
+if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
+for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <QtRcc Include="ForgMarine.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\FrgMarine_Analysis_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\FrgMarine_AnalysisHStatics_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\FrgMarine_Analyses_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\FrgMarine_Geometry_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\FrgMarine_GeomPModels_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\FrgMarine_GeomPModel_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview\FrgMarine_GeomPModelPView_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\FrgMarine_GeomPModelShip_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\FrgMarine_GeomPModelShipT01_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions\FrgMarine_GeomPModelShipT01Params_Dimensions_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\FrgMarine_GeomPModelShipT01Params_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\FrgMarine_GeomPModelShipT01Params_Hull_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section\FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel\FrgMarine_GeomPModelShipT01Params_Keel_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem\FrgMarine_GeomPModelShipT01Params_Stem_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom\FrgMarine_GeomPModelShipT01Params_Transom_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parts\FrgMarine_GeomParts_TItem.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Geometry\Parts\Part\FrgMarine_GeomPart_TItem.cxx" />
     <ClCompile Include="ForgLib\Marine\Widgets\MainWindow\FrgMarine_MainWindow.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics\FrgMarine_TItemAnlys_Hydrostatics.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\FrgMarine_TItem_Geom.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\FrgMarine_TItemGeom_ParMdls.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview\FrgMarine_TItemGeomParMdls_Preview.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\FrgMarine_TItemGeomParMdlsShip_01.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions\FrgMarine_Ship01Params_Dimensions.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\FrgMarine_Ship01_Params.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\FrgMarine_Ship01Params_Hull.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section\FrgMarine_Ship01ParamsHull_Section.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel\FrgMarine_Ship01Params_Keel.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem\FrgMarine_Ship01Params_Stem.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom\FrgMarine_Ship01Params_Transom.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\FrgMarine_TItemGeomParMdls_Ship.cxx" />
-    <ClCompile Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts\FrgMarine_TItemGeom_Parts.cxx" />
+    <ClCompile Include="ForgLib\Marine\Widgets\Scenes\FrgMaine_TItem_Scenes.cxx" />
     <ClCompile Include="ForgLib\Marine\Widgets\Tree\FrgMarine_Tree.cxx" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global.hxx" />
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global_Build.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parts\FrgMarine_TItemGeom_Parts.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Preview\FrgMarine_TItemGeomParMdls_Preview.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\Hydrostatics\FrgMarine_TItemAnlys_Hydrostatics.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Analysis\FrgMarine_TItem_Analysis.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\FrgMarine_TItem_Geom.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\FrgMarine_Ship01_Params.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Stem\FrgMarine_Ship01Params_Stem.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Transom\FrgMarine_Ship01Params_Transom.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Keel\FrgMarine_Ship01Params_Keel.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\FrgMarine_Ship01Params_Hull.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Hull\Section\FrgMarine_Ship01ParamsHull_Section.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\Parameters\Dimensions\FrgMarine_Ship01Params_Dimensions.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\01\FrgMarine_TItemGeomParMdlsShip_01.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\Traits\Ship\FrgMarine_TItemGeomParMdls_Ship.hxx" />
-    <QtMoc Include="ForgLib\Marine\Widgets\TreeItems\Geometry\Parametric Models\FrgMarine_TItemGeom_ParMdls.hxx" />
+    <ClInclude Include="ForgLib\Marine\Widgets\Scenes\Scene\FrgMaine_TItem_Scene.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\FrgMarine_AnalysisHStatics_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\FrgMarine_Analysis_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\FrgMarine_Analyses_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\FrgMarine_Geometry_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parts\Part\FrgMarine_GeomPart_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\FrgMarine_GeomPModels_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\FrgMarine_GeomPModelShip_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\FrgMarine_GeomPModelShipT01_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\FrgMarine_GeomPModelShipT01Params_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Dimensions\FrgMarine_GeomPModelShipT01Params_Dimensions_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\FrgMarine_GeomPModelShipT01Params_Hull_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Hull\Section\FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Keel\FrgMarine_GeomPModelShipT01Params_Keel_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Stem\FrgMarine_GeomPModelShipT01Params_Stem_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Traits\Ship\Type 01\Parameters\Transom\FrgMarine_GeomPModelShipT01Params_Transom_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parts\FrgMarine_GeomParts_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\FrgMarine_GeomPModel_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Geometry\Parametric Models\Parametric Model\Preview\FrgMarine_GeomPModelPView_TItem.hxx" />
+    <QtMoc Include="ForgLib\Marine\Widgets\Scenes\FrgMaine_TItem_Scenes.hxx" />
     <QtMoc Include="ForgLib\Marine\Widgets\MainWindow\FrgMarine_MainWindow.hxx" />
     <QtMoc Include="ForgLib\Marine\Widgets\Tree\FrgMarine_Tree.hxx" />
   </ItemGroup>
