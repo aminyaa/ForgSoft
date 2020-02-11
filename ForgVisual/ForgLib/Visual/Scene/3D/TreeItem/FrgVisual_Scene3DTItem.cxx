@@ -11,4 +11,4 @@ ForgVisualLib::FrgVisual_Scene3DTItem::FrgVisual_Scene3DTItem
 {
 	theScene_ = new FrgVisual_Scene3D(GetParentMainWindow());
 	theScene_->Init();
-} 
+}
