@@ -1,19 +1,19 @@
-#include <FrgMarine_GeomPModelShipT01Params_Hull_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsHull_TItem.hxx>
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
-#include <FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsHullSection_TItem.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgMarine_GeomPModelShipT01Params_TItem.hxx>
+#include <FrgMarine_ShipT01Params_TItem.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
-ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::FrgMarine_GeomPModelShipT01Params_Hull_TItem
+ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::FrgMarine_ShipT01ParamsHull_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-	FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+	FrgMarine_ShipT01Params_TItem* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
@@ -21,9 +21,9 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::FrgMarine_GeomPMode
 {
 	this->setIcon(0, QIcon(ICONTreeItemPIcon));
 
-	theAftSection_ = new FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem("Aft Section", this, parentTree, model, &model->AftSection(), theParametersTItem_);
-	theMidSection_ = new FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem("Mid Section", this, parentTree, model, &model->MidSection(), theParametersTItem_);
-	theFwdSection_ = new FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem("Fwd Section", this, parentTree, model, &model->FwdSection(), theParametersTItem_);
+	theAftSection_ = new FrgMarine_ShipT01ParamsHullSection_TItem("Aft Section", this, parentTree, model, &model->AftSection(), theParametersTItem_);
+	theMidSection_ = new FrgMarine_ShipT01ParamsHullSection_TItem("Mid Section", this, parentTree, model, &model->MidSection(), theParametersTItem_);
+	theFwdSection_ = new FrgMarine_ShipT01ParamsHullSection_TItem("Fwd Section", this, parentTree, model, &model->FwdSection(), theParametersTItem_);
 
 	double minValue = 0.0, maxValue = 1.0, stepValue = 0.05;
 	const char* suffixNonDimensioned = "[-]";
@@ -45,7 +45,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::FrgMarine_GeomPMode
 	FormPropertiesPanel();
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::MaxAreaLocationValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::MaxAreaLocationValueChangedSlot()
 {
 	if (theModel_->Parameters().MaxAreaLocation()->Value() != theMaxAreaLocation_->GetValue())
 	{
@@ -54,7 +54,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::MaxAreaLocatio
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::FwdFullnessValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::FwdFullnessValueChangedSlot()
 {
 	if (theModel_->Parameters().FwdFullness()->Value() != theFwdFullness_->GetValue())
 	{
@@ -63,7 +63,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::FwdFullnessVal
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::AftFullnessValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::AftFullnessValueChangedSlot()
 {
 	if (theModel_->Parameters().AftFullness()->Value() != theAftFullness_->GetValue())
 	{
@@ -72,7 +72,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::AftFullnessVal
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Hull_TItem::PerformToPreview()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::PerformToPreview()
 {
 	theModel_->PerformToPreview();
 

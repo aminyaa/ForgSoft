@@ -14,9 +14,9 @@ namespace tnbLib
 
 BeginForgMarineLib
 
-class FrgMarine_GeomPModelShipT01Params_TItem;
+class FrgMarine_ShipT01Params_TItem;
 
-class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Dimensions_TItem
+class FORGMARINE_EXPORT FrgMarine_ShipT01ParamsDim_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
@@ -32,13 +32,13 @@ class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Dimensions_TItem
 
 public:
 
-	FrgMarine_GeomPModelShipT01Params_Dimensions_TItem
+	FrgMarine_ShipT01ParamsDim_TItem
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-		FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
 	/*ForgBaseLib::FrgBase_PrptsVrntDouble* GetDraft() const { return theDraft_; }
@@ -79,7 +79,7 @@ private:
 	ForgBaseLib::FrgBase_PrptsVrntInt* theNbNetRows_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntInt* theNbNetColumns_ = NullPtr;
 
-	FrgMarine_GeomPModelShipT01Params_TItem* theParametersTItem_ = NullPtr;
+	FrgMarine_ShipT01Params_TItem* theParametersTItem_ = NullPtr;
 
 private slots:
 

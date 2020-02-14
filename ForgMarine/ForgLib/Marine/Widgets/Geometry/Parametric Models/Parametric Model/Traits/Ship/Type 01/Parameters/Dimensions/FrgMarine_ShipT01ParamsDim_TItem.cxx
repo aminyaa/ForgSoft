@@ -1,18 +1,18 @@
-#include <FrgMarine_GeomPModelShipT01Params_Dimensions_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsDim_TItem.hxx>
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgMarine_GeomPModelShipT01Params_TItem.hxx>
+#include <FrgMarine_ShipT01Params_TItem.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
-ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem
+ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::FrgMarine_ShipT01ParamsDim_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-	FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+	FrgMarine_ShipT01Params_TItem* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
@@ -67,7 +67,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::FrgMarine_Geo
 //	PerformToPreview();
 //}
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::TransomHeightValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::TransomHeightValueChangedSlot()
 {
 	if (theModel_->Parameters().TransomHeight()->Value() != theTransomHeight_->GetValue())
 	{
@@ -76,7 +76,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::TransomH
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::DepthAtBowValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::DepthAtBowValueChangedSlot()
 {
 	if (theModel_->Parameters().DepthAtBow()->Value() != theDepthAtBow_->GetValue())
 	{
@@ -85,7 +85,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::DepthAtB
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::DepthAtTransomValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::DepthAtTransomValueChangedSlot()
 {
 	if (theModel_->Parameters().DepthAtTransom()->Value() != theDepthAtTransom_->GetValue())
 	{
@@ -94,7 +94,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::DepthAtT
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::BeamOnDeckValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::BeamOnDeckValueChangedSlot()
 {
 	if (theModel_->Parameters().BeamOnDeck()->Value() != theBeamOnDeck_->GetValue())
 	{
@@ -103,7 +103,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::BeamOnDe
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::LengthOnDeckValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::LengthOnDeckValueChangedSlot()
 {
 	if (theModel_->Parameters().LengthOnDeck()->Value() != theLengthOnDeck_->GetValue())
 	{
@@ -112,7 +112,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::LengthOn
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::NbNetRowsValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::NbNetRowsValueChangedSlot()
 {
 	if (theModel_->Parameters().NbNetRows() != theNbNetRows_->GetValue())
 	{
@@ -121,7 +121,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::NbNetRow
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::NbNetColumnsValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::NbNetColumnsValueChangedSlot()
 {
 	if (theModel_->Parameters().NbNetColumns() != theNbNetColumns_->GetValue())
 	{
@@ -130,7 +130,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::NbNetCol
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Dimensions_TItem::PerformToPreview()
+void ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::PerformToPreview()
 {
 	theModel_->PerformToPreview();
 

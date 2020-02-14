@@ -1,19 +1,19 @@
-#include <FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsHullSection_TItem.hxx>
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgMarine_GeomPModelShipT01Params_TItem.hxx>
+#include <FrgMarine_ShipT01Params_TItem.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
-ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem
+ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::FrgMarine_ShipT01ParamsHullSection_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
 	tnbLib::LegModel_DispNo1_SectionParamsBase* modelSection,
-	FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+	FrgMarine_ShipT01Params_TItem* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
@@ -46,7 +46,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::FrgMarine_Ge
 	FormPropertiesPanel();
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::TightnessValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::TightnessValueChangedSlot()
 {
 	if (theModelSection_->Tightness()->Value() != theTightness_->GetValue())
 	{
@@ -55,7 +55,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::Tightne
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::DeadriseValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::DeadriseValueChangedSlot()
 {
 	if (theModelSection_->Deadrise()->Value() != theDeadrise_->GetValue())
 	{
@@ -64,7 +64,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::Deadris
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::SideSlopeValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::SideSlopeValueChangedSlot()
 {
 	if (theModelSection_->SideSlope()->Value() != theSideSlope_->GetValue())
 	{
@@ -73,7 +73,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::SideSlo
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::FlareValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::FlareValueChangedSlot()
 {
 	if (theModelSection_->Flare()->Value() != theFlare_->GetValue())
 	{
@@ -82,7 +82,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::FlareVa
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem::PerformToPreview()
+void ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::PerformToPreview()
 {
 	theModel_->PerformToPreview();
 

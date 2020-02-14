@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgMarine_Ship01Params_Hull_Header
-#define _FrgMarine_Ship01Params_Hull_Header
+#ifndef _FrgMarine_ShipT01Params_TItem_Header
+#define _FrgMarine_ShipT01Params_TItem_Header
 
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
@@ -13,10 +13,10 @@ namespace tnbLib
 
 BeginForgMarineLib
 
-class FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem;
-class FrgMarine_GeomPModelShipT01Params_TItem;
+class FrgMarine_ShipT01ParamsHullSection_TItem;
+class FrgMarine_ShipT01Params_TItem;
 
-class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Hull_TItem
+class FORGMARINE_EXPORT FrgMarine_ShipT01ParamsHull_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
@@ -27,13 +27,13 @@ class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Hull_TItem
 
 public:
 
-	FrgMarine_GeomPModelShipT01Params_Hull_TItem
+	FrgMarine_ShipT01ParamsHull_TItem
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-		FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetMaxAreaLocation() const { return theMaxAreaLocation_; }
@@ -49,15 +49,15 @@ private:
 
 	std::shared_ptr<tnbLib::LegModel_DispNo1> theModel_;
 
-	FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem* theAftSection_ = NullPtr;
-	FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem* theMidSection_ = NullPtr;
-	FrgMarine_GeomPModelShipT01ParamsHull_Section_TItem* theFwdSection_ = NullPtr;
+	FrgMarine_ShipT01ParamsHullSection_TItem* theAftSection_ = NullPtr;
+	FrgMarine_ShipT01ParamsHullSection_TItem* theMidSection_ = NullPtr;
+	FrgMarine_ShipT01ParamsHullSection_TItem* theFwdSection_ = NullPtr;
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theMaxAreaLocation_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theFwdFullness_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theAftFullness_ = NullPtr;
 
-	FrgMarine_GeomPModelShipT01Params_TItem* theParametersTItem_ = NullPtr;
+	FrgMarine_ShipT01Params_TItem* theParametersTItem_ = NullPtr;
 
 private slots:
 
@@ -70,4 +70,4 @@ private slots:
 
 EndForgMarineLib
 
-#endif // !_FrgMarine_Ship01Params_Hull_Header
+#endif // !_FrgMarine_ShipT01Params_TItem_Header

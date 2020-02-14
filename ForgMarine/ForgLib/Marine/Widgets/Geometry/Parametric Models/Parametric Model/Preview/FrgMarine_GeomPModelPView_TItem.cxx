@@ -24,7 +24,7 @@ ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FrgMarine_GeomPModelPView_TItem
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::CadModel_Entity> modelEntity
 )
-	: FrgVisual_Scene3DTItem(itemTitle, parentItem, parentTree)
+	: FrgMarine_Scene3D_TItem(itemTitle, parentItem, parentTree)
 	, theModelEntity_(modelEntity)
 {
 	this->setIcon(0, QIcon(ICONTreeItemEye));
@@ -71,7 +71,7 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 		auto myTris = tnbLib::Cad_Tools::RetrieveTriangulation(myPreviewShape);
 
 		theScene_->RemoveAllActors();
-		theScene_->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, false);
+		dynamic_cast<ForgVisualLib::FrgVisual_Scene3D*>(theScene_)->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, false);
 	}
 }
 
@@ -163,8 +163,8 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FDiscInParallelValueChanged
 	if (theFastDiscreteParams_->InParallel != theFastDiscrete_InParallel_->GetValue())
 	{
 		theFastDiscreteParams_->InParallel = theFastDiscrete_InParallel_->GetValue();
-		theModelEntity_->PerformToPreview();
-		UpdatePreviewSlot();
+		/*theModelEntity_->PerformToPreview();
+		UpdatePreviewSlot();*/
 	}
 }
 

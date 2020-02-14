@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgMarine_Ship01Params_Keel_Header
-#define _FrgMarine_Ship01Params_Keel_Header
+#ifndef _FrgMarine_ShipT01ParamsKeel_TItem_Header
+#define _FrgMarine_ShipT01ParamsKeel_TItem_Header
 
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
@@ -13,9 +13,9 @@ namespace tnbLib
 
 BeginForgMarineLib
 
-class FrgMarine_GeomPModelShipT01Params_TItem;
+class FrgMarine_ShipT01Params_TItem;
 
-class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Keel_TItem
+class FORGMARINE_EXPORT FrgMarine_ShipT01ParamsKeel_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
@@ -27,13 +27,13 @@ class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Keel_TItem
 
 public:
 
-	FrgMarine_GeomPModelShipT01Params_Keel_TItem
+	FrgMarine_ShipT01ParamsKeel_TItem
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-		FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetPosition() const { return thePosition_; }
@@ -57,7 +57,7 @@ private:
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theRiseSlope_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theTransomSlope_ = NullPtr;
 
-	FrgMarine_GeomPModelShipT01Params_TItem* theParametersTItem_ = NullPtr;
+	FrgMarine_ShipT01Params_TItem* theParametersTItem_ = NullPtr;
 
 private slots:
 
@@ -71,4 +71,4 @@ private slots:
 
 EndForgMarineLib
 
-#endif // !_FrgMarine_Ship01Params_Keel_Header
+#endif // !_FrgMarine_ShipT01ParamsKeel_TItem_Header

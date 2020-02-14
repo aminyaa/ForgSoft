@@ -1,18 +1,18 @@
-#include <FrgMarine_GeomPModelShipT01Params_Keel_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsKeel_TItem.hxx>
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgMarine_GeomPModelShipT01Params_TItem.hxx>
+#include <FrgMarine_ShipT01Params_TItem.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
-ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::FrgMarine_GeomPModelShipT01Params_Keel_TItem
+ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::FrgMarine_ShipT01ParamsKeel_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-	FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+	FrgMarine_ShipT01Params_TItem* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
@@ -44,7 +44,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::FrgMarine_GeomPMode
 	FormPropertiesPanel();
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::PositionValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::PositionValueChangedSlot()
 {
 	if (theModel_->Parameters().Position()->Value() != thePosition_->GetValue())
 	{
@@ -53,7 +53,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::PositionValueC
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::RisePointValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::RisePointValueChangedSlot()
 {
 	if (theModel_->Parameters().RisePoint()->Value() != theRisePoint_->GetValue())
 	{
@@ -62,7 +62,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::RisePointValue
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::RiseSlopeValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::RiseSlopeValueChangedSlot()
 {
 	if (theModel_->Parameters().RiseSlope()->Value() != theRiseSlope_->GetValue())
 	{
@@ -71,7 +71,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::RiseSlopeValue
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::TransomSlopeValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::TransomSlopeValueChangedSlot()
 {
 	if (theModel_->Parameters().TransomSlope()->Value() != theTransomSlope_->GetValue())
 	{
@@ -79,7 +79,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::TransomSlopeVa
 		PerformToPreview();
 	}
 }
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Keel_TItem::PerformToPreview()
+void ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::PerformToPreview()
 {
 	theModel_->PerformToPreview();
 

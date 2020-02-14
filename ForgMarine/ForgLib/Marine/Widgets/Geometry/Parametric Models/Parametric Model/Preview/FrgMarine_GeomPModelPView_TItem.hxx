@@ -3,7 +3,8 @@
 #define _FrgMarine_GeomPModelPView_TItem_Header
 
 #include <FrgMarine_Global.hxx>
-#include <FrgVisual_Scene3DTItem.hxx>
+#include <FrgMarine_Scene3D_TItem.hxx>
+
 #include <FrgBase_PrptsVrntDouble.hxx>
 #include <FrgBase_PrptsVrntBool.hxx>
 
@@ -16,7 +17,7 @@ namespace tnbLib
 BeginForgMarineLib
 
 class FORGMARINE_EXPORT FrgMarine_GeomPModelPView_TItem
-	: public ForgVisualLib::FrgVisual_Scene3DTItem
+	: public FrgMarine_Scene3D_TItem
 {
 
 	Q_OBJECT

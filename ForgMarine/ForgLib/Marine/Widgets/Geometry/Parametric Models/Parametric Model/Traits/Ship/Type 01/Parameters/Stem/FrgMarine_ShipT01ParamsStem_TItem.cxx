@@ -1,18 +1,18 @@
-#include <FrgMarine_GeomPModelShipT01Params_Stem_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsStem_TItem.hxx>
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgMarine_GeomPModelShipT01Params_TItem.hxx>
+#include <FrgMarine_ShipT01Params_TItem.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
-ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::FrgMarine_GeomPModelShipT01Params_Stem_TItem
+ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::FrgMarine_ShipT01ParamsStem_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-	FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+	FrgMarine_ShipT01Params_TItem* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel(model)
@@ -41,7 +41,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::FrgMarine_GeomPMode
 	FormPropertiesPanel();
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::BowRoundingValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::BowRoundingValueChangedSlot()
 {
 	if (theModel->Parameters().BowRounding()->Value() != theBowRounding_->GetValue())
 	{
@@ -50,7 +50,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::BowRoundingVal
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::StemRakeValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::StemRakeValueChangedSlot()
 {
 	if (theModel->Parameters().StemRake()->Value() != theStemRake_->GetValue())
 	{
@@ -59,7 +59,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::StemRakeValueC
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::ForeFootShapeValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::ForeFootShapeValueChangedSlot()
 {
 	if (theModel->Parameters().ForeFootShape()->Value() != theForeFootShape_->GetValue())
 	{
@@ -68,7 +68,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::ForeFootShapeV
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Stem_TItem::PerformToPreview()
+void ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::PerformToPreview()
 {
 	theModel->PerformToPreview();
 

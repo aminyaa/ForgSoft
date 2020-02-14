@@ -1,18 +1,18 @@
-#include <FrgMarine_GeomPModelShipT01Params_Transom_TItem.hxx>
+#include <FrgMarine_ShipT01ParamsTransom_TItem.hxx>
 #include <FrgMarine_MainWindow.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgMarine_GeomPModelShipT01Params_TItem.hxx>
+#include <FrgMarine_ShipT01Params_TItem.hxx>
 
 #include <LegModel_DispNo1.hxx>
 
-ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::FrgMarine_GeomPModelShipT01Params_Transom_TItem
+ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::FrgMarine_ShipT01ParamsTransom_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
 	ForgBaseLib::FrgBase_Tree* parentTree,
 	std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-	FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+	FrgMarine_ShipT01Params_TItem* parametersTItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, theModel_(model)
@@ -37,7 +37,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::FrgMarine_GeomPM
 	FormPropertiesPanel();
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::RakeValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::RakeValueChangedSlot()
 {
 	if (theModel_->Parameters().Rake()->Value() != theRake_->GetValue())
 	{
@@ -46,7 +46,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::RakeValueCh
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::WidthValueChangedSlot()
+void ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::WidthValueChangedSlot()
 {
 	if (theModel_->Parameters().Width()->Value() != theWidth_->GetValue())
 	{
@@ -55,7 +55,7 @@ void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::WidthValueC
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelShipT01Params_Transom_TItem::PerformToPreview()
+void ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::PerformToPreview()
 {
 	theModel_->PerformToPreview();
 

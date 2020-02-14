@@ -12,7 +12,7 @@ namespace tnbLib
 
 BeginForgMarineLib
 
-class FrgMarine_GeomPModelShipT01Params_TItem;
+class FrgMarine_ShipT01Params_TItem;
 
 class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01_TItem
 	: public FrgMarine_GeomPModelShip_TItem
@@ -36,7 +36,7 @@ Q_SIGNALS:
 
 private:
 
-	FrgMarine_GeomPModelShipT01Params_TItem* theParameters_ = NullPtr;
+	FrgMarine_ShipT01Params_TItem* theParameters_ = NullPtr;
 };
 
 EndForgMarineLib

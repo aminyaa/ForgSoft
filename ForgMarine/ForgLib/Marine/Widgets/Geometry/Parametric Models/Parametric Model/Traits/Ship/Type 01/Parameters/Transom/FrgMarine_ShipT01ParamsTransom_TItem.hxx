@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgMarine_Ship01Params_Transom_Header
-#define _FrgMarine_Ship01Params_Transom_Header
+#ifndef _FrgMarine_ShipT01ParamsTransom_TItem_Header
+#define _FrgMarine_ShipT01ParamsTransom_TItem_Header
 
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
@@ -13,9 +13,9 @@ namespace tnbLib
 
 BeginForgMarineLib
 
-class FrgMarine_GeomPModelShipT01Params_TItem;
+class FrgMarine_ShipT01Params_TItem;
 
-class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Transom_TItem
+class FORGMARINE_EXPORT FrgMarine_ShipT01ParamsTransom_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
@@ -25,13 +25,13 @@ class FORGMARINE_EXPORT FrgMarine_GeomPModelShipT01Params_Transom_TItem
 
 public:
 
-	FrgMarine_GeomPModelShipT01Params_Transom_TItem
+	FrgMarine_ShipT01ParamsTransom_TItem
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree,
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model,
-		FrgMarine_GeomPModelShipT01Params_TItem* parametersTItem
+		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetRake() const { return theRake_; }
@@ -47,7 +47,7 @@ private:
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theRake_ = NullPtr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theWidth_ = NullPtr;
 
-	FrgMarine_GeomPModelShipT01Params_TItem* theParametersTItem_ = NullPtr;
+	FrgMarine_ShipT01Params_TItem* theParametersTItem_ = NullPtr;
 
 private slots:
 
@@ -59,4 +59,4 @@ private slots:
 
 EndForgMarineLib
 
-#endif // !_FrgMarine_Ship01Params_Transom_Header
+#endif // !_FrgMarine_ShipT01ParamsTransom_TItem_Header
