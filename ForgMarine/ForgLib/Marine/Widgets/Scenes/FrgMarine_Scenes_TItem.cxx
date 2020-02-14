@@ -1,6 +1,6 @@
-#include <FrgMaine_TItem_Scenes.hxx>
+#include <FrgMarine_Scenes_TItem.hxx>
 
-ForgMarineLib::FrgMaine_TItem_Scenes::FrgMaine_TItem_Scenes
+ForgMarineLib::FrgMarine_Scenes_TItem::FrgMarine_Scenes_TItem
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,

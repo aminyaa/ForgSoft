@@ -85,14 +85,20 @@
     <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\FrgVisual_Scene.cxx">
       <Filter>ForgLib\Visual\Scene</Filter>
     </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.cxx">
       <Filter>ForgLib\Visual\Scene\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.cxx">
+      <Filter>ForgLib\Visual\Scene\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +131,6 @@
     <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
       <Filter>ForgLib\Visual\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2DTItem.hxx">
-      <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClInclude>
@@ -139,8 +142,11 @@
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
       <Filter>ForgLib\Visual\Scene\TreeItem</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3DTItem.hxx">
+    <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.hxx">
       <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

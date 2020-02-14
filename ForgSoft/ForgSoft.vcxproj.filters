@@ -160,9 +160,6 @@
     <ClCompile Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Tree\SplitPartFeature_Tree.cxx">
       <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Tree</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cxx">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="ProgressWidget.cxx">
       <Filter>Header Files</Filter>
     </ClCompile>
@@ -280,9 +277,6 @@
     </QtMoc>
     <QtMoc Include="NihadVessel\SplitPart_Feature\SplitPartFeature_Widget\SplitPartFeature_Widget.hxx">
       <Filter>NihadVessel\SplitPart_Feature\SplitPartFeature_Widget</Filter>
-    </QtMoc>
-    <QtMoc Include="Console.hxx">
-      <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ProgressWidget.hxx">
       <Filter>Header Files</Filter>

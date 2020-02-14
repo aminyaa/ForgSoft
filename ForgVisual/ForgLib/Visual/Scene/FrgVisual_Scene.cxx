@@ -39,5 +39,8 @@ void ForgVisualLib::FrgVisual_Scene::RemoveAllActors()
 void ForgVisualLib::FrgVisual_Scene::SetLogoText(const char * logoText)
 {
 	if (theLogoActor_)
+	{
 		theLogoActor_->SetInput(logoText);
+		RenderScene(false);
+	}
 }

@@ -1,20 +1,20 @@
 #pragma once
-#ifndef _FrgMaine_TItem_Scenes_Header
-#define _FrgMaine_TItem_Scenes_Header
+#ifndef _FrgMaine_Scenes_TItem_Header
+#define _FrgMaine_Scenes_TItem_Header
 
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
 BeginForgMarineLib
 
-class FrgMaine_TItem_Scenes
+class FORGMARINE_EXPORT FrgMarine_Scenes_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
 
 public:
 
-	FrgMaine_TItem_Scenes
+	FrgMarine_Scenes_TItem
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
@@ -24,4 +24,4 @@ public:
 
 EndForgMarineLib
 
-#endif // !_FrgMaine_TItem_Scenes_Header
+#endif // !_FrgMaine_Scenes_TItem_Header

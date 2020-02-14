@@ -5,15 +5,6 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_Scene.hxx>
 
-class vtkRenderer;
-class vtkGenericOpenGLRenderWindow;
-class vtkRenderWindowInteractor;
-class vtkCamera;
-class vtkTextActor;
-
-template<class T>
-class vtkSmartPointer;
-
 namespace ForgBaseLib
 {
 	class FrgBase_MainWindow;
@@ -24,7 +15,6 @@ BeginForgVisualLib
 class FORGVISUAL_EXPORT FrgVisual_Scene3D
 	: public FrgVisual_Scene
 {
-	//Q_OBJECT
 
 public:
 
@@ -32,7 +22,7 @@ public:
 
 	template <typename Triangulation>
 	void AddTriangulations(std::vector<Triangulation> triangulations, bool resetCamera = true);
-	void RenderScene(bool resetCamera = true);
+	void RenderScene(bool resetCamera = true) override;
 
 	void Init() override;
 };

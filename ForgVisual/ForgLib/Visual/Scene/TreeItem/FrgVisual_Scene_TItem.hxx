@@ -7,7 +7,9 @@
 
 BeginForgVisualLib
 
-class FrgVisual_Scene_TItem
+class FrgVisual_Scene;
+
+class FORGVISUAL_EXPORT FrgVisual_Scene_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
@@ -20,6 +22,10 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
+
+protected:
+
+	FrgVisual_Scene* theScene_ = NullPtr;
 };
 
 EndForgVisualLib

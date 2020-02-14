@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgVisual_Scene3DTItem_Header
-#define _FrgVisual_Scene3DTItem_Header
+#ifndef _FrgVisual_Scene3D_TItem_Header
+#define _FrgVisual_Scene3D_TItem_Header
 
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_Scene_TItem.hxx>
@@ -9,26 +9,22 @@ BeginForgVisualLib
 
 class FrgVisual_Scene3D;
 
-class FORGVISUAL_EXPORT FrgVisual_Scene3DTItem
+class FORGVISUAL_EXPORT FrgVisual_Scene3D_TItem
 	: public FrgVisual_Scene_TItem
 {
 	Q_OBJECT
 
 public:
 
-	FrgVisual_Scene3DTItem
+	FrgVisual_Scene3D_TItem
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
-protected:
-
-	FrgVisual_Scene3D* theScene_ = NullPtr;
-
 };
 
 EndForgVisualLib
 
-#endif // !_FrgVisual_Scene3DTItem_Header
+#endif // !_FrgVisual_Scene3D_TItem_Header

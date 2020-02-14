@@ -32,7 +32,8 @@ public:
 
 	vtkSmartPointer<vtkRenderer> GetRenderer() { return theRenderer_; }
 	void RemoveAllActors();
-	void SetLogoText(const char* logoText);
+	virtual void SetLogoText(const char* logoText);
+	virtual void RenderScene(bool resetCamera = true) {}
 
 protected:
 
