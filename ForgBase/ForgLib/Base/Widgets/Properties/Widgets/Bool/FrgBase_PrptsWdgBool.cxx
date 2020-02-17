@@ -15,12 +15,18 @@ ForgBaseLib::FrgBase_PrptsWdgBool::FrgBase_PrptsWdgBool
 	FrgBase_PrptsVrntBool * variant
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
-	, theParentPropertiesPanel_(dynamic_cast<FrgBase_PropertiesPanel*>(parent))
 {
 	if (variant)
 	{
 		FormWidget();
 	}
+}
+
+ForgBaseLib::FrgBase_PrptsWdgBool::~FrgBase_PrptsWdgBool()
+{
+	FreePointer(thePrefixLabel_);
+	FreePointer(theSuffixLabel_);
+	FreePointer(theCheckBox_);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()

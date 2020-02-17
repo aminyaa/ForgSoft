@@ -122,6 +122,12 @@
     <Filter Include="ForgLib\Marine\Widgets\Scenes\Scene\2D">
       <UniqueIdentifier>{a6c8a61f-a062-45f8-91bd-2e6c5092e656}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Plots\Plot\2D">
+      <UniqueIdentifier>{c43cd35a-76ce-4ea5-836a-77209d7dbffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Plots\Plot\3D">
+      <UniqueIdentifier>{5bfe13d7-e9f9-49d3-8e38-1d8eee711f53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgMarine.qrc">
@@ -201,6 +207,12 @@
     <ClCompile Include="ForgLib\Marine\Widgets\Scenes\FrgMarine_Scenes_TItem.cxx">
       <Filter>ForgLib\Marine\Widgets\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Plots\FrgMarine_Plots_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Plots</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Plots\Plot\2D\FrgMarine_Plot2D_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Plots\Plot\2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global.hxx">
@@ -279,6 +291,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Marine\Widgets\Scenes\FrgMarine_Scenes_TItem.hxx">
       <Filter>ForgLib\Marine\Widgets\Scenes</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Plots\FrgMarine_Plots_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Plots</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Plots\Plot\2D\FrgMarine_Plot2D_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Plots\Plot\2D</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -17,7 +17,12 @@ class FORGBASE_EXPORT FrgBase_TabWidget
 
 public:
 
-	FrgBase_TabWidget(FrgBase_MainWindow* parentMainWindow);
+	FrgBase_TabWidget
+	(
+		FrgBase_MainWindow* parentMainWindow
+	);
+
+	~FrgBase_TabWidget();
 
 	void ShowTabWidget(QWidget* widget, const QString& title);
 

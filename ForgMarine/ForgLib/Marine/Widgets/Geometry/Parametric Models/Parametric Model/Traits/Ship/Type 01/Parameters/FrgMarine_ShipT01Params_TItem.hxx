@@ -33,6 +33,8 @@ public:
 		std::shared_ptr<tnbLib::LegModel_DispNo1> model
 	);
 
+	~FrgMarine_ShipT01Params_TItem();
+
 Q_SIGNALS:
 
 	void ModelPerformedToPreviewSignal();

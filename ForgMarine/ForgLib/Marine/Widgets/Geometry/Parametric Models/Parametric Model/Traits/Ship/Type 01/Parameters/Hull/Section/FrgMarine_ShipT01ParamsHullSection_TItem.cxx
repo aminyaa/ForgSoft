@@ -46,6 +46,17 @@ ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::FrgMarine_ShipT01Params
 	FormPropertiesPanel();
 }
 
+ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::~FrgMarine_ShipT01ParamsHullSection_TItem()
+{
+	FreePointer(theTightness_);
+	FreePointer(theDeadrise_);
+	FreePointer(theSideSlope_);
+	FreePointer(theFlare_);
+
+	theModelSection_ = NullPtr;
+	theParametersTItem_ = NullPtr;
+}
+
 void ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::TightnessValueChangedSlot()
 {
 	if (theModelSection_->Tightness()->Value() != theTightness_->GetValue())

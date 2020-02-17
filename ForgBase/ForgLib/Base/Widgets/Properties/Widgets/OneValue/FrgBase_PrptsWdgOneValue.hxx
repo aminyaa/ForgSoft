@@ -16,7 +16,13 @@ class FrgBase_PrptsWdgOneValue
 
 public:
 	
-	FrgBase_PrptsWdgOneValue(QWidget* parent = nullptr, FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant = nullptr);
+	FrgBase_PrptsWdgOneValue
+	(
+		QWidget* parent = nullptr,
+		FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant = nullptr
+	);
+
+	~FrgBase_PrptsWdgOneValue();
 
 	virtual const Type& GetValue() const;
 	virtual void SetValue(const Type& value);

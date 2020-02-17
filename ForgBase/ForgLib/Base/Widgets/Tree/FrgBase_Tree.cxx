@@ -3,6 +3,7 @@
 #include <FrgBase_TreeItem.hxx>
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_DlgDelete.hxx>
 
 #include <QtWidgets/QHeaderView>
 #include <QtGui/QKeyEvent>
@@ -20,6 +21,7 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 	this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	this->setFocusPolicy(Qt::StrongFocus);
 
 	QString style = "QTreeView::branch:has-siblings:!adjoins-item {"
 		"border-image:url(:/Icons/TreeStyle/stylesheet-vline.png)0;"
@@ -53,6 +55,11 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 	connect(this,
 		SIGNAL(customContextMenuRequested(const QPoint&)),
 		SLOT(onCustomContextMenuRequested(const QPoint&)));
+}
+
+ForgBaseLib::FrgBase_Tree::~FrgBase_Tree()
+{
+	theParentMainWindow_ = NullPtr;
 }
 
 void ForgBaseLib::FrgBase_Tree::FormTree()
@@ -91,7 +98,8 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 		{
 			auto TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
 			if (TItem->GetContextMenu()->GetItem("Rename"))
-				TItem->RenameTItemSlot();
+				if (TItem->GetContextMenu()->GetItem("Rename")->isEnabled())
+					TItem->RenameTItemSlot();
 		}
 		break;
 	case Qt::Key_Return:
@@ -108,6 +116,17 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 			this->itemDoubleClickedSlot(this->selectedItems()[0], 0);
 		}
 		break;
+	case Qt::Key_Delete:
+		if (this->selectedItems().size() == 1)
+		{
+			auto TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
+			if(TItem->GetContextMenu()->GetItem("Delete"))
+				if(TItem->GetContextMenu()->GetItem("Delete")->isEnabled())
+					DeleteTreeItemSlot(TItem);
+		}
+		break;
+	default:
+		QTreeWidget::keyPressEvent(event);
 	}
 }
 
@@ -162,19 +181,46 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 	}
 }
 
+void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
+{
+	if (TItem)
+	{
+		std::shared_ptr<FrgBase_DlgDelete> deleteDlg = std::make_shared<FrgBase_DlgDelete>(TItem->text(0), GetParentMainWindow());
+
+		if (deleteDlg->exec() == QDialog::Accepted)
+		{
+			auto parentItem = dynamic_cast<FrgBase_TreeItem*>
+				(dynamic_cast<QTreeWidgetItem*>(TItem) ? dynamic_cast<QTreeWidgetItem*>(TItem)->parent() : NullPtr);
+
+			delete TItem;
+
+			ScrollToItem(parentItem);
+		}
+	}
+}
+
+void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot()
+{
+	auto TItem = dynamic_cast<FrgBase_TreeItem*>(sender());
+	DeleteTreeItemSlot(TItem);
+}
+
 void ForgBaseLib::FrgBase_Tree::ScrollToItem
 (
 	FrgBase_TreeItem* item
 )
 {
-	clearSelection();
-	scrollToItem(item);
-	setItemSelected(item, true);
-	this->setCurrentItem(item);
+	if (item)
+	{
+		clearSelection();
+		scrollToItem(item);
+		setItemSelected(item, true);
+		this->setCurrentItem(item);
 
-	emit itemClickedSlot(item, 0);
+		emit itemClickedSlot(item, 0);
 
-	setFocus();
+		setFocus();
+	}
 }
 
 void ForgBaseLib::FrgBase_Tree::ScrollToItems

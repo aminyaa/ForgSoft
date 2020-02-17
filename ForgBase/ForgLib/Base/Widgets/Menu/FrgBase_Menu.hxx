@@ -29,8 +29,19 @@ private:
 
 public:
 
-	FrgBase_Menu(const FrgString& menuTitle, FrgBase_MainWindow* parentMainWindow, FrgBool addTitleAsAnAction = FrgFalse);
-	FrgBase_Menu(FrgBase_MainWindow* parentMainWindow);
+	FrgBase_Menu
+	(
+		const FrgString& menuTitle,
+		FrgBase_MainWindow* parentMainWindow,
+		FrgBool addTitleAsAnAction = FrgFalse
+	);
+
+	FrgBase_Menu
+	(
+		FrgBase_MainWindow* parentMainWindow
+	);
+
+	~FrgBase_Menu();
 
 	QAction* AddItem(const FrgString& itemTitle, FrgBool isInToolBar = FrgTrue);
 	QAction* AddItem(const FrgString& iconAddress, const FrgString& itemTitle, FrgBool isInToolBar = FrgTrue);

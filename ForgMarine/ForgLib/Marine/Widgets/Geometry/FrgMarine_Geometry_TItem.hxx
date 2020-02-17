@@ -24,6 +24,8 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	~FrgMarine_Geometry_TItem();
+
 private:
 
 	FrgMarine_GeomPModels_TItem* theParametricModels_ = NullPtr;

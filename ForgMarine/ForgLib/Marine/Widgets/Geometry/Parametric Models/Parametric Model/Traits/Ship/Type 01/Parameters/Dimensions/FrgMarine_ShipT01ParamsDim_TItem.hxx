@@ -41,6 +41,8 @@ public:
 		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
+	~FrgMarine_ShipT01ParamsDim_TItem();
+
 	/*ForgBaseLib::FrgBase_PrptsVrntDouble* GetDraft() const { return theDraft_; }
 	void SetDraft(ForgBaseLib::FrgBase_PrptsVrntDouble* draft) { theDraft_ = draft; }*/
 

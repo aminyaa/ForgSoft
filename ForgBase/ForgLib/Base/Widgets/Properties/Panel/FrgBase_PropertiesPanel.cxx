@@ -27,6 +27,12 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 	FormTableData();
 }
 
+ForgBaseLib::FrgBase_PropertiesPanel::~FrgBase_PropertiesPanel()
+{
+	theParentWidget_ = NullPtr;
+	theParentObject_ = NullPtr;
+}
+
 void ForgBaseLib::FrgBase_PropertiesPanel::FormTableData()
 {
 	this->setSelectionMode(QAbstractItemView::SingleSelection);

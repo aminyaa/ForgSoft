@@ -68,7 +68,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -93,7 +93,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -113,6 +113,10 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.cxx" />
+    <ClCompile Include="ForgLib\Visual\Plot\2D\TreeItem\FrgVisual_Plot2D_TItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Plot\FrgVisual_Plot.cxx" />
+    <ClCompile Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx" />
@@ -129,7 +133,10 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global.hxx" />
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Build.hxx" />
     <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx" />
+    <QtMoc Include="ForgLib\Visual\Plot\2D\TreeItem\FrgVisual_Plot2D_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Plot\3D\FrgVisual_Plot3D.hxx" />
+    <ClInclude Include="ForgLib\Visual\Plot\FrgVisual_Plot.hxx" />
+    <QtMoc Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />

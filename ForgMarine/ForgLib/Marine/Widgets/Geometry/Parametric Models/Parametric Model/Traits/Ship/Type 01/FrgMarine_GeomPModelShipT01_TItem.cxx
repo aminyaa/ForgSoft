@@ -23,3 +23,8 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::FrgMarine_GeomPModelShipT01_TI
 
 	shipModel->PerformToPreview();
 }
+
+ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::~FrgMarine_GeomPModelShipT01_TItem()
+{
+	FreePointer(theParameters_);
+}

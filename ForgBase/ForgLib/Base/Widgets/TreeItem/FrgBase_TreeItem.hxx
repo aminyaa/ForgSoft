@@ -41,6 +41,7 @@ protected:
 signals:
 
 	void TItemNameChanged(const QString&);
+	void DeleteTItemCalled();
 
 public:
 
@@ -50,6 +51,8 @@ public:
 		FrgBase_TreeItem* parentItem,
 		FrgBase_Tree* parentTree
 	);
+
+	~FrgBase_TreeItem();
 
 	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
@@ -66,7 +69,9 @@ public:
 	void SetTItemName(FrgBase_PrptsVrntString* variant) { theTItemName_ = variant; }
 
 	void AddRenameOptionInContextMenu();
-	void DeleteRenameOptionInContextMenu();
+	void RemoveRenameOptionInContextMenu();
+	void AddDeleteOptionInContextMenu();
+	void RemoveDeleteOptionInContextMenu();
 
 private:
 

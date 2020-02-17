@@ -57,8 +57,21 @@ ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::FrgMarine_ShipT01ParamsDim_TIte
 	connect(theNbNetRows_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(NbNetRowsValueChangedSlot()));
 	connect(theNbNetColumns_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(NbNetColumnsValueChangedSlot()));
 
-	//thePropertiesPanel_ = new ForgBaseLib::FrgBase_PropertiesPanel(GetParentMainWindow(), dynamic_cast<QObject*>(this));
 	FormPropertiesPanel();
+}
+
+ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::~FrgMarine_ShipT01ParamsDim_TItem()
+{
+	//FreePointer(theDraft_);
+	FreePointer(theTransomHeight_);
+	FreePointer(theDepthAtBow_);
+	FreePointer(theDepthAtTransom_);
+	FreePointer(theBeamOnDeck_);
+	FreePointer(theLengthOnDeck_);
+	FreePointer(theNbNetRows_);
+	FreePointer(theNbNetColumns_);
+
+	theParametersTItem_ = NullPtr;
 }
 
 //void ForgMarineLib::FrgMarine_Ship01Params_Dimensions::DraftValueChangedSlot()

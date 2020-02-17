@@ -38,6 +38,8 @@ public:
 		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
+	~FrgMarine_ShipT01ParamsHullSection_TItem();
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetTightness() const { return theTightness_; }
 	void SetTightness(ForgBaseLib::FrgBase_PrptsVrntDouble* tightness) { theTightness_ = tightness; }
 

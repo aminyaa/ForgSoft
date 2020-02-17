@@ -23,6 +23,8 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	~FrgVisual_Scene_TItem();
+
 protected:
 
 	FrgVisual_Scene* theScene_ = NullPtr;

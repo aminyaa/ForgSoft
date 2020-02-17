@@ -45,6 +45,19 @@ ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::FrgMarine_ShipT01ParamsHull_TI
 	FormPropertiesPanel();
 }
 
+ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::~FrgMarine_ShipT01ParamsHull_TItem()
+{
+	FreePointer(theAftSection_);
+	FreePointer(theMidSection_);
+	FreePointer(theFwdSection_);
+
+	FreePointer(theMaxAreaLocation_);
+	FreePointer(theFwdFullness_);
+	FreePointer(theAftFullness_);
+
+	theParametersTItem_ = NullPtr;
+}
+
 void ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::MaxAreaLocationValueChangedSlot()
 {
 	if (theModel_->Parameters().MaxAreaLocation()->Value() != theMaxAreaLocation_->GetValue())

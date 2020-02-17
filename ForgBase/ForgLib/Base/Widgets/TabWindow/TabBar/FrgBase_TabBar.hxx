@@ -16,7 +16,10 @@ class FORGBASE_EXPORT FrgBase_TabBar
 
 public:
 
-	FrgBase_TabBar(FrgBase_MainWindow* parentMainWindow);
+	FrgBase_TabBar
+	(
+		FrgBase_MainWindow* parentMainWindow
+	);
 };
 
 EndForgBaseLib

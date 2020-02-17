@@ -35,7 +35,12 @@ private:
 
 public:
 
-	FrgBase_Tree(FrgBase_MainWindow* parentMainWindow);
+	FrgBase_Tree
+	(
+		FrgBase_MainWindow* parentMainWindow
+	);
+
+	~FrgBase_Tree();
 
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 
@@ -53,6 +58,8 @@ public Q_SLOTS:
 
 	void onCustomContextMenuRequested(const QPoint& pos);
 	virtual void showContextMenu(FrgBase_TreeItem* item, const QPoint& globalPos);
+	void DeleteTreeItemSlot(FrgBase_TreeItem* TItem);
+	void DeleteTreeItemSlot();
 };
 
 EndForgBaseLib

@@ -19,7 +19,13 @@ class FORGBASE_EXPORT FrgBase_PrptsWdgDouble
 
 public:
 
-	FrgBase_PrptsWdgDouble(QWidget* parent = nullptr, FrgBase_PrptsVrntDouble* variant = nullptr);
+	FrgBase_PrptsWdgDouble
+	(
+		QWidget* parent = nullptr,
+		FrgBase_PrptsVrntDouble* variant = nullptr
+	);
+
+	~FrgBase_PrptsWdgDouble();
 
 	void SetValue(const double& value) override;
 	const double& GetMinimumValue() const;

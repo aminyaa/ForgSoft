@@ -1,4 +1,5 @@
 #include <FrgVisual_Scene_TItem.hxx>
+#include <FrgVisual_Scene.hxx>
 
 ForgVisualLib::FrgVisual_Scene_TItem::FrgVisual_Scene_TItem
 (
@@ -9,4 +10,10 @@ ForgVisualLib::FrgVisual_Scene_TItem::FrgVisual_Scene_TItem
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
 	this->AddRenameOptionInContextMenu();
+	this->AddDeleteOptionInContextMenu();
+}
+
+ForgVisualLib::FrgVisual_Scene_TItem::~FrgVisual_Scene_TItem()
+{
+	FreePointer(theScene_);
 }

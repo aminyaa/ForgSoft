@@ -34,6 +34,8 @@ public:
 		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
+	~FrgMarine_ShipT01ParamsTransom_TItem();
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetRake() const { return theRake_; }
 	void SetRake(ForgBaseLib::FrgBase_PrptsVrntDouble* rake) { theRake_ = rake; }
 

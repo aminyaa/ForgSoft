@@ -262,6 +262,9 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Bool">
       <UniqueIdentifier>{e2a4f0eb-5996-4c06-bb99-5cdf57c26b0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Dialogs\DeleteTItem">
+      <UniqueIdentifier>{bf7a9f52-9683-45ff-80ba-f88fe9d09e95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -351,9 +354,6 @@
     <ClCompile Include="ForgLib\Base\Widgets\Tree\FrgBase_Tree.cxx">
       <Filter>ForgLib\Base\Widgets\Tree</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Base\Widgets\Dialogs\RenameTItem\FrgBase_DlgRenameTItem.cxx">
-      <Filter>ForgLib\Base\Widgets\Dialogs\RenameTItem</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Dialogs\FrgBase_Dlg.cxx">
       <Filter>ForgLib\Base\Widgets\Dialogs</Filter>
     </ClCompile>
@@ -431,6 +431,12 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.cxx">
       <Filter>ForgLib\Base\Widgets\TabWindow\TabWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Dialogs\RenameTItem\FrgBase_DlgRename.cxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\RenameTItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Dialogs\DeleteTItem\FrgBase_DlgDelete.cxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\DeleteTItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -634,9 +640,6 @@
     <QtMoc Include="ForgLib\Base\Widgets\Tree\FrgBase_Tree.hxx">
       <Filter>ForgLib\Base\Widgets\Tree</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Base\Widgets\Dialogs\RenameTItem\FrgBase_DlgRenameTItem.hxx">
-      <Filter>ForgLib\Base\Widgets\Dialogs\RenameTItem</Filter>
-    </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Dialogs\FrgBase_Dlg.hxx">
       <Filter>ForgLib\Base\Widgets\Dialogs</Filter>
     </QtMoc>
@@ -690,6 +693,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\TabWindow\TabWidget\FrgBase_TabWidget.hxx">
       <Filter>ForgLib\Base\Widgets\TabWindow\TabWidget</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Dialogs\RenameTItem\FrgBase_DlgRename.hxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\RenameTItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Dialogs\DeleteTItem\FrgBase_DlgDelete.hxx">
+      <Filter>ForgLib\Base\Widgets\Dialogs\DeleteTItem</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

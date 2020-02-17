@@ -2,11 +2,21 @@
 #pragma once
 
 template<typename Type, bool IsBounded>
-inline ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::FrgBase_PrptsWdgOneValue(QWidget * parent, ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant)
+inline ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::FrgBase_PrptsWdgOneValue
+(
+	QWidget * parent,
+	ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant
+)
 	: QWidget(parent)
 	, theVariant_(variant)
 {
 
+}
+
+template<typename Type, bool IsBounded>
+inline ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::~FrgBase_PrptsWdgOneValue()
+{
+	theVariant_ = nullptr;
 }
 
 template<typename Type, bool IsBounded>

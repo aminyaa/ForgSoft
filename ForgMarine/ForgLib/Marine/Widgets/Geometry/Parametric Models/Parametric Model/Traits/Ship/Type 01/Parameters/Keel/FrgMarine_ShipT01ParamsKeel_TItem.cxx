@@ -44,6 +44,16 @@ ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::FrgMarine_ShipT01ParamsKeel_TI
 	FormPropertiesPanel();
 }
 
+ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::~FrgMarine_ShipT01ParamsKeel_TItem()
+{
+	FreePointer(thePosition_);
+	FreePointer(theRisePoint_);
+	FreePointer(theRiseSlope_);
+	FreePointer(theTransomSlope_);
+
+	theParametersTItem_ = NullPtr;
+}
+
 void ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::PositionValueChangedSlot()
 {
 	if (theModel_->Parameters().Position()->Value() != thePosition_->GetValue())

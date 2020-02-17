@@ -28,7 +28,12 @@ class FORGVISUAL_EXPORT FrgVisual_Scene
 
 public:
 
-	FrgVisual_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
+	FrgVisual_Scene
+	(
+		ForgBaseLib::FrgBase_MainWindow* parentMainWindow
+	);
+
+	~FrgVisual_Scene();
 
 	vtkSmartPointer<vtkRenderer> GetRenderer() { return theRenderer_; }
 	void RemoveAllActors();

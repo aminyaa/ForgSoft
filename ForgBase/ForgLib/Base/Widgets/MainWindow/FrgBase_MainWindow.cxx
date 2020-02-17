@@ -7,6 +7,7 @@
 #include <FrgBase_MenuHelp.hxx>
 #include <FrgBase_Tree.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_TabWidget.hxx>
 
 #include <QtWidgets/QDockWidget>
 
@@ -28,7 +29,26 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 {
 	this->window()->setWindowIcon(QIcon(ICONLogo));
 
-	this->setCentralWidget(FrgNew QWidget);
+	theTabWidget_ = new FrgBase_TabWidget(this);
+	this->setCentralWidget(theTabWidget_);
+}
+
+ForgBaseLib::FrgBase_MainWindow::~FrgBase_MainWindow()
+{
+	FreePointer(theTree_);
+	FreePointer(theTreeDockWidget_);
+	thePropertiesPanel_ = NullPtr;
+	FreePointer(thePropertiesPanelDockWidget_);
+	FreePointer(theTabWidget_);
+}
+
+ForgBaseLib::FrgBase_MainWindow::MainWindowMenus_Struct::~MainWindowMenus_Struct()
+{
+	FreePointer(theFileMenu_);
+	FreePointer(theEditMenu_);
+	FreePointer(theToolsMenu_);
+	FreePointer(theWindowMenu_);
+	FreePointer(theHelpMenu_);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
@@ -142,4 +162,21 @@ void ForgBaseLib::FrgBase_MainWindow::SetPropertiesPanel(FrgBase_PropertiesPanel
 	thePropertiesPanel_ = propertiesPanel;
 
 	thePropertiesPanelDockWidget_->setWidget(thePropertiesPanel_);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget * widget, const QString& title)
+{
+	theTabWidget_->ShowTabWidget(widget, title);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::SetTabText(QWidget * widget, const QString & title)
+{
+	int index = theTabWidget_->indexOf(widget);
+
+	SetTabText(index, title);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::SetTabText(int index, const QString & title)
+{
+	theTabWidget_->setTabText(index, title);
 }

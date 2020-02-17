@@ -57,4 +57,6 @@
 #define ICONTreeItemPSubIcon ":/Icons/TreeStyle/P Sub Icon.png"
 #define ICONTreeItemEye ":/Icons/TreeStyle/Eye.png"
 
+#define ICONPlot_2D ":/Icons/Plots/2D/Plot2D.png"
+
 #endif // !_FrgBase_Global_Icons_Header

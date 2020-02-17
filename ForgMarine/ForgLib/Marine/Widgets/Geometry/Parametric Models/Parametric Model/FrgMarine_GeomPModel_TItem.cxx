@@ -10,7 +10,9 @@ ForgMarineLib::FrgMarine_GeomPModel_TItem::FrgMarine_GeomPModel_TItem
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
 	this->AddRenameOptionInContextMenu();
+	this->AddDeleteOptionInContextMenu();
 
+	GetContextMenu()->addSeparator();
 	auto createPartAction = this->GetContextMenu()->AddItem("Create Part From Model", false);
 	this->GetContextMenu()->SetToolBarHidden(true);
 

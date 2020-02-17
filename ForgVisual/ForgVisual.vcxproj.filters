@@ -74,6 +74,12 @@
     <Filter Include="ForgLib\Visual\Scene\TreeItem">
       <UniqueIdentifier>{743c753e-f837-4fd1-8ad6-f7d5f2a38d54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Plot\TreeItem">
+      <UniqueIdentifier>{67c68ff5-6545-48e7-b71e-aae73af521d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\TreeItem">
+      <UniqueIdentifier>{a85c23bd-1602-46c3-9857-d2ab5db2f4ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -99,6 +105,18 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.cxx">
       <Filter>ForgLib\Visual\Scene\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\FrgVisual_Plot.cxx">
+      <Filter>ForgLib\Visual\Plot</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.cxx">
+      <Filter>ForgLib\Visual\Plot\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\TreeItem\FrgVisual_Plot2D_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\TreeItem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +155,9 @@
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Plot\FrgVisual_Plot.hxx">
+      <Filter>ForgLib\Visual\Plot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
@@ -147,6 +168,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.hxx">
       <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\TreeItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\TreeItem\FrgVisual_Plot2D_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\TreeItem</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

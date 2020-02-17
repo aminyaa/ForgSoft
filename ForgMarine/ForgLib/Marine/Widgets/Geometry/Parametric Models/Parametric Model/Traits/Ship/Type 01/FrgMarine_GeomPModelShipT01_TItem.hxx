@@ -30,6 +30,8 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	~FrgMarine_GeomPModelShipT01_TItem();
+
 Q_SIGNALS:
 
 	void ModelPerformedToPreviewSignal();

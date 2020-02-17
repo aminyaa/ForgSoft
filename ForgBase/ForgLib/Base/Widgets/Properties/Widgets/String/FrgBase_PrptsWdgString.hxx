@@ -25,6 +25,8 @@ public:
 		FrgBase_PrptsVrntString* variant = nullptr
 	);
 
+	~FrgBase_PrptsWdgString();
+
 	void SetValue(const QString& value) override;
 
 	void SetPrefix(const char* prefix) override;

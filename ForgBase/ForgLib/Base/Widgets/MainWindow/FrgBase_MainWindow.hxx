@@ -14,6 +14,7 @@ BeginForgBaseLib
 class FrgBase_Menu;
 class FrgBase_Tree;
 class FrgBase_PropertiesPanel;
+class FrgBase_TabWidget;
 
 class FORGBASE_EXPORT FrgBase_MainWindow
 	: public QMainWindow
@@ -31,6 +32,8 @@ protected:
 		FrgBase_Menu* theToolsMenu_ = NullPtr;
 		FrgBase_Menu* theWindowMenu_ = NullPtr;
 		FrgBase_Menu* theHelpMenu_ = NullPtr;
+
+		~MainWindowMenus_Struct();
 	};
 
 	MainWindowMenus_Struct* theMainWindowMenus_ = NullPtr;
@@ -41,6 +44,8 @@ protected:
 	QDockWidget* thePropertiesPanelDockWidget_ = NullPtr;
 
 	FrgString theConsoleEngineName_;
+
+	FrgBase_TabWidget* theTabWidget_ = NullPtr;
 
 protected:
 
@@ -54,12 +59,20 @@ public:
 
 	FrgBase_MainWindow(QWidget* parent = NullPtr);
 
+	~FrgBase_MainWindow();
+
 	void PrintInfoToConsole(const FrgString& info);
 	void PrintWarningToConsole(const FrgString& info);
 	void PrintErrorToConsole(const FrgString& info);
 
 	FrgBase_PropertiesPanel* GetPropertiesPanel() const { return thePropertiesPanel_; }
 	void SetPropertiesPanel(FrgBase_PropertiesPanel* propertiesPanel);
+
+	FrgBase_TabWidget* GetTabWidget() const { return theTabWidget_; }
+
+	void ShowTabWidget(QWidget* widget, const QString& title);
+	void SetTabText(QWidget* widget, const QString& title);
+	void SetTabText(int index, const QString& title);
 
 protected slots:
 

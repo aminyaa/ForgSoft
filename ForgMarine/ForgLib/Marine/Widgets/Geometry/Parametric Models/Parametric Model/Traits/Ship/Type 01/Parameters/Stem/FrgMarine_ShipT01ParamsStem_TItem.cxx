@@ -41,6 +41,15 @@ ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::FrgMarine_ShipT01ParamsStem_TI
 	FormPropertiesPanel();
 }
 
+ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::~FrgMarine_ShipT01ParamsStem_TItem()
+{
+	FreePointer(theBowRounding_);
+	FreePointer(theStemRake_);
+	FreePointer(theForeFootShape_);
+
+	theParametersTItem_ = NullPtr;
+}
+
 void ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::BowRoundingValueChangedSlot()
 {
 	if (theModel->Parameters().BowRounding()->Value() != theBowRounding_->GetValue())

@@ -37,6 +37,14 @@ ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::FrgMarine_ShipT01ParamsTran
 	FormPropertiesPanel();
 }
 
+ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::~FrgMarine_ShipT01ParamsTransom_TItem()
+{
+	FreePointer(theRake_);
+	FreePointer(theWidth_);
+
+	theParametersTItem_ = NullPtr;
+}
+
 void ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::RakeValueChangedSlot()
 {
 	if (theModel_->Parameters().Rake()->Value() != theRake_->GetValue())

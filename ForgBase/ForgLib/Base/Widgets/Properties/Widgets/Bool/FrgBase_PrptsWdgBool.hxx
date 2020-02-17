@@ -28,6 +28,8 @@ public:
 		FrgBase_PrptsVrntBool* variant = nullptr
 	);
 
+	~FrgBase_PrptsWdgBool();
+
 	void SetValue(const bool& value) override;
 
 	void SetPrefix(const char* prefix) override;
@@ -59,8 +61,6 @@ private:
 	QCheckBox* theCheckBox_ = nullptr;
 	QLabel* thePrefixLabel_ = nullptr;
 	QLabel* theSuffixLabel_ = nullptr;
-	
-	FrgBase_PropertiesPanel* theParentPropertiesPanel_ = nullptr;
 };
 
 EndForgBaseLib

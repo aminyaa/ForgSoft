@@ -20,6 +20,13 @@ ForgBaseLib::FrgBase_PrptsWdgDouble::FrgBase_PrptsWdgDouble
 	}
 }
 
+ForgBaseLib::FrgBase_PrptsWdgDouble::~FrgBase_PrptsWdgDouble()
+{
+	FreePointer(thePrefixLabel_);
+	FreePointer(theSuffixLabel_);
+	FreePointer(theSpinBox_);
+}
+
 void ForgBaseLib::FrgBase_PrptsWdgDouble::FormWidget()
 {
 	if (!theVariant_)

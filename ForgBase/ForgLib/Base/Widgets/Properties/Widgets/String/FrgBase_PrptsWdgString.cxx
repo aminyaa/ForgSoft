@@ -63,6 +63,13 @@ void ForgBaseLib::FrgBase_PrptsWdgString::FormWidget()
 	connect(theLineEdit_, SIGNAL(editingFinished()), this, SLOT(WdgValueChangedSlot()));
 }
 
+ForgBaseLib::FrgBase_PrptsWdgString::~FrgBase_PrptsWdgString()
+{
+	FreePointer(thePrefixLabel_);
+	FreePointer(theSuffixLabel_);
+	FreePointer(theLineEdit_);
+}
+
 void ForgBaseLib::FrgBase_PrptsWdgString::SetValue(const QString & value)
 {
 	FrgBase_PrptsWdgOneValue<QString, false>::SetValue(value);

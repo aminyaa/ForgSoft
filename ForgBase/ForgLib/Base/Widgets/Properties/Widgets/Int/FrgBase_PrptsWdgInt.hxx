@@ -21,7 +21,12 @@ class FORGBASE_EXPORT FrgBase_PrptsWdgInt
 
 public:
 
-	FrgBase_PrptsWdgInt(QWidget* parent = nullptr, FrgBase_PrptsVrntInt* variant = nullptr);
+	FrgBase_PrptsWdgInt
+	(QWidget* parent = nullptr,
+		FrgBase_PrptsVrntInt* variant = nullptr
+	);
+
+	~FrgBase_PrptsWdgInt();
 
 	void SetValue(const int& value) override;
 	const int& GetMinimumValue() const;

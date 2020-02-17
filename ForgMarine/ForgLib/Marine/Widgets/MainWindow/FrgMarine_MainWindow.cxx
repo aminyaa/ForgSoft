@@ -32,24 +32,4 @@ void ForgMarineLib::FrgMarine_MainWindow::InitMainWindow()
 	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thePropertiesPanelDockWidget_);
 
 	CreateConsoleOutput();
-
-	theTabWidget_ = new ForgBaseLib::FrgBase_TabWidget(this);
-	this->setCentralWidget(theTabWidget_);
-}
-
-void ForgMarineLib::FrgMarine_MainWindow::ShowTabWidget(QWidget * widget, const QString& title)
-{
-	theTabWidget_->ShowTabWidget(widget, title);
-}
-
-void ForgMarineLib::FrgMarine_MainWindow::SetTabText(QWidget * widget, const QString & title)
-{
-	int index = theTabWidget_->indexOf(widget);
-
-	SetTabText(index, title);
-}
-
-void ForgMarineLib::FrgMarine_MainWindow::SetTabText(int index, const QString & title)
-{
-	theTabWidget_->setTabText(index, title);
 }

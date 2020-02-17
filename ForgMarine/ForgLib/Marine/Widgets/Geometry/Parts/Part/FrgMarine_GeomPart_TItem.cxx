@@ -9,4 +9,5 @@ ForgMarineLib::FrgMarine_GeomPart_TItem::FrgMarine_GeomPart_TItem
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
 	this->AddRenameOptionInContextMenu();
+	this->AddDeleteOptionInContextMenu();
 }

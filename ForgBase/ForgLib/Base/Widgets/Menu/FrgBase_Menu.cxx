@@ -37,6 +37,13 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 	theToolBar_ = FrgNew QToolBar("", parentMainWindow);
 }
 
+ForgBaseLib::FrgBase_Menu::~FrgBase_Menu()
+{
+	theParentMainWindow_ = NullPtr;
+	FreePointer(theTitleAsAnAction_);
+	FreePointer(theToolBar_);
+}
+
 QAction* ForgBaseLib::FrgBase_Menu::AddItem
 (
 	const FrgString & itemTitle,

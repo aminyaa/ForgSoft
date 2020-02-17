@@ -14,7 +14,13 @@ class FORGBASE_EXPORT FrgBase_PropertiesPanel
 
 public:
 
-	FrgBase_PropertiesPanel(QWidget* parentMainWindow, QObject* parentObject);
+	FrgBase_PropertiesPanel
+	(
+		QWidget* parentMainWindow,
+		QObject* parentObject
+	);
+
+	~FrgBase_PropertiesPanel();
 
 	QWidget* GetParentWidget() const { return theParentWidget_; }
 

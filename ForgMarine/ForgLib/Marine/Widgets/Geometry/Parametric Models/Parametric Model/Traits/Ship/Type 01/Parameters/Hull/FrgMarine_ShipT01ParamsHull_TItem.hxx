@@ -36,6 +36,8 @@ public:
 		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
+	~FrgMarine_ShipT01ParamsHull_TItem();
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetMaxAreaLocation() const { return theMaxAreaLocation_; }
 	void SetMaxAreaLocation(ForgBaseLib::FrgBase_PrptsVrntDouble* maxAreaLocation) { theMaxAreaLocation_ = maxAreaLocation; }
 

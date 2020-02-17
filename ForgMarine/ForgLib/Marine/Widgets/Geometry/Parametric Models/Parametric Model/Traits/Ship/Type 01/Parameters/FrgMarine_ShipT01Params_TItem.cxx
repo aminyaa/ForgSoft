@@ -25,3 +25,12 @@ ForgMarineLib::FrgMarine_ShipT01Params_TItem::FrgMarine_ShipT01Params_TItem
 	theStem_ = new FrgMarine_ShipT01ParamsStem_TItem("Stem", this, parentTree, model, this);
 	theTransom_ = new FrgMarine_ShipT01ParamsTransom_TItem("Transom", this, parentTree, model, this);
 }
+
+ForgMarineLib::FrgMarine_ShipT01Params_TItem::~FrgMarine_ShipT01Params_TItem()
+{
+	FreePointer(theDimension_);
+	FreePointer(theHull_);
+	FreePointer(theKeel_);
+	FreePointer(theStem_);
+	FreePointer(theTransom_);
+}

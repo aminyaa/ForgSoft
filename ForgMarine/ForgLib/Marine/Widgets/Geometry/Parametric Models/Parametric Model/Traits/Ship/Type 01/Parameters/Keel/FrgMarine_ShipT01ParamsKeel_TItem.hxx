@@ -36,6 +36,8 @@ public:
 		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
+	~FrgMarine_ShipT01ParamsKeel_TItem();
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetPosition() const { return thePosition_; }
 	void SetPosition(ForgBaseLib::FrgBase_PrptsVrntDouble* position) { thePosition_ = position; }
 

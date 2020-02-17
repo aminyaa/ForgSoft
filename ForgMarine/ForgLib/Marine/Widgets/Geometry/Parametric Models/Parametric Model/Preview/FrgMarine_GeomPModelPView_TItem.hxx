@@ -41,6 +41,8 @@ public:
 		std::shared_ptr<tnbLib::CadModel_Entity> modelEntity
 	);
 
+	~FrgMarine_GeomPModelPView_TItem();
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetFastDiscrete_Angle() const { return theFastDiscrete_Angle_; }
 	void SetFastDiscrete_Angle(ForgBaseLib::FrgBase_PrptsVrntDouble* angle) { theFastDiscrete_Angle_ = angle; }
 

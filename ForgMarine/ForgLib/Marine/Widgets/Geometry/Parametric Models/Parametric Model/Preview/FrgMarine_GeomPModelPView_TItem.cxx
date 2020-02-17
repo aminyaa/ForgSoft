@@ -29,7 +29,8 @@ ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FrgMarine_GeomPModelPView_TItem
 {
 	this->setIcon(0, QIcon(ICONTreeItemEye));
 
-	DeleteRenameOptionInContextMenu();
+	this->RemoveRenameOptionInContextMenu();
+	this->RemoveDeleteOptionInContextMenu();
 
 	auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
 	if (myMainWindow)
@@ -47,6 +48,18 @@ ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FrgMarine_GeomPModelPView_TItem
 	theScene_->RenderScene(true);
 
 	ConnectVrntsToSlots();
+}
+
+ForgMarineLib::FrgMarine_GeomPModelPView_TItem::~FrgMarine_GeomPModelPView_TItem()
+{
+	FreePointer(theFastDiscrete_Angle_);
+	FreePointer(theFastDiscrete_Deflection_);
+	FreePointer(theFastDiscrete_MinSize_);
+	FreePointer(theFastDiscrete_InParallel_);
+	FreePointer(theFastDiscrete_Relative_);
+	FreePointer(theFastDiscrete_AdaptiveMin_);
+	FreePointer(theFastDiscrete_InternalVerticesMode_);
+	FreePointer(theFastDiscrete_ControlSurfaceDeflection_);
 }
 
 void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()

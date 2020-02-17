@@ -33,6 +33,11 @@ ForgBaseLib::FrgBase_TabWidget::FrgBase_TabWidget
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(CloseMyTabSlot(int)));
 }
 
+ForgBaseLib::FrgBase_TabWidget::~FrgBase_TabWidget()
+{
+	FreePointer(theTabBar_);
+}
+
 void ForgBaseLib::FrgBase_TabWidget::ShowTabWidget(QWidget * widget, const QString& title)
 {
 	if (currentWidget() == widget)

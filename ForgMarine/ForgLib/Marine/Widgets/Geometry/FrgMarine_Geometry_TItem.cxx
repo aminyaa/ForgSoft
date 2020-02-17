@@ -13,3 +13,9 @@ ForgMarineLib::FrgMarine_Geometry_TItem::FrgMarine_Geometry_TItem
 	theParametricModels_ = new FrgMarine_GeomPModels_TItem("Parametric Models", this, parentTree);
 	theParts_ = new FrgMarine_GeomParts_TItem("Parts", this, parentTree);
 }
+
+ForgMarineLib::FrgMarine_Geometry_TItem::~FrgMarine_Geometry_TItem()
+{
+	FreePointer(theParts_);
+	FreePointer(theParametricModels_);
+}

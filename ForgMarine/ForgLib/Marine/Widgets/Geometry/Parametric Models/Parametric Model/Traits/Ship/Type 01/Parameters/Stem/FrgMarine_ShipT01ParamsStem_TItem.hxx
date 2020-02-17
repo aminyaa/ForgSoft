@@ -35,6 +35,8 @@ public:
 		FrgMarine_ShipT01Params_TItem* parametersTItem
 	);
 
+	~FrgMarine_ShipT01ParamsStem_TItem();
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetBowRounding() const { return theBowRounding_; }
 	void SetBowRounding(ForgBaseLib::FrgBase_PrptsVrntDouble* bowRounding) { theBowRounding_ = bowRounding; }
 
