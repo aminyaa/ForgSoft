@@ -1,4 +1,4 @@
-#include <FrgBase_DlgRenameTItem.hxx>
+#include <FrgBase_DlgRename.hxx>
 #include <FrgBase_MainWindow.hxx>
 
 #include <QtWidgets/QVBoxLayout>
@@ -9,7 +9,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QShowEvent>
 
-ForgBaseLib::FrgBase_DlgRenameTItem::FrgBase_DlgRenameTItem
+ForgBaseLib::FrgBase_DlgRename::FrgBase_DlgRename
 (
 	const QString& currentName,
 	FrgBase_MainWindow* parentMainWindow
@@ -22,7 +22,18 @@ ForgBaseLib::FrgBase_DlgRenameTItem::FrgBase_DlgRenameTItem
 	setupLayout();
 }
 
-void ForgBaseLib::FrgBase_DlgRenameTItem::setupLayout()
+ForgBaseLib::FrgBase_DlgRename::~FrgBase_DlgRename()
+{
+	FreePointer(theCloseButton_);
+	FreePointer(theOKButton_);
+	FreePointer(theNameLineEdit_);
+	FreePointer(theNameLabel_);
+	FreePointer(theNameLayout_);
+	FreePointer(theButtonsLayout_);
+	FreePointer(theMainLayout_);
+}
+
+void ForgBaseLib::FrgBase_DlgRename::setupLayout()
 {
 	theMainLayout_ = new QVBoxLayout;
 	theButtonsLayout_ = new QHBoxLayout;
@@ -54,7 +65,7 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::setupLayout()
 	this->adjustSize();
 }
 
-void ForgBaseLib::FrgBase_DlgRenameTItem::keyPressEvent(QKeyEvent* event)
+void ForgBaseLib::FrgBase_DlgRename::keyPressEvent(QKeyEvent* event)
 {
 	switch (event->key())
 	{
@@ -64,19 +75,12 @@ void ForgBaseLib::FrgBase_DlgRenameTItem::keyPressEvent(QKeyEvent* event)
 	}
 }
 
-void ForgBaseLib::FrgBase_DlgRenameTItem::showEvent(QShowEvent*)
-{
-	//std::cout << "ParentMainWindow = " << GetParentMainWindow() << std::endl;
-	//this->move(x() + (GetParentMainWindow()->width() - this->width()) / 2, y() + (GetParentMainWindow()->height() - this->height()) / 2);
-	//move(x() - (GetParentMainWindow()->geometry().center().x()), y() - (GetParentMainWindow()->geometry().center().y()));
-}
-
-QString ForgBaseLib::FrgBase_DlgRenameTItem::GetLineEditName() const
+QString ForgBaseLib::FrgBase_DlgRename::GetLineEditName() const
 {
 	return theNameLineEdit_->text();
 }
 
-void ForgBaseLib::FrgBase_DlgRenameTItem::onOK()
+void ForgBaseLib::FrgBase_DlgRename::onOK()
 {
 	if (theNameLineEdit_->text().simplified() == "")
 		return;

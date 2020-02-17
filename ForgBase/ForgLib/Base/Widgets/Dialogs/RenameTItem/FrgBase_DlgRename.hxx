@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgBase_DlgRenameTItem_header
-#define _FrgBase_DlgRenameTItem_Header
+#ifndef _FrgBase_DlgRename_TItem_header
+#define _FrgBase_DlgRename_TItem_Header
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_Dlg.hxx>
@@ -19,7 +19,7 @@ BeginForgBaseLib
 
 class FrgBase_MainWindow;
 
-class FORGBASE_EXPORT FrgBase_DlgRenameTItem
+class FORGBASE_EXPORT FrgBase_DlgRename
 	: public FrgBase_Dlg
 {
 	Q_OBJECT
@@ -42,7 +42,13 @@ private:
 
 public:
 
-	FrgBase_DlgRenameTItem(const QString& currentName, FrgBase_MainWindow* parentMainWindow);
+	FrgBase_DlgRename
+	(
+		const QString& currentName,
+		FrgBase_MainWindow* parentMainWindow
+	);
+
+	~FrgBase_DlgRename();
 
 	QString GetLineEditName() const;
 
@@ -53,9 +59,8 @@ private slots:
 protected:
 
 	void keyPressEvent(QKeyEvent* event) override;
-	void showEvent(QShowEvent*) override;
 };
 
 EndForgBaseLib
 
-#endif // !_FrgBase_DlgRenameTItem_header
+#endif // !_FrgBase_DlgRename_TItem_header

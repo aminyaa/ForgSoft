@@ -10,3 +10,8 @@ ForgBaseLib::FrgBase_Dlg::FrgBase_Dlg
 {
 
 }
+
+ForgBaseLib::FrgBase_Dlg::~FrgBase_Dlg()
+{
+	theParentMainWindow_ = NullPtr;
+}

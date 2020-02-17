@@ -23,7 +23,12 @@ private:
 
 public:
 	
-	FrgBase_Dlg(FrgBase_MainWindow* parentMainWindow);
+	FrgBase_Dlg
+	(
+		FrgBase_MainWindow* parentMainWindow
+	);
+
+	~FrgBase_Dlg();
 
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 };
