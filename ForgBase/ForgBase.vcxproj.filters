@@ -265,6 +265,15 @@
     <Filter Include="ForgLib\Base\Widgets\Dialogs\DeleteTItem">
       <UniqueIdentifier>{bf7a9f52-9683-45ff-80ba-f88fe9d09e95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItems">
+      <UniqueIdentifier>{c41f69f6-ae44-45cf-ac72-bc3005a90387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems">
+      <UniqueIdentifier>{7e3cfc6a-6623-4e11-9d9a-c578a13a2a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog">
+      <UniqueIdentifier>{3fcd6cbb-759e-4666-a946-74acb787a0db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -438,6 +447,15 @@
     <ClCompile Include="ForgLib\Base\Widgets\Dialogs\DeleteTItem\FrgBase_DlgDelete.cxx">
       <Filter>ForgLib\Base\Widgets\Dialogs\DeleteTItem</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItems\FrgBase_PrptsVrntSelectTItems.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItems</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\FrgBase_PrptsWdgSelectTItems.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog\FrgBase_PrptsWdgSelectTItems_Dlg.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -599,6 +617,15 @@
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValue.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\FrgBase_PrptsWdg_Include.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\FrgBase_PrptsVrnt_Include.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Panel\FrgBase_PropertiesPanelI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Panel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx">
@@ -699,6 +726,15 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Dialogs\DeleteTItem\FrgBase_DlgDelete.hxx">
       <Filter>ForgLib\Base\Widgets\Dialogs\DeleteTItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItems\FrgBase_PrptsVrntSelectTItems.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItems</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\FrgBase_PrptsWdgSelectTItems.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog\FrgBase_PrptsWdgSelectTItems_Dlg.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

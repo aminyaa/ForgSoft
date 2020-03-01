@@ -44,6 +44,7 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 			parentTree->addTopLevelItem(this);
 
 	FormPropertiesPanel();
+	thePropertiesPanel_->AddRow<FrgBase_PrptsVrntString>(theTItemName_);
 }
 
 ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()

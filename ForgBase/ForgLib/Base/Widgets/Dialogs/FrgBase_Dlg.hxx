@@ -11,7 +11,7 @@ BeginForgBaseLib
 
 class FrgBase_MainWindow;
 
-class FrgBase_Dlg
+class FORGBASE_EXPORT FrgBase_Dlg
 	: public QDialog
 	, public FrgBase_Object
 {

@@ -177,7 +177,8 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 	{
 		theLastRightClickedTItem_ = item;
 		if (item->GetContextMenu())
-			item->GetContextMenu()->exec(globalPos);
+			if (item->GetContextMenu()->actions().size() > 2)
+				item->GetContextMenu()->exec(globalPos);
 	}
 }
 

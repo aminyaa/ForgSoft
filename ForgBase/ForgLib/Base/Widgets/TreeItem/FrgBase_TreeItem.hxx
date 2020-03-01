@@ -33,6 +33,7 @@ protected:
 	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
 	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 	FrgBase_Menu* theContextMenu_ = NullPtr;
+	bool theTItemIsClickable_ = true;
 
 	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
 
@@ -62,6 +63,8 @@ public:
 	QList<FrgBase_TreeItem*> GetChildren();
 	FrgBase_TreeItem* GetChild(const QString& name);
 	bool IsSameNameTItem(const QString& name);
+	bool IsTItemClickable() const { return theTItemIsClickable_; }
+	void SetTItemClickable(bool condition) { theTItemIsClickable_ = condition; }
 
 	virtual void DoAfterConstruct() {}
 
