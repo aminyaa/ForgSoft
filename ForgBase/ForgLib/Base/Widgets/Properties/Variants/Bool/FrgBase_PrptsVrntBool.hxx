@@ -9,6 +9,8 @@
 
 BeginForgBaseLib
 
+class FrgBase_PrptsWdgBool;
+
 class FORGBASE_EXPORT FrgBase_PrptsVrntBool
 	: public QObject
 	, public FrgBase_PrptsVrntOneValue<bool, false>
@@ -25,6 +27,8 @@ public:
 		const char* prefix = "",
 		const char* suffix = ""
 	);
+
+	typedef FrgBase_PrptsWdgBool VariantWidget;
 
 protected:
 

@@ -12,7 +12,7 @@
 ForgBaseLib::FrgBase_PrptsWdgBool::FrgBase_PrptsWdgBool
 (
 	QWidget * parent,
-	FrgBase_PrptsVrntBool * variant
+	FrgBase_PrptsVrnt * variant
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {

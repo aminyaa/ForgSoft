@@ -7,6 +7,8 @@
 
 BeginForgBaseLib
 
+class FrgBase_PrptsVrnt;
+
 class FORGBASE_EXPORT FrgBase_PropertiesPanel
 	: public QTableWidget
 {
@@ -23,6 +25,11 @@ public:
 	~FrgBase_PropertiesPanel();
 
 	QWidget* GetParentWidget() const { return theParentWidget_; }
+
+	template<typename T>
+	void AddRow(FrgBase_PrptsVrnt* frgVairant, int row);
+	template<typename T>
+	void AddRow(FrgBase_PrptsVrnt* frgVairant);
 
 signals:
 
@@ -42,5 +49,7 @@ public:
 };
 
 EndForgBaseLib
+
+#include <FrgBase_PropertiesPanelI.hxx>
 
 #endif // !_FrgBase_PropertiesPanel_Header

@@ -10,7 +10,7 @@ class QLabel;
 
 BeginForgBaseLib
 
-class FrgBase_PrptsVrntString;
+class FrgBase_PrptsVrnt;
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgString
 	: public FrgBase_PrptsWdgOneValue<QString, false>
@@ -22,7 +22,7 @@ public:
 	FrgBase_PrptsWdgString
 	(
 		QWidget* parent = nullptr,
-		FrgBase_PrptsVrntString* variant = nullptr
+		FrgBase_PrptsVrnt* variant = nullptr
 	);
 
 	~FrgBase_PrptsWdgString();

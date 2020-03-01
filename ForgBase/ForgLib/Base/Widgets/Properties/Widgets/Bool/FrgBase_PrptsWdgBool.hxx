@@ -10,11 +10,9 @@ class QLabel;
 
 BeginForgBaseLib
 
-class FrgBase_PropertiesPanel;
+class FrgBase_PrptsVrnt;
 
-class FORGBASE_EXPORT FrgBase_PrptsVrntBool;
-
-class FrgBase_PrptsWdgBool
+class FORGBASE_EXPORT FrgBase_PrptsWdgBool
 	: public FrgBase_PrptsWdgOneValue<bool, false>
 {
 
@@ -25,7 +23,7 @@ public:
 	FrgBase_PrptsWdgBool
 	(
 		QWidget* parent = nullptr,
-		FrgBase_PrptsVrntBool* variant = nullptr
+		FrgBase_PrptsVrnt* variant = nullptr
 	);
 
 	~FrgBase_PrptsWdgBool();

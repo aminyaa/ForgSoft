@@ -10,7 +10,7 @@ class QLabel;
 
 BeginForgBaseLib
 
-class FrgBase_PrptsVrntDouble;
+class FrgBase_PrptsVrnt;
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgDouble
 	: public FrgBase_PrptsWdgOneValue<double>
@@ -22,7 +22,7 @@ public:
 	FrgBase_PrptsWdgDouble
 	(
 		QWidget* parent = nullptr,
-		FrgBase_PrptsVrntDouble* variant = nullptr
+		FrgBase_PrptsVrnt* variant = nullptr
 	);
 
 	~FrgBase_PrptsWdgDouble();

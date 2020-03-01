@@ -12,7 +12,7 @@
 ForgBaseLib::FrgBase_PrptsWdgString::FrgBase_PrptsWdgString
 (
 	QWidget* parent /* = nullptr */,
-	FrgBase_PrptsVrntString* variant /* = nullptr */
+	FrgBase_PrptsVrnt* variant /* = nullptr */
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {

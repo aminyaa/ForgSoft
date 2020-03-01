@@ -10,7 +10,7 @@
 ForgBaseLib::FrgBase_PrptsWdgDouble::FrgBase_PrptsWdgDouble
 (
 	QWidget* parent /* = nullptr */,
-	FrgBase_PrptsVrntDouble* variant /* = nullptr */
+	FrgBase_PrptsVrnt* variant /* = nullptr */
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {
@@ -84,32 +84,32 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::SetValue(const double & value)
 
 const double & ForgBaseLib::FrgBase_PrptsWdgDouble::GetMinimumValue() const
 {
-	return theVariant_->GetMinimumValue();
+	return dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->GetMinimumValue();
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::SetMinimumValue(const double & value)
 {
-	theVariant_->SetMinimumValue(value);
+	dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->SetMinimumValue(value);
 }
 
 const double & ForgBaseLib::FrgBase_PrptsWdgDouble::GetMaximumValue() const
 {
-	return theVariant_->GetMaximumValue();
+	return dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->GetMaximumValue();
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::SetMaxmimumValue(const double & value)
 {
-	theVariant_->SetMaximumValue(value);
+	dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->SetMaximumValue(value);
 }
 
 const double & ForgBaseLib::FrgBase_PrptsWdgDouble::GetStepValue() const
 {
-	return theVariant_->GetStepValue();
+	return dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->GetStepValue();
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::SetStepValue(const double & stepValue)
 {
-	theVariant_->SetStepValue(stepValue);
+	dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->SetStepValue(stepValue);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgDouble::SetPrefix(const char * prefix)

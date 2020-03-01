@@ -3,11 +3,30 @@
 #define _FrgBase_PrptsVrntOneValue_Header
 
 #include <FrgBase_Global.hxx>
+#include <FrgBase_Object.hxx>
 
 BeginForgBaseLib
 
+class FrgBase_PrptsVrnt
+	: public FrgBase_Object
+{
+
+public:
+
+	FrgBase_PrptsVrnt() {}
+
+	virtual ~FrgBase_PrptsVrnt() {}
+
+	virtual const char* GetDisplayName() const { return ""; }
+	virtual const char* GetPrefix() const { return ""; }
+	virtual void SetPrefix(const char* prefix) {}
+	virtual const char* GetSuffix() const { return ""; }
+	virtual void SetSuffix(const char* suffix) {}
+};
+
 template <typename Type, bool IsBounded = true>
 class FrgBase_PrptsVrntOneValue
+	: public FrgBase_PrptsVrnt
 {
 
 public:
@@ -35,7 +54,7 @@ public:
 
 	virtual ~FrgBase_PrptsVrntOneValue() {}
 
-	const char* GetDisplayName() const;
+	const char* GetDisplayName() const override;
 	void SetDisplayName(const char* name);
 
 	const Type& GetValue() const;
@@ -59,10 +78,10 @@ public:
 	template <typename = typename std::enable_if_t<IsBounded>>
 	void SetStepValue(const Type& stepValue);
 
-	const char* GetPrefix() const;
-	void SetPrefix(const char* prefix);
-	const char* GetSuffix() const;
-	void SetSuffix(const char* suffix);
+	const char* GetPrefix() const override;
+	void SetPrefix(const char* prefix) override;
+	const char* GetSuffix() const override;
+	void SetSuffix(const char* suffix) override;
 
 	void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
 

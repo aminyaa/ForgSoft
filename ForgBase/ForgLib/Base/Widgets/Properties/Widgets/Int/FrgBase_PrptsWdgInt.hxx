@@ -12,7 +12,7 @@ class QObject;
 
 BeginForgBaseLib
 
-class FrgBase_PrptsVrntInt;
+class FrgBase_PrptsVrnt;
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgInt
 	: public FrgBase_PrptsWdgOneValue<int>
@@ -22,8 +22,9 @@ class FORGBASE_EXPORT FrgBase_PrptsWdgInt
 public:
 
 	FrgBase_PrptsWdgInt
-	(QWidget* parent = nullptr,
-		FrgBase_PrptsVrntInt* variant = nullptr
+	(
+		QWidget* parent = nullptr,
+		FrgBase_PrptsVrnt* variant = nullptr
 	);
 
 	~FrgBase_PrptsWdgInt();

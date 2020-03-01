@@ -1,18 +1,11 @@
 #include <FrgBase_PropertiesPanel.hxx>
-#include <FrgBase_PrptsWdgDouble.hxx>
-#include <FrgBase_PrptsWdgInt.hxx>
-#include <FrgBase_PrptsWdgString.hxx>
-#include <FrgBase_PrptsWdgBool.hxx>
-#include <FrgBase_PrptsVrntDouble.hxx>
-#include <FrgBase_PrptsVrntInt.hxx>
-#include <FrgBase_PrptsVrntString.hxx>
-#include <FrgBase_PrptsVrntBool.hxx>
+#include <FrgBase_PrptsVrnt_Include.hxx>
+#include <FrgBase_PrptsWdg_Include.hxx>
 
 #include <QtCore/QMetaObject>
 #include <QtCore/QMetaProperty>
 #include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QEvent>
 
@@ -24,7 +17,13 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 	if (parentObject == nullptr)
 		return;
 
-	FormTableData();
+	this->setSelectionMode(QAbstractItemView::SingleSelection);
+	this->setColumnCount(2);
+	this->setHorizontalHeaderLabels({ "Property", "Value" });
+
+	this->setHidden(true);
+
+	//FormTableData();
 }
 
 ForgBaseLib::FrgBase_PropertiesPanel::~FrgBase_PropertiesPanel()
@@ -35,13 +34,8 @@ ForgBaseLib::FrgBase_PropertiesPanel::~FrgBase_PropertiesPanel()
 
 void ForgBaseLib::FrgBase_PropertiesPanel::FormTableData()
 {
-	this->setSelectionMode(QAbstractItemView::SingleSelection);
-
 	const QMetaObject *metaobject = theParentObject_->metaObject();
 	int nbRow = metaobject->propertyCount() - metaobject->propertyOffset();
-	int nbColumn = 2;
-
-	this->setColumnCount(nbColumn);
 
 	int I;
 	if (metaobject->indexOfProperty("TItemName") - metaobject->propertyOffset() == 0)
@@ -56,8 +50,6 @@ void ForgBaseLib::FrgBase_PropertiesPanel::FormTableData()
 		this->cellWidget(0, 1)->setEnabled(false);
 		I = 1;
 	}
-
-	this->setHorizontalHeaderLabels({ "Property", "Value" });
 
 	for (int i = 0; i < nbRow; i++, I++)
 	{
@@ -82,14 +74,6 @@ void ForgBaseLib::FrgBase_PropertiesPanel::FormTableData()
 		}
 
 	}
-
-	this->resizeColumnsToContents();
-	this->resizeRowsToContents();
-
-	this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
-	this->horizontalHeader()->setStretchLastSection(true);
-
-	this->setHidden(true);
 }
 
 void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, int role, const QVariant & value)
@@ -150,6 +134,19 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, int role, const
 
 		QTableWidgetItem* item = new QTableWidgetItem;
 		FrgBase_PrptsWdgBool* myWidget = new FrgBase_PrptsWdgBool(this, myVariant);
+		this->setItem(row, 1, item);
+		this->setCellWidget(row, 1, myWidget);
+		myWidget->installEventFilter(this);
+	}
+	else if (value.canConvert<FrgBase_PrptsVrntSelectTItems*>())
+	{
+		FrgBase_PrptsVrntSelectTItems* myVariant = qvariant_cast<FrgBase_PrptsVrntSelectTItems*>(value);
+
+		QTableWidgetItem* propertyName = new QTableWidgetItem(myVariant->GetDisplayName());
+		this->setItem(row, 0, propertyName);
+
+		QTableWidgetItem* item = new QTableWidgetItem;
+		FrgBase_PrptsWdgSelectTItems* myWidget = new FrgBase_PrptsWdgSelectTItems(this, myVariant);
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 		myWidget->installEventFilter(this);

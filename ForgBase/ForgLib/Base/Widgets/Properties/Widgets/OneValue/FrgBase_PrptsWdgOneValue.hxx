@@ -9,6 +9,8 @@
 
 BeginForgBaseLib
 
+class FrgBase_PrptsVrnt;
+
 template <typename Type, bool IsBounded = true>
 class FrgBase_PrptsWdgOneValue
 	: public QWidget
@@ -19,7 +21,7 @@ public:
 	FrgBase_PrptsWdgOneValue
 	(
 		QWidget* parent = nullptr,
-		FrgBase_PrptsVrntOneValue<Type, IsBounded>* variant = nullptr
+		FrgBase_PrptsVrnt* variant = nullptr
 	);
 
 	~FrgBase_PrptsWdgOneValue();
@@ -37,7 +39,7 @@ public:
 
 protected:
 
-	FrgBase_PrptsVrntOneValue<Type, IsBounded>* theVariant_ = nullptr;
+	FrgBase_PrptsVrnt* theVariant_ = nullptr;
 };
 
 EndForgBaseLib

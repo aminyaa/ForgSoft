@@ -9,6 +9,8 @@
 
 BeginForgBaseLib
 
+class FrgBase_PrptsWdgInt;
+
 class FORGBASE_EXPORT FrgBase_PrptsVrntInt
 	: public QObject
 	, public FrgBase_PrptsVrntOneValue<int>
@@ -28,6 +30,8 @@ public:
 		const char* prefix = "",
 		const char* suffix = ""
 	);
+
+	typedef FrgBase_PrptsWdgInt VariantWidget;
 
 protected:
 

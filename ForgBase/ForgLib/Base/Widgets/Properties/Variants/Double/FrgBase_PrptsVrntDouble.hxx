@@ -9,6 +9,8 @@
 
 BeginForgBaseLib
 
+class FrgBase_PrptsWdgDouble;
+
 class FORGBASE_EXPORT FrgBase_PrptsVrntDouble
 	: public QObject
 	, public FrgBase_PrptsVrntOneValue<double>
@@ -28,6 +30,8 @@ public:
 		const char* prefix = "",
 		const char* suffix = ""
 	);
+
+	typedef FrgBase_PrptsWdgDouble VariantWidget;
 
 protected:
 
