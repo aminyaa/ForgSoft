@@ -26,6 +26,8 @@ public:
 
 	~FrgMarine_Tree();
 
+	FrgMarine_Geometry_TItem* GetGeometryTItem() const { return theGeometry_; }
+
 	void FormTree() override;
 
 private:

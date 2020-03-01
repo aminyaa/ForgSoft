@@ -26,6 +26,9 @@ public:
 
 	~FrgMarine_Geometry_TItem();
 
+	FrgMarine_GeomPModels_TItem* GetParametricModelsTItem() const { return theParametricModels_; }
+	FrgMarine_GeomParts_TItem* GetPartsTItem() const { return theParts_; }
+
 private:
 
 	FrgMarine_GeomPModels_TItem* theParametricModels_ = NullPtr;

@@ -12,8 +12,6 @@ namespace tnbLib
 
 BeginForgMarineLib
 
-class FrgMarine_GeomPModelShipT01_TItem;
-
 class FORGMARINE_EXPORT FrgMarine_GeomPModels_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {

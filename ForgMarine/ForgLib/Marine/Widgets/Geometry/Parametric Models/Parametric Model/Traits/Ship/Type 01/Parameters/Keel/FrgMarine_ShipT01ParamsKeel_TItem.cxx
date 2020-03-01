@@ -40,8 +40,10 @@ ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::FrgMarine_ShipT01ParamsKeel_TI
 	connect(theRiseSlope_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(RiseSlopeValueChangedSlot()));
 	connect(theTransomSlope_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(TransomSlopeValueChangedSlot()));
 
-	//thePropertiesPanel_ = new ForgBaseLib::FrgBase_PropertiesPanel(GetParentMainWindow(), dynamic_cast<QObject*>(this));
-	FormPropertiesPanel();
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(thePosition_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theRisePoint_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theRiseSlope_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theTransomSlope_);
 }
 
 ForgMarineLib::FrgMarine_ShipT01ParamsKeel_TItem::~FrgMarine_ShipT01ParamsKeel_TItem()

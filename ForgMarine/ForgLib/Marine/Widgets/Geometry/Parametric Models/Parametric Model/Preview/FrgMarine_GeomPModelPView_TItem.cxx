@@ -114,7 +114,16 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FormFastDiscreteParams()
 	theFastDiscrete_ControlSurfaceDeflection_ = new ForgBaseLib::FrgBase_PrptsVrntBool
 	("Control Surface Deflection", theFastDiscreteParams_->ControlSurfaceDeflection);
 
-	thePropertiesPanel_ = new ForgBaseLib::FrgBase_PropertiesPanel(GetParentMainWindow(), this);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFastDiscrete_Angle_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFastDiscrete_Deflection_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFastDiscrete_MinSize_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_InParallel_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_Relative_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_AdaptiveMin_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_InternalVerticesMode_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_ControlSurfaceDeflection_);
+	//FormPropertiesPanel();
+	//thePropertiesPanel_ = new ForgBaseLib::FrgBase_PropertiesPanel(GetParentMainWindow(), this);
 }
 
 void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::ConnectVrntsToSlots()
