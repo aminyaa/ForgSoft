@@ -1,4 +1,5 @@
 #include <FrgBase_PrptsWdgSelectTItems_Dlg.hxx>
+#include <FrgBase_PrptsWdgSelectTItems_Tree.hxx>
 #include <FrgBase_TreeItem.hxx>
 
 #include <QtWidgets/QTreeWidget>
@@ -6,16 +7,17 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 #include <QtGui/QKeyEvent>
-#include <QtWidgets/QHeaderView>
 
 ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::FrgBase_PrptsWdgSelectTItems_Dlg
 (
 	const QString & dialogTitle,
 	FrgBase_MainWindow * parentMainWindow,
-	FrgBase_TreeItem* parentTItem
+	FrgBase_TreeItem* parentTItem,
+	std::vector<QTreeWidgetItem*> selectedTItems
 )
 	: FrgBase_Dlg(parentMainWindow)
 	, theParentTItem_(parentTItem)
+	, theListOfSelectedTItems_(selectedTItems)
 {
 	this->setWindowTitle(dialogTitle);
 
@@ -38,41 +40,13 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 	theButtonsLayout_ = new QHBoxLayout;
 
 	theOKButton_ = new QPushButton("OK");
+	theOKButton_->setEnabled(false);
 	theCancelButton_ = new QPushButton("Cancel");
 	theButtonsLayout_->addStretch(1);
 	theButtonsLayout_->addWidget(theOKButton_);
 	theButtonsLayout_->addWidget(theCancelButton_);
 
-	theTree_ = new QTreeWidget();
-	theTree_->header()->setSectionResizeMode(0, QHeaderView::Interactive);
-	theTree_->setSelectionMode(QAbstractItemView::ExtendedSelection);
-	QString style = "QTreeView::branch:has-siblings:!adjoins-item {"
-		"border-image:url(:/Icons/TreeStyle/stylesheet-vline.png)0;"
-		"}"
-
-		"QTreeView::branch:has-siblings:adjoins-item {"
-		"    border-image: url(:/Icons/TreeStyle/stylesheet-branch-more.png) 0;"
-		"}"
-
-		"QTreeView::branch:!has-children:!has-siblings:adjoins-item {"
-		"    border-image: url(:/Icons/TreeStyle/stylesheet-branch-end.png) 0;"
-		"}"
-
-		"QTreeView::branch:has-children:!has-siblings:closed,"
-		"QTreeView::branch:closed:has-children:has-siblings {"
-		"        border-image: none;"
-		"        image: url(:/Icons/TreeStyle/User-Interface-Plus-icon.png);"
-		"}"
-
-		"QTreeView::branch:open:has-children:!has-siblings,"
-		"QTreeView::branch:open:has-children:has-siblings  {"
-		"        border-image: none;"
-		"        image: url(:/Icons/TreeStyle/User-Interface-Minus-icon.png);"
-		"}";
-
-	theTree_->setStyleSheet(style);
-
-	theMapTreeToSelectionTree_.clear();
+	theTree_ = new FrgBase_PrptsWdgSelectTItems_Tree();
 
 	QTreeWidgetItemIterator it(theParentTItem_);
 	while (*it)
@@ -80,6 +54,7 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 		auto item = new QTreeWidgetItem();
 		item->setText(0, (*it)->text(0));
 		item->setIcon(0, (*it)->icon(0));
+		item->setCheckState(0, Qt::Unchecked);
 
 		theMapTreeToSelectionTree_.insert(std::pair<QTreeWidgetItem*, QTreeWidgetItem*>((*it), item));
 		theMapSelectionTreeToTree_.insert(std::pair<QTreeWidgetItem*, QTreeWidgetItem*>(item, (*it)));
@@ -90,6 +65,21 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 			auto parentOfIT = theMapTreeToSelectionTree_.find((*it)->parent());
 			if (parentOfIT != theMapTreeToSelectionTree_.end())
 				theMapTreeToSelectionTree_.at((*it)->parent())->addChild(item);
+			else
+			{
+				theMapTreeToSelectionTree_.erase((*it));
+				theMapSelectionTreeToTree_.erase(item);
+				delete item;
+			}
+		}
+
+		for (int iSelectedTItem = 0; iSelectedTItem < theListOfSelectedTItems_.size(); iSelectedTItem++)
+		{
+			if (theListOfSelectedTItems_[iSelectedTItem] == (*it))
+			{
+				theTree_->SetCheckState(item, Qt::Checked);
+				break;
+			}
 		}
 
 		++it;
@@ -102,6 +92,7 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 
 	QObject::connect(theOKButton_, SIGNAL(clicked()), this, SLOT(onOK()));
 	QObject::connect(theCancelButton_, SIGNAL(clicked()), this, SLOT(reject()));
+	QObject::connect(theTree_, SIGNAL(itemSelectionChanged()), this, SLOT(ItemSelectionChangedSlot()));
 
 	theOKButton_->setFocus();
 	this->setModal(true);
@@ -111,13 +102,28 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 
 void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::onOK()
 {
-	theListOfSelectedTItems_.clear();
+	auto listOfTItems = theTree_->GetSelectedItems();
 
-	auto listOfTItems = theTree_->selectedItems();
-	for (int i = 0; i < listOfTItems.size(); i++)
-		theListOfSelectedTItems_.push_back(theMapSelectionTreeToTree_.at(listOfTItems[i]));
-	
-	accept();
+	if (listOfTItems.size() == 0 && theListOfSelectedTItems_.size() == 0)
+	{
+		reject();
+		return;
+	}
+	else if (theListOfSelectedTItems_.size() > 0 && listOfTItems.size() == 0)
+	{
+		theListOfSelectedTItems_.clear();
+		accept();
+		return;
+	}
+	else
+	{
+		theListOfSelectedTItems_.clear();
+
+		for (int i = 0; i < listOfTItems.size(); i++)
+			theListOfSelectedTItems_.push_back(theMapSelectionTreeToTree_.at(listOfTItems[i]));
+
+		accept();
+	}
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::keyPressEvent(QKeyEvent * event)
@@ -128,4 +134,9 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::keyPressEvent(QKeyEvent * ev
 		reject();
 		break;
 	}
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::ItemSelectionChangedSlot()
+{
+	theOKButton_->setEnabled(true);
 }

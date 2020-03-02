@@ -3,6 +3,7 @@
 #include <FrgMarine_Tree.hxx>
 #include <FrgMarine_Geometry_TItem.hxx>
 #include <FrgMarine_GeomParts_TItem.hxx>
+#include <FrgMarine_GeomPModels_TItem.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 
 ForgMarineLib::FrgMarine_Scene3D_TItem::FrgMarine_Scene3D_TItem
@@ -16,7 +17,7 @@ ForgMarineLib::FrgMarine_Scene3D_TItem::FrgMarine_Scene3D_TItem
 	theScene_->SetLogoText("Tonb");
 
 	theSelectTItems_ = new ForgBaseLib::FrgBase_PrptsVrntSelectTItems
-	("Select Parts", dynamic_cast<FrgMarine_Tree*>(GetParentTree())->GetGeometryTItem()->GetPartsTItem());
+	("Select Parts", dynamic_cast<FrgMarine_Tree*>(GetParentTree())->GetGeometryTItem()->GetParametricModelsTItem());
 
 	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntSelectTItems>(theSelectTItems_);
 }

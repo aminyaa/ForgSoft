@@ -8,13 +8,13 @@
 class QVBoxLayout;
 class QHBoxLayout;
 class QPushButton;
-class QTreeWidget;
 class QTreeWidgetItem;
 
 BeginForgBaseLib
 
 class FrgBase_MainWindow;
 class FrgBase_TreeItem;
+class FrgBase_PrptsWdgSelectTItems_Tree;
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgSelectTItems_Dlg
 	: public FrgBase_Dlg
@@ -28,7 +28,7 @@ private:
 	QPushButton* theOKButton_ = NullPtr;
 	QPushButton* theCancelButton_ = NullPtr;
 
-	QTreeWidget* theTree_ = NullPtr;
+	FrgBase_PrptsWdgSelectTItems_Tree* theTree_ = NullPtr;
 	FrgBase_TreeItem* theParentTItem_ = NullPtr;
 	std::vector<QTreeWidgetItem*> theListOfSelectedTItems_;
 	std::map<QTreeWidgetItem*, QTreeWidgetItem*> theMapTreeToSelectionTree_;
@@ -42,7 +42,8 @@ public:
 	(
 		const QString& dialogTitle,
 		FrgBase_MainWindow* parentMainWindow,
-		FrgBase_TreeItem* parentTItem
+		FrgBase_TreeItem* parentTItem,
+		std::vector<QTreeWidgetItem*> selectedTItems
 	);
 
 	~FrgBase_PrptsWdgSelectTItems_Dlg();
@@ -52,6 +53,7 @@ public:
 private slots:
 
 	void onOK();
+	void ItemSelectionChangedSlot();
 
 protected:
 

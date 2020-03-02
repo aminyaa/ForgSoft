@@ -118,7 +118,8 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::OnButtonClickedSlot()
 		(
 			"Select Items",
 			dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_)->GetValue()->GetParentMainWindow(),
-			dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_)->GetValue()
+			dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_)->GetValue(),
+			dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_)->GetSelectedTItems()
 			);
 
 	if (selectTItemsDlg->exec() == QDialog::Accepted)
@@ -130,15 +131,15 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::OnButtonClickedSlot()
 			return;
 		}
 
-		if (selectTItemsDlg->GetListOfSelectedTItems().size() == 0)
-			return;
-
 		myVariant->SetSelectedTItems(selectTItemsDlg->GetListOfSelectedTItems());
 
 		QString strList = "";
-		for (int i = 0; i < selectTItemsDlg->GetListOfSelectedTItems().size() - 1; i++)
-			strList += (selectTItemsDlg->GetListOfSelectedTItems()[i]->text(0) + " | ");
-		strList += selectTItemsDlg->GetListOfSelectedTItems()[selectTItemsDlg->GetListOfSelectedTItems().size() - 1]->text(0);
+		if (selectTItemsDlg->GetListOfSelectedTItems().size() > 0)
+		{
+			for (int i = 0; i < selectTItemsDlg->GetListOfSelectedTItems().size() - 1; i++)
+				strList += (selectTItemsDlg->GetListOfSelectedTItems()[i]->text(0) + " | ");
+			strList += selectTItemsDlg->GetListOfSelectedTItems()[selectTItemsDlg->GetListOfSelectedTItems().size() - 1]->text(0);
+		}
 		theListOfSelectedTItemsLabel_->setText(strList);
 	}
 }

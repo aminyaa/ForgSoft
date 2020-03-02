@@ -274,6 +274,9 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog">
       <UniqueIdentifier>{3fcd6cbb-759e-4666-a946-74acb787a0db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree">
+      <UniqueIdentifier>{aad399bc-1488-4ab6-8eaf-0f214e87f1fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -455,6 +458,9 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog\FrgBase_PrptsWdgSelectTItems_Dlg.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree\FrgBase_PrptsWdgSelectTItems_Tree.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -735,6 +741,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog\FrgBase_PrptsWdgSelectTItems_Dlg.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Dialog</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree\FrgBase_PrptsWdgSelectTItems_Tree.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
