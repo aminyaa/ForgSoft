@@ -20,11 +20,6 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
-
-private slots:
-
-	void AddPlotSinXSlot();
-	void AddPlotCosXSlot();
 };
 
 EndForgMarineLib

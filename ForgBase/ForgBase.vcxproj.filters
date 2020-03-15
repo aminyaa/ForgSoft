@@ -277,6 +277,12 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree">
       <UniqueIdentifier>{aad399bc-1488-4ab6-8eaf-0f214e87f1fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Combo">
+      <UniqueIdentifier>{74f190b5-6b19-4ae9-bf51-6b4b0b35e482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Combo">
+      <UniqueIdentifier>{38bc0957-1e5c-4d90-8e4d-1f80896e7387}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -461,6 +467,12 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree\FrgBase_PrptsWdgSelectTItems_Tree.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Combo\FrgBase_PrptsVrntCombo.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Combo\FrgBase_PrptsWdgCombo.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Combo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -744,6 +756,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree\FrgBase_PrptsWdgSelectTItems_Tree.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItems\Tree</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Combo\FrgBase_PrptsVrntCombo.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Combo</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Combo\FrgBase_PrptsWdgCombo.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Combo</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

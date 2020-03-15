@@ -26,17 +26,3 @@ ForgMarineLib::FrgMarine_Plot2D_TItem::FrgMarine_Plot2D_TItem
 
 	GetContextMenu()->addMenu(newPredefinedFunctions);
 }
-
-void ForgMarineLib::FrgMarine_Plot2D_TItem::AddPlotSinXSlot()
-{
-	auto myPlot = dynamic_cast<ForgVisualLib::FrgVisual_Plot2D*>(thePlot_);
-	if (myPlot)
-		myPlot->AddSinX();
-}
-
-void ForgMarineLib::FrgMarine_Plot2D_TItem::AddPlotCosXSlot()
-{
-	auto myPlot = dynamic_cast<ForgVisualLib::FrgVisual_Plot2D*>(thePlot_);
-	if (myPlot)
-		myPlot->AddCosX();
-}
