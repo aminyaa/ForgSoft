@@ -56,6 +56,7 @@
 #define ICONTreeItemPIcon ":/Icons/TreeStyle/P Icon.png"
 #define ICONTreeItemPSubIcon ":/Icons/TreeStyle/P Sub Icon.png"
 #define ICONTreeItemEye ":/Icons/TreeStyle/Eye.png"
+#define ICONTreeItemCircle ":/Icons/TreeStyle/Circle.png"
 
 #define ICONPlot_2D ":/Icons/Plots/2D/Plot2D.png"
 

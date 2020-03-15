@@ -52,5 +52,6 @@
         <file>Icons/TreeStyle/P Icon.png</file>
         <file>Icons/TreeStyle/P Sub Icon.png</file>
         <file>Icons/Plots/2D/Plot2D.png</file>
+        <file>Icons/TreeStyle/Circle.png</file>
     </qresource>
 </RCC>
