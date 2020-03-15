@@ -1,7 +1,7 @@
 #include <FrgVisual_Plot.hxx>
 #include <FrgBase_MainWindow.hxx>
 
-
+#include <vtkContextView.h>
 #include <vtkAutoInit.h>
 
 VTK_MODULE_INIT(vtkRenderingContextOpenGL2)
@@ -15,5 +15,11 @@ ForgVisualLib::FrgVisual_Plot::FrgVisual_Plot
 )
 	: QVTKOpenGLNativeWidget(parentMainWindow)
 {
+	
+}
 
+void ForgVisualLib::FrgVisual_Plot::RenderView() const
+{
+	if (theView_)
+		theView_->Render();
 }

@@ -80,6 +80,36 @@
     <Filter Include="ForgLib\Visual\Plot\2D\TreeItem">
       <UniqueIdentifier>{a85c23bd-1602-46c3-9857-d2ab5db2f4ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools">
+      <UniqueIdentifier>{2ab7e769-89b3-4099-b0df-41bb17ef99cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Legend">
+      <UniqueIdentifier>{0306ea98-e3d7-4e4a-9068-9d92eb06a090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Data Series">
+      <UniqueIdentifier>{343003fa-9533-43e9-8128-6a6fb65112a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style">
+      <UniqueIdentifier>{fb7ebee0-b897-4d9e-91fb-c3b1b32baf6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style">
+      <UniqueIdentifier>{089e057d-214a-4acb-9884-9a4d18998c28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Axes">
+      <UniqueIdentifier>{9d748851-47cc-4c05-92bd-d6c932c0edac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis">
+      <UniqueIdentifier>{f712a6ec-252e-4056-b462-a048bb3121af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis">
+      <UniqueIdentifier>{85125e74-9e30-43e0-a9ca-8d09b1fbc595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity">
+      <UniqueIdentifier>{8f96d74d-84bd-4f03-bab8-8f9c99c43b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title">
+      <UniqueIdentifier>{88b156f2-e556-4eb5-bd17-d77133c10dee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -118,6 +148,33 @@
     <ClCompile Include="ForgLib\Visual\Plot\2D\TreeItem\FrgVisual_Plot2D_TItem.cxx">
       <Filter>ForgLib\Visual\Plot\2D\TreeItem</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Legend\FrgVisual_Plot2DLegend_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Legend</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Data Series\FrgVisual_Plot2DDataSeries_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style\FrgVisual_Plot2DLnStyle_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style\FrgVisual_Plot2DSmblStyle_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\FrgVisual_Plot2DAxes_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis\FrgVisual_Plot2DBtmAxis_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis\FrgVisual_Plot2DLeftAxis_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\FrgVisual_Plot2DAxisEntity_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title\FrgVisual_Plot2DAxisTitle_TItem.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -130,9 +187,6 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Build.hxx">
       <Filter>ForgLib\Visual\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
-      <Filter>ForgLib\Visual\Plot\2D</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Plot\3D\FrgVisual_Plot3D.hxx">
       <Filter>ForgLib\Visual\Plot\3D</Filter>
@@ -158,6 +212,9 @@
     <ClInclude Include="ForgLib\Visual\Plot\FrgVisual_Plot.hxx">
       <Filter>ForgLib\Visual\Plot</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
+      <Filter>ForgLib\Visual\Plot\2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
@@ -174,6 +231,33 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Plot\2D\TreeItem\FrgVisual_Plot2D_TItem.hxx">
       <Filter>ForgLib\Visual\Plot\2D\TreeItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Legend\FrgVisual_Plot2DLegend_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Legend</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Data Series\FrgVisual_Plot2DDataSeries_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style\FrgVisual_Plot2DLnStyle_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style\FrgVisual_Plot2DSmblStyle_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\FrgVisual_Plot2DAxes_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis\FrgVisual_Plot2DBtmAxis_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis\FrgVisual_Plot2DLeftAxis_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\FrgVisual_Plot2DAxisEntity_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Entity</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title\FrgVisual_Plot2DAxisTitle_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

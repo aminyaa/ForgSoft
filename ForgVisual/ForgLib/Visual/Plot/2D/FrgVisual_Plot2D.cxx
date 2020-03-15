@@ -14,7 +14,6 @@
 #include <vtkPen.h>
 #include <vtkContextMouseEvent.h>
 
-
 ForgVisualLib::FrgVisual_Plot2D::FrgVisual_Plot2D
 (
 	ForgBaseLib::FrgBase_MainWindow* parentMainWindow
@@ -28,6 +27,7 @@ void ForgVisualLib::FrgVisual_Plot2D::Init()
 {
 	// Set up the view
 	theView_ = vtkSmartPointer<vtkContextView>::New();
+
 	theView_->GetRenderer()->SetBackground(1.0, 1.0, 1.0);
 
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
@@ -37,28 +37,34 @@ void ForgVisualLib::FrgVisual_Plot2D::Init()
 	theView_->SetRenderWindow(theRenderWindow_);
 
 	theView_->GetInteractor()->Initialize();
-	theView_->Render();
+
+	theChart_ = vtkSmartPointer<vtkChartXY>::New();
+	theView_->GetScene()->AddItem(theChart_);
+	theChart_->ForceAxesToBoundsOn();
+	theChart_->GetAxis(0)->GetGridPen()->SetColor(220, 220, 220);
+	theChart_->GetAxis(1)->GetGridPen()->SetColor(220, 220, 220);
+	
+	RenderView();
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::AddChart
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 (
 	QList<double>& x,
 	QList<double>& y,
-	FrgString xTitle,
-	FrgString yTitle
+	const char* title
 )
 {
-	theTables_.push_back(vtkSmartPointer<vtkTable>::New());
-	auto& table = theTables_.last();
+	//theTables_.push_back(vtkSmartPointer<vtkTable>::New());
+	auto& table = vtkSmartPointer<vtkTable>::New();
 
 	vtkSmartPointer<vtkFloatArray> arrX =
 		vtkSmartPointer<vtkFloatArray>::New();
-	arrX->SetName(xTitle.toStdString().c_str());
+	arrX->SetName("bottom-axis");
 	table->AddColumn(arrX);
 
 	vtkSmartPointer<vtkFloatArray> arrY =
 		vtkSmartPointer<vtkFloatArray>::New();
-	arrY->SetName(yTitle.toStdString().c_str());
+	arrY->SetName(title);
 	table->AddColumn(arrY);
 
 	table->SetNumberOfRows(x.size());
@@ -69,15 +75,15 @@ void ForgVisualLib::FrgVisual_Plot2D::AddChart
 	}
 
 	// Add multiple line plots, setting the colors etc
-	if (theChart_ == NullPtr)
-		theChart_ = vtkSmartPointer<vtkChartXY>::New();
+	//if (theChart_ == NullPtr)
+		//theChart_ = vtkSmartPointer<vtkChartXY>::New();
 
 	theChart_->SetShowLegend(true);
 	theChart_->GetLegend()->SetInline(false);
 	theChart_->GetLegend()->GetLabelProperties()->SetFontFamilyToTimes();
 	//theChart_->GetAxis(vtkAxis::BOTTOM)->SetTitle("x");
 
-	theView_->GetScene()->AddItem(theChart_);
+	//theView_->GetScene()->AddItem(theChart_);
 	vtkPlot* line = theChart_->AddPlot(vtkChart::LINE);
 
 	int high = 255;
@@ -94,8 +100,9 @@ void ForgVisualLib::FrgVisual_Plot2D::AddChart
 	line->SetWidth(1.0);
 	line->SetTooltipLabelFormat("%l: (%x, %y)");
 	line->GetXAxis()->GetLabelProperties()->SetFontFamilyToTimes();
-	line->GetXAxis()->GetLabelProperties()->BoldOn();
 	line->GetXAxis()->GetLabelProperties()->SetFontSize(15);
+	line->GetYAxis()->GetLabelProperties()->SetFontFamilyToTimes();
+	line->GetYAxis()->GetLabelProperties()->SetFontSize(15);
 	line->GetPen()->SetLineType(vtkPen::SOLID_LINE);
 
 	//dynamic_cast<vtkPlotPoints*>(line)->SetMarkerStyle(vtkPlotPoints::SQUARE);
@@ -105,14 +112,35 @@ void ForgVisualLib::FrgVisual_Plot2D::AddChart
 
 	//theChart_->SetSelectionMode(vtkContextScene::SELECTION_ADDITION);
 
-	theView_->Render();
+	theView_->GetRenderWindow()->SetMultiSamples(0);
+	RenderView();
+
+	return line;
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::AddSinX()
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
+(
+	std::vector<double>& x,
+	std::vector<double>& y,
+	const char * title
+)
+{
+	QList<double> Qx, Qy;
+
+	for (int i = 0; i < x.size(); i++)
+	{
+		Qx.push_back(x[i]);
+		Qy.push_back(y[i]);
+	}
+
+	return AddPlot(Qx, Qy, title);
+}
+
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title)
 {
 	QList<double>x, y;
 
-	int nbPts = 200;
+	int nbPts = 50;
 	double dx = 2.0 * 3.1415 / (double)nbPts;
 
 	for (int i = 0; i <= nbPts; i++)
@@ -123,14 +151,14 @@ void ForgVisualLib::FrgVisual_Plot2D::AddSinX()
 		y.push_back(sin(xi));
 	}
 
-	AddChart(x, y, "x", "Sin(x)");
+	return AddPlot(x, y, title);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::AddCosX()
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddCosX(const char* title)
 {
 	QList<double>x, y;
 
-	int nbPts = 200;
+	int nbPts = 50;
 	double dx = 2.0 * 3.1415 / (double)nbPts;
 
 	for (int i = 0; i <= nbPts; i++)
@@ -141,5 +169,32 @@ void ForgVisualLib::FrgVisual_Plot2D::AddCosX()
 		y.push_back(cos(xi));
 	}
 
-	AddChart(x, y, "x", "Cos(x)");
+	return AddPlot(x, y, title);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::SetLegendVisible(bool condition)
+{
+	if (theChart_)
+	{
+		theChart_->SetShowLegend(condition);
+		RenderView();
+	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::SetBottomTitle(const char * title)
+{
+	if (theChart_)
+	{
+		theChart_->GetAxis(vtkAxis::BOTTOM)->SetTitle(title);
+		RenderView();
+	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::SetLeftTitle(const char * title)
+{
+	if (theChart_)
+	{
+		theChart_->GetAxis(vtkAxis::LEFT)->SetTitle(title);
+		RenderView();
+	}
 }

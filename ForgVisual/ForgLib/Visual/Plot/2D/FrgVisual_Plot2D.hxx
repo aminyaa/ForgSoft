@@ -5,6 +5,8 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_Plot.hxx>
 
+class vtkPlot;
+
 BeginForgVisualLib
 
 class FORGVISUAL_EXPORT FrgVisual_Plot2D
@@ -18,11 +20,16 @@ public:
 		ForgBaseLib::FrgBase_MainWindow* parentMainWindow
 	);
 
-	void AddChart(QList<double>& x, QList<double>& y, FrgString xTitle, FrgString yTitle);
+	vtkPlot* AddPlot(QList<double>& x, QList<double>& y,const char* title);
+	vtkPlot* AddPlot(std::vector<double>& x, std::vector<double>& y, const char* title);
 
 	// Add some predefined function such as Sin(x), Cos(x)
-	void AddSinX();
-	void AddCosX();
+	vtkPlot* AddSinX(const char* title);
+	vtkPlot* AddCosX(const char* title);
+
+	void SetLegendVisible(bool condition);
+	void SetBottomTitle(const char* title);
+	void SetLeftTitle(const char* title);
 
 protected:
 

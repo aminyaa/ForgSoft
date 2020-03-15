@@ -39,3 +39,10 @@ void ForgVisualLib::FrgVisual_Plot_TItem::TItemDoubleClickedSlot()
 {
 	ShowTabWidget();
 }
+
+void ForgVisualLib::FrgVisual_Plot_TItem::RenderView() const
+{
+	if (thePlot_)
+		if (thePlot_)
+			thePlot_->RenderView();
+}

@@ -28,6 +28,7 @@ public:
 	void ShowTabWidget();
 
 	FrgVisual_Plot* GetPlot() const { return thePlot_; }
+	void RenderView() const;
 
 protected:
 

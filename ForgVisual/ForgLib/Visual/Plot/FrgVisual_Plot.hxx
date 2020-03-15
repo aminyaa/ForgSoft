@@ -27,6 +27,11 @@ public:
 		ForgBaseLib::FrgBase_MainWindow* parentMainWindow
 	);
 
+	void RenderView() const;
+
+	vtkSmartPointer<vtkContextView> GetView() const { return theView_; }
+	vtkSmartPointer<vtkChartXY> GetChartXY() const { return theChart_; }
+
 protected:
 
 	vtkSmartPointer<vtkContextView> theView_;
