@@ -8,5 +8,6 @@
 #include <FrgBase_PrptsWdgOneValue.hxx>
 #include <FrgBase_PrptsWdgSelectTItems.hxx>
 #include <FrgBase_PrptsWdgString.hxx>
+#include <FrgBase_PrptsWdgCombo.hxx>
 
 #endif // !_FrgBase_PrptsWdg_Include_Header

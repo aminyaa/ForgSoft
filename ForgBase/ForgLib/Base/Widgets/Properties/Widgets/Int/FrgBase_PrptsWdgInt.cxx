@@ -22,6 +22,13 @@ ForgBaseLib::FrgBase_PrptsWdgInt::FrgBase_PrptsWdgInt
 	}
 }
 
+ForgBaseLib::FrgBase_PrptsWdgInt::~FrgBase_PrptsWdgInt()
+{
+	FreePointer(thePrefixLabel_);
+	FreePointer(theSuffixLabel_);
+	FreePointer(theSpinBox_);
+}
+
 void ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()
 {
 	if (!theVariant_)
@@ -71,13 +78,6 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()
 
 	connect(theSpinBox_, SIGNAL(valueChanged(int)), this, SLOT(WdgValueChangedSlot()));
 	connect(theSpinBox_, SIGNAL(editingFinished()), this, SLOT(WdgValueChangedSlot()));
-}
-
-ForgBaseLib::FrgBase_PrptsWdgInt::~FrgBase_PrptsWdgInt()
-{
-	FreePointer(thePrefixLabel_);
-	FreePointer(theSuffixLabel_);
-	FreePointer(theSpinBox_);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgInt::SetValue(const int& value)

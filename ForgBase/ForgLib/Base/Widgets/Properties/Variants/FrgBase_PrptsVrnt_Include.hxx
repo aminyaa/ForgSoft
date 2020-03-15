@@ -8,6 +8,7 @@
 #include <FrgBase_PrptsVrntOneValue.hxx>
 #include <FrgBase_PrptsVrntSelectTItems.hxx>
 #include <FrgBase_PrptsVrntString.hxx>
+#include <FrgBase_PrptsVrntCombo.hxx>
 
 namespace ForgBaseLib
 {
@@ -16,6 +17,7 @@ namespace ForgBaseLib
 	class FrgBase_PrptsWdgInt;
 	class FrgBase_PrptsWdgSelectTItems;
 	class FrgBase_PrptsWdgString;
+	class FrgBase_PrptsWdgCombo;
 }
 
 template<typename T>
@@ -49,6 +51,12 @@ template<>
 struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntString>
 {
 	typedef ForgBaseLib::FrgBase_PrptsWdgString type;
+};
+
+template<>
+struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntCombo>
+{
+	typedef ForgBaseLib::FrgBase_PrptsWdgCombo type;
 };
 
 #endif // !_FrgBase_PrptsVrnt_Include_header

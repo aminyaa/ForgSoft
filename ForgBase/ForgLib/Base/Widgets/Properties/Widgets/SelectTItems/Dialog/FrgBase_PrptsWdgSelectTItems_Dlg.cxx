@@ -32,6 +32,11 @@ ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::~FrgBase_PrptsWdgSelectTItems_Dlg
 	FreePointer(theCancelButton_);
 	FreePointer(theButtonsLayout_);
 	FreePointer(theMainLayout_);
+	FreePointer(theTree_);
+
+	theMapTreeToSelectionTree_.clear();
+	theMapSelectionTreeToTree_.clear();
+	theListOfSelectedTItems_.clear();
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
@@ -70,6 +75,7 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 				theMapTreeToSelectionTree_.erase((*it));
 				theMapSelectionTreeToTree_.erase(item);
 				delete item;
+				item = nullptr;
 			}
 		}
 
@@ -81,6 +87,9 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems_Dlg::setupLayout()
 				break;
 			}
 		}
+
+		if(item)
+			theTree_->SetCheckState(item, item->checkState(0));
 
 		++it;
 	}
