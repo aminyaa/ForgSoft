@@ -283,6 +283,30 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Combo">
       <UniqueIdentifier>{38bc0957-1e5c-4d90-8e4d-1f80896e7387}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Color">
+      <UniqueIdentifier>{f3e33892-3c69-465d-a74f-df77d1b89f56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Color">
+      <UniqueIdentifier>{3ac7ba0d-e830-491f-8868-79d828bef085}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Point">
+      <UniqueIdentifier>{6f87e3fd-eb95-42c8-ba69-d6e6fb5dfd48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt2d">
+      <UniqueIdentifier>{3d6c4dbe-a701-447d-9a3e-f4af790ac1fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d">
+      <UniqueIdentifier>{a5b35da0-29ce-4953-90d2-a000c9994549}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Point">
+      <UniqueIdentifier>{ffbe1b53-1898-4132-b23e-94661bf9789a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt3d">
+      <UniqueIdentifier>{a3f6d52c-7de1-4f03-84db-f5ca88250acf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt2d">
+      <UniqueIdentifier>{70695416-97ac-46fe-8569-6b6a4f227781}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -473,6 +497,24 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Combo\FrgBase_PrptsWdgCombo.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Color\FrgBase_PrptsVrntColor.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Color\FrgBase_PrptsWdgColor.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt3d\FrgBase_PrptsVrntPnt3d.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Point\Pnt3d</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt2d\FrgBase_PrptsVrntPnt2d.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Point\Pnt2d</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt2d\FrgBase_PrptsWdgPnt2d.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt2d</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d\FrgBase_PrptsWdgPnt3d.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -762,6 +804,24 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Combo\FrgBase_PrptsWdgCombo.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\Combo</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Color\FrgBase_PrptsVrntColor.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Color</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Color\FrgBase_PrptsWdgColor.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Color</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt3d\FrgBase_PrptsVrntPnt3d.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Point\Pnt3d</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt2d\FrgBase_PrptsVrntPnt2d.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Point\Pnt2d</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt2d\FrgBase_PrptsWdgPnt2d.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt2d</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d\FrgBase_PrptsWdgPnt3d.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

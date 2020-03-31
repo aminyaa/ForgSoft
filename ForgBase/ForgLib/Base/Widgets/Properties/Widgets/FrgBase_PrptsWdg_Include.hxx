@@ -9,5 +9,8 @@
 #include <FrgBase_PrptsWdgSelectTItems.hxx>
 #include <FrgBase_PrptsWdgString.hxx>
 #include <FrgBase_PrptsWdgCombo.hxx>
+#include <FrgBase_PrptsWdgColor.hxx>
+#include <FrgBase_PrptsWdgPnt2d.hxx>
+#include <FrgBase_PrptsWdgPnt3d.hxx>
 
 #endif // !_FrgBase_PrptsWdg_Include_Header

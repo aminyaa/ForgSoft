@@ -1,7 +1,5 @@
 #include <FrgBase_PrptsWdgString.hxx>
 #include <FrgBase_PrptsVrntString.hxx>
-#include <FrgBase_PropertiesPanel.hxx>
-#include <FrgBase_MainWindow.hxx>
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
