@@ -95,6 +95,8 @@ protected:
 	virtual void PrefixChanged() {}
 	virtual void SuffixChanged() {}
 
+	void GetValue(Type&);
+
 private:
 
 	const char* theDisplayName_ = "";

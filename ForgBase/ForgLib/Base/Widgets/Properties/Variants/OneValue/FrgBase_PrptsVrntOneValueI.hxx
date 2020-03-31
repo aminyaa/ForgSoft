@@ -60,6 +60,12 @@ inline const Type& ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetV
 }
 
 template<typename Type, bool IsBounded>
+inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetValue(Type& output)
+{
+	output = theValue_;
+}
+
+template<typename Type, bool IsBounded>
 inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetValue(const Type & value)
 {
 	theValue_ = value;
