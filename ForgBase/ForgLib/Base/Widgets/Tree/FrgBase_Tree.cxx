@@ -139,6 +139,23 @@ void ForgBaseLib::FrgBase_Tree::itemClickedSlot
 	theLastLeftClickedTItem_ = dynamic_cast<FrgBase_TreeItem*>(item);
 	if (theLastLeftClickedTItem_)
 		theParentMainWindow_->SetPropertiesPanel(theLastLeftClickedTItem_->GetPropertiesPanel());
+
+	auto TItem = dynamic_cast<FrgBase_TreeItem*>(item);
+	if (TItem)
+	{
+		QTreeWidgetItemIterator it(this);
+		while (*it)
+		{
+			auto TItemFromIT = dynamic_cast<FrgBase_TreeItem*>((*it));
+			if (TItemFromIT)
+			{
+				TItemFromIT->TItemNotClickedSlot();
+			}
+			++it;
+		}
+
+		TItem->TItemClickedSlot();
+	}
 }
 
 void ForgBaseLib::FrgBase_Tree::itemDoubleClickedSlot
