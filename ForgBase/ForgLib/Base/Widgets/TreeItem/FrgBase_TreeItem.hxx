@@ -85,6 +85,8 @@ public slots:
 	void RenameTItemSlot();
 	void RenameTItemSlot(const QString& name);
 	virtual void TItemDoubleClickedSlot() {}
+	virtual void TItemClickedSlot() {}
+	virtual void TItemNotClickedSlot() {}
 };
 
 EndForgBaseLib
