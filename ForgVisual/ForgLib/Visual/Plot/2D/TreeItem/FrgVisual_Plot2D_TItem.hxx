@@ -10,6 +10,7 @@ class vtkPlot;
 
 BeginForgVisualLib
 
+class FrgVisual_Plot2D;
 class FrgVisual_Plot2DAxes_TItem;
 class FrgVisual_Plot2DLegend_TItem;
 
@@ -17,9 +18,6 @@ class FORGVISUAL_EXPORT FrgVisual_Plot2D_TItem
 	: public FrgVisual_Plot_TItem
 {
 	Q_OBJECT
-
-	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntString* BottomAxisTitle READ GetBottomAxisTitle WRITE SetBottomAxisTitle)
-	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntString* LeftAxisTitle READ GetLeftAxisTitle WRITE SetLeftAxisTitle)
 
 public:
 
@@ -30,14 +28,23 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
-	ForgBaseLib::FrgBase_PrptsVrntString* GetBottomAxisTitle() const { return theBottomAxisTitle; }
-	void SetBottomAxisTitle(ForgBaseLib::FrgBase_PrptsVrntString* bottomAxisTitle) { theBottomAxisTitle = bottomAxisTitle; }
-	ForgBaseLib::FrgBase_PrptsVrntString* GetLeftAxisTitle() const { return theLeftAxisTitle; }
-	void SetLeftAxisTitle(ForgBaseLib::FrgBase_PrptsVrntString* leftAxisTitle) { theLeftAxisTitle = leftAxisTitle; }
+	FrgVisual_Plot2D* GetPlot2D() const;
 
 	void SetLegendVisible(bool condition);
-	void SetBottomTitle(const char* title);
-	void SetLeftTitle(const char* title);
+
+	void SetBottomAxisTitle(const char* title);
+	void SetLeftAxisTitle(const char* title);
+
+	void SetBottomAxisTitleVisible(bool condition);
+	void SetLeftAxisTitleVisible(bool condition);
+
+	void SetBottomAxisVisible(bool condition);
+	void SetLeftAxisVisible(bool condition);
+
+	void SetBottomAxisLogarithmic(bool condition);
+	void SetLeftAxisLogarithmic(bool condition);
+
+	vtkPlot* AddPlot(std::vector<double> x, std::vector<double> y, const char* title);
 
 protected:
 
@@ -49,9 +56,6 @@ protected slots:
 	vtkPlot* AddPlotCosXSlot();
 
 private:
-
-	ForgBaseLib::FrgBase_PrptsVrntString* theBottomAxisTitle;
-	ForgBaseLib::FrgBase_PrptsVrntString* theLeftAxisTitle;
 
 	ForgBaseLib::FrgBase_TreeItem* theDataSeriesTItem_ = nullptr;
 	FrgVisual_Plot2DAxes_TItem* theAxesTItem_ = nullptr;

@@ -6,6 +6,7 @@
 #include <FrgVisual_Plot.hxx>
 
 class vtkPlot;
+class QColor;
 
 BeginForgVisualLib
 
@@ -28,12 +29,49 @@ public:
 	vtkPlot* AddCosX(const char* title);
 
 	void SetLegendVisible(bool condition);
-	void SetBottomTitle(const char* title);
-	void SetLeftTitle(const char* title);
+
+	void SetBottomAxisTitle(const char* title);
+	void SetLeftAxisTitle(const char* title);
+
+	void SetBottomAxisVisible(bool condition);
+	void SetLeftAxisVisible(bool condition);
+
+	void SetBottomAxisTitleVisible(bool condition);
+	void SetLeftAxisTitleVisible(bool condition);
+
+	void SetBottomAxisLogarithmic(bool condition);
+	void SetLeftAxisLogarithmic(bool condition);
+
+	void SetBottomAxisTitleRotation(int degree);
+	void SetLeftAxisTitleRotation(int degree);
+
+	void HighlightBottomAxisTitle(bool condition);
+	void HighlightLeftAxisTitle(bool condition);
+
+	void HighlightBottomAxis(bool condition);
+	void HighlightLeftAxis(bool condition);
 
 protected:
 
 	void Init() override;
+
+private:
+
+	void SetAxisVisible(int axisNumber, bool condition);
+	void SetAxisTitleVisible(int axisNumber, bool condition);
+	void SetAxisLogarithmic(int axisNumber, bool condition);
+	void SetAxisTitleRotation(int axisNumber, int degree);
+	void HighlightAxisTitle(int axisNumber, bool condition);
+	void HighlightAxis(int axisNumber, bool condition);
+
+	static QColor* theHighlightColor_;
+
+	//vtkTextProperty* theAxisTitlePropertyCopy_ = nullptr;
+	QColor* theHighlightBottomAxisTitleColor_ = nullptr;
+	QColor* theHighlightLeftAxisTitleColor_ = nullptr;
+
+	QColor* theHighlightBottomAxisColor_ = nullptr;
+	QColor* theHighlightLeftAxisColor_ = nullptr;
 };
 
 EndForgVisualLib

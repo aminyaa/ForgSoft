@@ -1,7 +1,6 @@
 #include <FrgVisual_Plot2D_TItem.hxx>
 #include <FrgVisual_Plot2D.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgBase_PropertiesPanel.hxx>
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
 #include <FrgVisual_Plot2DAxes_TItem.hxx>
 #include <FrgVisual_Plot2DLegend_TItem.hxx>
@@ -20,44 +19,112 @@ ForgVisualLib::FrgVisual_Plot2D_TItem::FrgVisual_Plot2D_TItem
 
 	FrgVisual_Plot_TItem::Init();
 
-	theBottomAxisTitle = new ForgBaseLib::FrgBase_PrptsVrntString("Bottom Axis Title", "X Axis");
-	theLeftAxisTitle = new ForgBaseLib::FrgBase_PrptsVrntString("Left Axis Title", "Y Axis");
-
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntString>(theBottomAxisTitle);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntString>(theLeftAxisTitle);
-
 	theDataSeriesTItem_ = new ForgBaseLib::FrgBase_TreeItem("Data Series", this, parentTree);
 	theAxesTItem_ = new FrgVisual_Plot2DAxes_TItem("Axes", this, parentTree);
 	theLegendTItem_ = new FrgVisual_Plot2DLegend_TItem("Legend", this, parentTree);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLegendVisible(bool condition)
+ForgVisualLib::FrgVisual_Plot2D * ForgVisualLib::FrgVisual_Plot2D_TItem::GetPlot2D() const
 {
 	auto plot2D = dynamic_cast<FrgVisual_Plot2D*>(thePlot_);
+
+	if (plot2D)
+		return plot2D;
+
+	return nullptr;
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLegendVisible(bool condition)
+{
+	auto plot2D = GetPlot2D();
 
 	if (plot2D)
 		plot2D->SetLegendVisible(condition);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomTitle(const char * title)
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomAxisTitle(const char * title)
 {
-	auto plot2D = dynamic_cast<FrgVisual_Plot2D*>(thePlot_);
+	auto plot2D = GetPlot2D();
 
 	if (plot2D)
-		plot2D->SetBottomTitle(title);
+		plot2D->SetBottomAxisTitle(title);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftTitle(const char * title)
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftAxisTitle(const char * title)
 {
-	auto plot2D = dynamic_cast<FrgVisual_Plot2D*>(thePlot_);
+	auto plot2D = GetPlot2D();
 
 	if (plot2D)
-		plot2D->SetLeftTitle(title);
+		plot2D->SetLeftAxisTitle(title);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomAxisTitleVisible(bool condition)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+		plot2D->SetBottomAxisTitleVisible(condition);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftAxisTitleVisible(bool condition)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+		plot2D->SetLeftAxisTitleVisible(condition);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomAxisVisible(bool condition)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+		plot2D->SetBottomAxisVisible(condition);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftAxisVisible(bool condition)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+		plot2D->SetLeftAxisVisible(condition);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomAxisLogarithmic(bool condition)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+		plot2D->SetBottomAxisLogarithmic(condition);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftAxisLogarithmic(bool condition)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+		plot2D->SetLeftAxisLogarithmic(condition);
+}
+
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlot(std::vector<double> x, std::vector<double> y, const char* title)
+{
+	auto plot2D = GetPlot2D();
+
+	if (plot2D)
+	{
+		auto sinXTItem = new FrgVisual_Plot2DDataSeries_TItem(title, theDataSeriesTItem_, GetParentTree());
+		auto VTKPlot = plot2D->AddPlot(x, y, title);
+		sinXTItem->SetVTKPlot(VTKPlot);
+
+		return VTKPlot;
+	}
+
+	return nullptr;
 }
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotSinXSlot()
 {
-	auto plot2D = dynamic_cast<FrgVisual_Plot2D*>(thePlot_);
+	auto plot2D = GetPlot2D();
 
 	if (plot2D)
 	{
@@ -73,7 +140,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotSinXSlot()
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotCosXSlot()
 {
-	auto plot2D = dynamic_cast<FrgVisual_Plot2D*>(thePlot_);
+	auto plot2D = GetPlot2D();
 
 	if (plot2D)
 	{
@@ -83,5 +150,6 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotCosXSlot()
 
 		return VTKPlot;
 	}
+
 	return nullptr;
 }
