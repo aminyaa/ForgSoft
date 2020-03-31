@@ -29,7 +29,7 @@ void ForgBaseLib::FrgBase_PrptsWdgCombo::FormWidget()
 {
 	if (!theVariant_)
 	{
-		std::cout << "theVariant_ is null in ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()\n";
+		std::cout << "theVariant_ is null in ForgBaseLib::FrgBase_PrptsWdgCombo::FormWidget()\n";
 		return;
 	}
 
