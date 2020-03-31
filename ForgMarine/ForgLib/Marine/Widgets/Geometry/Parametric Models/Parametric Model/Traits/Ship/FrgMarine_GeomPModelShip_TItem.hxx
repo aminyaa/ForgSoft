@@ -35,7 +35,7 @@ protected:
 
 protected:
 
-	std::shared_ptr<tnbLib::CadModel_Entity> theModel_;
+	mutable std::shared_ptr<tnbLib::CadModel_Entity> theModel_;
 };
 
 EndForgMarineLib

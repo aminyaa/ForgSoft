@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgMarine_GeomPModelShip_TItem.hxx>
 
+class TopoDS_Shape;
+
 namespace tnbLib
 {
 	class LegModel_DispNo1;
@@ -31,6 +33,8 @@ public:
 	);
 
 	~FrgMarine_GeomPModelShipT01_TItem();
+
+	const TopoDS_Shape& GetShape() const override;
 
 Q_SIGNALS:
 

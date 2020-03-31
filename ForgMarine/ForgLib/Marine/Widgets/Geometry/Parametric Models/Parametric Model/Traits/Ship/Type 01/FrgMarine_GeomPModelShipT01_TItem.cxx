@@ -3,6 +3,7 @@
 
 #include <LegModel_DispNo1.hxx>
 #include <LegModel_ConstParameter.hxx>
+#include <TopoDS_Shape.hxx>
 
 ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::FrgMarine_GeomPModelShipT01_TItem
 (
@@ -27,4 +28,10 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::FrgMarine_GeomPModelShipT01_TI
 ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::~FrgMarine_GeomPModelShipT01_TItem()
 {
 	FreePointer(theParameters_);
+}
+
+const TopoDS_Shape& ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::GetShape() const
+{
+	std::dynamic_pointer_cast<tnbLib::LegModel_DispNo1>(theModel_)->Perform();
+	return theModel_->Entity();
 }
