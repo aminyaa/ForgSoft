@@ -110,6 +110,15 @@
     <Filter Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title">
       <UniqueIdentifier>{88b156f2-e556-4eb5-bd17-d77133c10dee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\ChartXY">
+      <UniqueIdentifier>{3b9bbcbb-589d-467b-a42c-f5b224177a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper">
+      <UniqueIdentifier>{0e1722cb-da12-4e3d-a190-0906584a7542}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\CameraManip">
+      <UniqueIdentifier>{6309bc3d-c929-4538-8cb3-167600535840}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -175,6 +184,15 @@
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title\FrgVisual_Plot2DAxisTitle_TItem.cxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\FrgVisual_Plot2D_ChartXY.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper\FrgVisual_Scene_CameraManipGUIHelper.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\CameraManip</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -215,6 +233,15 @@
     <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
       <Filter>ForgLib\Visual\Plot\2D</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\FrgVisual_Plot2D_ChartXY.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper\FrgVisual_Scene_CameraManipGUIHelper.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\CameraManip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
@@ -244,9 +271,6 @@
     <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style\FrgVisual_Plot2DSmblStyle_TItem.hxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\FrgVisual_Plot2DAxes_TItem.hxx">
-      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes</Filter>
-    </QtMoc>
     <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis\FrgVisual_Plot2DBtmAxis_TItem.hxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis</Filter>
     </QtMoc>
@@ -258,6 +282,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title\FrgVisual_Plot2DAxisTitle_TItem.hxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\FrgVisual_Plot2DAxes_TItem.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\Axes</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #include <FrgVisual_Scene3D.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgVisual_Scene_InterStyle3D.hxx>
+//#include <FrgVisual_Scene_CameraManip.hxx>
 
 #include <vtkActor.h>
 #include <vtkProperty.h>
@@ -34,6 +35,7 @@ void ForgVisualLib::FrgVisual_Scene3D::Init()
 	theRenderWindowInteractor_->SetRenderWindow(theRenderWindow_);
 
 	theInteractorStyle_ = vtkSmartPointer<FrgVisual_Scene_InterStyle3D>::New();
+	//FrgVisual_Scene_InterStyle3D::SafeDownCast(theInteractorStyle_)->AddManipulator(FrgVisual_Scene_CameraManip::New());
 
 	//theInteractorStyle_->SetParent(this);
 
