@@ -21,8 +21,15 @@ ForgMarineLib::FrgMarine_Plots_TItem::FrgMarine_Plots_TItem
 	connect(addPlot2DAction, SIGNAL(triggered()), this, SLOT(AddPlot2DSlot()));
 }
 
-void ForgMarineLib::FrgMarine_Plots_TItem::AddPlot2DSlot()
+ForgMarineLib::FrgMarine_Plot2D_TItem * ForgMarineLib::FrgMarine_Plots_TItem::AddPlot2D()
 {
 	auto plotItem = new FrgMarine_Plot2D_TItem("Plot 01", this, GetParentTree());
 	GetParentTree()->ScrollToItem(plotItem);
+
+	return plotItem;
+}
+
+void ForgMarineLib::FrgMarine_Plots_TItem::AddPlot2DSlot()
+{
+	AddPlot2D();
 }

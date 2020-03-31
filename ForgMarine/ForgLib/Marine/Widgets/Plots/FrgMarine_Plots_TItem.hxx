@@ -7,6 +7,8 @@
 
 BeginForgMarineLib
 
+class FrgMarine_Plot2D_TItem;
+
 class FORGMARINE_EXPORT FrgMarine_Plots_TItem
 	: public ForgBaseLib::FrgBase_TreeItem
 {
@@ -21,7 +23,9 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
-public slots:
+	FrgMarine_Plot2D_TItem* AddPlot2D();
+
+private slots:
 
 	void AddPlot2DSlot();
 };
