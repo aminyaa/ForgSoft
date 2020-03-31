@@ -25,14 +25,20 @@ ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::FrgVisual_Plot2DLnStyle_TItem
 	items.push_back("Dash Dot Dot Line");
 
 	theStyle_ = new ForgBaseLib::FrgBase_PrptsVrntCombo(items, "Style", items[1]);
+
+	double color[3] = { 255, 255, 255 };
+	//GetVTKPlot()->GetPen()->GetColorF(color);
+	theColor_ = new ForgBaseLib::FrgBase_PrptsVrntColor("Color", QColor(255 * color[0], 255 * color[1], 255 * color[2]));
 	theWidth_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Width", 1, 1, 10);
 	theOpacity_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("Opacity", 1.0, 0.0, 1.0, 0.05);
 
 	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntCombo>(theStyle_);
+	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntColor>(theColor_);
 	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theWidth_);
 	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theOpacity_);
 
 	connect(theStyle_, SIGNAL(ValueChangedSignal(const char*)), this, SLOT(StyleChangedSlot(const char*)));
+	connect(theColor_, SIGNAL(ValueChangedSignal(const QColor&)), this, SLOT(ColorChangedSlot(const QColor&)));
 	connect(theWidth_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(WidthChangedSlot(const int&)));
 	connect(theOpacity_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(OpacityChangedSlot(const double&)));
 }
@@ -78,6 +84,20 @@ void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::StyleChangedSlot(const char* 
 			VTKPlot->GetPen()->SetLineType(vtkPen::DASH_DOT_LINE);
 		else if (!std::strcmp(style, "Dash Dot Dot Line"))
 			VTKPlot->GetPen()->SetLineType(vtkPen::DASH_DOT_DOT_LINE);
+
+		this->RenderView();
+	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::ColorChangedSlot(const QColor & color)
+{
+	auto VTKPlot = GetVTKPlot();
+	if (VTKPlot)
+	{
+		double red = color.redF();
+		double green = color.greenF();
+		double blue = color.blueF();
+		VTKPlot->GetPen()->SetColorF(red, green, blue);
 
 		this->RenderView();
 	}

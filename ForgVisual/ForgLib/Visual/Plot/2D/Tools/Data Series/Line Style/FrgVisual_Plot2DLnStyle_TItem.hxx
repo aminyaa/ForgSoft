@@ -5,6 +5,7 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 #include <FrgBase_PrptsVrntCombo.hxx>
+#include <FrgBase_PrptsVrntColor.hxx>
 #include <FrgBase_PrptsVrntInt.hxx>
 #include <FrgBase_PrptsVrntDouble.hxx>
 
@@ -18,6 +19,7 @@ class FORGVISUAL_EXPORT FrgVisual_Plot2DLnStyle_TItem
 	Q_OBJECT
 
 	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntCombo* Style READ GetStyle WRITE SetStyle)
+	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntColor* Color READ GetColor WRITE SetColor)
 	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntInt* Width READ GetWidth WRITE SetWidth)
 	Q_PROPERTY(ForgBaseLib::FrgBase_PrptsVrntDouble* Opacity READ GetOpacity WRITE SetOpacity)
 
@@ -33,6 +35,9 @@ public:
 	ForgBaseLib::FrgBase_PrptsVrntCombo* GetStyle() const { return theStyle_; }
 	void SetStyle(ForgBaseLib::FrgBase_PrptsVrntCombo* style) { theStyle_ = style; }
 
+	ForgBaseLib::FrgBase_PrptsVrntColor* GetColor() const { return theColor_; }
+	void SetColor(ForgBaseLib::FrgBase_PrptsVrntColor* color) { theColor_ = color; }
+
 	ForgBaseLib::FrgBase_PrptsVrntInt* GetWidth() const { return theWidth_; }
 	void SetWidth(ForgBaseLib::FrgBase_PrptsVrntInt* width) { theWidth_ = width; }
 
@@ -42,6 +47,7 @@ public:
 private:
 
 	ForgBaseLib::FrgBase_PrptsVrntCombo* theStyle_ = nullptr;
+	ForgBaseLib::FrgBase_PrptsVrntColor* theColor_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntInt* theWidth_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntDouble* theOpacity_ = nullptr;
 
@@ -51,6 +57,7 @@ private:
 private slots:
 
 	void StyleChangedSlot(const char* style);
+	void ColorChangedSlot(const QColor& color);
 	void WidthChangedSlot(const int& width);
 	void OpacityChangedSlot(const double& opacity);
 };

@@ -15,7 +15,7 @@ ForgVisualLib::FrgVisual_Plot2DLegend_TItem::FrgVisual_Plot2DLegend_TItem
 	ForgBaseLib::FrgBase_Tree* parentTree
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
-	, theParentPlot2DTItem_(dynamic_cast<FrgVisual_Plot2D_TItem*>(parentItem))
+	, thePlot2DTItem_(dynamic_cast<FrgVisual_Plot2D_TItem*>(parentItem))
 {
 	this->setIcon(0, QIcon(ICONTreeItemCircle));
 
@@ -43,18 +43,18 @@ ForgVisualLib::FrgVisual_Plot2DLegend_TItem::FrgVisual_Plot2DLegend_TItem
 
 void ForgVisualLib::FrgVisual_Plot2DLegend_TItem::VisibilityChangedSlot(const bool& condition)
 {
-	if (!theParentPlot2DTItem_)
+	if (!thePlot2DTItem_)
 	{
 		std::cout << "theParentPlot2DTItem_ is null in void ForgVisualLib::FrgVisual_Plot2DLegend_TItem::VisibilityChangedSlot(const bool& condition)\n";
 		return;
 	}
 
-	theParentPlot2DTItem_->SetLegendVisible(condition);
+	thePlot2DTItem_->SetLegendVisible(condition);
 }
 
 void ForgVisualLib::FrgVisual_Plot2DLegend_TItem::PositionChangedSlot(const char * position)
 {
-	if (!theParentPlot2DTItem_)
+	if (!thePlot2DTItem_)
 	{
 		std::cout << "theParentPlot2DTItem_ is null in void ForgVisualLib::FrgVisual_Plot2DLegend_TItem::PositionChangedSlot(const char * position)\n";
 		return;
@@ -62,16 +62,16 @@ void ForgVisualLib::FrgVisual_Plot2DLegend_TItem::PositionChangedSlot(const char
 
 	if (!std::strcmp(position, "Custom"))
 	{
-		auto legend = theParentPlot2DTItem_->GetPlot()->GetChartXY()->GetLegend();
+		auto legend = thePlot2DTItem_->GetPlot()->GetChartXY()->GetLegend();
 		legend->SetInline(true);
 		legend->SetDragEnabled(true);
 	}
 	else
 	{
-		auto legend = theParentPlot2DTItem_->GetPlot()->GetChartXY()->GetLegend();
+		auto legend = thePlot2DTItem_->GetPlot()->GetChartXY()->GetLegend();
 		legend->SetInline(false);
 		legend->SetDragEnabled(false);
 	}
 
-	theParentPlot2DTItem_->GetPlot()->GetView()->Render();
+	thePlot2DTItem_->GetPlot()->GetView()->Render();
 }

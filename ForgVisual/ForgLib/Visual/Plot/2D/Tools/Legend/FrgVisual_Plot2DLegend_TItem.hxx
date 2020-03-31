@@ -36,7 +36,7 @@ public:
 
 private:
 
-	FrgVisual_Plot2D_TItem* theParentPlot2DTItem_ = nullptr;
+	FrgVisual_Plot2D_TItem* thePlot2DTItem_ = nullptr;
 
 	ForgBaseLib::FrgBase_PrptsVrntBool* theVisible_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntCombo* thePosition_ = nullptr;
