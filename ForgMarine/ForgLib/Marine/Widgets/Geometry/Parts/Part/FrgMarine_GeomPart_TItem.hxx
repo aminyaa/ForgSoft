@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <TopoDS_Shape.hxx>
+
 BeginForgMarineLib
 
 class FrgMarine_GeomPart_TItem
@@ -20,6 +22,8 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
+
+	const TopoDS_Shape &GetShape() const { return TopoDS_Shape(); }
 };
 
 EndForgMarineLib

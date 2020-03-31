@@ -128,6 +128,24 @@
     <Filter Include="ForgLib\Marine\Widgets\Plots\Plot\3D">
       <UniqueIdentifier>{5bfe13d7-e9f9-49d3-8e38-1d8eee711f53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves">
+      <UniqueIdentifier>{ce1fc033-aa7b-48d1-84fb-3e46c0b701e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model">
+      <UniqueIdentifier>{629d5f4f-d41b-4e7a-891d-48406d0e6ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Axis">
+      <UniqueIdentifier>{2bd582a9-9c10-436c-a3c5-45b8cf7ab4f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Distributor">
+      <UniqueIdentifier>{f60d78e4-f69c-4666-91a5-e79e078c0a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Domain">
+      <UniqueIdentifier>{7e225937-f23f-4da5-b2a4-2c50d0d3bf77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel">
+      <UniqueIdentifier>{1793fab6-6095-4c1d-8ae9-9eaf86037bf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgMarine.qrc">
@@ -213,6 +231,24 @@
     <ClCompile Include="ForgLib\Marine\Widgets\Plots\Plot\2D\FrgMarine_Plot2D_TItem.cxx">
       <Filter>ForgLib\Marine\Widgets\Plots\Plot\2D</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\FrgMarine_HStaticsCrossCurves_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\FrgMarine_CrossCurvesModel_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Axis\FrgMarine_CrossCurvesModelAxis_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Axis</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Distributor\FrgMarine_CrossCurvesModelDistributor_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Distributor</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Domain\FrgMarine_CrossCurvesDomain_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Domain</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel\FrgMarine_CrossCurvesHeel_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global.hxx">
@@ -297,6 +333,24 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Marine\Widgets\Plots\Plot\2D\FrgMarine_Plot2D_TItem.hxx">
       <Filter>ForgLib\Marine\Widgets\Plots\Plot\2D</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\FrgMarine_HStaticsCrossCurves_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\FrgMarine_CrossCurvesModel_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Axis\FrgMarine_CrossCurvesModelAxis_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Axis</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Distributor\FrgMarine_CrossCurvesModelDistributor_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Model\Distributor</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Domain\FrgMarine_CrossCurvesDomain_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Domain</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel\FrgMarine_CrossCurvesHeel_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

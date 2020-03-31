@@ -23,7 +23,7 @@ public:
 
 private slots:
 
-	void NewHydrostaticsClickedSlot();
+	void NewHydrostaticsCrossCurvesClickedSlot();
 };
 
 EndForgMarineLib
