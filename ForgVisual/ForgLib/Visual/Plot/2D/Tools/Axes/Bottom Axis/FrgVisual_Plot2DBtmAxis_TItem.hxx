@@ -18,8 +18,21 @@ public:
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
-		ForgBaseLib::FrgBase_Tree* parentTree
+		ForgBaseLib::FrgBase_Tree* parentTree,
+		FrgVisual_Plot2D_TItem* plot2DTItem
 	);
+
+	virtual ~FrgVisual_Plot2DBtmAxis_TItem() {}
+
+protected slots:
+
+	void VisibilityChangedSlot(const bool& condition) override;
+	void LogarithmicChangedSlot(const bool& condition) override;
+
+public slots:
+
+	void TItemClickedSlot() override;
+	void TItemNotClickedSlot() override;
 };
 
 EndForgVisualLib

@@ -10,8 +10,10 @@
 
 BeginForgVisualLib
 
+class FrgVisual_Plot2D_TItem;
+
 class FORGVISUAL_EXPORT FrgVisual_Plot2DAxisTitle_TItem
-	:public ForgBaseLib::FrgBase_TreeItem
+	: public ForgBaseLib::FrgBase_TreeItem
 {
 	Q_OBJECT
 
@@ -25,8 +27,11 @@ public:
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
-		ForgBaseLib::FrgBase_Tree* parentTree
+		ForgBaseLib::FrgBase_Tree* parentTree,
+		FrgVisual_Plot2D_TItem* plot2DTItem
 	);
+
+	virtual ~FrgVisual_Plot2DAxisTitle_TItem() {}
 
 	ForgBaseLib::FrgBase_PrptsVrntBool* GetVisible() const { return theVisible_; }
 	void SetVisible(ForgBaseLib::FrgBase_PrptsVrntBool* visible) { theVisible_ = visible; }
@@ -42,6 +47,19 @@ private:
 	ForgBaseLib::FrgBase_PrptsVrntBool* theVisible_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntString* theTitle_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntCombo* theRotation_ = nullptr;
+
+	FrgVisual_Plot2D_TItem* thePlot2DTItem_ = nullptr;
+
+protected slots:
+
+	void VisibilityChangedSlot(const bool& condition);
+	void TitleChangedSlot(const QString& title);
+	void RotationChangedSlot(const char* degreeChar);
+
+public slots:
+
+	void TItemClickedSlot() override;
+	void TItemNotClickedSlot() override;
 };
 
 EndForgVisualLib
