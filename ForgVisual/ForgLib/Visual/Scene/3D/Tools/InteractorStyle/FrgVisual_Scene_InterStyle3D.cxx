@@ -136,7 +136,7 @@
 //
 //		if (moveDistance > this->ResetPixelDistance)
 //		{
-//			vtkInteractorStyleTrackballCamera::OnLeftButtonUp();
+//			SuperClass::OnLeftButtonUp();
 //		}
 //
 //		else
@@ -150,14 +150,14 @@
 //
 //			SelectActor(picker->GetActor(), this->Interactor->GetControlKey());
 //
-//			vtkInteractorStyleTrackballCamera::OnLeftButtonUp();
+//			SuperClass::OnLeftButtonUp();
 //		}
 //
 //		SetCursorShapeToDefault();
 //	}
 //	else
 //	{
-//		vtkInteractorStyleTrackballCamera::OnLeftButtonUp();
+//		SuperClass::OnLeftButtonUp();
 //	}
 //}
 //
@@ -172,7 +172,7 @@
 //		this->PreviousPosition[1] = pickPosition[1];
 //
 //		// Forward events
-//		vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
+//		SuperClass::OnLeftButtonDown();
 //	}
 //	else
 //	{
@@ -194,12 +194,12 @@
 //
 //void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
 //{
-//	vtkInteractorStyleTrackballCamera::OnMouseWheelForward();
+//	SuperClass::OnMouseWheelForward();
 //}
 //
 //void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 //{
-//	vtkInteractorStyleTrackballCamera::OnMouseWheelBackward();
+//	SuperClass::OnMouseWheelBackward();
 //}
 //
 //void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonDown()
@@ -216,7 +216,7 @@
 //	this->PreviousPosition[1] = pickPosition[1];
 //
 //	// Forward events
-//	vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
+//	SuperClass::OnMiddleButtonDown();
 //}
 //
 //void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonUp()
@@ -232,14 +232,14 @@
 //
 //	if (moveDistance > this->ResetPixelDistance)
 //	{
-//		vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
+//		SuperClass::OnMiddleButtonUp();
 //	}
 //
 //	else
 //	{
 //		//emit theParent_->customContextMenuRequested(QPoint(pickPosition[0], this->CurrentRenderer->GetRenderWindow()->GetSize()[1] - pickPosition[1]));
 //
-//		vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
+//		SuperClass::OnMiddleButtonUp();
 //	}
 //}
 //
@@ -296,7 +296,7 @@
 //		theParent_->GetParentTree()->GetParentMainWindow()->statusBar()->showMessage(axis1 + " = " + QString::number(world[0]) + "\t " + axis2 + " = " + QString::number(world[1]));
 //	}*/
 //
-//	vtkInteractorStyleTrackballCamera::OnMouseMove();
+//	SuperClass::OnMouseMove();
 //}
 //
 //void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnChar()
@@ -630,6 +630,8 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include <vtkMath.h>
+#include <vtkTransform.h>
 
 vtkStandardNewMacro(ForgVisualLib::FrgVisual_Scene_InterStyle3D);
 
@@ -668,36 +670,36 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::AddManipulator(FrgVisual_Scene
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonDown()
 {
-	// Zoom relatively to the cursor position
-	double viewFocus[4], originalViewFocus[3], cameraPos[3], newCameraPos[3];
-	double newFocalPoint[4], norm[3];
+	//// Zoom relatively to the cursor position
+	//double viewFocus[4], originalViewFocus[3], cameraPos[3], newCameraPos[3];
+	//double newFocalPoint[4], norm[3];
 
-	vtkCamera* cam = this->CurrentRenderer->GetActiveCamera();
-	// Move focal point to cursor position
-	cam->GetPosition(cameraPos);
-	cam->GetFocalPoint(viewFocus);
-	cam->GetFocalPoint(originalViewFocus);
-	cam->GetViewPlaneNormal(norm);
+	//vtkCamera* cam = this->CurrentRenderer->GetActiveCamera();
+	//// Move focal point to cursor position
+	//cam->GetPosition(cameraPos);
+	//cam->GetFocalPoint(viewFocus);
+	//cam->GetFocalPoint(originalViewFocus);
+	//cam->GetViewPlaneNormal(norm);
 
-	auto position = this->Interactor->GetEventPosition();
-	FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(this->CurrentRenderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
+	//auto position = this->Interactor->GetEventPosition();
+	//FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(this->CurrentRenderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
 
-	FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(this->CurrentRenderer, double(position[0]), double(position[1]), viewFocus[2], newFocalPoint);
+	//FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(this->CurrentRenderer, double(position[0]), double(position[1]), viewFocus[2], newFocalPoint);
 
-	cam->SetFocalPoint(newFocalPoint);
+	//cam->SetFocalPoint(newFocalPoint);
 
-	// Find new focal point
-	cam->GetPosition(newCameraPos);
+	//// Find new focal point
+	//cam->GetPosition(newCameraPos);
 
-	double newPoint[3];
-	newPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
-	newPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
-	newPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
+	//double newPoint[3];
+	//newPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
+	//newPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
+	//newPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
 
-	cam->SetFocalPoint(newPoint);
+	//cam->SetFocalPoint(newPoint);
 
-	vtkInteractorStyleTrackballCamera::OnLeftButtonDown();
-	return;
+	//SuperClass::OnLeftButtonDown();
+	//return;
 
 	//this->OnButtonDown(1, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
 }
@@ -705,7 +707,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonDown()
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonDown()
 {
-	vtkInteractorStyleTrackballCamera::OnMiddleButtonDown();
+	SuperClass::OnMiddleButtonDown();
 	return;
 
 	//this->OnButtonDown(2, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
@@ -714,6 +716,42 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonDown()
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonDown()
 {
+	//auto position = this->Interactor->GetEventPosition();
+
+	//vtkCamera* cam = this->CurrentRenderer->GetActiveCamera();
+
+	//double viewFocus[3], originalViewFocus[3], cameraPos[3], newCameraPos[3];
+	//double newFocalPoint[4], norm[3];
+
+	//// Move focal point to cursor position
+	//cam->GetPosition(cameraPos);
+	//cam->GetFocalPoint(viewFocus);
+	//cam->GetFocalPoint(originalViewFocus);
+	//cam->GetViewPlaneNormal(norm);
+
+	//FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(
+	//	this->CurrentRenderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
+
+	//FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(
+	//	this->CurrentRenderer, double(position[0]), double(position[1]), viewFocus[2], newFocalPoint);
+
+	//cam->SetFocalPoint(newFocalPoint);
+
+	//// Find new focal point
+	//cam->GetPosition(newCameraPos);
+
+	//double newPoint[3];
+	//newPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
+	//newPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
+	//newPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
+
+	//cam->SetFocalPoint(newPoint);
+
+
+
+	SuperClass::OnLeftButtonDown();
+	return;
+
 	//this->OnButtonDown(3, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
 }
 
@@ -769,15 +807,15 @@ ForgVisualLib::FrgVisual_Scene_CameraManip* ForgVisualLib::FrgVisual_Scene_Inter
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonUp()
 {
-	vtkInteractorStyleTrackballCamera::OnLeftButtonUp();
-	return;
+	/*SuperClass::OnLeftButtonUp();
+	return;*/
 
 	//this->OnButtonUp(1);
 }
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonUp()
 {
-	vtkInteractorStyleTrackballCamera::OnMiddleButtonUp();
+	SuperClass::OnMiddleButtonUp();
 	return;
 
 	//this->OnButtonUp(2);
@@ -785,6 +823,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonUp()
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonUp()
 {
+	SuperClass::OnLeftButtonUp();
+	return;
+
 	//this->OnButtonUp(3);
 }
 
@@ -871,7 +912,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseMove()
 		this->InvokeEvent(vtkCommand::InteractionEvent);
 	}
 
-	vtkInteractorStyleTrackballCamera::OnMouseMove();
+	SuperClass::OnMouseMove();
 }
 
 //-------------------------------------------------------------------------

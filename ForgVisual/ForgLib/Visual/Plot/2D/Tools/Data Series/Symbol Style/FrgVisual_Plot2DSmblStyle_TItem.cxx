@@ -3,7 +3,20 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
 
+#include <FrgBase_SerialSpec_QString.hxx>
+#include <FrgBase_Tree.hxx>
+
 #include <vtkPlotPoints.h>
+
+#define SYMBOL_NONE "None"
+#define SYMBOL_CROSS "Cross"
+#define SYMBOL_PLUS "Plus"
+#define SYMBOL_SQUARE "Square"
+#define SYMBOL_CIRCLE "Circle"
+#define SYMBOL_DIAMOND "Diamond"
+
+//BOOST_CLASS_EXPORT_GUID(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem, "ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem")
+//BOOST_CLASS_EXPORT_IMPLEMENT(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
 
 ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::FrgVisual_Plot2DSmblStyle_TItem
 (
@@ -15,23 +28,24 @@ ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::FrgVisual_Plot2DSmblStyle_TItem
 {
 	this->setIcon(0, QIcon(ICONTreeItemCircle));
 
-	std::vector<const char*> items;
-	items.push_back("None");
-	items.push_back("Cross");
-	items.push_back("Plus");
-	items.push_back("Square");
-	items.push_back("Circle");
-	items.push_back("Diamond");
+	std::vector<QString> items;
+	items.push_back(SYMBOL_NONE);
+	items.push_back(SYMBOL_CROSS);
+	items.push_back(SYMBOL_PLUS);
+	items.push_back(SYMBOL_SQUARE);
+	items.push_back(SYMBOL_CIRCLE);
+	items.push_back(SYMBOL_DIAMOND);
 
-	theShape_ = new ForgBaseLib::FrgBase_PrptsVrntCombo(items, "Shape", items[0]);
-	theSize_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Size", 6, 1, 50);
+	theShape_ = new ForgBaseLib::FrgBase_PrptsVrntCombo(items, "Shape", GetShapeFromVTKPlot());
+
+	theSize_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Size", GetSymbolSizeFromVTKPlot(), 1, 50);
 	theSpacing_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Spacing", 1, 1, 1E50);
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntCombo>(theShape_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theSize_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theSpacing_);
+	thePropertiesPanel_->AddRow(theShape_);
+	thePropertiesPanel_->AddRow(theSize_);
+	thePropertiesPanel_->AddRow(theSpacing_);
 
-	connect(theShape_, SIGNAL(ValueChangedSignal(const char*)), this, SLOT(ShapeChangedSlot(const char*)));
+	connect(theShape_, SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(ShapeChangedSlot(const QString&)));
 	connect(theSize_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(SizeChangedSlot(const int&)));
 	connect(theSpacing_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(SpacingChangedSlot(const int&)));
 }
@@ -64,7 +78,7 @@ void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::RenderView() const
 		parentDataSeries->RenderView();
 }
 
-void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::ShapeChangedSlot(const char* shape)
+QString ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::GetShapeFromVTKPlot() const
 {
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
@@ -72,17 +86,66 @@ void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::ShapeChangedSlot(const char
 		auto VTKPlotPoints = vtkPlotPoints::SafeDownCast(VTKPlot);
 		if (VTKPlotPoints)
 		{
-			if (!std::strcmp(shape, "None"))
+			auto myMarkerStyle = VTKPlotPoints->GetMarkerStyle();
+
+			if (myMarkerStyle == vtkPlotPoints::NONE)
+				return SYMBOL_NONE;
+			else if (myMarkerStyle == vtkPlotPoints::CROSS)
+				return SYMBOL_CROSS;
+			else if (myMarkerStyle == vtkPlotPoints::PLUS)
+				return SYMBOL_PLUS;
+			else if (myMarkerStyle == vtkPlotPoints::SQUARE)
+				return SYMBOL_SQUARE;
+			else if (myMarkerStyle == vtkPlotPoints::CIRCLE)
+				return SYMBOL_CIRCLE;
+			else if (myMarkerStyle == vtkPlotPoints::DIAMOND)
+				return SYMBOL_DIAMOND;
+
+			this->RenderView();
+		}
+	}
+
+	return SYMBOL_NONE;
+}
+
+float ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::GetSymbolSizeFromVTKPlot() const
+{
+	auto VTKPlot = GetVTKPlot();
+	if (VTKPlot)
+	{
+		auto VTKPlotPoints = vtkPlotPoints::SafeDownCast(VTKPlot);
+		if (VTKPlotPoints)
+			return VTKPlotPoints->GetMarkerSize();
+	}
+
+	return 1.0f;
+}
+
+void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::ShapeChangedSlot(const QString& shape)
+{
+	if (sender() != theShape_)
+	{
+		theShape_->SetValue(shape);
+		return;
+	}
+
+	auto VTKPlot = GetVTKPlot();
+	if (VTKPlot)
+	{
+		auto VTKPlotPoints = vtkPlotPoints::SafeDownCast(VTKPlot);
+		if (VTKPlotPoints)
+		{
+			if (shape == SYMBOL_NONE)
 				VTKPlotPoints->SetMarkerStyle(vtkPlotPoints::NONE);
-			else if (!std::strcmp(shape, "Cross"))
+			else if (shape == SYMBOL_CROSS)
 				VTKPlotPoints->SetMarkerStyle(vtkPlotPoints::CROSS);
-			else if (!std::strcmp(shape, "Plus"))
+			else if (shape == SYMBOL_PLUS)
 				VTKPlotPoints->SetMarkerStyle(vtkPlotPoints::PLUS);
-			else if (!std::strcmp(shape, "Square"))
+			else if (shape == SYMBOL_SQUARE)
 				VTKPlotPoints->SetMarkerStyle(vtkPlotPoints::SQUARE);
-			else if (!std::strcmp(shape, "Circle"))
+			else if (shape == SYMBOL_CIRCLE)
 				VTKPlotPoints->SetMarkerStyle(vtkPlotPoints::CIRCLE);
-			else if (!std::strcmp(shape, "Diamond"))
+			else if (shape == SYMBOL_DIAMOND)
 				VTKPlotPoints->SetMarkerStyle(vtkPlotPoints::DIAMOND);
 
 			this->RenderView();
@@ -92,6 +155,12 @@ void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::ShapeChangedSlot(const char
 
 void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::SizeChangedSlot(const int & size)
 {
+	if (sender() != theSize_)
+	{
+		theSize_->SetValue(size);
+		return;
+	}
+
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
 	{
@@ -107,6 +176,12 @@ void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::SizeChangedSlot(const int &
 
 void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::SpacingChangedSlot(const int & spacing)
 {
+	if (sender() != theSpacing_)
+	{
+		theSpacing_->SetValue(spacing);
+		return;
+	}
+
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
 	{
@@ -117,3 +192,26 @@ void ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::SpacingChangedSlot(const in
 		}
 	}
 }
+
+DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+{
+
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+{
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+{
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)

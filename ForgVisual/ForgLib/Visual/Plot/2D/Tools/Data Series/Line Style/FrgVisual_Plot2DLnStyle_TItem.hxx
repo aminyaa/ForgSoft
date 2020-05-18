@@ -9,6 +9,8 @@
 #include <FrgBase_PrptsVrntInt.hxx>
 #include <FrgBase_PrptsVrntDouble.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 class vtkPlot;
 
 BeginForgVisualLib
@@ -46,6 +48,10 @@ public:
 
 private:
 
+	DECLARE_SAVE_LOAD_HEADER
+
+private:
+
 	ForgBaseLib::FrgBase_PrptsVrntCombo* theStyle_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntColor* theColor_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntInt* theWidth_ = nullptr;
@@ -54,14 +60,21 @@ private:
 	vtkPlot* GetVTKPlot() const;
 	void RenderView() const;
 
-private slots:
+	QString GetStyleFromVTKPlot() const;
 
-	void StyleChangedSlot(const char* style);
+public slots:
+
+	void StyleChangedSlot(const QString& style);
 	void ColorChangedSlot(const QColor& color);
 	void WidthChangedSlot(const int& width);
 	void OpacityChangedSlot(const double& opacity);
 };
 
 EndForgVisualLib
+
+// override for non-default constructor
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
 
 #endif // !_FrgVisual_Plot2DLnStyle_TItem_Header

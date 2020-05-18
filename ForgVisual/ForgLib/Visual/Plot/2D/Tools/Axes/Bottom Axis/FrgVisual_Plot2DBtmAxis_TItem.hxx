@@ -4,6 +4,9 @@
 
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_Plot2DAxisEntity_TItem.hxx>
+#include <FrgVisual_Plot2D_TItem.hxx>
+
+#include <FrgVisual_Serialization_Global.hxx>
 
 BeginForgVisualLib
 
@@ -24,6 +27,10 @@ public:
 
 	virtual ~FrgVisual_Plot2DBtmAxis_TItem() {}
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 protected slots:
 
 	void VisibilityChangedSlot(const bool& condition) override;
@@ -36,5 +43,10 @@ public slots:
 };
 
 EndForgVisualLib
+
+// override for non-default constructor
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DBtmAxis_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DBtmAxis_TItem)
 
 #endif // !_FrgVisual_Plot2DBtmAxis_TItem_Header

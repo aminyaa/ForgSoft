@@ -25,6 +25,8 @@ public:
 
 	~FrgVisual_Scene_TItem();
 
+	FrgVisual_Scene* GetScene() const { return theScene_; }
+
 protected:
 
 	FrgVisual_Scene* theScene_ = NullPtr;

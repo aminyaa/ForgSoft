@@ -8,9 +8,11 @@ ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem::FrgVisual_Plot2DDataSeries_TIte
 (
 	const FrgString& itemTitle,
 	ForgBaseLib::FrgBase_TreeItem* parentItem,
-	ForgBaseLib::FrgBase_Tree* parentTree
+	ForgBaseLib::FrgBase_Tree* parentTree,
+	vtkPlot* VTKPlot
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
+	, theVTKPlot_(VTKPlot)
 {
 	theLineStyle_ = new FrgVisual_Plot2DLnStyle_TItem("Line Style", this, parentTree);
 	theSymbolStyle_ = new FrgVisual_Plot2DSmblStyle_TItem("Symbol Style", this, parentTree);

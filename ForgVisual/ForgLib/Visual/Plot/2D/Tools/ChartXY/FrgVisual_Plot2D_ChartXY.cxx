@@ -10,6 +10,11 @@
 #include <vtkContextScene.h>
 #include <vtkCommand.h>
 
+#include <FrgBase_SerialSpec_QString.hxx>
+
+//BOOST_CLASS_EXPORT_GUID(ForgVisualLib::FrgVisual_Plot2D_ChartXY, "ForgVisualLib::FrgVisual_Plot2D_ChartXY")
+//BOOST_CLASS_EXPORT_IMPLEMENT(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
+
 ForgVisualLib::FrgVisual_Plot2D_ChartXY* ForgVisualLib::FrgVisual_Plot2D_ChartXY::New()
 {
 	VTK_STANDARD_NEW_BODY(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
@@ -26,8 +31,20 @@ ForgVisualLib::FrgVisual_Plot2D_ChartXY::FrgVisual_Plot2D_ChartXY()
 	this->SetActionToButton(vtkChart::SELECT, vtkContextMouseEvent::LEFT_BUTTON);
 
 	this->SetShowLegend(true);
-	this->GetLegend()->SetInline(false);
+	//this->GetLegend()->SetInline(false);
 	this->GetLegend()->GetLabelProperties()->SetFontFamilyToTimes();
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_ChartXY::SetLegendVisible(bool condition)
+{
+	this->SetShowLegend(condition);
+
+	theLegendIsVisible_ = condition;
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::GetLegendVisible() const
+{
+	return theLegendIsVisible_;
 }
 
 bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseWheelEvent(const vtkContextMouseEvent & mouse, int delta)
@@ -102,3 +119,29 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseWheelEvent(const vtkContextMo
 
 	return true;
 }
+
+DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
+{
+	QString isLegendVisibleText;
+
+	if (this->GetLegendVisible())
+		isLegendVisibleText = "TRUE";
+	else
+		isLegendVisibleText = "FALSE";
+
+	ar & isLegendVisibleText;
+}
+
+DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
+{
+	QString isLegendVisible;
+
+	ar & isLegendVisible;
+
+	if (isLegendVisible == "TRUE")
+		this->SetLegendVisible(true);
+	else if (isLegendVisible == "FALSE")
+		this->SetLegendVisible(false);
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot2D_ChartXY)

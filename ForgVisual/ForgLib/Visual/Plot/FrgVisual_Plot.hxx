@@ -16,6 +16,20 @@ namespace ForgBaseLib
 
 BeginForgVisualLib
 
+enum LEGEND_POSITION_ENUM
+{
+	NORTH,
+	NORTH_EAST,
+	EAST,
+	SOUTH_EAST,
+	SOUTH,
+	SOUTH_WEST,
+	WEST,
+	NORTH_WEST,
+	CUSTOM,
+	NOT_VALID
+};
+
 class FORGVISUAL_EXPORT FrgVisual_Plot
 	: public QVTKOpenGLNativeWidget
 {
@@ -24,7 +38,7 @@ public:
 
 	FrgVisual_Plot
 	(
-		ForgBaseLib::FrgBase_MainWindow* parentMainWindow
+		ForgBaseLib::FrgBase_MainWindow* parentMainWindow = nullptr
 	);
 
 	void RenderView() const;
@@ -36,7 +50,7 @@ protected:
 
 	vtkSmartPointer<vtkContextView> theView_;
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> theRenderWindow_;
-	QList<vtkSmartPointer<vtkTable>> theTables_;
+	//QList<vtkSmartPointer<vtkTable>> theTables_;
 	vtkSmartPointer<vtkChartXY> theChart_;
 
 	virtual void Init() {}

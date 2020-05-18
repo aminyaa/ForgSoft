@@ -5,6 +5,8 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 BeginForgVisualLib
 
 class FrgVisual_Plot;
@@ -30,6 +32,10 @@ public:
 	FrgVisual_Plot* GetPlot() const { return thePlot_; }
 	void RenderView() const;
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 protected:
 
 	FrgVisual_Plot* thePlot_ = NullPtr;
@@ -46,5 +52,9 @@ private slots:
 };
 
 EndForgVisualLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot_TItem)
 
 #endif // !_FrgVisual_Plot_TItem_Header

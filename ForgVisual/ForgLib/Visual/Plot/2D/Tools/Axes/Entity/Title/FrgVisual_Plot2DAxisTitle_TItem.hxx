@@ -8,6 +8,8 @@
 #include <FrgBase_PrptsVrntString.hxx>
 #include <FrgBase_PrptsVrntCombo.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 BeginForgVisualLib
 
 class FrgVisual_Plot2D_TItem;
@@ -31,6 +33,8 @@ public:
 		FrgVisual_Plot2D_TItem* plot2DTItem
 	);
 
+	FrgVisual_Plot2D_TItem* GetPlot2DTItem() const { return thePlot2DTItem_; }
+
 	virtual ~FrgVisual_Plot2DAxisTitle_TItem() {}
 
 	ForgBaseLib::FrgBase_PrptsVrntBool* GetVisible() const { return theVisible_; }
@@ -44,6 +48,14 @@ public:
 
 private:
 
+	DECLARE_SAVE_LOAD_HEADER
+
+private:
+
+	QString GetRotationFromPlot2DTItem() const;
+
+private:
+
 	ForgBaseLib::FrgBase_PrptsVrntBool* theVisible_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntString* theTitle_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntCombo* theRotation_ = nullptr;
@@ -54,7 +66,7 @@ protected slots:
 
 	void VisibilityChangedSlot(const bool& condition);
 	void TitleChangedSlot(const QString& title);
-	void RotationChangedSlot(const char* degreeChar);
+	void RotationChangedSlot(const QString& degreeChar);
 
 public slots:
 
@@ -63,5 +75,10 @@ public slots:
 };
 
 EndForgVisualLib
+
+// override for non-default constructor
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxisTitle_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DAxisTitle_TItem)
 
 #endif // !_FrgVisual_Plot2DAxisTitle_TItem_Header

@@ -7,6 +7,8 @@
 #include <FrgBase_PrptsVrntCombo.hxx>
 #include <FrgBase_PrptsVrntInt.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 class vtkPlot;
 
 BeginForgVisualLib
@@ -42,6 +44,10 @@ public:
 
 private:
 
+	DECLARE_SAVE_LOAD_HEADER
+
+private:
+
 	ForgBaseLib::FrgBase_PrptsVrntCombo* theShape_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntInt* theSize_ = nullptr;
 	ForgBaseLib::FrgBase_PrptsVrntInt* theSpacing_ = nullptr;
@@ -50,13 +56,21 @@ private:
 	vtkPlot* GetVTKPlot() const;
 	void RenderView() const;
 
-private slots:
+	QString GetShapeFromVTKPlot() const;
+	float GetSymbolSizeFromVTKPlot() const;
 
-	void ShapeChangedSlot(const char* shape);
+public slots:
+
+	void ShapeChangedSlot(const QString& shape);
 	void SizeChangedSlot(const int& size);
 	void SpacingChangedSlot(const int& spacing);
 };
 
 EndForgVisualLib
+
+// override for non-default constructor
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem)
 
 #endif // !_FrgVisual_Plot2DSmblStyle_TItem_Header

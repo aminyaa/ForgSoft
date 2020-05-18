@@ -13,8 +13,11 @@
 #include <vtkPlot.h>
 #include <vtkAxis.h>
 #include <vtkPen.h>
+#include <vtkPlotPoints.h>
 #include <vtkContextMouseEvent.h>
 #include <vtkInteractorStyleRubberBandZoom.h>
+
+#include <QtCore/QRandomGenerator>
 
 QColor* ForgVisualLib::FrgVisual_Plot2D::theHighlightColor_ = new QColor(255, 0, 255);
 
@@ -37,21 +40,17 @@ void ForgVisualLib::FrgVisual_Plot2D::Init()
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
 	this->SetRenderWindow(theRenderWindow_);
-
 	theView_->SetRenderWindow(theRenderWindow_);
-
 	theView_->GetInteractor()->Initialize();
 
 	theChart_ = vtkSmartPointer<FrgVisual_Plot2D_ChartXY>::New();
 	theView_->GetScene()->AddItem(theChart_);
-	/*theChart_->ForceAxesToBoundsOn();
-	theChart_->GetAxis(0)->GetGridPen()->SetColor(220, 220, 220);
-	theChart_->GetAxis(1)->GetGridPen()->SetColor(220, 220, 220);*/
-
-	/*auto style = vtkSmartPointer<vtkInteractorStyleRubberBandZoom>::New();
-	theRenderWindow_->GetInteractor()->SetInteractorStyle(style);*/
+	
 	theRenderWindow_->GetInteractor()->SetDesiredUpdateRate(1);
 	theView_->GetInteractor()->Initialize();
+
+	SetBottomAxisTitle("X Axis");
+	SetLeftAxisTitle("Y Axis");
 
 	RenderView();
 }
@@ -105,7 +104,9 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	int rand1 = low + int((high - low + 1) * rand() / int(RAND_MAX + 1.0));
 	int rand2 = low + int((high - low + 1) * rand() / int(RAND_MAX + 1.0));
 
-	line->SetColor(rand0, rand1, rand2, 255);
+	//line->SetColor(rand0, rand1, rand2, 255);
+	auto rndColor = QColor::fromRgb(QRandomGenerator::global()->generate());
+	line->SetColor(rndColor.redF(), rndColor.greenF(), rndColor.blueF());
 	line->SetWidth(1.0);
 	line->SetTooltipLabelFormat("%l: (%x, %y)");
 	line->GetXAxis()->GetLabelProperties()->SetFontFamilyToTimes();
@@ -113,6 +114,10 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	line->GetYAxis()->GetLabelProperties()->SetFontFamilyToTimes();
 	line->GetYAxis()->GetLabelProperties()->SetFontSize(15);
 	line->GetPen()->SetLineType(vtkPen::SOLID_LINE);
+
+	auto VTKPlotPoints = dynamic_cast<vtkPlotPoints*>(line);
+	if (VTKPlotPoints)
+		VTKPlotPoints->SetMarkerSize(6);
 
 	//dynamic_cast<vtkPlotPoints*>(line)->SetMarkerStyle(vtkPlotPoints::SQUARE);
 
@@ -190,13 +195,36 @@ void ForgVisualLib::FrgVisual_Plot2D::SetLegendVisible(bool condition)
 	}
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetLegendVisible() const
+{
+	if (theChart_)
+		return theChart_->GetShowLegend();
+
+	return true;
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisTitle(const char * title)
 {
 	if (theChart_)
 	{
 		theChart_->GetAxis(vtkAxis::BOTTOM)->SetTitle(title);
 		RenderView();
+
+		theBottomAxisTitle_ = title;
 	}
+}
+
+const char * ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisTitle() const
+{
+	if (theChart_)
+	{
+		//return theChart_->GetAxis(vtkAxis::BOTTOM)->GetTitle();
+
+		return theBottomAxisTitle_.toLocal8Bit().constData();
+	}
+
+	return "X Axis";
+
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitle(const char * title)
@@ -205,7 +233,21 @@ void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitle(const char * title)
 	{
 		theChart_->GetAxis(vtkAxis::LEFT)->SetTitle(title);
 		RenderView();
+
+		theLeftAxisTitle_ = title;
 	}
+}
+
+const char * ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitle() const
+{
+	if (theChart_)
+	{
+		//return theChart_->GetAxis(vtkAxis::LEFT)->GetTitle();
+
+		return theLeftAxisTitle_.toLocal8Bit().constData();
+	}
+
+	return "Y Axis";
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::SetAxisVisible(int axisNumber, bool condition)
@@ -221,14 +263,41 @@ void ForgVisualLib::FrgVisual_Plot2D::SetAxisVisible(int axisNumber, bool condit
 	}
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetAxisVisible(int axisNumber) const
+{
+	if (theChart_)
+	{
+		if (
+			theChart_->GetAxis(axisNumber)->GetAxisVisible() &&
+			theChart_->GetAxis(axisNumber)->GetGridVisible() &&
+			theChart_->GetAxis(axisNumber)->GetLabelsVisible() &&
+			theChart_->GetAxis(axisNumber)->GetTicksVisible() &&
+			theChart_->GetAxis(axisNumber)->GetTitleVisible()
+			)
+			return true;
+
+		return false;
+	}
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisVisible(bool condition)
 {
 	SetAxisVisible(vtkAxis::BOTTOM, condition);
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisVisible() const
+{
+	return GetAxisVisible(vtkAxis::BOTTOM);
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisVisible(bool condition)
 {
 	SetAxisVisible(vtkAxis::LEFT, condition);
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisVisible() const
+{
+	return GetAxisVisible(vtkAxis::LEFT);
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleVisible(int axisNumber, bool condition)
@@ -240,14 +309,32 @@ void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleVisible(int axisNumber, bool c
 	}
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetAxisTitleVisible(int axisNumber) const
+{
+	if (theChart_)
+		return theChart_->GetAxis(axisNumber)->GetTitleVisible();
+
+	return true;
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisTitleVisible(bool condition)
 {
 	SetAxisTitleVisible(vtkAxis::BOTTOM, condition);
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisTitleVisible() const
+{
+	return GetAxisTitleVisible(vtkAxis::BOTTOM);
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitleVisible(bool condition)
 {
 	SetAxisTitleVisible(vtkAxis::LEFT, condition);
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitleVisible() const
+{
+	return GetAxisTitleVisible(vtkAxis::LEFT);
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::SetAxisLogarithmic(int axisNumber, bool condition)
@@ -263,14 +350,36 @@ void ForgVisualLib::FrgVisual_Plot2D::SetAxisLogarithmic(int axisNumber, bool co
 	}
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetAxisLogarithmic(int axisNumber) const
+{
+	if (theChart_)
+	{
+		auto axis = theChart_->GetAxis(axisNumber);
+
+		return axis->GetLogScale();
+	}
+
+	return false;
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisLogarithmic(bool condition)
 {
 	SetAxisLogarithmic(vtkAxis::BOTTOM, condition);
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisLogarithmic() const
+{
+	return GetAxisLogarithmic(vtkAxis::BOTTOM);
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisLogarithmic(bool condition)
 {
 	SetAxisLogarithmic(vtkAxis::LEFT, condition);
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisLogarithmic() const
+{
+	return GetAxisLogarithmic(vtkAxis::LEFT);
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleRotation(int axisNumber, int degree)
@@ -283,14 +392,32 @@ void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleRotation(int axisNumber, int d
 	}
 }
 
+int ForgVisualLib::FrgVisual_Plot2D::GetAxisTitleRotation(int axisNumber) const
+{
+	if (theChart_)
+		return (int)theChart_->GetAxis(axisNumber)->GetTitleProperties()->GetOrientation();
+
+	return 0;
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisTitleRotation(int degree)
 {
 	SetAxisTitleRotation(vtkAxis::BOTTOM, degree);
 }
 
+int ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisTitleRotation() const
+{
+	return GetAxisTitleRotation(vtkAxis::BOTTOM);
+}
+
 void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitleRotation(int degree)
 {
 	SetAxisTitleRotation(vtkAxis::LEFT, degree);
+}
+
+int ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitleRotation() const
+{
+	return GetAxisTitleRotation(vtkAxis::LEFT);
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::HighlightAxisTitle(int axisNumber, bool condition)
@@ -516,4 +643,104 @@ void ForgVisualLib::FrgVisual_Plot2D::HighlightBottomAxis(bool condition)
 void ForgVisualLib::FrgVisual_Plot2D::HighlightLeftAxis(bool condition)
 {
 	HighlightAxis(vtkAxis::LEFT, condition);
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::SetLegendPosition(LEGEND_POSITION_ENUM position)
+{
+	if (theChart_)
+	{
+		auto myLegend = theChart_->GetLegend();
+		if (myLegend)
+		{
+			if (position != CUSTOM && position != NOT_VALID)
+			{
+				myLegend->SetInline(false);
+				myLegend->SetDragEnabled(false);
+			}
+			if (position == CUSTOM)
+			{
+				myLegend->SetInline(true);
+				myLegend->SetVerticalAlignment(vtkChartLegend::CUSTOM);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::CUSTOM);
+				myLegend->SetDragEnabled(true);
+			}
+			else if (position == NORTH)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::TOP);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::CENTER);
+			}
+			else if (position == NORTH_EAST)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::TOP);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::RIGHT);
+			}
+			else if (position == EAST)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::CENTER);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::RIGHT);
+			}
+			else if (position == SOUTH_EAST)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::BOTTOM);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::RIGHT);
+			}
+			else if (position == SOUTH)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::BOTTOM);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::CENTER);
+			}
+			else if (position == SOUTH_WEST)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::BOTTOM);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::LEFT);
+			}
+			else if (position == WEST)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::CENTER);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::LEFT);
+			}
+			else if (position == NORTH_WEST)
+			{
+				myLegend->SetVerticalAlignment(vtkChartLegend::TOP);
+				myLegend->SetHorizontalAlignment(vtkChartLegend::LEFT);
+			}
+			else if (position == NOT_VALID)
+			{
+				SetLegendPosition(NORTH_EAST);
+			}
+		}
+
+		RenderView();
+	}
+}
+
+ForgVisualLib::LEGEND_POSITION_ENUM ForgVisualLib::FrgVisual_Plot2D::GetLegendPosition() const
+{
+	if (theChart_)
+	{
+		auto myLegend = theChart_->GetLegend();
+		if (myLegend)
+		{
+			if (myLegend->GetInline())
+				return CUSTOM;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::TOP && myLegend->GetHorizontalAlignment() == vtkChartLegend::CENTER)
+				return NORTH;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::TOP && myLegend->GetHorizontalAlignment() == vtkChartLegend::RIGHT)
+				return NORTH_EAST;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::CENTER && myLegend->GetHorizontalAlignment() == vtkChartLegend::RIGHT)
+				return EAST;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::BOTTOM && myLegend->GetHorizontalAlignment() == vtkChartLegend::RIGHT)
+				return SOUTH_EAST;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::BOTTOM && myLegend->GetHorizontalAlignment() == vtkChartLegend::CENTER)
+				return SOUTH;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::BOTTOM && myLegend->GetHorizontalAlignment() == vtkChartLegend::LEFT)
+				return SOUTH_WEST;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::CENTER && myLegend->GetHorizontalAlignment() == vtkChartLegend::LEFT)
+				return WEST;
+			else if (myLegend->GetVerticalAlignment() == vtkChartLegend::TOP && myLegend->GetHorizontalAlignment() == vtkChartLegend::LEFT)
+				return NORTH_WEST;
+			else
+				return NOT_VALID;
+		}
+	}
 }

@@ -6,6 +6,16 @@
 #include <vtkPlot.h>
 #include <vtkPen.h>
 
+#define STYLE_NONE "None"
+#define STYLE_SOLID_LINE "Solid Line"
+#define STYLE_DASH_LINE "Dash Line"
+#define STYLE_DOT_LINE "Dot Line"
+#define STYLE_DASH_DOT_LINE "Dash Dot Line"
+#define STYLE_DASH_DOT_DOT_LINE "Dash Dot Dot Line"
+
+//BOOST_CLASS_EXPORT_GUID(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem, "ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem")
+//BOOST_CLASS_EXPORT_IMPLEMENT(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+
 ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::FrgVisual_Plot2DLnStyle_TItem
 (
 	const FrgString& itemTitle,
@@ -16,28 +26,30 @@ ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::FrgVisual_Plot2DLnStyle_TItem
 {
 	this->setIcon(0, QIcon(ICONTreeItemCircle));
 
-	std::vector<const char*> items;
-	items.push_back("None");
-	items.push_back("Solid Line");
-	items.push_back("Dash Line");
-	items.push_back("Dot Line");
-	items.push_back("Dash Dot Line");
-	items.push_back("Dash Dot Dot Line");
+	auto myVTKPlot = GetVTKPlot();
 
-	theStyle_ = new ForgBaseLib::FrgBase_PrptsVrntCombo(items, "Style", items[1]);
+	std::vector<QString> items;
+	items.push_back(STYLE_NONE);
+	items.push_back(STYLE_SOLID_LINE);
+	items.push_back(STYLE_DASH_LINE);
+	items.push_back(STYLE_DOT_LINE);
+	items.push_back(STYLE_DASH_DOT_LINE);
+	items.push_back(STYLE_DASH_DOT_DOT_LINE);
 
-	double color[3] = { 255, 255, 255 };
-	//GetVTKPlot()->GetPen()->GetColorF(color);
+	theStyle_ = new ForgBaseLib::FrgBase_PrptsVrntCombo(items, "Style", GetStyleFromVTKPlot());
+
+	double color[3]; // = { 255, 255, 255 };
+	GetVTKPlot()->GetPen()->GetColorF(color);
 	theColor_ = new ForgBaseLib::FrgBase_PrptsVrntColor("Color", QColor(255 * color[0], 255 * color[1], 255 * color[2]));
-	theWidth_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Width", 1, 1, 10);
-	theOpacity_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("Opacity", 1.0, 0.0, 1.0, 0.05);
+	theWidth_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Width", GetVTKPlot()->GetPen()->GetWidth(), 1, 10);
+	theOpacity_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("Opacity", GetVTKPlot()->GetPen()->GetOpacity() / 255.0, 0.0, 1.0, 0.05);
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntCombo>(theStyle_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntColor>(theColor_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theWidth_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theOpacity_);
+	thePropertiesPanel_->AddRow(theStyle_);
+	thePropertiesPanel_->AddRow(theColor_);
+	thePropertiesPanel_->AddRow(theWidth_);
+	thePropertiesPanel_->AddRow(theOpacity_);
 
-	connect(theStyle_, SIGNAL(ValueChangedSignal(const char*)), this, SLOT(StyleChangedSlot(const char*)));
+	connect(theStyle_, SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(StyleChangedSlot(const QString&)));
 	connect(theColor_, SIGNAL(ValueChangedSignal(const QColor&)), this, SLOT(ColorChangedSlot(const QColor&)));
 	connect(theWidth_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(WidthChangedSlot(const int&)));
 	connect(theOpacity_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(OpacityChangedSlot(const double&)));
@@ -67,22 +79,54 @@ void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::RenderView() const
 	parentDataSeries->RenderView();
 }
 
-void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::StyleChangedSlot(const char* style)
+QString ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::GetStyleFromVTKPlot() const
 {
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
 	{
-		if (!std::strcmp(style, "None"))
+		auto myLineType = VTKPlot->GetPen()->GetLineType();
+
+		if (myLineType == vtkPen::NO_PEN)
+			return STYLE_NONE;
+		else if (myLineType == vtkPen::SOLID_LINE)
+			return STYLE_SOLID_LINE;
+		else if (myLineType == vtkPen::DASH_LINE)
+			return STYLE_DASH_LINE;
+		else if (myLineType == vtkPen::DOT_LINE)
+			return STYLE_DOT_LINE;
+		else if (myLineType == vtkPen::DASH_DOT_LINE)
+			return STYLE_DASH_DOT_LINE;
+		else if (myLineType == vtkPen::DASH_DOT_DOT_LINE)
+			return STYLE_DASH_DOT_DOT_LINE;
+
+		this->RenderView();
+	}
+
+	return STYLE_DASH_LINE;
+}
+
+void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::StyleChangedSlot(const QString& style)
+{
+	if (sender() != theStyle_)
+	{
+		theStyle_->SetValue(style);
+		return;
+	}
+
+	auto VTKPlot = GetVTKPlot();
+	if (VTKPlot)
+	{
+		if (style == STYLE_NONE)
 			VTKPlot->GetPen()->SetLineType(vtkPen::NO_PEN);
-		else if (!std::strcmp(style, "Solid Line"))
+		else if (style == STYLE_SOLID_LINE)
 			VTKPlot->GetPen()->SetLineType(vtkPen::SOLID_LINE);
-		else if (!std::strcmp(style, "Dash Line"))
+		else if (style == STYLE_DASH_LINE)
 			VTKPlot->GetPen()->SetLineType(vtkPen::DASH_LINE);
-		else if (!std::strcmp(style, "Dot Line"))
+		else if (style == STYLE_DOT_LINE)
 			VTKPlot->GetPen()->SetLineType(vtkPen::DOT_LINE);
-		else if (!std::strcmp(style, "Dash Dot Line"))
+		else if (style == STYLE_DASH_DOT_LINE)
 			VTKPlot->GetPen()->SetLineType(vtkPen::DASH_DOT_LINE);
-		else if (!std::strcmp(style, "Dash Dot Dot Line"))
+		else if (style == STYLE_DASH_DOT_DOT_LINE)
 			VTKPlot->GetPen()->SetLineType(vtkPen::DASH_DOT_DOT_LINE);
 
 		this->RenderView();
@@ -91,6 +135,12 @@ void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::StyleChangedSlot(const char* 
 
 void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::ColorChangedSlot(const QColor & color)
 {
+	if (sender() != theColor_)
+	{
+		theColor_->SetValue(color);
+		return;
+	}
+
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
 	{
@@ -105,6 +155,12 @@ void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::ColorChangedSlot(const QColor
 
 void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::WidthChangedSlot(const int & width)
 {
+	if (sender() != theWidth_)
+	{
+		theWidth_->SetValue(width);
+		return;
+	}
+
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
 	{
@@ -116,6 +172,12 @@ void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::WidthChangedSlot(const int & 
 
 void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::OpacityChangedSlot(const double & opacity)
 {
+	if (sender() != theOpacity_)
+	{
+		theOpacity_->SetValue(opacity);
+		return;
+	}
+
 	auto VTKPlot = GetVTKPlot();
 	if (VTKPlot)
 	{
@@ -124,3 +186,26 @@ void ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::OpacityChangedSlot(const doub
 		this->RenderView();
 	}
 }
+
+DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+{
+
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+{
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+{
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem)

@@ -5,6 +5,8 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 BeginForgVisualLib
 
 class FrgVisual_Plot2D_TItem;
@@ -25,16 +27,13 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
-	FrgVisual_Plot2D_TItem* GetPlot2dTItem() const;
+	FrgVisual_Plot2D_TItem* GetPlot2DTItem() const;
 
-	/*void SetBottomAxisTitle(const char* title);
-	void SetLeftAxisTitle(const char* title);
+	void FormAxes();
 
-	void SetBottomAxisTitleVisible(bool condition);
-	void SetLeftAxisTitleVisible(bool condition);
+private:
 
-	void SetBottomAxisVisible(bool condition);
-	void SetLeftAxisVisible(bool condition);*/
+	DECLARE_SAVE_LOAD_HEADER
 
 private:
 
@@ -45,5 +44,10 @@ private:
 };
 
 EndForgVisualLib
+
+// override for non-default constructor
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
 
 #endif // !_FrgVisual_Plot2DAxes_TItem_Header

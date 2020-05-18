@@ -132,6 +132,8 @@ class FrgVisual_Scene_CameraManip;
 class FORGVISUAL_EXPORT FrgVisual_Scene_InterStyle3D
 	: public vtkInteractorStyleTrackballCamera
 {
+	typedef vtkInteractorStyleTrackballCamera SuperClass;
+
 public:
 	static ForgVisualLib::FrgVisual_Scene_InterStyle3D* New();
 	vtkTypeMacro(ForgVisualLib::FrgVisual_Scene_InterStyle3D, vtkInteractorStyleTrackballCamera);
@@ -229,7 +231,7 @@ public:
 	 */
 	static void TranslateCamera(vtkRenderer* renderer, int toX, int toY, int fromX, int fromY);
 
-	using vtkInteractorStyleTrackballCamera::Dolly;
+	using SuperClass::Dolly;
 
 protected:
 	FrgVisual_Scene_InterStyle3D();

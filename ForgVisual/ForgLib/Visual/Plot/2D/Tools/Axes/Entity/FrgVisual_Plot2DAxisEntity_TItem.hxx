@@ -6,6 +6,8 @@
 #include <FrgBase_TreeItem.hxx>
 #include <FrgBase_PrptsVrntBool.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 BeginForgVisualLib
 
 class FrgVisual_Plot2DAxes_TItem;
@@ -40,6 +42,12 @@ public:
 
 	FrgVisual_Plot2DAxes_TItem* GetPlot2DAxesTItem() const;
 
+	FrgVisual_Plot2D_TItem* GetPlot2DTItem() const { return thePlot2DTItem_; }
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 protected:
 
 	ForgBaseLib::FrgBase_PrptsVrntBool* theVisible_ = nullptr;
@@ -58,5 +66,10 @@ protected slots:
 };
 
 EndForgVisualLib
+
+// override for non-default constructor
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem)
 
 #endif // !_FrgVisual_Plot2DAxisEntity_TItem_Header

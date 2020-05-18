@@ -24,8 +24,12 @@ public:
 	(
 		const FrgString& itemTitle,
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
-		ForgBaseLib::FrgBase_Tree* parentTree
+		ForgBaseLib::FrgBase_Tree* parentTree,
+		vtkPlot* VTKPlot
 	);
+
+	FrgVisual_Plot2DLnStyle_TItem* GetLineStyleTItem() const { return theLineStyle_; }
+	FrgVisual_Plot2DSmblStyle_TItem* GetSymbolStyleTItem() const { return theSymbolStyle_; }
 
 	vtkPlot* GetVTKPlot() const { return theVTKPlot_; }
 	void SetVTKPlot(vtkPlot* plot) { theVTKPlot_ = plot; }
