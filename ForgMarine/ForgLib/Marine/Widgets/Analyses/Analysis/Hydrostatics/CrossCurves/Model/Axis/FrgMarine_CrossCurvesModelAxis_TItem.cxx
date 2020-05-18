@@ -1,6 +1,7 @@
 #include <FrgMarine_CrossCurvesModelAxis_TItem.hxx>
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_Pnt3d.hxx>
 
 #include <Entity3d_Box.hxx>
 
@@ -16,21 +17,21 @@ ForgMarineLib::FrgMarine_CrossCurvesModelAxis_TItem::FrgMarine_CrossCurvesModelA
 {
 	this->setIcon(0, QIcon(ICONTreeItemCircle));
 
-	std::vector<const char*> items;
+	std::vector<QString> items;
 	items.push_back("XOY");
 	items.push_back("ZOX");
 	items.push_back("YOZ");
 	thePlane_ = new ForgBaseLib::FrgBase_PrptsVrntCombo(items, "Plane", "XOY");
 
 	const auto ym = 0.5*(theBox_->P0().Y() + theBox_->P1().Y());
-	theLocation_ = new ForgBaseLib::FrgBase_PrptsVrntPnt3d ("Location", new ForgBaseLib::Pnt3d_Data(theBox_->P0().X(), ym, theBox_->P0().Z()));
+	theLocation_ = new ForgBaseLib::FrgBase_PrptsVrntPnt3d ("Location", new ForgBaseLib::FrgBase_Pnt3d(theBox_->P0().X(), ym, theBox_->P0().Z()));
 	const auto& pt = theLocation_->GetValue();
 
 	theAxis_ = gp::XOY();
-	theAxis_.SetLocation(tnbLib::Pnt3d(pt->theX_, pt->theY_, pt->theZ_));
+	theAxis_.SetLocation(tnbLib::Pnt3d(pt->X(), pt->Y(), pt->Z()));
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntCombo>(thePlane_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntPnt3d>(theLocation_);
+	thePropertiesPanel_->AddRow(thePlane_);
+	thePropertiesPanel_->AddRow(theLocation_);
 }
 
 ForgMarineLib::FrgMarine_CrossCurvesModelAxis_TItem::~FrgMarine_CrossCurvesModelAxis_TItem()

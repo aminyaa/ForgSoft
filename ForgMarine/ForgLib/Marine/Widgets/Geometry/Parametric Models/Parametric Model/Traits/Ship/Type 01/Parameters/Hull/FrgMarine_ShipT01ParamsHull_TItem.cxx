@@ -41,9 +41,9 @@ ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::FrgMarine_ShipT01ParamsHull_TI
 	connect(theFwdFullness_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(FwdFullnessValueChangedSlot()));
 	connect(theAftFullness_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(AftFullnessValueChangedSlot()));
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theMaxAreaLocation_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFwdFullness_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theAftFullness_);
+	thePropertiesPanel_->AddRow(theMaxAreaLocation_);
+	thePropertiesPanel_->AddRow(theFwdFullness_);
+	thePropertiesPanel_->AddRow(theAftFullness_);
 }
 
 ForgMarineLib::FrgMarine_ShipT01ParamsHull_TItem::~FrgMarine_ShipT01ParamsHull_TItem()

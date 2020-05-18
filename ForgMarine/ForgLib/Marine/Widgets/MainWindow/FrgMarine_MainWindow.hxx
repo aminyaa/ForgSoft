@@ -19,6 +19,11 @@ public:
 protected:
 
 	void InitMainWindow() override;
+
+protected slots:
+
+	void FileLoadActionSlot() override;
+	void FileSaveActionSlot() override;
 };
 
 EndForgMarineLib

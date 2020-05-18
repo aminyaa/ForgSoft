@@ -33,8 +33,8 @@ ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::FrgMarine_ShipT01ParamsTran
 	connect(theRake_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(RakeValueChangedSlot()));
 	connect(theWidth_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(WidthValueChangedSlot()));
 
-	thePropertiesPanel_->AddRow <ForgBaseLib::FrgBase_PrptsVrntDouble>(theRake_);
-	thePropertiesPanel_->AddRow <ForgBaseLib::FrgBase_PrptsVrntDouble>(theWidth_);
+	thePropertiesPanel_->AddRow(theRake_);
+	thePropertiesPanel_->AddRow(theWidth_);
 }
 
 ForgMarineLib::FrgMarine_ShipT01ParamsTransom_TItem::~FrgMarine_ShipT01ParamsTransom_TItem()

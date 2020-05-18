@@ -39,6 +39,9 @@ public:
 
 	const std::shared_ptr<tnbLib::CrossSection_xShapeStation>& GetModel() const { return theModel_; }
 
+	FrgMarine_CrossCurvesModelAxis_TItem* GetAxisTItem() const { return theAxisTItem_; }
+	FrgMarine_CrossCurvesModelDistributor_TItem* GetDistributorTItem() const { return theDistributorTItem_; }
+
 private:
 
 	std::shared_ptr<tnbLib::CrossSection_xShapeStation> theModel_;

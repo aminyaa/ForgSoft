@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 BeginForgMarineLib
 
 class FrgMarine_Plot2D_TItem;
@@ -25,11 +27,19 @@ public:
 
 	FrgMarine_Plot2D_TItem* AddPlot2D();
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 private slots:
 
 	void AddPlot2DSlot();
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Plots_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Plots_TItem)
 
 #endif // !_FrgMarine_Plots_TItem_Header

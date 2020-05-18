@@ -3,8 +3,9 @@
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgMarine_Tree.hxx>
-#include <FrgMarine_GeomPModelPView_TItem.hxx>
+//#include <FrgMarine_GeomPModelPView_TItem.hxx>
 
+#include <FrgMarine_GeomPModel_TItem.hxx>
 #include <CadModel_Entity.hxx>
 #include <LegModel_DispNo1.hxx>
 
@@ -43,13 +44,55 @@ ForgMarineLib::FrgMarine_GeomPModels_TItem::FrgMarine_GeomPModels_TItem
 	connect(newShip01Action, SIGNAL(triggered()), this, SLOT(Ship01CreateSlot()));
 }
 
+ForgMarineLib::FrgMarine_GeomPModels_TItem::~FrgMarine_GeomPModels_TItem()
+{
+
+}
+
 void ForgMarineLib::FrgMarine_GeomPModels_TItem::Ship01CreateSlot()
 {
 	auto shipItem = new FrgMarine_GeomPModelShipT01_TItem("Ship Type 01", this, GetParentTree());
 
 	GetParentTree()->ScrollToItem(shipItem);
 
-	auto previewItem = new FrgMarine_GeomPModelPView_TItem("Preview", shipItem, GetParentTree(), shipItem->GetModel());
+	//auto previewItem = new FrgMarine_GeomPModelPView_TItem("Preview", shipItem, GetParentTree(), shipItem->GetModel());
 
-	connect(shipItem, SIGNAL(ModelPerformedToPreviewSignal()), previewItem, SLOT(UpdatePreviewSlot()));
+	//connect(shipItem, SIGNAL(ModelPerformedToPreviewSignal()), previewItem, SLOT(UpdatePreviewSlot()));
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModels_TItem)
+{
+	std::list<FrgMarine_GeomPModel_TItem*> myTItems;
+
+	QTreeWidgetItemIterator it((QTreeWidgetItem*)this);
+	while (*it)
+	{
+		auto myPModelTItem = dynamic_cast<FrgMarine_GeomPModel_TItem*>(*it);
+		if (myPModelTItem)
+			myTItems.push_back(myPModelTItem);
+
+		++it;
+	}
+
+	ar & myTItems;
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModels_TItem)
+{
+	std::list<FrgMarine_GeomPModel_TItem*> myTItems;
+
+	ar & myTItems;
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModels_TItem)
+{
+	//SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModels_TItem)
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModels_TItem)
+{
+	//LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModels_TItem)
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModels_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModels_TItem)

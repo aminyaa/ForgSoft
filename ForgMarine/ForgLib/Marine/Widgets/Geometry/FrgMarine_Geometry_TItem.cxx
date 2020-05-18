@@ -2,6 +2,8 @@
 #include <FrgMarine_GeomPModels_TItem.hxx>
 #include <FrgMarine_GeomParts_TItem.hxx>
 
+#include <FrgMarine_Tree.hxx>
+
 ForgMarineLib::FrgMarine_Geometry_TItem::FrgMarine_Geometry_TItem
 (
 	const FrgString& itemTitle,
@@ -16,6 +18,35 @@ ForgMarineLib::FrgMarine_Geometry_TItem::FrgMarine_Geometry_TItem
 
 ForgMarineLib::FrgMarine_Geometry_TItem::~FrgMarine_Geometry_TItem()
 {
-	FreePointer(theParts_);
-	FreePointer(theParametricModels_);
+// 	FreePointer(theParts_);
+// 	FreePointer(theParametricModels_);
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_Geometry_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Geometry_TItem, ForgBaseLib::FrgBase_TreeItem)
+
+	ar & theParametricModels_;
+	ar & theParts_;
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_Geometry_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Geometry_TItem, ForgBaseLib::FrgBase_TreeItem)
+	
+	ar & theParametricModels_;
+	ar & theParts_;
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_Geometry_TItem)
+{
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_Geometry_TItem)
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_Geometry_TItem)
+{
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_Geometry_TItem)
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_Geometry_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_Geometry_TItem)

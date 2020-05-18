@@ -84,7 +84,7 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 		auto myTris = tnbLib::Cad_Tools::RetrieveTriangulation(myPreviewShape);
 
 		theScene_->RemoveAllActors();
-		dynamic_cast<ForgVisualLib::FrgVisual_Scene3D*>(theScene_)->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, false);
+		dynamic_cast<ForgVisualLib::FrgVisual_Scene3D*>(theScene_)->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, true);
 	}
 }
 
@@ -114,14 +114,14 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FormFastDiscreteParams()
 	theFastDiscrete_ControlSurfaceDeflection_ = new ForgBaseLib::FrgBase_PrptsVrntBool
 	("Control Surface Deflection", theFastDiscreteParams_->ControlSurfaceDeflection);
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFastDiscrete_Angle_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFastDiscrete_Deflection_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFastDiscrete_MinSize_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_InParallel_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_Relative_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_AdaptiveMin_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_InternalVerticesMode_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntBool>(theFastDiscrete_ControlSurfaceDeflection_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_Angle_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_Deflection_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_MinSize_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_InParallel_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_Relative_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_AdaptiveMin_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_InternalVerticesMode_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_ControlSurfaceDeflection_);
 	//FormPropertiesPanel();
 	//thePropertiesPanel_ = new ForgBaseLib::FrgBase_PropertiesPanel(GetParentMainWindow(), this);
 }
@@ -230,21 +230,21 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FDiscControlSurfaceDeflecti
 	}
 }
 
-void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::TItemNameToTabTitleChangedSlot(const QString & title)
-{
-	auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
-	if (myMainWindow)
-		myMainWindow->SetTabText(theScene_, title + " " + this->text(0));
-}
-
-void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::ShowTabWidget()
-{
-	auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
-	if (myMainWindow)
-		myMainWindow->ShowTabWidget(theScene_, dynamic_cast<QTreeWidgetItem*>(this)->parent()->text(0) + " " + this->text(0));
-}
-
-void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::TItemDoubleClickedSlot()
-{
-	ShowTabWidget();
-}
+//void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::TItemNameToTabTitleChangedSlot(const QString & title)
+//{
+//	auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
+//	if (myMainWindow)
+//		myMainWindow->SetTabText(theScene_, title + " " + this->text(0));
+//}
+//
+//void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::ShowTabWidget()
+//{
+//	auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
+//	if (myMainWindow)
+//		myMainWindow->ShowTabWidget(theScene_, dynamic_cast<QTreeWidgetItem*>(this)->parent()->text(0) + " " + this->text(0));
+//}
+//
+//void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::TItemDoubleClickedSlot()
+//{
+//	ShowTabWidget();
+//}

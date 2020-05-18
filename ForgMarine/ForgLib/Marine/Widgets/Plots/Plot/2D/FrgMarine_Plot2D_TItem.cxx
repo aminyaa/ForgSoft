@@ -5,6 +5,10 @@
 #include <FrgVisual_Plot2D.hxx>
 
 #include <FrgVisual_Plot.hxx>
+#include <FrgBase_Tree.hxx>
+
+//BOOST_CLASS_EXPORT_GUID(ForgMarineLib::FrgMarine_Plot2D_TItem, "ForgMarineLib::FrgMarine_Plot2D_TItem")
+//BOOST_CLASS_EXPORT_IMPLEMENT(ForgMarineLib::FrgMarine_Plot2D_TItem)
 
 ForgMarineLib::FrgMarine_Plot2D_TItem::FrgMarine_Plot2D_TItem
 (
@@ -26,3 +30,36 @@ ForgMarineLib::FrgMarine_Plot2D_TItem::FrgMarine_Plot2D_TItem
 
 	GetContextMenu()->addMenu(newPredefinedFunctions);
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_Plot2D_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Plot2D_TItem, ForgVisualLib::FrgVisual_Plot2D_TItem)
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Plot2D_TItem, ForgBaseLib::FrgBase_TreeItem)
+
+	//ar.template register_type<ForgMarineLib::FrgMarine_Plot2D_TItem>();
+
+	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_Plot2D_TItem>(*this);
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_Plot2D_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Plot2D_TItem, ForgVisualLib::FrgVisual_Plot2D_TItem)
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Plot2D_TItem, ForgBaseLib::FrgBase_TreeItem)
+
+	//ar.template register_type<ForgMarineLib::FrgMarine_Plot2D_TItem>();
+
+	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_Plot2D_TItem>(*this);
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_Plot2D_TItem)
+{
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_Plot2D_TItem)
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_Plot2D_TItem)
+{
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_Plot2D_TItem)
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_Plot2D_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_Plot2D_TItem)

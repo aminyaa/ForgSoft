@@ -146,6 +146,15 @@
     <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel">
       <UniqueIdentifier>{1793fab6-6095-4c1d-8ae9-9eaf86037bf3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Preview">
+      <UniqueIdentifier>{8ceb699e-0c08-4125-a888-4d9e628dc2ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Serialization">
+      <UniqueIdentifier>{6022081a-8507-461a-b3e0-fc7e0d1d92e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Marine\Serialization\Global">
+      <UniqueIdentifier>{033755ef-8cdf-480e-8c66-7cc7546d4f66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgMarine.qrc">
@@ -249,6 +258,9 @@
     <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel\FrgMarine_CrossCurvesHeel_TItem.cxx">
       <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Preview\FrgMarine_HStaticsCrossCurvesPView_TItem.cxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Preview</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global.hxx">
@@ -256,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Marine\Global\FrgMarine_Global_Build.hxx">
       <Filter>ForgLib\Marine\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Marine\Serialization\Global\FrgMarine_Serialization_Global.hxx">
+      <Filter>ForgLib\Marine\Serialization\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -351,6 +366,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel\FrgMarine_CrossCurvesHeel_TItem.hxx">
       <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Heel</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Preview\FrgMarine_HStaticsCrossCurvesPView_TItem.hxx">
+      <Filter>ForgLib\Marine\Widgets\Analyses\Analysis\Hydrostatics\CrossCurves\Preview</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

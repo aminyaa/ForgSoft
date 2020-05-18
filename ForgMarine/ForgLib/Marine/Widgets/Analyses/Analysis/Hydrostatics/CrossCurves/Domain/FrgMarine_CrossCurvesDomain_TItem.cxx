@@ -1,4 +1,5 @@
 #include <FrgMarine_CrossCurvesDomain_TItem.hxx>
+#include <FrgBase_Global_Thread.hxx>
 
 #include <Entity3d_Box.hxx>
 #include <Marine_Domain.hxx>
@@ -14,5 +15,6 @@ ForgMarineLib::FrgMarine_CrossCurvesDomain_TItem::FrgMarine_CrossCurvesDomain_TI
 {
 	theDomain_ = std::make_shared<tnbLib::Marine_Domain>();
 
-	theDomain_->Perform(*box);
+	ExecuteFunctionInProcess(GetParentMainWindow(), theDomain_->Perform(*box), nullptr, nullptr);
+	//theDomain_->Perform(*box);
 }

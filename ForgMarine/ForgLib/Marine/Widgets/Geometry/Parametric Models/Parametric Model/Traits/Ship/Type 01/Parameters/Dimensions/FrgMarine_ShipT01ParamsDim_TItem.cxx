@@ -57,13 +57,13 @@ ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::FrgMarine_ShipT01ParamsDim_TIte
 	connect(theNbNetRows_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(NbNetRowsValueChangedSlot()));
 	connect(theNbNetColumns_, SIGNAL(ValueChangedSignal(const int&)), this, SLOT(NbNetColumnsValueChangedSlot()));
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theTransomHeight_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theDepthAtBow_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theDepthAtTransom_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theBeamOnDeck_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theLengthOnDeck_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theNbNetRows_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theNbNetColumns_);
+	thePropertiesPanel_->AddRow(theTransomHeight_);
+	thePropertiesPanel_->AddRow(theDepthAtBow_);
+	thePropertiesPanel_->AddRow(theDepthAtTransom_);
+	thePropertiesPanel_->AddRow(theBeamOnDeck_);
+	thePropertiesPanel_->AddRow(theLengthOnDeck_);
+	thePropertiesPanel_->AddRow(theNbNetRows_);
+	thePropertiesPanel_->AddRow(theNbNetColumns_);
 }
 
 ForgMarineLib::FrgMarine_ShipT01ParamsDim_TItem::~FrgMarine_ShipT01ParamsDim_TItem()

@@ -4,6 +4,7 @@
 #include <FrgMarine_Tree.hxx>
 #include <FrgMarine_Geometry_TItem.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
+#include <FrgBase_Global_Thread.hxx>
 
 #include <Entity3d_Box.hxx>
 #include <CrossSection_xShapeStation.hxx>
@@ -25,7 +26,9 @@ ForgMarineLib::FrgMarine_CrossCurvesModel_TItem::FrgMarine_CrossCurvesModel_TIte
 	theModel_ = std::make_shared<tnbLib::CrossSection_xShapeStation>(theAxisTItem_->GetAxis());
 	theModel_->LoadShape(*shape);
 	theModel_->LoadDistributor(theDistributorTItem_->GetDistribution());
-	theModel_->Perform();
+
+	ExecuteFunctionInProcess(GetParentMainWindow(), theModel_->Perform(), nullptr, nullptr);
+	//theModel_->Perform();
 }
 
 ForgMarineLib::FrgMarine_CrossCurvesModel_TItem::~FrgMarine_CrossCurvesModel_TItem()

@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_Tree.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 BeginForgMarineLib
 
 class FrgMarine_MainWindow;
@@ -21,7 +23,7 @@ public:
 
 	FrgMarine_Tree
 	(
-		FrgMarine_MainWindow* parentMainWindow
+		FrgMarine_MainWindow* parentMainWindow = nullptr
 	);
 
 	~FrgMarine_Tree();
@@ -34,12 +36,18 @@ public:
 
 private:
 
-	FrgMarine_Geometry_TItem* theGeometry_ = NullPtr;
-	FrgMarine_Analyses_TItem* theAnalysis_ = NullPtr;
-	FrgMarine_Plots_TItem* thePlots_ = NullPtr;
+	DECLARE_SAVE_LOAD_HEADER
+
+private:
+
+	mutable FrgMarine_Geometry_TItem* theGeometry_ = NullPtr;
+	mutable FrgMarine_Analyses_TItem* theAnalysis_ = NullPtr;
+	mutable FrgMarine_Plots_TItem* thePlots_ = NullPtr;
 
 };
 
 EndForgMarineLib
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Tree)
 
 #endif // !_FrgMarine_Tree_Header

@@ -16,9 +16,9 @@ ForgMarineLib::FrgMarine_CrossCurvesHeel_TItem::FrgMarine_CrossCurvesHeel_TItem
 	theDegree1_ = new ForgBaseLib::FrgBase_PrptsVrntDouble("To:", 90.0, 0.0, 120.0, 0.5, "", "[deg]");
 	theNbHeels_ = new ForgBaseLib::FrgBase_PrptsVrntInt("Number Of Divisions:", 10, 2, 100);
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theDegree0_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theDegree1_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntInt>(theNbHeels_);
+	thePropertiesPanel_->AddRow(theDegree0_);
+	thePropertiesPanel_->AddRow(theDegree1_);
+	thePropertiesPanel_->AddRow(theNbHeels_);
 
 	theHeel_ = tnbLib::MarineBase_Tools::HeelDistb(theDegree0_->GetValue(), theDegree1_->GetValue(), theNbHeels_->GetValue());
 }

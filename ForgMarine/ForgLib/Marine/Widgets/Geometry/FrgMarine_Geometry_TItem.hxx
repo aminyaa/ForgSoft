@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 BeginForgMarineLib
 
 class FrgMarine_GeomPModels_TItem;
@@ -31,10 +33,18 @@ public:
 
 private:
 
+	DECLARE_SAVE_LOAD_HEADER
+
+private:
+
 	FrgMarine_GeomPModels_TItem* theParametricModels_ = NullPtr;
 	FrgMarine_GeomParts_TItem* theParts_ = NullPtr;
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Geometry_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Geometry_TItem)
 
 #endif // !_FrgMarine_TItem_Geom_Header

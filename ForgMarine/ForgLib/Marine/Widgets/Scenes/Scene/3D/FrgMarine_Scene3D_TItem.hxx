@@ -26,9 +26,19 @@ public:
 	ForgBaseLib::FrgBase_PrptsVrntSelectTItems* GetSelectTItems() const { return theSelectTItems_; }
 	void SetSelectTItems(ForgBaseLib::FrgBase_PrptsVrntSelectTItems* selectTItems) { theSelectTItems_ = selectTItems; }
 
+	void ShowTabWidget();
+
 private:
 
 	ForgBaseLib::FrgBase_PrptsVrntSelectTItems* theSelectTItems_ = nullptr;
+
+public slots:
+
+	void TItemDoubleClickedSlot() override;
+
+protected slots:
+
+	void TItemNameToTabTitleChangedSlot(const QString&);
 };
 
 EndForgMarineLib

@@ -42,10 +42,10 @@ ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::FrgMarine_ShipT01Params
 	connect(theSideSlope_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(SideSlopeValueChangedSlot()));
 	connect(theFlare_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(FlareValueChangedSlot()));
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theTightness_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theDeadrise_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theSideSlope_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theFlare_);
+	thePropertiesPanel_->AddRow(theTightness_);
+	thePropertiesPanel_->AddRow(theDeadrise_);
+	thePropertiesPanel_->AddRow(theSideSlope_);
+	thePropertiesPanel_->AddRow(theFlare_);
 }
 
 ForgMarineLib::FrgMarine_ShipT01ParamsHullSection_TItem::~FrgMarine_ShipT01ParamsHullSection_TItem()

@@ -67,12 +67,12 @@ public:
 	ForgBaseLib::FrgBase_PrptsVrntBool* GetFastDiscrete_ControlSurfaceDeflection() const { return theFastDiscrete_ControlSurfaceDeflection_; }
 	void SetFastDiscrete_ControlSurfaceDeflection(ForgBaseLib::FrgBase_PrptsVrntBool* controlSurfaceDeflection) { theFastDiscrete_ControlSurfaceDeflection_ = controlSurfaceDeflection; }
 
-	void ShowTabWidget();
+	//void ShowTabWidget();
 
 public slots:
 
 	void UpdatePreviewSlot();
-	void TItemDoubleClickedSlot() override;
+	//void TItemDoubleClickedSlot() override;
 
 private:
 
@@ -105,7 +105,7 @@ private slots:
 	void FDiscInternalVerticesModeMinValueChangedSlot();
 	void FDiscControlSurfaceDeflectionMinValueChangedSlot();
 
-	void TItemNameToTabTitleChangedSlot(const QString& title);
+	//void TItemNameToTabTitleChangedSlot(const QString& title);
 };
 
 EndForgMarineLib

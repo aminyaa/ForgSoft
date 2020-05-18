@@ -37,9 +37,9 @@ ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::FrgMarine_ShipT01ParamsStem_TI
 	connect(theStemRake_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(StemRakeValueChangedSlot()));
 	connect(theForeFootShape_, SIGNAL(ValueChangedSignal(const double&)), this, SLOT(ForeFootShapeValueChangedSlot()));
 
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theBowRounding_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theStemRake_);
-	thePropertiesPanel_->AddRow<ForgBaseLib::FrgBase_PrptsVrntDouble>(theForeFootShape_);
+	thePropertiesPanel_->AddRow(theBowRounding_);
+	thePropertiesPanel_->AddRow(theStemRake_);
+	thePropertiesPanel_->AddRow(theForeFootShape_);
 }
 
 ForgMarineLib::FrgMarine_ShipT01ParamsStem_TItem::~FrgMarine_ShipT01ParamsStem_TItem()

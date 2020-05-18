@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 namespace tnbLib
 {
 	class CadModel_Entity;
@@ -26,11 +28,21 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	~FrgMarine_GeomPModels_TItem();
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 private slots:
 
 	void Ship01CreateSlot();
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModels_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 
 #endif // !_FrgMarine_TItemGeom_ParMdls_Header
