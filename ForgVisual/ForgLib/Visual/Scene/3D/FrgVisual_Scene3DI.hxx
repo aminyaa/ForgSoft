@@ -17,10 +17,8 @@
 #include <vtkProperty.h>
 
 template<typename Triangulation>
-inline void ForgVisualLib::FrgVisual_Scene3D::AddTriangulations(std::vector<Triangulation> triangulations, bool resetCamera)
+inline void ForgVisualLib::FrgVisual_Scene3D::AddTriangulations(std::vector<Triangulation> triangulations, bool render)
 {
-	//QList<vtkSmartPointer<vtkActor>> actors;
-
 	for (int iTriangulation = 0; iTriangulation < triangulations.size(); iTriangulation++)
 	{
 		auto myTriangulation = triangulations.at(iTriangulation);
@@ -57,8 +55,6 @@ inline void ForgVisualLib::FrgVisual_Scene3D::AddTriangulations(std::vector<Tria
 
 		vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
 
-		//actor->SetMapper(HullMapper);
-
 		// Create a transform to rescale model
 		double center[3];
 		Hull->GetCenter(center);
@@ -84,43 +80,35 @@ inline void ForgVisualLib::FrgVisual_Scene3D::AddTriangulations(std::vector<Tria
 		HullMapper->SetInputConnection(norms->GetOutputPort());
 		HullMapper->ScalarVisibilityOff();
 
-		//actor->GetProperty()->SetRepresentationToWireframe();
-
-		//actor->GetProperty()->EdgeVisibilityOn();
-		//actor->GetProperty()->SetLineWidth(2.0);
-
 		actor->SetMapper(HullMapper);
-		//actors.push_back(actor);
-
 		theRenderer_->AddActor(actor);
-
-		/*for (auto scene : GetViewPorts()->GetScenes())
-		{
-			for (int iActor = 0; iActor < scene->GetActors().size(); iActor++)
-			{
-				scene->GetActors().at(iActor)->GetProperty()->SetOpacity(0.5);
-			}
-		}*/
-
 	}
 
-	/*for (auto scene : GetViewPorts()->GetScenes())
+	if (render)
+		RenderScene(false);
+}
+
+template<typename T>
+inline void ForgVisualLib::FrgVisual_Scene3D::ClearAllDataType()
+{
+	vtkRenderWindowInteractor* rwi = theRenderWindowInteractor_;
+	vtkActorCollection* ac;
+	vtkActor* anActor;
+	T* aPart;
+	if (theRenderer_ != nullptr)
 	{
-		for (int i = 0; i < thePreviewActors_.size(); i++)
+		ac = theRenderer_->GetActors();
+		vtkCollectionSimpleIterator ait;
+		for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
 		{
-			scene->GetRenderer()->RemoveActor(thePreviewActors_.at(i));
+			aPart = static_cast<T*>(anActor);
+			if (aPart)
+				theRenderer_->RemoveActor(aPart);
 		}
 	}
-
-	thePreviewActors_ = actors;
-
-	for (auto scene : GetViewPorts()->GetScenes())
+	else
 	{
-		for (int i = 0; i < thePreviewActors_.size(); i++)
-		{
-			scene->AddActorToTheRenderer(thePreviewActors_.at(i));
-		}
-	}*/
-
-	RenderScene(resetCamera);
+		std::cout << "no current renderer on the interactor style.\n";
+	}
+	rwi->Render();
 }

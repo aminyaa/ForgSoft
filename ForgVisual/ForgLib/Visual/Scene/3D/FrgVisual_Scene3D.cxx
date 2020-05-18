@@ -1,7 +1,11 @@
 #include <FrgVisual_Scene3D.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgVisual_Scene_InterStyle3D.hxx>
-//#include <FrgVisual_Scene_CameraManip.hxx>
+#include <FrgBase_Pnt3d.hxx>
+#include <FrgVisual_PointActor.hxx>
+#include <FrgVisual_LineActor.hxx>
+#include <FrgVisual_PolylineActor.hxx>
+#include <FrgVisual_BoxActor.hxx>
 
 #include <vtkActor.h>
 #include <vtkProperty.h>
@@ -12,6 +16,10 @@
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 #include <vtkCamera.h>
+#include <vtkLineSource.h>
+#include <vtkPolyLine.h>
+#include <vtkCubeSource.h>
+#include <vtkAssemblyPath.h>
 
 ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 (ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
@@ -103,6 +111,249 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
 	}
 	else
 		theRenderWindow_->Render();
+}
+
+ForgVisualLib::FrgVisual_PointActor* ForgVisualLib::FrgVisual_Scene3D::AddPoint
+(
+	ForgBaseLib::FrgBase_Pnt3d * pt,
+	bool render
+)
+{
+	if (!pt)
+	{
+		std::cout << "pt is null in ForgVisualLib::FrgVisual_PointActor* ForgVisualLib::FrgVisual_Scene3D::AddPoint\n";
+		return nullptr;
+	}
+
+	return AddPoint(pt->X(), pt->Y(), pt->Z(), render);
+}
+
+ForgVisualLib::FrgVisual_PointActor* ForgVisualLib::FrgVisual_Scene3D::AddPoint
+(
+	double x,
+	double y,
+	double z,
+	bool render
+)
+{
+	// Create the geometry of a point (the coordinate)
+	vtkSmartPointer<vtkPoints> points =
+		vtkSmartPointer<vtkPoints>::New();
+
+	// Create the topology of the point (a vertex)
+	vtkSmartPointer<vtkCellArray> vertices =
+		vtkSmartPointer<vtkCellArray>::New();
+	// We need an an array of point id's for InsertNextCell.
+	vtkIdType pid[1];
+	pid[0] = points->InsertNextPoint(x, y, z);
+	vertices->InsertNextCell(1, pid);
+
+	// Create a polydata object
+	vtkSmartPointer<vtkPolyData> point =
+		vtkSmartPointer<vtkPolyData>::New();
+
+	// Set the points and vertices we created as the geometry and topology of the polydata
+	point->SetPoints(points);
+	point->SetVerts(vertices);
+
+	// Visualize
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+		vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputData(point);
+
+	vtkSmartPointer<FrgVisual_PointActor> actor =
+		vtkSmartPointer<FrgVisual_PointActor>::New();
+
+	//actor->SetP(pt);
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetColor(1.0, 0.0, 0.0);
+	actor->GetProperty()->SetPointSize(5);
+	actor->GetProperty()->SetRepresentationToPoints();
+	actor->GetProperty()->SetRenderPointsAsSpheres(true);
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return actor;
+}
+
+ForgVisualLib::FrgVisual_LineActor * ForgVisualLib::FrgVisual_Scene3D::AddLine
+(
+	ForgBaseLib::FrgBase_Pnt3d * P0,
+	ForgBaseLib::FrgBase_Pnt3d * P1,
+	bool render
+)
+{
+	if (!P0 || !P1)
+	{
+		std::cout << "P0 or P1 or both of them is/are null in ForgVisualLib::FrgVisual_LineActor * ForgVisualLib::FrgVisual_Scene3D::AddLine()\n";
+		return nullptr;
+	}
+
+	return AddLine(P0->X(), P0->Y(), P0->Z(), P1->X(), P1->Y(), P1->Z(), render);
+}
+
+ForgVisualLib::FrgVisual_LineActor * ForgVisualLib::FrgVisual_Scene3D::AddLine
+(
+	double P0_X,
+	double P0_Y,
+	double P0_Z,
+	double P1_X,
+	double P1_Y,
+	double P1_Z,
+	bool render
+)
+{
+	vtkSmartPointer<vtkLineSource> lineSource =
+		vtkSmartPointer<vtkLineSource>::New();
+	lineSource->SetPoint1(P0_X, P0_Y, P0_Z);
+	lineSource->SetPoint2(P1_X, P1_Y, P1_Z);
+
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+		vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputConnection(lineSource->GetOutputPort());
+	vtkSmartPointer<FrgVisual_LineActor> actor =
+		vtkSmartPointer<FrgVisual_LineActor>::New();
+	//actor->SetP0(P0);
+	//actor->SetP1(P1);
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetLineWidth(1);
+	actor->GetProperty()->SetColor(1.0, 0.0, 0.0);
+	actor->GetProperty()->SetRenderLinesAsTubes(true);
+	actor->GetProperty()->SetRepresentationToWireframe();
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return actor;
+}
+
+ForgVisualLib::FrgVisual_PolylineActor * ForgVisualLib::FrgVisual_Scene3D::AddPolyline
+(
+	std::vector<ForgBaseLib::FrgBase_Pnt3d*> pts,
+	bool render
+)
+{
+	if (pts.size() == 0)
+	{
+		std::cout << "pts vector is empty in ForgVisualLib::FrgVisual_PolylineActor * ForgVisualLib::FrgVisual_Scene3D::AddPolyline()\n";
+		return nullptr;
+	}
+
+	vtkSmartPointer<vtkPoints> points =
+		vtkSmartPointer<vtkPoints>::New();
+
+	for (int iPoint = 0; iPoint < pts.size(); iPoint++)
+		points->InsertNextPoint(pts[iPoint]->X(), pts[iPoint]->Y(), pts[iPoint]->Z());
+
+	vtkSmartPointer<vtkPolyLine> polyLine =
+		vtkSmartPointer<vtkPolyLine>::New();
+	polyLine->GetPointIds()->SetNumberOfIds(pts.size());
+	for (unsigned int i = 0; i < pts.size(); i++)
+		polyLine->GetPointIds()->SetId(i, i);
+
+	// Create a cell array to store the lines in and add the lines to it
+	vtkSmartPointer<vtkCellArray> cells =
+		vtkSmartPointer<vtkCellArray>::New();
+	cells->InsertNextCell(polyLine);
+
+	// Create a polydata to store everything in
+	vtkSmartPointer<vtkPolyData> polyData =
+		vtkSmartPointer<vtkPolyData>::New();
+
+	// Add the points to the dataset
+	polyData->SetPoints(points);
+
+	// Add the lines to the dataset
+	polyData->SetLines(cells);
+
+	// Setup actor and mapper
+	vtkSmartPointer<vtkPolyDataMapper> mapper =
+		vtkSmartPointer<vtkPolyDataMapper>::New();
+	mapper->SetInputData(polyData);
+
+	vtkSmartPointer<FrgVisual_PolylineActor> actor =
+		vtkSmartPointer<FrgVisual_PolylineActor>::New();
+	//actor->SetPoints(pts);
+	actor->SetMapper(mapper);
+	actor->GetProperty()->SetColor(1.0, 0.0, 0.0);
+
+	theRenderer_->AddActor(actor);
+	
+	if (render)
+		RenderScene(false);
+
+	return actor;
+}
+
+ForgVisualLib::FrgVisual_BoxActor * ForgVisualLib::FrgVisual_Scene3D::AddBox
+(
+	ForgBaseLib::FrgBase_Pnt3d * P0,
+	ForgBaseLib::FrgBase_Pnt3d * P1,
+	bool render
+)
+{
+	if (!P0 || !P1)
+	{
+		std::cout << "P0 or P1 or both of them is/are null in ForgVisualLib::FrgVisual_BoxActor * ForgVisualLib::FrgVisual_Scene3D::AddBox()\n";
+		return nullptr;
+	}
+
+	return AddBox(P0->X(), P0->Y(), P0->Z(), P1->X(), P1->Y(), P1->Z(), render);
+}
+
+ForgVisualLib::FrgVisual_BoxActor * ForgVisualLib::FrgVisual_Scene3D::AddBox
+(
+	double P0_X,
+	double P0_Y,
+	double P0_Z,
+	double P1_X,
+	double P1_Y,
+	double P1_Z,
+	bool render
+)
+{
+	// Create a cube.
+	vtkNew<vtkCubeSource> cube;
+	cube->SetBounds(P0_X, P1_X, P0_Y, P1_Y, P0_Z, P1_Z);
+	cube->Update();
+
+	// mapper
+	vtkNew<vtkPolyDataMapper> cubeMapper;
+	cubeMapper->SetInputData(cube->GetOutput());
+
+	// Actor.
+	vtkNew<FrgVisual_BoxActor> cubeActor;
+	//cubeActor->SetP0(P0);
+	//cubeActor->SetP1(P1);
+	cubeActor->SetMapper(cubeMapper);
+	cubeActor->GetProperty()->SetColor(1.0, 0.0, 0.0);
+
+	theRenderer_->AddActor(cubeActor);
+
+	if (render)
+		RenderScene(false);
+
+	return cubeActor;
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::ClearAllPoints()
+{
+	ClearAllDataType<FrgVisual_PointActor>();
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::ClearAllLines()
+{
+	ClearAllDataType<FrgVisual_LineActor>();
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::ClearAllPolylines()
+{
+	ClearAllDataType<FrgVisual_PolylineActor>();
 }
 
 //#include <FrgVisual_Scene3D.hxx>

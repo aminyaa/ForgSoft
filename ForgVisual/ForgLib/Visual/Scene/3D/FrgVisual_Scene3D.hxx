@@ -8,9 +8,15 @@
 namespace ForgBaseLib
 {
 	class FrgBase_MainWindow;
+	class FrgBase_Pnt3d;
 }
 
 BeginForgVisualLib
+
+class FrgVisual_PointActor;
+class FrgVisual_LineActor;
+class FrgVisual_PolylineActor;
+class FrgVisual_BoxActor;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene3D
 	: public FrgVisual_Scene
@@ -19,12 +25,30 @@ class FORGVISUAL_EXPORT FrgVisual_Scene3D
 public:
 
 	FrgVisual_Scene3D(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
+	void Init() override;
 
-	template <typename Triangulation>
-	void AddTriangulations(std::vector<Triangulation> triangulations, bool resetCamera = true);
 	void RenderScene(bool resetCamera = true) override;
 
-	void Init() override;
+	template <typename Triangulation>
+	void AddTriangulations(std::vector<Triangulation> triangulations, bool render);
+
+	FrgVisual_PointActor* AddPoint(ForgBaseLib::FrgBase_Pnt3d* pt, bool render = true);
+	FrgVisual_PointActor* AddPoint(double x = 0.0, double y = 0.0, double z = 0.0, bool render = true);
+
+	FrgVisual_LineActor* AddLine(ForgBaseLib::FrgBase_Pnt3d* P0, ForgBaseLib::FrgBase_Pnt3d* P1, bool render = true);
+	FrgVisual_LineActor* AddLine(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render = true);
+
+	FrgVisual_PolylineActor* AddPolyline(std::vector<ForgBaseLib::FrgBase_Pnt3d*> pts, bool render = true);
+
+	FrgVisual_BoxActor* AddBox(ForgBaseLib::FrgBase_Pnt3d* P0, ForgBaseLib::FrgBase_Pnt3d* P1, bool render = true);
+	FrgVisual_BoxActor* AddBox(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render = true);
+
+	template <typename T>
+	void ClearAllDataType();
+
+	void ClearAllPoints();
+	void ClearAllLines();
+	void ClearAllPolylines();
 };
 
 EndForgVisualLib
