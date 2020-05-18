@@ -5,8 +5,12 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgBase_Tree.hxx>
 
 #include <QtCore/QMetaProperty>
+#include <QtCore/QObject>
+
+//BOOST_CLASS_EXPORT_GUID(ForgBaseLib::FrgBase_TreeItem, "ForgBaseLib::FrgBase_TreeItem")
 
 ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 (
@@ -15,36 +19,8 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	FrgBase_Tree * parentTree
 )
 	: QTreeWidgetItem(parentItem)
-	, theParentTree_(parentTree)
-	, theParentMainWindow_(theParentTree_->GetParentMainWindow())
 {
-	this->setIcon(0, QIcon(ICON_Menu_File_Load));
-
-	theTItemName_ = new FrgBase_PrptsVrntString("Name", "");
-	RenameTItemSlot(itemTitle);
-
-	theContextMenu_ = FrgNew FrgBase_Menu(theTItemName_->GetValue(), theParentMainWindow_, FrgTrue);
-	theContextMenu_->SetToolBarHidden(true);
-
-	QObject::connect(this, SIGNAL(TItemNameChanged(const QString&)), theContextMenu_, SLOT(MenuTitleChangedSlot(const QString&)));
-	connect(theTItemName_, SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(RenameTItemSlot(const QString&)));
-	connect(this, SIGNAL(DeleteTItemCalled()), GetParentTree(), SLOT(DeleteTreeItemSlot()));
-
-	if (parentItem)
-	{
-		parentItem->addChild(this);
-	}
-	else
-		if (!parentTree)
-		{
-			std::cout << "parentTree is null in FrgBase_TreeItem::FrgBase_TreeItem(...)\n";
-			return;
-		}
-		else
-			parentTree->addTopLevelItem(this);
-
-	FormPropertiesPanel();
-	thePropertiesPanel_->AddRow<FrgBase_PrptsVrntString>(theTItemName_);
+	ConstructTItem(itemTitle, parentItem, parentTree);
 }
 
 ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()
@@ -55,6 +31,50 @@ ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()
 	theContextMenu_->deleteLater();
 	FreePointer(thePropertiesPanel_);
 	FreePointer(theTItemName_);
+}
+
+void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
+(
+	const FrgString & itemTitle,
+	FrgBase_TreeItem * parentItem,
+	FrgBase_Tree * parentTree
+)
+{
+	theParentTree_ = parentTree;
+	theParentMainWindow_ = parentTree->GetParentMainWindow();
+
+	this->setIcon(0, QIcon(ICON_Menu_File_Load));
+
+	theTItemName_ = new FrgBase_PrptsVrntString("Name", "");
+	RenameTItemSlot(itemTitle);
+
+	theContextMenu_ = FrgNew FrgBase_Menu(theTItemName_->GetValue(), theParentMainWindow_, FrgTrue);
+	theContextMenu_->SetToolBarHidden(true);
+
+	connect(this, SIGNAL(TItemNameChanged(const QString&)), theContextMenu_, SLOT(MenuTitleChangedSlot(const QString&)));
+	connect(theTItemName_, SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(RenameTItemSlot(const QString&)));
+	connect(this, SIGNAL(DeleteTItemCalled()), GetParentTree(), SLOT(DeleteTreeItemSlot()));
+
+	if (parentItem)
+	{
+		parentItem->addChild(this);
+
+		this->setObjectName(parentItem->objectName() + "_" + itemTitle);
+	}
+	else
+		if (!parentTree)
+		{
+			std::cout << "parentTree is null in FrgBase_TreeItem::FrgBase_TreeItem(...)\n";
+			return;
+		}
+		else
+		{
+			parentTree->addTopLevelItem(this);
+			this->setObjectName(itemTitle);
+		}
+
+	FormPropertiesPanel();
+	thePropertiesPanel_->AddRow<FrgBase_PrptsVrntString>(theTItemName_);
 }
 
 void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name)
@@ -162,6 +182,8 @@ void ForgBaseLib::FrgBase_TreeItem::RemoveRenameOptionInContextMenu()
 void ForgBaseLib::FrgBase_TreeItem::AddDeleteOptionInContextMenu()
 {
 	auto action = theContextMenu_->AddItem("Delete", FrgFalse);
+	action->setIcon(QIcon(ICON_Menu_Edit_Delete));
+
 	QObject::connect(action, SIGNAL(triggered()), this, SIGNAL(DeleteTItemCalled()));
 }
 
@@ -189,3 +211,26 @@ void ForgBaseLib::FrgBase_TreeItem::FormPropertiesPanel()
 
 	thePropertiesPanel_ = new FrgBase_PropertiesPanel(theParentMainWindow_, this);
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_TreeItem)
+{
+
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_TreeItem)
+{
+
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)
+{
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgBaseLib::FrgBase_TreeItem)
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)
+{
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgBaseLib::FrgBase_TreeItem)
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_TreeItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)

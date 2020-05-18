@@ -5,6 +5,8 @@
 #include <FrgBase_Global.hxx>
 #include <FrgBase_Object.hxx>
 
+#include <FrgBase_Serialization_Global.hxx>
+
 #include <QtWidgets/QTreeWidget>
 #include <QtCore/QObject>
 
@@ -27,7 +29,7 @@ class FORGBASE_EXPORT FrgBase_Tree
 
 	Q_OBJECT
 
-private:
+protected:
 
 	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
 
@@ -37,17 +39,30 @@ public:
 
 	FrgBase_Tree
 	(
-		FrgBase_MainWindow* parentMainWindow
+		FrgBase_MainWindow* parentMainWindow = nullptr
 	);
 
 	~FrgBase_Tree();
 
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 
+	void SetParentMainWindow(FrgBase_MainWindow* parentMainWindow);
+
 	virtual void FormTree();
 	void ScrollToItem(FrgBase_TreeItem* item);
 	void ScrollToItems(QList<FrgBase_TreeItem*> items);
 
+	FrgBase_TreeItem* FindTItemByObjectName(const QString& objectName);
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+// 	friend class boost::serialization::access;
+// 	template<class Archive>
+// 	void save(Archive & ar, const unsigned int version) const;
+// 	template<class Archive>
+// 	void load(Archive & ar, const unsigned int version);
+// 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
 protected Q_SLOTS:
 
@@ -63,5 +78,29 @@ public Q_SLOTS:
 };
 
 EndForgBaseLib
+
+//DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_TreeItem)
+//{
+//	std::list<ForgBaseLib::FrgBase_TreeItem*> myItems;
+//
+//	QTreeWidgetItemIterator it((QTreeWidget*)this);
+//	while (*it)
+//	{
+//		myItems.push_back(dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it));
+//
+//		++it;
+//	}
+//
+//	ar & myItems;
+//}
+//
+//DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_TreeItem)
+//{
+//	std::list<FrgBase_TreeItem*> myItems;
+//
+//	ar & myItems;
+//}
+
+//BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_Tree)
 
 #endif // !_FrgBase_Tree_Header

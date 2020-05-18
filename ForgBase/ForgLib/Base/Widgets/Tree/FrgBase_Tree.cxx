@@ -5,8 +5,15 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_DlgDelete.hxx>
 
+#include <FrgBase_Serialization_IO.hxx>
+
 #include <QtWidgets/QHeaderView>
 #include <QtGui/QKeyEvent>
+#include <QtWidgets/QTreeWidgetItemIterator>
+#include <FrgBase_TreeItem.hxx>
+
+//BOOST_CLASS_EXPORT_GUID(ForgBaseLib::FrgBase_Tree, "ForgBaseLib::FrgBase_Tree")
+//BOOST_CLASS_EXPORT(ForgBaseLib::FrgBase_Tree)
 
 ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 (
@@ -60,6 +67,8 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 ForgBaseLib::FrgBase_Tree::~FrgBase_Tree()
 {
 	theParentMainWindow_ = NullPtr;
+
+	this->deleteLater();
 }
 
 void ForgBaseLib::FrgBase_Tree::FormTree()
@@ -258,3 +267,68 @@ void ForgBaseLib::FrgBase_Tree::ScrollToItems
 
 	setFocus();
 }
+
+ForgBaseLib::FrgBase_TreeItem * ForgBaseLib::FrgBase_Tree::FindTItemByObjectName(const QString & objectName)
+{
+	QTreeWidgetItemIterator it(this);
+	while (*it)
+	{
+		auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
+
+		if (!myTItem)
+		{
+			std::cout << "myTItem is null in ForgBaseLib::FrgBase_TreeItem * ForgBaseLib::FrgBase_Tree::FindTItemByObjectName(const QString & objectName)\n";
+			return nullptr;
+		}
+
+		if (myTItem->objectName() == objectName)
+			return myTItem;
+
+		++it;
+	}
+
+	return nullptr;
+}
+
+void ForgBaseLib::FrgBase_Tree::SetParentMainWindow(FrgBase_MainWindow* parentMainWindow)
+{
+	if (parentMainWindow == theParentMainWindow_)
+		return;
+
+	theParentMainWindow_ = parentMainWindow;
+
+	QTreeWidgetItemIterator it((QTreeWidget*)this);
+	while (*it)
+	{
+		auto myTItem = dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it);
+
+		if (myTItem)
+			myTItem->SetParentMainWindow(theParentMainWindow_);
+
+		++it;
+	}
+}
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_Tree)
+{
+	/*std::list<ForgBaseLib::FrgBase_TreeItem*> myItems;
+
+	QTreeWidgetItemIterator it((QTreeWidget*)this);
+	while (*it)
+	{
+		myItems.push_back(dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it));
+
+		++it;
+	}
+
+	ar & myItems;*/
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_Tree)
+{
+	/*std::list<FrgBase_TreeItem*> myItems;
+
+	ar & myItems;*/
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_Tree)
