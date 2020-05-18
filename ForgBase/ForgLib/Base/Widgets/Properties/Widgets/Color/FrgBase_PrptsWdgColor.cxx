@@ -1,5 +1,6 @@
 #include <FrgBase_PrptsWdgColor.hxx>
 #include <FrgBase_PrptsVrntColor.hxx>
+#include <FrgBase_PrptsVrntWdgColor_Label.hxx>
 
 #include <QtWidgets/QColorDialog>
 #include <QtWidgets/QLabel>
@@ -49,9 +50,10 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::FormWidget()
 		myLayout->addWidget(thePrefixLabel_);
 	}
 
-	theColorLabel_ = new QLabel("");
+	theColorLabel_ = new FrgBase_PrptsVrntWdgColor_Label("");
 	SetLabelWidgetColor(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_)->GetValue());
 	theColorLabel_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	theColorLabel_->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	myLayout->addWidget(theColorLabel_);
 	//myLayout->addStretch(1);
 
@@ -101,7 +103,15 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::DisplayNameChangedSlot(const char* disp
 
 void ForgBaseLib::FrgBase_PrptsWdgColor::ValueChangedSlot(const QColor & value)
 {
+	auto myVariant = dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_);
 
+	if (!myVariant)
+	{
+		std::cout << "myVariant is null in void ForgBaseLib::FrgBase_PrptsWdgColor::OnColorButtonClickedSlot()\n";
+		return;
+	}
+
+	SetLabelWidgetColor(myVariant->GetValue());
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgColor::PrefixChangedSlot(const char * prefix)
@@ -135,7 +145,6 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::OnColorButtonClickedSlot()
 	if (colorDialog->exec() == QColorDialog::Accepted)
 	{
 		myVariant->SetValue(colorDialog->selectedColor());
-		SetLabelWidgetColor(colorDialog->selectedColor());
 	}
 }
 
@@ -146,10 +155,20 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::SetLabelWidgetColor(const QColor & colo
 	int blue = color.blue();
 	QString colorStr = QString("QLabel { background-color : rgb(%1, %2, %3); }").arg(red).arg(green).arg(blue);
 	theColorLabel_->setStyleSheet(colorStr);
+
+	theColorLabel_->setText(QString("(%1, %2, %3)").arg(red).arg(green).arg(blue));
+
+	// http://stackoverflow.com/a/3943023/112731
+	QString textColorStr;
+	if ((red * 0.299 + green * 0.587 + blue * 0.114) > 186)
+		textColorStr = "QLabel { color : black; }";
+	else
+		textColorStr = "QLabel { color : white; }";
+
+	theColorLabel_->setStyleSheet(theColorLabel_->styleSheet() + textColorStr);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgColor::SetLabelWidgetColor(int red, int green, int blue)
 {
-	QString colorStr = QString("QLabel { background-color : rgb(%1, %2, %3); }").arg(red).arg(green).arg(blue);
-	theColorLabel_->setStyleSheet(colorStr);
+	SetLabelWidgetColor(QColor(red, green, blue));
 }

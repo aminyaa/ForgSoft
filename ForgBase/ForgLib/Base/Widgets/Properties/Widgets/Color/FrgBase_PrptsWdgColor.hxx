@@ -10,6 +10,8 @@ class QToolButton;
 
 BeginForgBaseLib
 
+class FrgBase_PrptsVrntWdgColor_Label;
+
 class FORGBASE_EXPORT FrgBase_PrptsWdgColor
 	: public FrgBase_PrptsWdgOneValue<QColor, false>
 {
@@ -34,6 +36,10 @@ public:
 
 	void FormWidget();
 
+public slots:
+
+	void OnColorButtonClickedSlot();
+
 private slots:
 
 	void DisplayNameChangedSlot(const char* displayName);
@@ -41,11 +47,9 @@ private slots:
 	void PrefixChangedSlot(const char* prefix);
 	void SuffixChangedSlot(const char* suffix);
 
-	void OnColorButtonClickedSlot();
-
 private:
 
-	QLabel* theColorLabel_ = nullptr;
+	FrgBase_PrptsVrntWdgColor_Label* theColorLabel_ = nullptr;
 
 	QLabel* thePrefixLabel_ = nullptr;
 	QLabel* theSuffixLabel_ = nullptr;
