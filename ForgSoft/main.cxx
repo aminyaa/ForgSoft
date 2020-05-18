@@ -11,10 +11,10 @@
 
 //#include <FrgBase_PropertiesPanel.hxx>
 //#include <FrgBase_PrptsWdgInt.hxx>
-//#include <FrgBase_MainWindow.hxx>
+#include <FrgBase_MainWindow.hxx>
 
 #include <FrgMarine_MainWindow.hxx>
-#include <QSurfaceFormat>
+#include <QtGui/QSurfaceFormat>
 #include <QVTKOpenGLNativeWidget.h>
 
 
@@ -64,6 +64,7 @@ int main(int argc, char** argv)
 
 	//ForgBaseLib::FrgBase_MainWindow* mainWindow = new ForgBaseLib::FrgBase_MainWindow;
 
+	//std::shared_ptr<ForgBaseLib::FrgBase_MainWindow> mainWindow = std::make_shared<ForgBaseLib::FrgBase_MainWindow>();
 	std::shared_ptr<ForgMarineLib::FrgMarine_MainWindow> mainWindow = std::make_shared<ForgMarineLib::FrgMarine_MainWindow>();
 	//ForgMarineLib::FrgMarine_MainWindow* mainWindow = new ForgMarineLib::FrgMarine_MainWindow;
 
