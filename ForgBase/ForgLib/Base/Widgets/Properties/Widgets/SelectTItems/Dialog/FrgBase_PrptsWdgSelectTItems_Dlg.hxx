@@ -21,7 +21,7 @@ class FORGBASE_EXPORT FrgBase_PrptsWdgSelectTItems_Dlg
 {
 	Q_OBJECT
 
-private:
+protected:
 
 	QVBoxLayout* theMainLayout_ = NullPtr;
 	QHBoxLayout* theButtonsLayout_ = NullPtr;

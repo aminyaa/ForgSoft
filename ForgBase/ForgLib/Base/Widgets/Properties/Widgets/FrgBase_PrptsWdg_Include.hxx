@@ -12,5 +12,6 @@
 #include <FrgBase_PrptsWdgColor.hxx>
 #include <FrgBase_PrptsWdgPnt2d.hxx>
 #include <FrgBase_PrptsWdgPnt3d.hxx>
+#include <FrgBase_PrptsWdgSelectTItem.hxx>
 
 #endif // !_FrgBase_PrptsWdg_Include_Header

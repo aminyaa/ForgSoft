@@ -34,7 +34,7 @@ void ForgBaseLib::FrgBase_PrptsWdgCombo::FormWidget()
 	}
 
 	connect(dynamic_cast<FrgBase_PrptsVrntCombo*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntCombo*>(theVariant_), SIGNAL(ValueChangedSignal(const char*)), this, SLOT(ValueChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntCombo*>(theVariant_), SIGNAL(ValueChangedSignal(const QString&)), this, SLOT(ValueChangedSlot(const QString&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntCombo*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
 	connect(dynamic_cast<FrgBase_PrptsVrntCombo*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
 
@@ -72,7 +72,7 @@ void ForgBaseLib::FrgBase_PrptsWdgCombo::FormWidget()
 	connect(theComboBox_, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(WdgValueChangedSlot(const QString&)));
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgCombo::SetValue(const char * const & value)
+void ForgBaseLib::FrgBase_PrptsWdgCombo::SetValue(const QString& value)
 {
 	FrgBase_PrptsWdgOneValue::SetValue(value);
 }
@@ -87,7 +87,7 @@ void ForgBaseLib::FrgBase_PrptsWdgCombo::SetSuffix(const char * suffix)
 	FrgBase_PrptsWdgOneValue::SetSuffix(suffix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgCombo::SetVariant(const FrgBase_PrptsVrntOneValue<const char*, false>& variant)
+void ForgBaseLib::FrgBase_PrptsWdgCombo::SetVariant(const FrgBase_PrptsVrntOneValue<QString, false>& variant)
 {
 	FrgBase_PrptsWdgOneValue::SetVariant(variant);
 	this->FormWidget();
@@ -98,9 +98,9 @@ void ForgBaseLib::FrgBase_PrptsWdgCombo::DisplayNameChangedSlot(const char* disp
 
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgCombo::ValueChangedSlot(const char* value)
+void ForgBaseLib::FrgBase_PrptsWdgCombo::ValueChangedSlot(const QString& value)
 {
-	if (std::strcmp(theComboBox_->currentText().toStdString().c_str(), value))
+	if(theComboBox_->currentText() != value)
 		theComboBox_->setCurrentText(value);
 }
 
@@ -122,5 +122,5 @@ void ForgBaseLib::FrgBase_PrptsWdgCombo::SuffixChangedSlot(const char * suffix)
 
 void ForgBaseLib::FrgBase_PrptsWdgCombo::WdgValueChangedSlot(const QString& value)
 {
-	SetValue(value.toStdString().c_str());
+	SetValue(value);
 }

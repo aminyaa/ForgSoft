@@ -11,7 +11,7 @@ class QLabel;
 BeginForgBaseLib
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgCombo
-	: public FrgBase_PrptsWdgOneValue<const char*, false>
+	: public FrgBase_PrptsWdgOneValue<QString, false>
 {
 	Q_OBJECT
 
@@ -25,19 +25,19 @@ public:
 
 	~FrgBase_PrptsWdgCombo();
 
-	void SetValue(const char* const & value) override;
+	void SetValue(const QString& value) override;
 
 	void SetPrefix(const char* prefix) override;
 	void SetSuffix(const char* suffix) override;
 
-	void SetVariant(const FrgBase_PrptsVrntOneValue<const char*, false>& variant) override;
+	void SetVariant(const FrgBase_PrptsVrntOneValue<QString, false>& variant) override;
 
 	void FormWidget();
 
 private slots:
 
 	void DisplayNameChangedSlot(const char* displayName);
-	void ValueChangedSlot(const char* value);
+	void ValueChangedSlot(const QString& value);
 	void PrefixChangedSlot(const char* prefix);
 	void SuffixChangedSlot(const char* suffix);
 	void WdgValueChangedSlot(const QString& value);

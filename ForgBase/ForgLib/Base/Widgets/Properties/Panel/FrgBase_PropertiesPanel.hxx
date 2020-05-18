@@ -27,9 +27,9 @@ public:
 	QWidget* GetParentWidget() const { return theParentWidget_; }
 
 	template<typename T>
-	void AddRow(FrgBase_PrptsVrnt* frgVairant, int row);
+	void AddRow(T* frgVairant, int row);
 	template<typename T>
-	void AddRow(FrgBase_PrptsVrnt* frgVairant);
+	void AddRow(T* frgVairant);
 
 signals:
 

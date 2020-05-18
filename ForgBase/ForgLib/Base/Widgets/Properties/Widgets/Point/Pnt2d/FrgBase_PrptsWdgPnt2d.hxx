@@ -10,10 +10,10 @@ class QLabel;
 
 BeginForgBaseLib
 
-struct Pnt2d_Data;
+class FrgBase_Pnt2d;
 
 class FORGBASE_EXPORT FrgBase_PrptsWdgPnt2d
-	: public FrgBase_PrptsWdgOneValue<Pnt2d_Data*, false>
+	: public FrgBase_PrptsWdgOneValue<FrgBase_Pnt2d*, false>
 {
 
 	Q_OBJECT
@@ -28,19 +28,19 @@ public:
 
 	~FrgBase_PrptsWdgPnt2d();
 
-	void SetValue(Pnt2d_Data* const& value) override;
+	void SetValue(FrgBase_Pnt2d* const& value) override;
 
 	void SetPrefix(const char* prefix) override;
 	void SetSuffix(const char* suffix) override;
 
-	void SetVariant(const FrgBase_PrptsVrntOneValue<Pnt2d_Data*, false>& variant) override;
+	void SetVariant(const FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>& variant) override;
 
 	void FormWidget();
 
 private slots:
 
 	void DisplayNameChangedSlot(const char* displayName);
-	void ValueChangedSlot(Pnt2d_Data* value);
+	void ValueChangedSlot(FrgBase_Pnt2d* value);
 	void PrefixChangedSlot(const char* prefix);
 	void SuffixChangedSlot(const char* suffix);
 

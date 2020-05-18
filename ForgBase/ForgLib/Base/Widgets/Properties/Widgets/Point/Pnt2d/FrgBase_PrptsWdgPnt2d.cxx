@@ -1,5 +1,6 @@
 #include <FrgBase_PrptsWdgPnt2d.hxx>
 #include <FrgBase_PrptsVrntPnt2d.hxx>
+#include <FrgBase_Pnt2d.hxx>
 
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QLabel>
@@ -11,7 +12,7 @@ ForgBaseLib::FrgBase_PrptsWdgPnt2d::FrgBase_PrptsWdgPnt2d
 	QWidget* parent,
 	FrgBase_PrptsVrnt* variant
 )
-	: FrgBase_PrptsWdgOneValue<Pnt2d_Data*, false>(parent, variant)
+	: FrgBase_PrptsWdgOneValue<FrgBase_Pnt2d*, false>(parent, variant)
 {
 	if (variant)
 	{
@@ -28,7 +29,7 @@ void ForgBaseLib::FrgBase_PrptsWdgPnt2d::FormWidget()
 	}
 
 	connect(dynamic_cast<FrgBase_PrptsVrntPnt2d*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntPnt2d*>(theVariant_), SIGNAL(ValueChangedSignal(Pnt2d_Data*)), this, SLOT(ValueChangedSlot(Pnt2d_Data*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntPnt2d*>(theVariant_), SIGNAL(ValueChangedSignal(FrgBase_Pnt2d*)), this, SLOT(ValueChangedSlot(FrgBase_Pnt2d*)));
 	connect(dynamic_cast<FrgBase_PrptsVrntPnt2d*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
 	connect(dynamic_cast<FrgBase_PrptsVrntPnt2d*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
 
@@ -50,7 +51,7 @@ void ForgBaseLib::FrgBase_PrptsWdgPnt2d::FormWidget()
 	}
 
 	theXLineEdit_ = new QLineEdit;
-	theXLineEdit_->setText(std::to_string(GetValue()->theX_).c_str());
+	theXLineEdit_->setText(std::to_string(GetValue()->X()).c_str());
 	theXLineEdit_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	theXLineEdit_->setMinimumWidth(70);
 
@@ -58,7 +59,7 @@ void ForgBaseLib::FrgBase_PrptsWdgPnt2d::FormWidget()
 	myXHLayout->addWidget(theXLineEdit_);
 
 	theYLineEdit_ = new QLineEdit;
-	theYLineEdit_->setText(std::to_string(GetValue()->theY_).c_str());
+	theYLineEdit_->setText(std::to_string(GetValue()->Y()).c_str());
 	theYLineEdit_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	theYLineEdit_->setMinimumWidth(70);
 
@@ -90,7 +91,7 @@ ForgBaseLib::FrgBase_PrptsWdgPnt2d::~FrgBase_PrptsWdgPnt2d()
 	FreePointer(theYLineEdit_);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgPnt2d::SetValue(Pnt2d_Data* const &value)
+void ForgBaseLib::FrgBase_PrptsWdgPnt2d::SetValue(FrgBase_Pnt2d* const &value)
 {
 	FrgBase_PrptsWdgOneValue::SetValue(value);
 }
@@ -105,7 +106,7 @@ void ForgBaseLib::FrgBase_PrptsWdgPnt2d::SetSuffix(const char * suffix)
 	FrgBase_PrptsWdgOneValue::SetSuffix(suffix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgPnt2d::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<Pnt2d_Data*, false>& variant)
+void ForgBaseLib::FrgBase_PrptsWdgPnt2d::SetVariant(const ForgBaseLib::FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>& variant)
 {
 	FrgBase_PrptsWdgOneValue::SetVariant(variant);
 }
@@ -115,12 +116,12 @@ void ForgBaseLib::FrgBase_PrptsWdgPnt2d::DisplayNameChangedSlot(const char* disp
 
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgPnt2d::ValueChangedSlot(Pnt2d_Data* value)
+void ForgBaseLib::FrgBase_PrptsWdgPnt2d::ValueChangedSlot(FrgBase_Pnt2d* value)
 {
-	if (theXLineEdit_->text().toDouble() != value->theX_)
-		theXLineEdit_->setText(std::to_string(value->theX_).c_str());
-	if (theYLineEdit_->text().toDouble() != value->theY_)
-		theYLineEdit_->setText(std::to_string(value->theY_).c_str());
+	if (theXLineEdit_->text().toDouble() != value->X())
+		theXLineEdit_->setText(std::to_string(value->X()).c_str());
+	if (theYLineEdit_->text().toDouble() != value->Y())
+		theYLineEdit_->setText(std::to_string(value->Y()).c_str());
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgPnt2d::PrefixChangedSlot(const char * prefix)

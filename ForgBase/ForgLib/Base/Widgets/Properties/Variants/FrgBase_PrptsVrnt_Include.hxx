@@ -12,6 +12,7 @@
 #include <FrgBase_PrptsVrntColor.hxx>
 #include <FrgBase_PrptsVrntPnt2d.hxx>
 #include <FrgBase_PrptsVrntPnt3d.hxx>
+#include <FrgBase_PrptsVrntSelectTItem.hxx>
 
 namespace ForgBaseLib
 {
@@ -24,6 +25,8 @@ namespace ForgBaseLib
 	class FrgBase_PrptsWdgCombo;
 	class FrgBase_PrptsWdgPnt2d;
 	class FrgBase_PrptsWdgPnt3d;
+	template<typename Type>
+	class FrgBase_PrptsWdgSelectTItem;
 }
 
 template<typename T>
@@ -75,6 +78,12 @@ template<>
 struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntPnt3d>
 {
 	typedef ForgBaseLib::FrgBase_PrptsWdgPnt3d type;
+};
+
+template <typename Type>
+struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntSelectTItem<Type>>
+{
+	typedef ForgBaseLib::FrgBase_PrptsWdgSelectTItem<Type> type;
 };
 
 #endif // !_FrgBase_PrptsVrnt_Include_header

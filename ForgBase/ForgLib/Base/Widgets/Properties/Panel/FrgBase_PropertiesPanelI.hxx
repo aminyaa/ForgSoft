@@ -13,7 +13,7 @@
 template<typename T>
 inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 (
-	FrgBase_PrptsVrnt * frgVairant,
+	T* frgVairant,
 	int row
 )
 {
@@ -51,7 +51,7 @@ inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 template<typename T>
 inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 (
-	FrgBase_PrptsVrnt * frgVairant
+	T* frgVairant
 )
 {
 	this->AddRow<T>(frgVairant, this->rowCount());
