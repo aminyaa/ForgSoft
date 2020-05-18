@@ -1,26 +1,27 @@
 #include <FrgBase_PrptsVrntPnt2d.hxx>
+#include <FrgBase_Pnt2d.hxx>
 
 ForgBaseLib::FrgBase_PrptsVrntPnt2d::FrgBase_PrptsVrntPnt2d
 (
 	const char* displayName,
-	ForgBaseLib::Pnt2d_Data* value,
+	ForgBaseLib::FrgBase_Pnt2d* value,
 	const char* prefix,
 	const char* suffix
 )
-	: FrgBase_PrptsVrntOneValue<Pnt2d_Data*, false>(displayName, value, prefix, suffix)
+	: FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>(displayName, value, prefix, suffix)
 {
 
 }
 
 void ForgBaseLib::FrgBase_PrptsVrntPnt2d::SetXValue(double x)
 {
-	GetValue()->theX_ = x;
+	GetValue()->X() = x;
 	ValueChanged();
 }
 
 void ForgBaseLib::FrgBase_PrptsVrntPnt2d::SetYValue(double y)
 {
-	GetValue()->theY_ = y;
+	GetValue()->Y() = y;
 	ValueChanged();
 }
 

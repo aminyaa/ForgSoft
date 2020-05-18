@@ -10,23 +10,12 @@
 
 BeginForgBaseLib
 
-struct Pnt2d_Data
-{
-	Pnt2d_Data(double x = 0.0, double y = 0.0)
-		: theX_(x), theY_(y)
-	{
-
-	}
-
-	double theX_;
-	double theY_;
-};
-
+class FrgBase_Pnt2d;
 class FrgBase_PrptsWdgPnt2d;
 
 class FORGBASE_EXPORT FrgBase_PrptsVrntPnt2d
 	: public QObject
-	, public FrgBase_PrptsVrntOneValue<Pnt2d_Data*, false>
+	, public FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>
 {
 	Q_OBJECT
 
@@ -35,7 +24,7 @@ public:
 	explicit FrgBase_PrptsVrntPnt2d
 	(
 		const char* displayName = "",
-		Pnt2d_Data* value = nullptr,
+		FrgBase_Pnt2d* value = nullptr,
 		const char* prefix = "",
 		const char* suffix = ""
 	);
@@ -55,7 +44,7 @@ protected:
 Q_SIGNALS:
 
 	void DisplayNameChangedSignal(const char*);
-	void ValueChangedSignal(Pnt2d_Data*);
+	void ValueChangedSignal(FrgBase_Pnt2d*);
 	void PrefixChangedSignal(const char*);
 	void SuffixChangedSignal(const char*);
 };

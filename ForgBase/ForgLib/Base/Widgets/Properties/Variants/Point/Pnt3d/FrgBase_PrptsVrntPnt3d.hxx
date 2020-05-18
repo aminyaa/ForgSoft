@@ -10,24 +10,12 @@
 
 BeginForgBaseLib
 
-struct Pnt3d_Data
-{
-	Pnt3d_Data(double x = 0.0, double y = 0.0, double z = 0.0)
-		: theX_(x), theY_(y), theZ_(z)
-	{
-
-	}
-
-	double theX_;
-	double theY_;
-	double theZ_;
-};
-
+class FrgBase_Pnt3d;
 class FrgBase_PrptsWdgPnt3d;
 
 class FORGBASE_EXPORT FrgBase_PrptsVrntPnt3d
 	: public QObject
-	, public FrgBase_PrptsVrntOneValue<Pnt3d_Data*, false>
+	, public FrgBase_PrptsVrntOneValue<FrgBase_Pnt3d*, false>
 {
 	Q_OBJECT
 
@@ -36,7 +24,7 @@ public:
 	explicit FrgBase_PrptsVrntPnt3d
 	(
 		const char* displayName = "",
-		Pnt3d_Data* value = nullptr,
+		FrgBase_Pnt3d* value = nullptr,
 		const char* prefix = "",
 		const char* suffix = ""
 	);
@@ -57,7 +45,7 @@ protected:
 Q_SIGNALS:
 
 	void DisplayNameChangedSignal(const char*);
-	void ValueChangedSignal(Pnt3d_Data*);
+	void ValueChangedSignal(FrgBase_Pnt3d*);
 	void PrefixChangedSignal(const char*);
 	void SuffixChangedSignal(const char*);
 };

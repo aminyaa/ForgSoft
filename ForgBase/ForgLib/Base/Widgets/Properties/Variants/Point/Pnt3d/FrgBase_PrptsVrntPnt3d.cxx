@@ -1,32 +1,33 @@
 #include <FrgBase_PrptsVrntPnt3d.hxx>
+#include <FrgBase_Pnt3d.hxx>
 
 ForgBaseLib::FrgBase_PrptsVrntPnt3d::FrgBase_PrptsVrntPnt3d
 (
 	const char* displayName,
-	ForgBaseLib::Pnt3d_Data* value,
+	ForgBaseLib::FrgBase_Pnt3d* value,
 	const char* prefix,
 	const char* suffix
 )
-	: FrgBase_PrptsVrntOneValue<Pnt3d_Data*, false>(displayName, value, prefix, suffix)
+	: FrgBase_PrptsVrntOneValue<FrgBase_Pnt3d*, false>(displayName, value, prefix, suffix)
 {
 
 }
 
 void ForgBaseLib::FrgBase_PrptsVrntPnt3d::SetXValue(double x)
 {
-	GetValue()->theX_ = x;
+	GetValue()->X() = x;
 	ValueChanged();
 }
 
 void ForgBaseLib::FrgBase_PrptsVrntPnt3d::SetYValue(double y)
 {
-	GetValue()->theY_ = y;
+	GetValue()->Y() = y;
 	ValueChanged();
 }
 
 void ForgBaseLib::FrgBase_PrptsVrntPnt3d::SetZValue(double z)
 {
-	GetValue()->theZ_ = z;
+	GetValue()->Z() = z;
 	ValueChanged();
 }
 
