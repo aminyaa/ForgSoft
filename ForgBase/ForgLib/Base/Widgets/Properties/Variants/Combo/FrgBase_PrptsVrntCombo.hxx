@@ -13,7 +13,7 @@ class FrgBase_PrptsWdgCombo;
 
 class FORGBASE_EXPORT FrgBase_PrptsVrntCombo
 	: public QObject
-	, public FrgBase_PrptsVrntOneValue<const char*, false>
+	, public FrgBase_PrptsVrntOneValue<QString, false>
 {
 
 	Q_OBJECT
@@ -23,25 +23,25 @@ public:
 	explicit FrgBase_PrptsVrntCombo
 	(
 		const char* displayName = "",
-		const char* value = "",
+		const QString& value = "",
 		const char* prefix = "",
 		const char* suffix = ""
 	);
 
 	explicit FrgBase_PrptsVrntCombo
 	(
-		std::vector<const char*> items,
+		std::vector<QString> items,
 		const char* displayName = "",
-		const char* value = "",
+		const QString& value = "",
 		const char* prefix = "",
 		const char* suffix = ""
 	);
 
 	typedef FrgBase_PrptsWdgCombo VariantWidget;
 
-	void AddItem(const char* item);
+	void AddItem(const QString& item);
 
-	std::vector<const char*> GetItems() const { return theItems_; }
+	std::vector<QString> GetItems() const { return theItems_; }
 
 protected:
 
@@ -53,13 +53,13 @@ protected:
 Q_SIGNALS:
 
 	void DisplayNameChangedSignal(const char*);
-	void ValueChangedSignal(const char*);
+	void ValueChangedSignal(const QString&);
 	void PrefixChangedSignal(const char*);
 	void SuffixChangedSignal(const char*);
 
 private:
 
-	std::vector<const char*> theItems_;
+	std::vector<QString> theItems_;
 };
 
 EndForgBaseLib

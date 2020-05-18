@@ -3,7 +3,7 @@
 ForgBaseLib::FrgBase_PrptsVrntCombo::FrgBase_PrptsVrntCombo
 (
 	const char* displayName,
-	const char* value,
+	const QString& value,
 	const char* prefix,
 	const char* suffix
 )
@@ -14,9 +14,9 @@ ForgBaseLib::FrgBase_PrptsVrntCombo::FrgBase_PrptsVrntCombo
 
 ForgBaseLib::FrgBase_PrptsVrntCombo::FrgBase_PrptsVrntCombo
 (
-	std::vector<const char*> items,
+	std::vector<QString> items,
 	const char* displayName,
-	const char* value,
+	const QString& value,
 	const char* prefix,
 	const char* suffix
 )
@@ -26,10 +26,10 @@ ForgBaseLib::FrgBase_PrptsVrntCombo::FrgBase_PrptsVrntCombo
 		theItems_.push_back(items[i]);
 }
 
-void ForgBaseLib::FrgBase_PrptsVrntCombo::AddItem(const char * item)
+void ForgBaseLib::FrgBase_PrptsVrntCombo::AddItem(const QString& item)
 {
 	for (int i = 0; i < theItems_.size(); i++)
-		if (!std::strcmp(theItems_[i], item))
+		if(theItems_[i] == item)
 			return;
 
 	theItems_.push_back(item);
