@@ -43,11 +43,17 @@ using StdSharedPtr = std::shared_ptr<T>;
 template<class T>
 FrgString CorrectName(T* parentItem, const FrgString& name)\
 {\
+if (parentItem->childCount() == 0)\
+return name;\
 parentItem->sortChildren(0, Qt::AscendingOrder); \
-\
+for (int i = 0; i < parentItem->childCount(); i++)\
+{if (parentItem->child(i)->text(0) == name)\
+{break; }\
+else\
+{return name; }\
+}\
 FrgString output; \
-\
-int nameNumber = 1; \
+int nameNumber = 2; \
 for (int i = 0; i < parentItem->childCount(); i++)\
 {\
 if (nameNumber < 10)\

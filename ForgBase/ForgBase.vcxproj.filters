@@ -307,6 +307,75 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Point\Pnt2d">
       <UniqueIdentifier>{70695416-97ac-46fe-8569-6b6a4f227781}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types">
+      <UniqueIdentifier>{61e653f6-c36b-4e3b-8b43-225819428bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Point">
+      <UniqueIdentifier>{bea2d289-36bd-4af9-b89f-e2024a600d7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Point\Pnt2d">
+      <UniqueIdentifier>{4789bd36-a2d2-4252-98d5-f59333d1e173}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Point\Pnt3d">
+      <UniqueIdentifier>{99577b1c-6691-43e3-acfc-032e9b35248b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Color\Label">
+      <UniqueIdentifier>{bc675ba5-8da5-4acc-86aa-e384d53abe57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem">
+      <UniqueIdentifier>{913280ee-9b20-44e4-9f2c-3dbea2ac2036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem">
+      <UniqueIdentifier>{2a6beced-ed5c-4350-8222-e3b2dc6b1618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog">
+      <UniqueIdentifier>{03b95de8-0d14-463c-9691-2424fa13b28e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\Base">
+      <UniqueIdentifier>{79371a53-5068-427b-8fc2-5b504410d294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Tree">
+      <UniqueIdentifier>{412c1c46-94c2-49dd-aac1-fe8038e74ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Base">
+      <UniqueIdentifier>{c9d8903b-d595-40c3-aa4d-31ca47487494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem\Base">
+      <UniqueIdentifier>{2a43c94b-4dca-4795-a9af-3ec0895b9106}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\ProgressBar">
+      <UniqueIdentifier>{9786e5c6-d35f-4118-83e3-95791bdeb053}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization">
+      <UniqueIdentifier>{d1e257c1-2281-489c-beb5-a19273797caf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Global">
+      <UniqueIdentifier>{9a29780c-051e-48de-ba74-289d51948b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization">
+      <UniqueIdentifier>{666eb998-4351-4fcf-9448-b7176fcf6a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QString">
+      <UniqueIdentifier>{5a4f81f8-7ef8-4ebf-8623-fc33465b8de1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QColor">
+      <UniqueIdentifier>{d79b33be-cc8c-4221-b97f-cef5bf6a5b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem">
+      <UniqueIdentifier>{7b5a31ee-f255-41dc-a1d4-dc00cb7ae8ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QIcon">
+      <UniqueIdentifier>{95bbad3d-5770-4890-9b9a-8ec1e51cd03a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QAction">
+      <UniqueIdentifier>{324a13a2-7f5c-418d-b034-b47e4ef5cefd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QMenu">
+      <UniqueIdentifier>{0654b08b-d463-4250-ba50-daf3db650d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QTableWidget">
+      <UniqueIdentifier>{0767e5fc-6c3c-4e4a-a9cf-ba1d9b4da0c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -516,6 +585,63 @@
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d\FrgBase_PrptsWdgPnt3d.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Point\Pnt2d\FrgBase_Pnt2d.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point\Pnt2d</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Point\Pnt3d\FrgBase_Pnt3d.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point\Pnt3d</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Color\Label\FrgBase_PrptsVrntWdgColor_Label.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Color\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem\FrgBase_PrptsVrntSelectTItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\FrgBase_PrptsWdgSelectTItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\Base\FrgBase_PrptsWdgSelectTItem_Dlg_Base.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\FrgBase_PrptsWdgSelectTItem_Dlg.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Tree\FrgBase_PrptsWdgSelectTItem_Tree.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Base\FrgBase_PrptsWdgSelectTItem_Base.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem\Base\FrgBase_PrptsVrntSelectTItem_Base.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItem\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Thread\FrgBase_Thread.cxx">
+      <Filter>ForgLib\Base\Core\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\ProgressBar\FrgBase_ProgressBar.cxx">
+      <Filter>ForgLib\Base\Widgets\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QTableWidget\FrgBase_SerialSpec_QTableWidget.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QTableWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QMenu\FrgBase_SerialSpec_QMenu.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QAction\FrgBase_SerialSpec_QAction.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QAction</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QColor\FrgBase_SerialSpec_QColor.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QColor</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QString\FrgBase_SerialSpec_QString.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QString</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QIcon\FrgBase_SerialSpec_QIcon.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QIcon</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem\FrgBase_SerialSpec_QTreeWidgetItem.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -632,9 +758,6 @@
     <ClInclude Include="ForgLib\Base\Widgets\Menu\Tools\FrgBase_MenuTools.hxx">
       <Filter>ForgLib\Base\Widgets\Menu\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Core\Thread\FrgBase_Thread.hxx">
-      <Filter>ForgLib\Base\Core\Thread</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Dialogs\New\FrgBase_DlgNew.hxx">
       <Filter>ForgLib\Base\Widgets\Dialogs\New</Filter>
     </ClInclude>
@@ -685,6 +808,57 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Panel\FrgBase_PropertiesPanelI.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Point\Pnt2d\FrgBase_Pnt2d.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point\Pnt2d</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Point\Pnt3d\FrgBase_Pnt3d.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point\Pnt3d</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\FrgBase_PrptsWdgSelectTItem_Dlg.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\FrgBase_PrptsWdgSelectTItem_DlgI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\FrgBase_PrptsWdgSelectTItemI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\FrgBase_PrptsWdgSelectTItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem\FrgBase_PrptsVrntSelectTItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem\FrgBase_PrptsVrntSelectTItemI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Global\FrgBase_Serialization_Global.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QString\FrgBase_SerialSpec_QString.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QString</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QColor\FrgBase_SerialSpec_QColor.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QColor</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem\FrgBase_SerialSpec_QTreeWidgetItem.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QIcon\FrgBase_SerialSpec_QIcon.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QIcon</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QAction\FrgBase_SerialSpec_QAction.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QAction</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QMenu\FrgBase_SerialSpec_QMenu.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QTableWidget\FrgBase_SerialSpec_QTableWidget.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QTableWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Global\FrgBase_Serialization_IO.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -822,6 +996,27 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d\FrgBase_PrptsWdgPnt3d.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\Point\Pnt3d</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Color\Label\FrgBase_PrptsVrntWdgColor_Label.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Color\Label</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\Base\FrgBase_PrptsWdgSelectTItem_Dlg_Base.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Dialog\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Tree\FrgBase_PrptsWdgSelectTItem_Tree.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Tree</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Base\FrgBase_PrptsWdgSelectTItem_Base.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItem\Base\FrgBase_PrptsVrntSelectTItem_Base.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItem\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\ProgressBar\FrgBase_ProgressBar.hxx">
+      <Filter>ForgLib\Base\Widgets\ProgressBar</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Core\Thread\FrgBase_Thread.hxx">
+      <Filter>ForgLib\Base\Core\Thread</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

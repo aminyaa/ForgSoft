@@ -3,7 +3,7 @@
 #define _FrgBase_Global_Thread_Header
 
 #include <FrgBase_Global.hxx>
-#include <FrgBaseThread.hxx>
+#include <FrgBase_Thread.hxx>
 
 #include <QtCore/QEventLoop>
 #include <QtCore/QObject>
@@ -11,6 +11,8 @@
 
 #include <type_traits>
 #include <utility>
+
+using namespace ForgBaseLib;
 
 template<typename Callable>
 union storage
@@ -53,10 +55,10 @@ auto functionName = fnptr<void()>([&]{function;});
 #define ExecuteFunctionInMultiProcess(parentMainWindow, N, function, Mutex, lockFunction)\
 DefineProcessFunction(MAKE_UNIQUE(func), function); \
 DefineProcessFunction(MAKE_UNIQUE(lockFunc), lockFunction); \
-StdVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
+StdVector<FrgBase_Thread*> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBase_Thread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
 MAKE_UNIQUE(thread).at(i)->start();\
 }\
 StdVector<QEventLoop*> MAKE_UNIQUE(eventLoop);\
@@ -71,10 +73,10 @@ MAKE_UNIQUE(eventLoop).at(i)->exec();\
 #define ExecuteFunctionInMultiProcessMoveToThread(parentMainWindow, N, function, Mutex, lockFunction, moveTothread)\
 DefineProcessFunction(MAKE_UNIQUE(func), function); \
 DefineProcessFunction(MAKE_UNIQUE(lockFunc), lockFunction); \
-StdVector<FrgBaseThread*> MAKE_UNIQUE(thread);\
+StdVector<FrgBase_Thread*> MAKE_UNIQUE(thread);\
 for(int i = 0; i < N; i++)\
 {\
-MAKE_UNIQUE(thread).push_back(FrgNew FrgBaseThread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
+MAKE_UNIQUE(thread).push_back(FrgNew FrgBase_Thread(parentMainWindow, MAKE_UNIQUE(func), Mutex, MAKE_UNIQUE(lockFunc)));\
 if(moveTothread)\
 moveTothread->moveToThread(MAKE_UNIQUE(thread)[i]);\
 MAKE_UNIQUE(thread).at(i)->start();\
