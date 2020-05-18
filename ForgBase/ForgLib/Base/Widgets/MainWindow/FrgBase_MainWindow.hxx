@@ -13,6 +13,7 @@ BeginForgBaseLib
 
 class FrgBase_Menu;
 class FrgBase_Tree;
+class FrgBase_ProgressBar;
 class FrgBase_PropertiesPanel;
 class FrgBase_TabWidget;
 
@@ -38,9 +39,11 @@ protected:
 
 	MainWindowMenus_Struct* theMainWindowMenus_ = NullPtr;
 	FrgBase_Tree* theTree_ = NullPtr;
+	FrgBase_ProgressBar* theProgressBar_ = nullptr;
 	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 
 	QDockWidget* theTreeDockWidget_ = NullPtr;
+	QDockWidget* theProgressBarDockWidget_ = nullptr;
 	QDockWidget* thePropertiesPanelDockWidget_ = NullPtr;
 
 	FrgString theConsoleEngineName_;
@@ -65,6 +68,8 @@ public:
 	void PrintWarningToConsole(const FrgString& info);
 	void PrintErrorToConsole(const FrgString& info);
 
+	FrgBase_ProgressBar* GetProgressBar() const { return theProgressBar_; }
+
 	FrgBase_PropertiesPanel* GetPropertiesPanel() const { return thePropertiesPanel_; }
 	void SetPropertiesPanel(FrgBase_PropertiesPanel* propertiesPanel);
 
@@ -73,6 +78,7 @@ public:
 	void ShowTabWidget(QWidget* widget, const QString& title);
 	void SetTabText(QWidget* widget, const QString& title);
 	void SetTabText(int index, const QString& title);
+	FrgBase_Tree* GetTree() const { return theTree_; }
 
 protected slots:
 
@@ -80,8 +86,8 @@ protected slots:
 	/* Menu File Actions Slots */
 	/*=========================*/
 	virtual void FileNewActionSlot() {}
-	virtual void FileLoadActionSlot() {}
-	virtual void FileSaveActionSlot() {}
+	virtual void FileLoadActionSlot();
+	virtual void FileSaveActionSlot();
 	virtual void FileSaveAsActionSlot() {}
 	virtual void FileImportActionSlot() {}
 	virtual void FileExportActionSlot() {}

@@ -9,6 +9,8 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_TabWidget.hxx>
 
+#include <FrgBase_Serialization_Global.hxx>
+
 #include <QtWidgets/QDockWidget>
 
 #include <QtilitiesLogging/QtilitiesLogging>
@@ -17,6 +19,9 @@
 #include <QtilitiesCoreGui/QtilitiesCoreGui>
 #include <QtilitiesCoreGui/QtilitiesApplication>
 #include <QtilitiesCoreGui/WidgetLoggerEngine>
+
+#include <iostream>
+#include <fstream>
 
 using namespace QtilitiesLogging;
 using namespace Qtilities::CoreGui;
@@ -31,6 +36,8 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 
 	theTabWidget_ = new FrgBase_TabWidget(this);
 	this->setCentralWidget(theTabWidget_);
+
+	//InitMainWindow();
 }
 
 ForgBaseLib::FrgBase_MainWindow::~FrgBase_MainWindow()
@@ -57,6 +64,8 @@ void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
 	SetMainWindowStyleSheet();
 
 	theTree_ = new FrgBase_Tree(this);
+	//theTree_->FormTree();
+
 	thePropertiesPanel_ = new FrgBase_PropertiesPanel(this, nullptr);
 
 	theTreeDockWidget_ = new QDockWidget("Tree", this);
@@ -81,6 +90,13 @@ void ForgBaseLib::FrgBase_MainWindow::FormMenus()
 	/*theMainWindowMenus_->theToolsMenu_ = new FrgBase_MenuTools;
 	theMainWindowMenus_->theWindowMenu_ = new FrgBase_MenuWindow;*/
 	theMainWindowMenus_->theHelpMenu_ = new FrgBase_MenuHelp(this);
+
+	auto saveAction = theMainWindowMenus_->theFileMenu_->GetItem("&Save");
+	auto loadAction = theMainWindowMenus_->theFileMenu_->GetItem("&Load");
+	saveAction->setEnabled(true);
+
+	connect(saveAction, SIGNAL(triggered()), this, SLOT(FileSaveActionSlot()));
+	connect(loadAction, SIGNAL(triggered()), this, SLOT(FileLoadActionSlot()));
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetMainWindowStyleSheet()
@@ -179,4 +195,46 @@ void ForgBaseLib::FrgBase_MainWindow::SetTabText(QWidget * widget, const QString
 void ForgBaseLib::FrgBase_MainWindow::SetTabText(int index, const QString & title)
 {
 	theTabWidget_->setTabText(index, title);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
+{
+	QString* ext;
+	QString fileName = QFileDialog::getOpenFileName(this, "Load File", "", "Forg (*.Forg)");
+
+	if (fileName.isEmpty())
+		return;
+
+
+	std::ifstream myFile(fileName.toStdString());
+	boost::archive::polymorphic_text_iarchive ia(myFile);
+
+	FrgBase_Tree* myTree;
+
+	ia >> myTree;
+
+	myFile.close();
+
+	delete theTree_;
+	theTree_ = myTree;
+	theTree_->SetParentMainWindow(this);
+
+	theTreeDockWidget_->setWidget(theTree_);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
+{
+	QString* ext;
+	QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", "Forg (*.Forg)");
+
+	if (fileName.isEmpty())
+		return;
+
+
+	std::ofstream myFile(fileName.toStdString());
+	boost::archive::polymorphic_text_oarchive oa(myFile);
+
+	oa << theTree_;
+
+	myFile.close();
 }
