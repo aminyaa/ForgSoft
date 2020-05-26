@@ -5,6 +5,8 @@
 #include <FrgVisual_Global.hxx>
 #include <QVTKOpenGLNativeWidget.h>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 class vtkRenderer;
 class vtkGenericOpenGLRenderWindow;
 class vtkRenderWindowInteractor;
@@ -40,6 +42,10 @@ public:
 	virtual void SetLogoText(const char* logoText);
 	virtual void RenderScene(bool resetCamera = true) {}
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 protected:
 
 	vtkSmartPointer<vtkRenderer> theRenderer_;
@@ -54,5 +60,9 @@ protected:
 };
 
 EndForgVisualLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Scene)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Scene)
 
 #endif // !_FrgVisual_Scene_Header
