@@ -43,6 +43,11 @@ public:
 	FrgVisual_Plot2DAxes_TItem* GetAxesTItem() const { return theAxesTItem_; }
 	FrgVisual_Plot2DLegend_TItem* GetLegendTItem() const { return theLegendTItem_; }
 
+public slots:
+	
+	void ExportDataAsCSVSlot();
+	void ExportDataAsImageSlot();
+
 protected:
 
 	void Init() override;

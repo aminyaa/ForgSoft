@@ -7,6 +7,8 @@
 
 #include <FrgVisual_Serialization_Global.hxx>
 
+class vtkPlot;
+
 BeginForgVisualLib
 
 class FrgVisual_Plot;
@@ -31,6 +33,8 @@ public:
 
 	FrgVisual_Plot* GetPlot() const { return thePlot_; }
 	void RenderView() const;
+
+	bool RemovePlot(vtkPlot* plot);
 
 private:
 

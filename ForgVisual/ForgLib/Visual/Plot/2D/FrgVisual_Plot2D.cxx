@@ -16,6 +16,13 @@
 #include <vtkPlotPoints.h>
 #include <vtkContextMouseEvent.h>
 #include <vtkInteractorStyleRubberBandZoom.h>
+#include <vtkWindowToImageFilter.h>
+#include <vtkImageWriter.h>
+#include <vtkPNGWriter.h>
+#include <vtkJPEGWriter.h>
+#include <vtkPostScriptWriter.h>
+#include <vtkPDFExporter.h>
+#include <vtkOpenGLGL2PSExporter.h>
 
 #include <QtCore/QRandomGenerator>
 
@@ -154,7 +161,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title)
 {
 	QList<double>x, y;
 
-	int nbPts = 50;
+	int nbPts = 350;
 	double dx = 2.0 * 3.1415 / (double)nbPts;
 
 	for (int i = 0; i <= nbPts; i++)
@@ -172,7 +179,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddCosX(const char* title)
 {
 	QList<double>x, y;
 
-	int nbPts = 50;
+	int nbPts = 350;
 	double dx = 2.0 * 3.1415 / (double)nbPts;
 
 	for (int i = 0; i <= nbPts; i++)
@@ -743,4 +750,97 @@ ForgVisualLib::LEGEND_POSITION_ENUM ForgVisualLib::FrgVisual_Plot2D::GetLegendPo
 				return NOT_VALID;
 		}
 	}
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsCSV(std::string myFileName)
+{
+	const auto& myChartXY = dynamic_cast<FrgVisual_Plot2D_ChartXY*>(this->GetChartXY().Get());
+	if (myChartXY)
+	{
+		return myChartXY->ExportDataAsCSV(myFileName);
+	}
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName)
+{
+	std::fstream testForOpen;
+	testForOpen.open(myFileName.toStdString(), std::ios::out);
+	if (!testForOpen.is_open())
+		return false;
+	else
+		testForOpen.close();
+
+	if (
+		myFileName.contains(".pdf", Qt::CaseInsensitive) ||
+		myFileName.contains(".eps", Qt::CaseInsensitive) ||
+		myFileName.contains(".svg", Qt::CaseInsensitive) ||
+		myFileName.contains(".ps", Qt::CaseInsensitive)
+		)
+	{
+		vtkSmartPointer<vtkOpenGLGL2PSExporter> exporter = vtkSmartPointer<vtkOpenGLGL2PSExporter>::New();
+		exporter->SetInput(theRenderWindow_);
+		QString bareFileName;
+
+		if (myFileName.contains(".pdf", Qt::CaseInsensitive))
+		{
+			bareFileName = myFileName.remove(".pdf", Qt::CaseInsensitive);
+			exporter->SetFileFormatToPDF();
+		}
+		else if (myFileName.contains(".eps", Qt::CaseInsensitive))
+		{
+			bareFileName = myFileName.remove(".eps", Qt::CaseInsensitive);
+			exporter->SetFileFormatToEPS();
+		}
+		else if (myFileName.contains(".svg", Qt::CaseInsensitive))
+		{
+			bareFileName = myFileName.remove(".svg", Qt::CaseInsensitive);
+			exporter->SetFileFormatToSVG();
+		}
+		else if (myFileName.contains(".ps", Qt::CaseInsensitive))
+		{
+			bareFileName = myFileName.remove(".ps", Qt::CaseInsensitive);
+			exporter->SetFileFormatToPS();
+		}
+
+		exporter->SetFilePrefix(bareFileName.toStdString().c_str());
+		exporter->SetTitle("Forg Soft");
+		exporter->SetCompress(false);
+		exporter->Write();
+
+		theRenderWindow_->Render();
+
+		return true;
+	}
+
+	vtkSmartPointer<vtkImageWriter> writer;
+
+	if (myFileName.contains(".png", Qt::CaseInsensitive))
+	{
+		writer = vtkSmartPointer<vtkPNGWriter>::New();
+	}
+	else if (myFileName.contains(".jpg", Qt::CaseInsensitive) || myFileName.contains(".jpeg", Qt::CaseInsensitive))
+	{
+		writer = vtkSmartPointer<vtkJPEGWriter>::New();
+	}
+	else
+		return false;
+
+	// Screenshot  
+	vtkSmartPointer<vtkWindowToImageFilter> windowToImageFilter =
+		vtkSmartPointer<vtkWindowToImageFilter>::New();
+	windowToImageFilter->SetInput(theRenderWindow_);
+
+	int Magnification = 2;
+
+	windowToImageFilter->SetScale(Magnification); // image quality
+	windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
+	windowToImageFilter->Update();
+
+	writer->SetFileName(myFileName.toStdString().c_str());
+	writer->SetInputConnection(windowToImageFilter->GetOutputPort());
+	writer->Write();
+
+	theRenderWindow_->Render();
+
+	return true;
 }

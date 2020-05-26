@@ -72,6 +72,9 @@ public:
 	void SetLegendPosition(LEGEND_POSITION_ENUM position);
 	LEGEND_POSITION_ENUM GetLegendPosition() const;
 
+	bool ExportDataAsCSV(std::string myFileName);
+	bool ExportDataAsImage(QString myFileName);
+
 protected:
 
 	void Init() override;

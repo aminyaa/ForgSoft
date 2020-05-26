@@ -4,6 +4,9 @@
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
 #include <FrgVisual_Plot2DAxes_TItem.hxx>
 #include <FrgVisual_Plot2DLegend_TItem.hxx>
+#include <FrgBase_MainWindow.hxx>
+#include <FrgBase_Global_Icons.hxx>
+#include <FrgBase_Menu.hxx>
 
 #include <FrgVisual_Plot2D.hxx>
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
@@ -18,6 +21,8 @@
 #include <vtkPen.h>
 #include <FrgBase_Tree.hxx>
 
+#include <QtWidgets/QFileDialog>
+
 ForgVisualLib::FrgVisual_Plot2D_TItem::FrgVisual_Plot2D_TItem
 (
 	const FrgString& itemTitle,
@@ -31,6 +36,13 @@ ForgVisualLib::FrgVisual_Plot2D_TItem::FrgVisual_Plot2D_TItem
 	thePlot_ = new FrgVisual_Plot2D(GetParentMainWindow());
 
 	FrgVisual_Plot_TItem::Init();
+
+	this->theContextMenu_->addSeparator();
+	auto myExportAction = this->theContextMenu_->AddItem(ICON_Menu_File_Export, "Export", false);
+	auto myExportAsImageAction = this->theContextMenu_->AddItem(ICONTreeItemGeometry, "Save As Image", false);
+
+	connect(myExportAction, SIGNAL(triggered()), this, SLOT(ExportDataAsCSVSlot()));
+	connect(myExportAsImageAction, SIGNAL(triggered()), this, SLOT(ExportDataAsImageSlot()));
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_TItem::Init()
@@ -300,10 +312,12 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotSinXSlot()
 		if (!theDataSeriesTItem_ || !theAxesTItem_ || !theLegendTItem_)
 			Init();
 
-		QString TItemName = CorrectName(theDataSeriesTItem_, "Sin(x)");
+		QString TItemName = "Sin(x)";
 		auto VTKPlot = plot2D->AddSinX(TItemName.toLatin1().constData());
 		//auto sinXTItem = new FrgVisual_Plot2DDataSeries_TItem(TItemName.toLatin1().constData(), theDataSeriesTItem_, GetParentTree(), VTKPlot);
 		thePlotsTItem_.push_back(new FrgVisual_Plot2DDataSeries_TItem(TItemName.toLatin1().constData(), theDataSeriesTItem_, GetParentTree(), VTKPlot));
+
+		VTKPlot->SetLabel(thePlotsTItem_.at(thePlotsTItem_.size() - 1)->GetTItemName()->GetValue().toStdString());
 	
 		return VTKPlot;
 	}
@@ -320,15 +334,73 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotCosXSlot()
 		if (!theDataSeriesTItem_ || !theAxesTItem_ || !theLegendTItem_)
 			Init();
 
-		QString TItemName = CorrectName(theDataSeriesTItem_, "Cos(x)");
+		QString TItemName = "Cos(x)";
 		auto VTKPlot = plot2D->AddCosX(TItemName.toLatin1().constData());
 		//auto cosXTItem = new FrgVisual_Plot2DDataSeries_TItem(TItemName.toLatin1().constData(), theDataSeriesTItem_, GetParentTree(), VTKPlot);
 		thePlotsTItem_.push_back(new FrgVisual_Plot2DDataSeries_TItem(TItemName.toLatin1().constData(), theDataSeriesTItem_, GetParentTree(), VTKPlot));
+
+		VTKPlot->SetLabel(thePlotsTItem_.at(thePlotsTItem_.size() - 1)->GetTItemName()->GetValue().toStdString());
 
 		return VTKPlot;
 	}
 
 	return nullptr;
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::ExportDataAsCSVSlot()
+{
+	QString fileName = QFileDialog::getSaveFileName(this->GetParentMainWindow(), "Export", "", "*.csv");
+
+	if (fileName.isEmpty())
+		return;
+
+	auto myPlot2D = dynamic_cast<FrgVisual_Plot2D*>(this->thePlot_);
+	if (myPlot2D)
+	{
+		if (myPlot2D->ExportDataAsCSV(fileName.toStdString()))
+			if (GetParentMainWindow())
+				GetParentMainWindow()->PrintInfoToConsole("The plot exported successfully at \"" + fileName + "\"");
+	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::ExportDataAsImageSlot()
+{
+	QList<QString> QfileTypes;
+	QfileTypes.push_back("PNG files (*.png)");
+	QfileTypes.push_back("JPEG files (*.jpg; *.jpeg)");
+	QfileTypes.push_back("PostScript files (*.ps)");
+	QfileTypes.push_back("SVG files (*.svg)");
+	QfileTypes.push_back("PDF files (*.pdf)");
+	QfileTypes.push_back("Encapsulated PostScript files (*.eps)");
+
+	QString fileTypes;
+	for (int i = 0; i < QfileTypes.size() - 1; i++)
+	{
+		fileTypes += QfileTypes.at(i);
+		fileTypes += ";;";
+	}
+	fileTypes += QfileTypes.at(QfileTypes.size() - 1);
+
+	QString* ext = new QString("PNG files");
+
+	QString fileName = QFileDialog::getSaveFileName(this->GetParentMainWindow(), "Export", "", fileTypes, ext);
+
+	if (fileName.isEmpty())
+		return;
+
+	auto myPlot2D = dynamic_cast<FrgVisual_Plot2D*>(this->thePlot_);
+	if (myPlot2D)
+	{
+		bool exported = myPlot2D->ExportDataAsImage(fileName);
+
+		if (GetParentMainWindow())
+		{
+			if (exported)
+				GetParentMainWindow()->PrintInfoToConsole("The plot exported successfully at \"" + fileName + "\"");
+			else
+				GetParentMainWindow()->PrintErrorToConsole("Cannot export the plot at \"" + fileName + "\"");
+		}
+	}
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot2D_TItem)

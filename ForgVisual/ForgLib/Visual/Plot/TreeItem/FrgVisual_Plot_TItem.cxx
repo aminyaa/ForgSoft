@@ -57,10 +57,17 @@ void ForgVisualLib::FrgVisual_Plot_TItem::RenderView() const
 			thePlot_->RenderView();
 }
 
+bool ForgVisualLib::FrgVisual_Plot_TItem::RemovePlot(vtkPlot * plot)
+{
+	if (thePlot_)
+	{
+		return thePlot_->RemovePlot(plot);
+	}
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot_TItem)
 {
 
-	std::cout << "I AM HERE\n";
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Plot_TItem)

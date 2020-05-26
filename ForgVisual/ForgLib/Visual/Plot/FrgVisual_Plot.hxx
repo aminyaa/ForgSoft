@@ -8,6 +8,7 @@
 class vtkContextView;
 class vtkTable;
 class vtkChartXY;
+class vtkPlot;
 
 namespace ForgBaseLib
 {
@@ -45,6 +46,8 @@ public:
 
 	vtkSmartPointer<vtkContextView> GetView() const { return theView_; }
 	vtkSmartPointer<vtkChartXY> GetChartXY() const { return theChart_; }
+
+	bool RemovePlot(vtkPlot* plot);
 
 protected:
 
