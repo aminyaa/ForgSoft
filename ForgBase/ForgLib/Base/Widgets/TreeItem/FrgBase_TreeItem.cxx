@@ -21,6 +21,10 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	: QTreeWidgetItem(parentItem)
 {
 	ConstructTItem(itemTitle, parentItem, parentTree);
+
+	if (parentTree)
+		if (parentTree->GetParentMainWindow())
+			parentTree->GetParentMainWindow()->ProgramModifiedSlot(true);
 }
 
 ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()

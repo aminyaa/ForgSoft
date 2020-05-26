@@ -50,6 +50,9 @@ protected:
 
 	FrgBase_TabWidget* theTabWidget_ = NullPtr;
 
+	QString theWindowTitle_;
+	bool theProgramIsModified_ = false;
+
 protected:
 
 	virtual void InitMainWindow();
@@ -80,6 +83,9 @@ public:
 	void SetTabText(int index, const QString& title);
 	FrgBase_Tree* GetTree() const { return theTree_; }
 
+	void SetWindowTitle(QString title);
+	QString GetWindowTitle() const;
+
 protected slots:
 
 	/*=========================*/
@@ -92,6 +98,10 @@ protected slots:
 	virtual void FileImportActionSlot() {}
 	virtual void FileExportActionSlot() {}
 	virtual void FileExitActionSlot() {}
+
+public slots:
+
+	void ProgramModifiedSlot(bool condition);
 };
 
 EndForgBaseLib

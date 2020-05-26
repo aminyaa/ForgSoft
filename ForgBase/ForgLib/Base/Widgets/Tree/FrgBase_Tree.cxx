@@ -219,6 +219,8 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 			auto parentItem = dynamic_cast<FrgBase_TreeItem*>
 				(dynamic_cast<QTreeWidgetItem*>(TItem) ? dynamic_cast<QTreeWidgetItem*>(TItem)->parent() : NullPtr);
 
+			emit TItem->TItemIsGoingToBeDeleted();
+
 			delete TItem;
 
 			ScrollToItem(parentItem);

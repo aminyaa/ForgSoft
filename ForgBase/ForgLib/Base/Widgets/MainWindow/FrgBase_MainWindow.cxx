@@ -37,6 +37,8 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 	theTabWidget_ = new FrgBase_TabWidget(this);
 	this->setCentralWidget(theTabWidget_);
 
+	SetWindowTitle("Forg Soft");
+
 	//InitMainWindow();
 }
 
@@ -199,6 +201,19 @@ void ForgBaseLib::FrgBase_MainWindow::SetTabText(int index, const QString & titl
 
 void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 {
+	if (theProgramIsModified_)
+	{
+		auto myMessageOutput = QMessageBox::information(this, "Save project?", "This project is not saved. Do you want to save your project?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+
+		if (myMessageOutput == QMessageBox::Yes)
+		{
+			FileSaveActionSlot();
+			return;
+		}
+		else if (myMessageOutput == QMessageBox::Cancel)
+			return;
+	}
+
 	QString* ext;
 	QString fileName = QFileDialog::getOpenFileName(this, "Load File", "", "Forg (*.Forg)");
 
@@ -220,10 +235,15 @@ void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 	theTree_->SetParentMainWindow(this);
 
 	theTreeDockWidget_->setWidget(theTree_);
+
+	ProgramModifiedSlot(false);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
 {
+	if (!theProgramIsModified_)
+		return;
+
 	QString* ext;
 	QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", "Forg (*.Forg)");
 
@@ -237,4 +257,32 @@ void ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
 	oa << theTree_;
 
 	myFile.close();
+
+	ProgramModifiedSlot(false);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::ProgramModifiedSlot(bool condition)
+{
+	if (theProgramIsModified_ == condition)
+		return;
+
+	theProgramIsModified_ = condition;
+
+	theMainWindowMenus_->theFileMenu_->GetItem("&Save")->setEnabled(condition);
+
+	if (theProgramIsModified_)
+		this->setWindowTitle(theWindowTitle_ + " *");
+	else
+		this->setWindowTitle(theWindowTitle_);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::SetWindowTitle(QString title)
+{
+	this->setWindowTitle(title);
+	theWindowTitle_ = title;
+}
+
+QString ForgBaseLib::FrgBase_MainWindow::GetWindowTitle() const
+{
+	return theWindowTitle_;
 }

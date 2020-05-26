@@ -46,6 +46,7 @@ signals:
 
 	void TItemNameChanged(const QString&);
 	void DeleteTItemCalled();
+	void TItemIsGoingToBeDeleted();
 
 public:
 
