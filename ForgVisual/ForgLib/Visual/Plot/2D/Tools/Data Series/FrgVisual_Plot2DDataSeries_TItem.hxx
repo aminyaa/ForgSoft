@@ -28,6 +28,8 @@ public:
 		vtkPlot* VTKPlot
 	);
 
+	~FrgVisual_Plot2DDataSeries_TItem();
+
 	FrgVisual_Plot2DLnStyle_TItem* GetLineStyleTItem() const { return theLineStyle_; }
 	FrgVisual_Plot2DSmblStyle_TItem* GetSymbolStyleTItem() const { return theSymbolStyle_; }
 
@@ -37,6 +39,10 @@ public:
 	FrgVisual_Plot2D_TItem* GetPlot2DTItem() const;
 
 	void RenderView() const;
+
+private slots:
+
+	void DataSeriesNameChangedSlot(const QString& name);
 
 private:
 
