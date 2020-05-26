@@ -22,9 +22,13 @@ public:
 	void SetMouseFraction(double frac) { theMouseFraction_ = frac; }
 
 	bool MouseWheelEvent(const vtkContextMouseEvent&, int delta) override;
+	bool MouseMoveEvent(const vtkContextMouseEvent& mouse) override;
+	bool MouseButtonPressEvent(const vtkContextMouseEvent& mouse) override;
 
 	void SetLegendVisible(bool condition);
 	bool GetLegendVisible() const;
+
+	bool ExportDataAsCSV(std::string myFileName);
 
 private:
 
@@ -36,6 +40,9 @@ private:
 
 	double theMouseFraction_;
 	bool theLegendIsVisible_ = true;
+
+	vtkPlot* theHorizontalIndicatorLine_ = nullptr;
+	vtkPlot* theVericalIndicatorLine_ = nullptr;
 };
 
 EndForgVisualLib
