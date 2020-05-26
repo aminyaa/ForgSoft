@@ -155,6 +155,18 @@
     <Filter Include="ForgLib\Visual\Serialization\Specialization\vtkTable">
       <UniqueIdentifier>{181e5315-bcf6-4cb9-80db-e254e90f0f1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Serialization\Specialization\vtkActor">
+      <UniqueIdentifier>{47480f2d-dc22-4e41-9366-3c40e3c83c48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base">
+      <UniqueIdentifier>{4cf15a68-77b4-4220-a7e9-dc328b17f20f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors">
+      <UniqueIdentifier>{8cb396cc-58f6-425a-a609-e3b6be07ed6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Base">
+      <UniqueIdentifier>{761ce9c6-13ca-4490-8979-c4f7e6704061}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -229,17 +241,26 @@
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\CameraManip</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_LineActor.cxx">
+    <ClCompile Include="ForgLib\Visual\Serialization\Specialization\vtkActor\FrgVisual_SerialSpec_vtkActor.cxx">
+      <Filter>ForgLib\Visual\Serialization\Specialization\vtkActor</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_3DLineActor.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Line</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_PointActor.cxx">
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_3DBoxActor.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_3DPointActor.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Point</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_PolylineActor.cxx">
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_3DPolylineActor.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Polyline</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_BoxActor.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Box</Filter>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base\FrgVisual_3DBaseActor.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,18 +311,6 @@
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.hxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\CameraManip</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_LineActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Line</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_PointActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Point</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_PolylineActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Polyline</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_BoxActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Box</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Visual\Serialization\Global\FrgVisual_Serialization_Global.hxx">
       <Filter>ForgLib\Visual\Serialization\Global</Filter>
     </ClInclude>
@@ -316,6 +325,27 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Serialization\Specialization\vtkTable\FrgVisual_SerialSpec_vtkTable.hxx">
       <Filter>ForgLib\Visual\Serialization\Specialization\vtkTable</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Serialization\Specialization\vtkActor\FrgVisual_SerialSpec_vtkActor.hxx">
+      <Filter>ForgLib\Visual\Serialization\Specialization\vtkActor</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base\FrgVisual_3DBaseActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_3DLineActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_3DBoxActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_3DPointActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_3DPolylineActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Polyline</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

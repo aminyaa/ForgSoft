@@ -10,11 +10,6 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2)
 VTK_MODULE_INIT(vtkInteractionStyle)
 VTK_MODULE_INIT(vtkRenderingFreeType)
 VTK_MODULE_INIT(vtkRenderingGL2PSOpenGL2)
-// 
-// #define vtkRenderingCore_AUTOINIT 2(vtkRenderingOpenGL2, vtkInteractionStyle)
-
-// #define vtkRenderingCore_AUTOINIT 4(vtkInteractionStyle,vtkRenderingFreeType,vtkRenderingFreeTypeOpenGL,vtkRenderingOpenGL)
-// #define vtkRenderingVolume_AUTOINIT 1(vtkRenderingVolumeOpenGL)
 
 ForgVisualLib::FrgVisual_Plot::FrgVisual_Plot
 (
