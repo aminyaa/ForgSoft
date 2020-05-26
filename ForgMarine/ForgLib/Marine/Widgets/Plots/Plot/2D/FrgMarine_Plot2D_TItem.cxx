@@ -20,7 +20,7 @@ ForgMarineLib::FrgMarine_Plot2D_TItem::FrgMarine_Plot2D_TItem
 {
 	GetContextMenu()->addSeparator();
 
-	ForgBaseLib::FrgBase_Menu* newPredefinedFunctions = new ForgBaseLib::FrgBase_Menu("New Predefined Functions", GetParentMainWindow());
+	ForgBaseLib::FrgBase_Menu* newPredefinedFunctions = new ForgBaseLib::FrgBase_Menu("Add Predefined Functions", GetParentMainWindow());
 
 	auto sinAction = newPredefinedFunctions->AddItem("Sin(x)", false);
 	auto cosAction = newPredefinedFunctions->AddItem("Cos(x)", false);

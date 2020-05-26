@@ -22,6 +22,8 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::FrgMarine_GeomPModelShipT01_TI
 
 	theParameters_ = new FrgMarine_ShipT01Params_TItem("Parameters", this, parentTree, shipModel);
 
+	theParameters_->setHidden(true);
+
 	connect(theParameters_, SIGNAL(ModelPerformedToPreviewSignal()), this, SIGNAL(ModelPerformedToPreviewSignal()));
 
 	shipModel->PerformToPreview();
@@ -42,3 +44,30 @@ const TopoDS_Shape& ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::GetShape()
 	//std::dynamic_pointer_cast<tnbLib::LegModel_DispNo1>(theModel_)->Perform();
 	return theModel_->Entity();
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem, ForgMarineLib::FrgMarine_GeomPModel_TItem)
+
+	ar & thePreviewTItem_;
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem, ForgMarineLib::FrgMarine_GeomPModel_TItem)
+
+	ar & thePreviewTItem_;
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
+{
+
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)

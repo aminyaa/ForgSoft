@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgBase_TreeItem.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 BeginForgMarineLib
 
 class FORGMARINE_EXPORT FrgMarine_Scenes_TItem
@@ -20,8 +22,16 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Scenes_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Scenes_TItem)
 
 #endif // !_FrgMaine_Scenes_TItem_Header

@@ -62,6 +62,9 @@ ForgMarineLib::FrgMarine_GeomPModelPView_TItem::~FrgMarine_GeomPModelPView_TItem
 	FreePointer(theFastDiscrete_ControlSurfaceDeflection_);
 }
 
+#include <FrgBase_Pnt3d.hxx>
+#include <FrgVisual_3DPointActor.hxx>
+
 void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 {
 	if (theModelEntity_)
@@ -84,7 +87,45 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 		auto myTris = tnbLib::Cad_Tools::RetrieveTriangulation(myPreviewShape);
 
 		theScene_->RemoveAllActors();
-		dynamic_cast<ForgVisualLib::FrgVisual_Scene3D*>(theScene_)->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, true);
+		auto myScene = dynamic_cast<ForgVisualLib::FrgVisual_Scene3D*>(theScene_);
+		if (myScene)
+		{
+			myScene->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, true);
+			//myScene->AddBox(0.0, -15.0, 0.0, 100.0, 20.0, 15.0);
+			//myScene->AddPoint(0.0, 0.0, 0.0);
+			//myScene->AddLine(0.0, 0.0, 0.0, 0.0, 0.0, 20.0);
+
+			//double t0 = 0.0;
+			//double tn = PI;
+			//int nt = 20;
+			//double dt = (tn - t0) / (nt);
+
+			//double phi0 = 0.0;
+			//double phin = 2.0*PI;
+			//int nphi = 20;
+			//double dphi = (phin - phi0) / (nphi);
+
+			//double a = 20.0;
+			//double b = 20.0;
+			//double c = 20.0;
+
+			//for (int i = 0; i <= nt; i++)
+			//{
+			//	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d>> myPts;
+
+			//	double theta = i * dt + t0;
+			//	for (int j = 0; j <= nphi; j++)
+			//	{
+			//		double phi = j * dphi + phi0;
+
+			//		auto pt = std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(a*sin(theta)*cos(phi), b*sin(theta)*sin(phi), c*cos(theta));
+			//		myPts.push_back(pt);
+			//		auto ptActor = myScene->AddPoint(pt, false);
+			//		ptActor->SetColor(sin(i), sin(j), sin(i + j));
+			//	}
+			//	//myScene->AddPolyline(myPts);
+			//}
+		}
 	}
 }
 
@@ -229,6 +270,80 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FDiscControlSurfaceDeflecti
 		UpdatePreviewSlot();
 	}
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModelPView_TItem, ForgMarineLib::FrgMarine_Scene3D_TItem)
+
+	double faseDiscreteAngle, fastDiscrete_Deflection, fastDiscrete_MinSize;
+	bool fastDiscrete_InParallel, fastDiscrete_Relative, fastDiscrete_AdaptiveMin,
+		fastDiscrete_InternalVerticesMode, fastDiscrete_ControlSurfaceDeflection;
+	
+	
+	faseDiscreteAngle = theFastDiscrete_Angle_->GetValue();
+	fastDiscrete_Deflection = theFastDiscrete_Deflection_->GetValue();
+	fastDiscrete_MinSize = theFastDiscrete_MinSize_->GetValue();
+	fastDiscrete_InParallel = theFastDiscrete_InParallel_->GetValue();
+	fastDiscrete_Relative = theFastDiscrete_Relative_->GetValue();
+	fastDiscrete_AdaptiveMin = theFastDiscrete_AdaptiveMin_->GetValue();
+	fastDiscrete_InternalVerticesMode = theFastDiscrete_InternalVerticesMode_->GetValue();
+	fastDiscrete_ControlSurfaceDeflection = theFastDiscrete_ControlSurfaceDeflection_->GetValue();
+
+	ar & faseDiscreteAngle;
+	ar & fastDiscrete_Deflection;
+	ar & fastDiscrete_MinSize;
+	ar & fastDiscrete_InParallel;
+	ar & fastDiscrete_Relative;
+	ar & fastDiscrete_AdaptiveMin;
+	ar & fastDiscrete_InternalVerticesMode;
+	ar & fastDiscrete_ControlSurfaceDeflection;
+
+	ar & boost::serialization::base_object<FrgMarine_Scene3D_TItem>(*this);
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+{
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModelPView_TItem, ForgMarineLib::FrgMarine_Scene3D_TItem)
+	
+	double faseDiscreteAngle, fastDiscrete_Deflection, fastDiscrete_MinSize;
+	bool fastDiscrete_InParallel, fastDiscrete_Relative, fastDiscrete_AdaptiveMin,
+		fastDiscrete_InternalVerticesMode, fastDiscrete_ControlSurfaceDeflection;
+
+	ar & faseDiscreteAngle;
+	ar & fastDiscrete_Deflection;
+	ar & fastDiscrete_MinSize;
+	ar & fastDiscrete_InParallel;
+	ar & fastDiscrete_Relative;
+	ar & fastDiscrete_AdaptiveMin;
+	ar & fastDiscrete_InternalVerticesMode;
+	ar & fastDiscrete_ControlSurfaceDeflection;
+
+	this->blockSignals(true);
+	theFastDiscrete_Angle_->SetValue(faseDiscreteAngle);
+	theFastDiscrete_Deflection_->SetValue(fastDiscrete_Deflection);
+	theFastDiscrete_MinSize_->SetValue(fastDiscrete_MinSize);
+	theFastDiscrete_InParallel_->SetValue(fastDiscrete_InParallel);
+	theFastDiscrete_Relative_->SetValue(fastDiscrete_Relative);
+	theFastDiscrete_AdaptiveMin_->SetValue(fastDiscrete_AdaptiveMin);
+	theFastDiscrete_InternalVerticesMode_->SetValue(fastDiscrete_InternalVerticesMode);
+	this->blockSignals(false);
+	theFastDiscrete_ControlSurfaceDeflection_->SetValue(fastDiscrete_ControlSurfaceDeflection);
+
+	ar & boost::serialization::base_object<FrgMarine_Scene3D_TItem>(*this);
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+{
+
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 
 //void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::TItemNameToTabTitleChangedSlot(const QString & title)
 //{

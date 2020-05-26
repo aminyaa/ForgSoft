@@ -5,6 +5,8 @@
 #include <FrgVisual_Scene3D_TItem.hxx>
 #include <FrgBase_PrptsVrntSelectTItems.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 BeginForgMarineLib
 
 class FORGMARINE_EXPORT FrgMarine_Scene3D_TItem
@@ -30,6 +32,10 @@ public:
 
 private:
 
+	DECLARE_SAVE_LOAD_HEADER
+
+private:
+
 	ForgBaseLib::FrgBase_PrptsVrntSelectTItems* theSelectTItems_ = nullptr;
 
 public slots:
@@ -42,5 +48,9 @@ protected slots:
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Scene3D_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Scene3D_TItem)
 
 #endif // !_FrgMarine_Scene3D_TItem_Header

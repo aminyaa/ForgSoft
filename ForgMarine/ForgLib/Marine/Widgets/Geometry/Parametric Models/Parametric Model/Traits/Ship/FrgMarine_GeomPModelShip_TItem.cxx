@@ -11,3 +11,26 @@ ForgMarineLib::FrgMarine_GeomPModelShip_TItem::FrgMarine_GeomPModelShip_TItem
 {
 	this->setIcon(0, QIcon(ICON_Menu_Models_Ship));
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+{
+
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+{
+
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)

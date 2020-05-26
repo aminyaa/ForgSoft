@@ -14,8 +14,8 @@
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_Pnt3d.hxx>
 #include <FrgVisual_Scene3D.hxx>
-#include <FrgVisual_PolylineActor.hxx>
-#include <FrgVisual_BoxActor.hxx>
+#include <FrgVisual_3DPolylineActor.hxx>
+#include <FrgVisual_3DBoxActor.hxx>
 #include <FrgMarine_GeomPModelShip_TItem.hxx>
 #include <FrgMarine_HStaticsCrossCurvesPView_TItem.hxx>
 #include <FrgBase_Global_Thread.hxx>
@@ -243,11 +243,11 @@ void ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::DrawSections
 				auto mesh = edges[iEdge]->Mesh();
 				auto tnbPoints = mesh->Points();
 
-				std::vector<ForgBaseLib::FrgBase_Pnt3d*> myPoints;
+				std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d>> myPoints;
 				for (int iPoint = 0; iPoint < tnbPoints.size(); iPoint++)
 				{
 					auto pt = tnbPoints[iPoint];
-					myPoints.push_back(new ForgBaseLib::FrgBase_Pnt3d(theModelTItem_->GetModel()->Sections()[iSection]->X(), pt.X(), pt.Y()));
+					myPoints.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(theModelTItem_->GetModel()->Sections()[iSection]->X(), pt.X(), pt.Y()));
 				}
 
 				if (thePreviewTItem_)

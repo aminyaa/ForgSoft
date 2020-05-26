@@ -8,6 +8,8 @@
 #include <FrgBase_PrptsVrntDouble.hxx>
 #include <FrgBase_PrptsVrntBool.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 namespace tnbLib
 {
 	class CadModel_Entity;
@@ -69,6 +71,10 @@ public:
 
 	//void ShowTabWidget();
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER
+
 public slots:
 
 	void UpdatePreviewSlot();
@@ -109,5 +115,9 @@ private slots:
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 
 #endif // !_FrgMarine_GeomPModelPView_TItem_Header

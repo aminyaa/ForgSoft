@@ -20,7 +20,7 @@ ForgMarineLib::FrgMarine_Tree::FrgMarine_Tree(FrgMarine_MainWindow* parentMainWi
 void ForgMarineLib::FrgMarine_Tree::FormTree()
 {
 	theGeometry_ = new FrgMarine_Geometry_TItem("Geometry", nullptr, this);
-	//theAnalysis_ = new FrgMarine_Analyses_TItem("Analyses", nullptr, this);
+	theAnalysis_ = new FrgMarine_Analyses_TItem("Analyses", nullptr, this);
 	thePlots_ = new FrgMarine_Plots_TItem("Plots", nullptr, this);
 }
 

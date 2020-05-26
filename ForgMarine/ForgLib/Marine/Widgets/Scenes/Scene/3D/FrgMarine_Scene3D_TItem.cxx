@@ -48,3 +48,26 @@ void ForgMarineLib::FrgMarine_Scene3D_TItem::TItemDoubleClickedSlot()
 {
 	ShowTabWidget();
 }
+
+DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_Scene3D_TItem)
+{
+	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_Scene3D_TItem>(*this);
+}
+
+DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_Scene3D_TItem)
+{
+	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_Scene3D_TItem>(*this);
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_Scene3D_TItem)
+{
+
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_Scene3D_TItem)
+{
+
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_Scene3D_TItem)
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgMarineLib::FrgMarine_Scene3D_TItem)

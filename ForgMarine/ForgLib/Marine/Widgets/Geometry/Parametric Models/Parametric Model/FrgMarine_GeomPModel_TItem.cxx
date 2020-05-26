@@ -43,12 +43,12 @@ DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModel_TItem)
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModel_TItem)
 {
-	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModel_TItem)
+	//SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModel_TItem)
 }
 
 DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModel_TItem)
 {
-	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModel_TItem)
+	//LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModel_TItem)
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModel_TItem)

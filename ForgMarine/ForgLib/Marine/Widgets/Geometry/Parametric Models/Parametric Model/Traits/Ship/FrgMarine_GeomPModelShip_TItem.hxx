@@ -5,6 +5,8 @@
 #include <FrgMarine_Global.hxx>
 #include <FrgMarine_GeomPModel_TItem.hxx>
 
+#include <FrgMarine_Serialization_Global.hxx>
+
 namespace tnbLib
 {
 	class CadModel_Entity;
@@ -31,7 +33,9 @@ protected:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+private:
 
+	DECLARE_SAVE_LOAD_HEADER
 
 protected:
 
@@ -39,5 +43,9 @@ protected:
 };
 
 EndForgMarineLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+
+BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
 
 #endif // !_FrgMarine_TItemGeomParMdls_Ship_Header

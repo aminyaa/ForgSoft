@@ -5,12 +5,15 @@
 #include <FrgBase_TabWidget.hxx>
 
 #include <FrgMarine_Serialization_Global.hxx>
+#include <FrgBase_Global_Thread.hxx>
 
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 ForgMarineLib::FrgMarine_MainWindow::FrgMarine_MainWindow(QWidget* parent)
 	: FrgBase_MainWindow(parent)
@@ -46,10 +49,26 @@ void ForgMarineLib::FrgMarine_MainWindow::InitMainWindow()
 	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thePropertiesPanelDockWidget_);
 
 	CreateConsoleOutput();
+
+	SetWindowTitle("Tonb");
+	ProgramModifiedSlot(false);
 }
 
 void ForgMarineLib::FrgMarine_MainWindow::FileLoadActionSlot()
 {
+	if (theProgramIsModified_)
+	{
+		auto myMessageOutput = QMessageBox::information(this, "Save project?", "This project is not saved. Do you want to save your project?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+
+		if (myMessageOutput == QMessageBox::Yes)
+		{
+			FileSaveActionSlot();
+			return;
+		}
+		else if (myMessageOutput == QMessageBox::Cancel)
+			return;
+	}
+
 	QString* ext;
 	QString fileName = QFileDialog::getOpenFileName(this, "Load File", "", "Tonb (*.tnb)");
 
@@ -57,12 +76,23 @@ void ForgMarineLib::FrgMarine_MainWindow::FileLoadActionSlot()
 		return;
 
 
-	std::ifstream myFile(fileName.toStdString());
-	boost::archive::polymorphic_binary_iarchive ia(myFile);
+	std::ifstream myFile;
+	//myFile.open(fileName.toStdString(), std::ios::binary);
+	myFile.open(fileName.toStdString());
+
+	if (!myFile.is_open())
+	{
+		PrintInfoToConsole("\"" + fileName + "\" cannot open!");
+		return;
+	}
 
 	FrgMarine_Tree* myTree;
 
-	ia >> myTree;
+	{
+		//boost::archive::polymorphic_binary_iarchive ia(myFile);
+		boost::archive::polymorphic_text_iarchive ia(myFile);
+		ia >> myTree;
+	}
 
 	myFile.close();
 
@@ -71,26 +101,49 @@ void ForgMarineLib::FrgMarine_MainWindow::FileLoadActionSlot()
 	theTree_->SetParentMainWindow(this);
 
 	theTreeDockWidget_->setWidget(theTree_);
+
+	ProgramModifiedSlot(false);
+
+	PrintInfoToConsole("The project was successfully loaded from \"" + fileName + "\".");
 }
 
 void ForgMarineLib::FrgMarine_MainWindow::FileSaveActionSlot()
 {
+	if (!theProgramIsModified_)
+		return;
+
 	QString* ext;
 	QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", "Tonb (*.tnb)");
 
 	if (fileName.isEmpty())
 		return;
 
+	bool exist = std::filesystem::exists(fileName.toStdString().c_str());
+	if (exist)
+	{
+		QString bakFileName = fileName + "bak";
 
-	std::ofstream myFile(fileName.toStdString());
-	//boost::archive::text_oarchive oa(myFile);
-	boost::archive::polymorphic_binary_oarchive oa(myFile);
+		bool existBak = std::filesystem::exists(bakFileName.toStdString().c_str());
+		if (existBak)
+			std::remove(bakFileName.toStdString().c_str());
 
-	/*oa.template register_type<ForgBaseLib::FrgBase_Tree>();
-	oa.template register_type<ForgMarineLib::FrgMarine_Tree>();*/
+		std::rename(fileName.toStdString().c_str(), bakFileName.toStdString().c_str());
+	}
 
-	auto myTree = dynamic_cast<FrgMarine_Tree*>(theTree_);
-	oa << myTree;
+	std::ofstream myFile;
+	//myFile.open(fileName.toStdString(), std::ios::binary);
+	myFile.open(fileName.toStdString());
+	
+	{
+		//boost::archive::polymorphic_binary_oarchive oa(myFile);
+		boost::archive::polymorphic_text_oarchive oa(myFile);
+		auto myTree = dynamic_cast<FrgMarine_Tree*>(theTree_);
+		oa << myTree;
+	}
 
 	myFile.close();
+
+	ProgramModifiedSlot(false);
+
+	PrintInfoToConsole("The project was successfully saved in \"" + fileName + "\".");
 }
