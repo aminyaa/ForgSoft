@@ -38,40 +38,39 @@ using StdSharedPtr = std::shared_ptr<T>;
 #define FrgTab << "\t" <<
 
 #define BeginForgBaseLib namespace ForgBaseLib {
-#define EndForgBaseLib } 
+#define EndForgBaseLib }
 
 template<class T>
-FrgString CorrectName(T* parentItem, const FrgString& name)\
-{\
-if (parentItem->childCount() == 0)\
-return name;\
-parentItem->sortChildren(0, Qt::AscendingOrder); \
-for (int i = 0; i < parentItem->childCount(); i++)\
-{if (parentItem->child(i)->text(0) == name)\
-{break; }\
-else\
-{return name; }\
-}\
-FrgString output; \
-int nameNumber = 2; \
-for (int i = 0; i < parentItem->childCount(); i++)\
-{\
-if (nameNumber < 10)\
-{\
-if (parentItem->child(i)->text(0) == (name + " 0" + QString::number(nameNumber)))\
-{nameNumber++; }\
-}\
-else\
-{if (parentItem->child(i)->text(0) == (name + " " + QString::number(nameNumber)))\
-{nameNumber++; }\
-}\
-}\
-if (nameNumber < 10)\
-{output = name + " 0" + QString::number(nameNumber); }\
-else \
-{output = name + " " + QString::number(nameNumber); }\
-\
-return output; \
+QString CorrectName(T* parentItem, const QString& name)
+{
+	QString correctedName;
+	bool canBeAdded = false;
+
+	int numberAdded = 1;
+	while (!canBeAdded)
+	{
+		if (numberAdded == 1)
+			correctedName = name.simplified();
+		else
+			correctedName = name.simplified() + " " + QString::number(numberAdded);
+
+		bool wasFound = false;
+		for (int i = 0; i < parentItem->childCount(); i++)
+		{
+			if (parentItem->child(i)->text(0) == correctedName)
+			{
+				numberAdded++;
+				wasFound = true;
+				break;
+			}
+		}
+		if(wasFound)
+			continue;
+
+		canBeAdded = true;
+	}
+
+	return correctedName;
 }
 
 #define FreePointer(ptr)\
