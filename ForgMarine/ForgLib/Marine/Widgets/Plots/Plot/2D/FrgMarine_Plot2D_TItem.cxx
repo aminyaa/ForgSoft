@@ -31,6 +31,11 @@ ForgMarineLib::FrgMarine_Plot2D_TItem::FrgMarine_Plot2D_TItem
 	GetContextMenu()->addMenu(newPredefinedFunctions);
 }
 
+void ForgMarineLib::FrgMarine_Plot2D_TItem::FormTItem()
+{
+	ForgVisualLib::FrgVisual_Plot2D_TItem::FormTItem();
+}
+
 DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_Plot2D_TItem)
 {
 	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Plot2D_TItem, ForgVisualLib::FrgVisual_Plot2D_TItem)

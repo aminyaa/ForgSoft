@@ -23,14 +23,16 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	void FormTItem() override;
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 };
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Plot2D_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Plot2D_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Plot2D_TItem)
 

@@ -19,9 +19,16 @@ ForgMarineLib::FrgMarine_Tree::FrgMarine_Tree(FrgMarine_MainWindow* parentMainWi
 
 void ForgMarineLib::FrgMarine_Tree::FormTree()
 {
+	ForgBaseLib::FrgBase_Tree::FormTree();
+
 	theGeometry_ = new FrgMarine_Geometry_TItem("Geometry", nullptr, this);
+	theGeometry_->FormTItem();
+
 	theAnalysis_ = new FrgMarine_Analyses_TItem("Analyses", nullptr, this);
+	theAnalysis_->FormTItem();
+
 	thePlots_ = new FrgMarine_Plots_TItem("Plots", nullptr, this);
+	thePlots_->FormTItem();
 }
 
 ForgMarineLib::FrgMarine_Tree::~FrgMarine_Tree()
@@ -33,33 +40,20 @@ ForgMarineLib::FrgMarine_Tree::~FrgMarine_Tree()
 
 DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_Tree)
 {
-	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Tree, ForgBaseLib::FrgBase_Tree)
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_Tree>(*this);
 
-	ar & theGeometry_;
-	ar & thePlots_;
-
-	/*std::list<ForgBaseLib::FrgBase_TreeItem*> myItems;
-
-	QTreeWidgetItemIterator it((QTreeWidget*)this);
-	while (*it)
-	{
-		myItems.push_back(dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it));
-
-		++it;
-	}
-
-	ar & myItems;*/
+	ar& theGeometry_;
+	ar& theAnalysis_;
+	ar& thePlots_;
 }
 
 DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_Tree)
 {
-	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_Tree, ForgBaseLib::FrgBase_Tree)
-	
-	ar & theGeometry_;
-	ar & thePlots_;
-	/*std::list<ForgBaseLib::FrgBase_TreeItem*> myItems;
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_Tree>(*this);
 
-	ar & myItems;*/
+	ar& theGeometry_;
+	ar& theAnalysis_;
+	ar& thePlots_;
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_Tree)

@@ -28,12 +28,14 @@ public:
 
 	~FrgMarine_Geometry_TItem();
 
+	void FormTItem() override;
+
 	FrgMarine_GeomPModels_TItem* GetParametricModelsTItem() const { return theParametricModels_; }
 	FrgMarine_GeomParts_TItem* GetPartsTItem() const { return theParts_; }
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 private:
 
@@ -43,7 +45,7 @@ private:
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Geometry_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Geometry_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Geometry_TItem)
 

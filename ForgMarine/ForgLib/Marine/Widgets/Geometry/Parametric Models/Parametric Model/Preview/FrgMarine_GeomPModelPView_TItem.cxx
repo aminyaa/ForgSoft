@@ -4,6 +4,8 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_TabWidget.hxx>
+#include <FrgVisual_BoxActor.hxx>
+#include <FrgVisual_LineActor.hxx>
 
 #include <CadModel_Entity.hxx>
 #include <Cad_Tools.hxx>
@@ -32,22 +34,12 @@ ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FrgMarine_GeomPModelPView_TItem
 	this->RemoveRenameOptionInContextMenu();
 	this->RemoveDeleteOptionInContextMenu();
 
-	auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
+	/*auto myMainWindow = dynamic_cast<FrgMarine_MainWindow*>(GetParentMainWindow());
 	if (myMainWindow)
 	{
 		myMainWindow->ShowTabWidget(theScene_, parentItem->text(0) + " " + this->text(0));
 		connect(parentItem, SIGNAL(TItemNameChanged(const QString&)), this, SLOT(TItemNameToTabTitleChangedSlot(const QString&)));
-	}
-
-	theFastDiscreteParams_ = std::make_shared<tnbLib::FastDiscrete_Params>();
-	theFastDiscreteParams_->Angle = 1.0;
-
-	FormFastDiscreteParams();
-
-	UpdatePreviewSlot();
-	theScene_->RenderScene(true);
-
-	ConnectVrntsToSlots();
+	}*/
 }
 
 ForgMarineLib::FrgMarine_GeomPModelPView_TItem::~FrgMarine_GeomPModelPView_TItem()
@@ -62,8 +54,22 @@ ForgMarineLib::FrgMarine_GeomPModelPView_TItem::~FrgMarine_GeomPModelPView_TItem
 	FreePointer(theFastDiscrete_ControlSurfaceDeflection_);
 }
 
+void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FormTItem()
+{
+	FrgMarine_Scene3D_TItem::FormTItem();
+
+	theFastDiscreteParams_ = std::make_shared<tnbLib::FastDiscrete_Params>();
+	theFastDiscreteParams_->Angle = 1.0;
+
+	FormFastDiscreteParams();
+
+	UpdatePreviewSlot();
+	theScene_->RenderScene(true);
+
+	ConnectVrntsToSlots();
+}
+
 #include <FrgBase_Pnt3d.hxx>
-#include <FrgVisual_3DPointActor.hxx>
 
 void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 {
@@ -76,7 +82,7 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 		auto b0 = tnbLib::Cad_Tools::BoundingBox(myPreviewShape);
 		auto box = tnbLib::Cad_Tools::BoundingBox(b0);
 
-		theFastDiscreteParams_->Deflection = 1.0e-4*box.Diameter();
+		theFastDiscreteParams_->Deflection = 1.0e-4 * box.Diameter();
 
 		DisconnectVrntsToSlots();
 		theFastDiscrete_Deflection_->SetValue(theFastDiscreteParams_->Deflection);
@@ -90,10 +96,52 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 		auto myScene = dynamic_cast<ForgVisualLib::FrgVisual_Scene3D*>(theScene_);
 		if (myScene)
 		{
-			myScene->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, true);
-			//myScene->AddBox(0.0, -15.0, 0.0, 100.0, 20.0, 15.0);
-			//myScene->AddPoint(0.0, 0.0, 0.0);
-			//myScene->AddLine(0.0, 0.0, 0.0, 0.0, 0.0, 20.0);
+			//myScene->DrawGrid(0.0, 0.0, 150.0, 150.0, 30, 30);
+
+			for (int iMesh = 0; iMesh < myTris.size(); iMesh++)
+			{
+				auto myMesh = myTris[iMesh];
+
+				if (myMesh.IsNull())
+					continue;
+
+				auto myMeshNodes = myMesh->Nodes();
+				std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myMeshPoints;
+				for (int iPt = 0; iPt < myMeshNodes.Size(); iPt++)
+				{
+					auto x = myMeshNodes.Value(iPt + 1).X();
+					auto y = myMeshNodes.Value(iPt + 1).Y();
+					auto z = myMeshNodes.Value(iPt + 1).Z();
+					myMeshPoints.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(x, y, z));
+				}
+
+				auto myTrianglesNodes = myMesh->Triangles();
+				std::vector<std::shared_ptr<std::tuple<int, int, int>>> myTriangles;
+
+				for (int iTri = 0; iTri < myTrianglesNodes.Size(); iTri++)
+				{
+					int I1 = myTrianglesNodes.Value(iTri + 1).Value(1);
+					int I2 = myTrianglesNodes.Value(iTri + 1).Value(2);
+					int I3 = myTrianglesNodes.Value(iTri + 1).Value(3);
+					std::tuple<int, int, int> myData = std::make_tuple(I1, I2, I3);
+					myTriangles.push_back(std::make_shared<std::tuple<int, int, int>>(myData));
+				}
+
+				myScene->AddTriangulation(myMeshPoints, myTriangles);
+			}
+
+			//myScene->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, true);
+			myScene->AddBox(0.0, -15.0, 0.0, 100.0, 20.0, 15.0)->SetColor(0.7, 0.7, 0.7);
+			myScene->AddPoint(0.0, 0.0, 0.0);
+			myScene->AddLine(0.0, 0.0, 0.0, 0.0, 0.0, 20.0);
+
+			std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myBSPPts;
+			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(0.0, 0.0, 0.0));
+			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(0.0, 0.0, 5.0));
+			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(50.0, 0.0, 5.0));
+			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(50.0, 0.0, 10.0));
+			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(100.0, 0.0, 10.0));
+			myScene->AddBSPLine(myBSPPts, 2, false);
 
 			//double t0 = 0.0;
 			//double tn = PI;
@@ -125,6 +173,8 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 			//	}
 			//	//myScene->AddPolyline(myPts);
 			//}
+
+			
 		}
 	}
 }
@@ -273,73 +323,74 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::FDiscControlSurfaceDeflecti
 
 DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 {
-	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModelPView_TItem, ForgMarineLib::FrgMarine_Scene3D_TItem)
+	ar& boost::serialization::base_object<FrgMarine_Scene3D_TItem>(*this);
 
-	double faseDiscreteAngle, fastDiscrete_Deflection, fastDiscrete_MinSize;
-	bool fastDiscrete_InParallel, fastDiscrete_Relative, fastDiscrete_AdaptiveMin,
-		fastDiscrete_InternalVerticesMode, fastDiscrete_ControlSurfaceDeflection;
-	
-	
-	faseDiscreteAngle = theFastDiscrete_Angle_->GetValue();
-	fastDiscrete_Deflection = theFastDiscrete_Deflection_->GetValue();
-	fastDiscrete_MinSize = theFastDiscrete_MinSize_->GetValue();
-	fastDiscrete_InParallel = theFastDiscrete_InParallel_->GetValue();
-	fastDiscrete_Relative = theFastDiscrete_Relative_->GetValue();
-	fastDiscrete_AdaptiveMin = theFastDiscrete_AdaptiveMin_->GetValue();
-	fastDiscrete_InternalVerticesMode = theFastDiscrete_InternalVerticesMode_->GetValue();
-	fastDiscrete_ControlSurfaceDeflection = theFastDiscrete_ControlSurfaceDeflection_->GetValue();
-
-	ar & faseDiscreteAngle;
-	ar & fastDiscrete_Deflection;
-	ar & fastDiscrete_MinSize;
-	ar & fastDiscrete_InParallel;
-	ar & fastDiscrete_Relative;
-	ar & fastDiscrete_AdaptiveMin;
-	ar & fastDiscrete_InternalVerticesMode;
-	ar & fastDiscrete_ControlSurfaceDeflection;
-
-	ar & boost::serialization::base_object<FrgMarine_Scene3D_TItem>(*this);
+	ar& theFastDiscrete_Angle_;
+	ar& theFastDiscrete_Deflection_;
+	ar& theFastDiscrete_MinSize_;
+	ar& theFastDiscrete_InParallel_;
+	ar& theFastDiscrete_Relative_;
+	ar& theFastDiscrete_AdaptiveMin_;
+	ar& theFastDiscrete_InternalVerticesMode_;
+	ar& theFastDiscrete_ControlSurfaceDeflection_;
 }
 
 DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 {
-	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModelPView_TItem, ForgMarineLib::FrgMarine_Scene3D_TItem)
-	
-	double faseDiscreteAngle, fastDiscrete_Deflection, fastDiscrete_MinSize;
-	bool fastDiscrete_InParallel, fastDiscrete_Relative, fastDiscrete_AdaptiveMin,
-		fastDiscrete_InternalVerticesMode, fastDiscrete_ControlSurfaceDeflection;
+	ar& boost::serialization::base_object<FrgMarine_Scene3D_TItem>(*this);
 
-	ar & faseDiscreteAngle;
-	ar & fastDiscrete_Deflection;
-	ar & fastDiscrete_MinSize;
-	ar & fastDiscrete_InParallel;
-	ar & fastDiscrete_Relative;
-	ar & fastDiscrete_AdaptiveMin;
-	ar & fastDiscrete_InternalVerticesMode;
-	ar & fastDiscrete_ControlSurfaceDeflection;
+	ar& theFastDiscrete_Angle_;
+	ar& theFastDiscrete_Deflection_;
+	ar& theFastDiscrete_MinSize_;
+	ar& theFastDiscrete_InParallel_;
+	ar& theFastDiscrete_Relative_;
+	ar& theFastDiscrete_AdaptiveMin_;
+	ar& theFastDiscrete_InternalVerticesMode_;
+	ar& theFastDiscrete_ControlSurfaceDeflection_;
 
-	this->blockSignals(true);
-	theFastDiscrete_Angle_->SetValue(faseDiscreteAngle);
-	theFastDiscrete_Deflection_->SetValue(fastDiscrete_Deflection);
-	theFastDiscrete_MinSize_->SetValue(fastDiscrete_MinSize);
-	theFastDiscrete_InParallel_->SetValue(fastDiscrete_InParallel);
-	theFastDiscrete_Relative_->SetValue(fastDiscrete_Relative);
-	theFastDiscrete_AdaptiveMin_->SetValue(fastDiscrete_AdaptiveMin);
-	theFastDiscrete_InternalVerticesMode_->SetValue(fastDiscrete_InternalVerticesMode);
-	this->blockSignals(false);
-	theFastDiscrete_ControlSurfaceDeflection_->SetValue(fastDiscrete_ControlSurfaceDeflection);
+	thePropertiesPanel_->AddRow(theFastDiscrete_Angle_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_Deflection_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_MinSize_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_InParallel_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_Relative_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_AdaptiveMin_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_InternalVerticesMode_);
+	thePropertiesPanel_->AddRow(theFastDiscrete_ControlSurfaceDeflection_);
 
-	ar & boost::serialization::base_object<FrgMarine_Scene3D_TItem>(*this);
+	ConnectVrntsToSlots();
 }
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 {
-
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModelPView_TItem);
 }
 
 DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 {
+	QString myTItemTitle;
+	ar& myTItemTitle;
 
+	QString parentTItemIsNull;
+	ForgBaseLib::FrgBase_TreeItem* parentTItem;
+
+	ar& parentTItemIsNull;
+
+	if (parentTItemIsNull == "PARENT_TITEM_IS_NULL")
+		parentTItem = nullptr;
+	else if (parentTItemIsNull == "PARENT_TITEM_IS_NOT_NULL")
+		ar& parentTItem;
+
+	QString parentTreeIsNull;
+	ForgBaseLib::FrgBase_Tree* parentTree;
+
+	ar& parentTreeIsNull;
+
+	if (parentTreeIsNull == "PARENT_TREE_IS_NULL")
+		parentTree = nullptr;
+	else if (parentTreeIsNull == "PARENT_TREE_IS_NOT_NULL")
+		ar& parentTree;
+
+	::new(t)ForgMarineLib::FrgMarine_GeomPModelPView_TItem(myTItemTitle, parentTItem, parentTree, nullptr);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)

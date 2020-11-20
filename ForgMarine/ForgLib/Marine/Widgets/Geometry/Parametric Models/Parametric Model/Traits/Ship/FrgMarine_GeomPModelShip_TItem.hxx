@@ -24,7 +24,7 @@ public:
 	std::shared_ptr<tnbLib::CadModel_Entity> GetModel() const { return theModel_; }
 	std::shared_ptr<tnbLib::CadModel_Entity>& GetModel() { return theModel_; }
 
-protected:
+public:
 
 	FrgMarine_GeomPModelShip_TItem
 	(
@@ -33,9 +33,11 @@ protected:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	void FormTItem() override;
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 protected:
 
@@ -44,7 +46,7 @@ protected:
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShip_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModelShip_TItem)
 

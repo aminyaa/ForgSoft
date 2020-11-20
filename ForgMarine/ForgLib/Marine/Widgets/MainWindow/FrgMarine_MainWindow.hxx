@@ -14,16 +14,11 @@ class FORGMARINE_EXPORT FrgMarine_MainWindow
 
 public:
 
-	FrgMarine_MainWindow(QWidget* parent = NullPtr);
+	FrgMarine_MainWindow(QWidget* parent = nullptr);
 
 protected:
-
-	void InitMainWindow() override;
-
-protected slots:
-
-	void FileLoadActionSlot() override;
-	void FileSaveActionSlot() override;
+	
+	void InitTree() override;
 };
 
 EndForgMarineLib

@@ -36,7 +36,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER( )
 
 private:
 

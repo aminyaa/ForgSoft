@@ -25,11 +25,13 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	void FormTItem() override;
+
 	FrgMarine_Plot2D_TItem* AddPlot2D();
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 private slots:
 
@@ -38,7 +40,7 @@ private slots:
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Plots_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Plots_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Plots_TItem)
 

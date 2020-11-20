@@ -34,3 +34,8 @@ ForgMarineLib::FrgMarine_ShipT01Params_TItem::~FrgMarine_ShipT01Params_TItem()
 	FreePointer(theStem_);
 	FreePointer(theTransom_);
 }
+
+void ForgMarineLib::FrgMarine_ShipT01Params_TItem::FormTItem()
+{
+	ForgBaseLib::FrgBase_TreeItem::FormTItem();
+}

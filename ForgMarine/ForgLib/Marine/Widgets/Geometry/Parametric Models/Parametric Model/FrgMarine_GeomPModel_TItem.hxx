@@ -29,13 +29,15 @@ public:
 
 	~FrgMarine_GeomPModel_TItem();
 
+	void FormTItem() override;
+
 	virtual const TopoDS_Shape& GetShape() const { return TopoDS_Shape(); }
 
 	virtual FrgMarine_Scene3D_TItem* GetPreviewTItem() const { return thePreviewTItem_; }
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 private slots:
 
@@ -48,7 +50,7 @@ protected:
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModel_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModel_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModel_TItem)
 

@@ -49,9 +49,15 @@ ForgMarineLib::FrgMarine_GeomPModels_TItem::~FrgMarine_GeomPModels_TItem()
 
 }
 
+void ForgMarineLib::FrgMarine_GeomPModels_TItem::FormTItem()
+{
+	ForgBaseLib::FrgBase_TreeItem::FormTItem();
+}
+
 void ForgMarineLib::FrgMarine_GeomPModels_TItem::Ship01CreateSlot()
 {
 	auto shipItem = new FrgMarine_GeomPModelShipT01_TItem("Ship Type 01", this, GetParentTree());
+	shipItem->FormTItem();
 
 	GetParentTree()->ScrollToItem(shipItem);
 
@@ -62,6 +68,8 @@ void ForgMarineLib::FrgMarine_GeomPModels_TItem::Ship01CreateSlot()
 
 DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 {
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModels_TItem, ForgBaseLib::FrgBase_TreeItem);
+
 	std::list<FrgMarine_GeomPModel_TItem*> myTItems;
 
 	QTreeWidgetItemIterator it((QTreeWidgetItem*)this);
@@ -79,6 +87,8 @@ DECLARE_SAVE_IMP(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 
 DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 {
+	VOID_CAST_REGISTER(ForgMarineLib::FrgMarine_GeomPModels_TItem, ForgBaseLib::FrgBase_TreeItem);
+
 	std::list<FrgMarine_GeomPModel_TItem*> myTItems;
 
 	ar & myTItems;
@@ -86,12 +96,12 @@ DECLARE_LOAD_IMP(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 {
-	//SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModels_TItem)
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModels_TItem)
 }
 
 DECLARE_LOAD_IMP_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModels_TItem)
 {
-	//LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModels_TItem)
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgMarineLib::FrgMarine_GeomPModels_TItem)
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgMarineLib::FrgMarine_GeomPModels_TItem)

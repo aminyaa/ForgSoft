@@ -54,6 +54,8 @@ public:
 
 	~FrgMarine_HStaticsCrossCurves_TItem();
 
+	void FormTItem() override;
+
 	/*ForgBaseLib::FrgBase_PrptsVrntSelectTItems* GetShapeVrnt() const { return theShapeVrnt_; }
 	void SetShapeVrnt(ForgBaseLib::FrgBase_PrptsVrntSelectTItems* shape) { theShapeVrnt_ = shape; }*/
 

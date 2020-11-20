@@ -17,6 +17,8 @@ ForgMarineLib::FrgMarine_Plots_TItem::FrgMarine_Plots_TItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
+	theTItemIsSortable_ = true;
+
 	ForgBaseLib::FrgBase_Menu* newMenu = new ForgBaseLib::FrgBase_Menu("New", GetParentMainWindow());
 	newMenu->SetToolBarHidden(true);
 	auto addPlot2DAction = newMenu->AddItem("2D", false);
@@ -28,9 +30,16 @@ ForgMarineLib::FrgMarine_Plots_TItem::FrgMarine_Plots_TItem
 	boost::serialization::void_cast_register<ForgMarineLib::FrgMarine_Plots_TItem, ForgBaseLib::FrgBase_TreeItem>();
 }
 
+void ForgMarineLib::FrgMarine_Plots_TItem::FormTItem()
+{
+	ForgBaseLib::FrgBase_TreeItem::FormTItem();
+}
+
 ForgMarineLib::FrgMarine_Plot2D_TItem * ForgMarineLib::FrgMarine_Plots_TItem::AddPlot2D()
 {
-	auto plotItem = new FrgMarine_Plot2D_TItem(CorrectName(this, "Plot"), this, GetParentTree());
+	auto plotItem = new FrgMarine_Plot2D_TItem("Plot", this, GetParentTree());
+	plotItem->FormTItem();
+
 	GetParentTree()->ScrollToItem(plotItem);
 
 	return plotItem;

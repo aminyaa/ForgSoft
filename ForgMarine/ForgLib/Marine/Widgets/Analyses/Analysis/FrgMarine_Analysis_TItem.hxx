@@ -20,6 +20,8 @@ public:
 		ForgBaseLib::FrgBase_TreeItem* parentItem,
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
+
+	void FormTItem() override;
 };
 
 EndForgMarineLib

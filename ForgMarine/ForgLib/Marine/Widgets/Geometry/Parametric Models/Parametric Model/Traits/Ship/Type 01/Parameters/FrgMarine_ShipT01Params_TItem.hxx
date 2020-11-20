@@ -35,6 +35,8 @@ public:
 
 	~FrgMarine_ShipT01Params_TItem();
 
+	void FormTItem() override;
+
 Q_SIGNALS:
 
 	void ModelPerformedToPreviewSignal();

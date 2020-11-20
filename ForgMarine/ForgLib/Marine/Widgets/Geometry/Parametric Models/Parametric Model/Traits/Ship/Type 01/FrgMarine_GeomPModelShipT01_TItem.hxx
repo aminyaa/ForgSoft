@@ -36,11 +36,13 @@ public:
 
 	~FrgMarine_GeomPModelShipT01_TItem();
 
+	void FormTItem() override;
+
 	const TopoDS_Shape& GetShape() const override;
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 Q_SIGNALS:
 
@@ -53,7 +55,7 @@ private:
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem)
 

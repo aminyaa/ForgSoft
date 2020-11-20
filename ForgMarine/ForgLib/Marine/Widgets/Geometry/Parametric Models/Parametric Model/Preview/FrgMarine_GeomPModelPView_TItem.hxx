@@ -45,6 +45,8 @@ public:
 
 	~FrgMarine_GeomPModelPView_TItem();
 
+	void FormTItem() override;
+
 	ForgBaseLib::FrgBase_PrptsVrntDouble* GetFastDiscrete_Angle() const { return theFastDiscrete_Angle_; }
 	void SetFastDiscrete_Angle(ForgBaseLib::FrgBase_PrptsVrntDouble* angle) { theFastDiscrete_Angle_ = angle; }
 
@@ -73,7 +75,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 public slots:
 
@@ -116,7 +118,7 @@ private slots:
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_GeomPModelPView_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_GeomPModelPView_TItem)
 

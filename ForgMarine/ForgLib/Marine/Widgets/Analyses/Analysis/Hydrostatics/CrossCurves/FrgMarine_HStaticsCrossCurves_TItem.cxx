@@ -12,10 +12,10 @@
 #include <FrgMarine_Plot2D_TItem.hxx>
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Global_Icons.hxx>
-#include <FrgBase_Pnt3d.hxx>
+#include <FrgBase_Pnt.hxx>
 #include <FrgVisual_Scene3D.hxx>
-#include <FrgVisual_3DPolylineActor.hxx>
-#include <FrgVisual_3DBoxActor.hxx>
+#include <FrgVisual_PolylineActor.hxx>
+#include <FrgVisual_BoxActor.hxx>
 #include <FrgMarine_GeomPModelShip_TItem.hxx>
 #include <FrgMarine_HStaticsCrossCurvesPView_TItem.hxx>
 #include <FrgBase_Global_Thread.hxx>
@@ -109,6 +109,11 @@ ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::~FrgMarine_HStaticsCrossCurv
 	theBox_ = nullptr;
 }
 
+void ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::FormTItem()
+{
+	ForgMarineLib::FrgMarine_AnalysisHStatics_TItem::FormTItem();
+}
+
 void ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::ShapeVrntChangedSlot(FrgBase_TreeItem* tItem)
 {
 	if (!tItem)
@@ -155,6 +160,7 @@ void ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::ShapeVrntChangedSlot(Fr
 	theDomainTItem_ = new FrgMarine_CrossCurvesDomain_TItem("Domain", this, GetParentTree(), theBox_);
 	theHeelTItem_ = new FrgMarine_CrossCurvesHeel_TItem("Heel", this, GetParentTree());
 	thePreviewTItem_ = new FrgMarine_HStaticsCrossCurvesPView_TItem("Preview", this, GetParentTree());
+	thePreviewTItem_->FormTItem();
 
 	theCrossCurve_ = std::make_shared<tnbLib::HydroStatic_CrossCurves>(theDomainTItem_->GetDomain());
 	theCrossCurve_->LoadModel(theModelTItem_->GetModel());
@@ -243,11 +249,11 @@ void ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::DrawSections
 				auto mesh = edges[iEdge]->Mesh();
 				auto tnbPoints = mesh->Points();
 
-				std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d>> myPoints;
+				std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myPoints;
 				for (int iPoint = 0; iPoint < tnbPoints.size(); iPoint++)
 				{
 					auto pt = tnbPoints[iPoint];
-					myPoints.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(theModelTItem_->GetModel()->Sections()[iSection]->X(), pt.X(), pt.Y()));
+					myPoints.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(theModelTItem_->GetModel()->Sections()[iSection]->X(), pt.X(), pt.Y()));
 				}
 
 				if (thePreviewTItem_)

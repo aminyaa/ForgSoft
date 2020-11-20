@@ -14,3 +14,8 @@ ForgMarineLib::FrgMarine_HStaticsCrossCurvesPView_TItem::FrgMarine_HStaticsCross
 	this->RemoveRenameOptionInContextMenu();
 	this->RemoveDeleteOptionInContextMenu();
 }
+
+void ForgMarineLib::FrgMarine_HStaticsCrossCurvesPView_TItem::FormTItem()
+{
+	FrgMarine_Scene3D_TItem::FormTItem();
+}

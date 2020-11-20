@@ -10,3 +10,8 @@ ForgMarineLib::FrgMarine_AnalysisHStatics_TItem::FrgMarine_AnalysisHStatics_TIte
 {
 
 }
+
+void ForgMarineLib::FrgMarine_AnalysisHStatics_TItem::FormTItem()
+{
+	ForgMarineLib::FrgMarine_Analysis_TItem::FormTItem();
+}

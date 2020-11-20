@@ -162,9 +162,6 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Marine\Widgets\MainWindow\FrgMarine_MainWindow.cxx">
       <Filter>ForgLib\Marine\Widgets\MainWindow</Filter>
     </ClCompile>

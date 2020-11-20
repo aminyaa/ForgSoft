@@ -11,3 +11,8 @@ ForgMarineLib::FrgMarine_Analysis_TItem::FrgMarine_Analysis_TItem
 	this->AddRenameOptionInContextMenu();
 	this->AddDeleteOptionInContextMenu();
 }
+
+void ForgMarineLib::FrgMarine_Analysis_TItem::FormTItem()
+{
+	ForgBaseLib::FrgBase_TreeItem::FormTItem();
+}

@@ -25,31 +25,33 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	void FormTItem() override;
+
 	ForgBaseLib::FrgBase_PrptsVrntSelectTItems* GetSelectTItems() const { return theSelectTItems_; }
 	void SetSelectTItems(ForgBaseLib::FrgBase_PrptsVrntSelectTItems* selectTItems) { theSelectTItems_ = selectTItems; }
 
-	void ShowTabWidget();
+	//void ShowTabWidget();
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGMARINE_EXPORT)
 
 private:
 
 	ForgBaseLib::FrgBase_PrptsVrntSelectTItems* theSelectTItems_ = nullptr;
 
-public slots:
-
-	void TItemDoubleClickedSlot() override;
-
-protected slots:
-
-	void TItemNameToTabTitleChangedSlot(const QString&);
+//public slots:
+//
+//	void TItemDoubleClickedSlot() override;
+//
+//protected slots:
+//
+//	void TItemNameToTabTitleChangedSlot(const QString&);
 };
 
 EndForgMarineLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Scene3D_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgMarineLib::FrgMarine_Scene3D_TItem, FORGMARINE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgMarineLib::FrgMarine_Scene3D_TItem)
 
