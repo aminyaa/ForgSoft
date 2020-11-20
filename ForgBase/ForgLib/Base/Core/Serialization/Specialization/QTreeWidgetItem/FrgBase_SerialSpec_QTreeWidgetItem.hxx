@@ -9,8 +9,6 @@
 
 BOOST_SERIALIZATION_SPLIT_FREE(QTreeWidgetItem)
 
-class QTreeWidgetItem;
-
 DECLARE_SAVE_LOAD_HEADER_SPEC(QTreeWidgetItem)
 
 BOOST_CLASS_EXPORT_KEY(QTreeWidgetItem)

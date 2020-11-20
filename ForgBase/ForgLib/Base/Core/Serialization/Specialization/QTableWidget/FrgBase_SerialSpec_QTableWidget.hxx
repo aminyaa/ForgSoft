@@ -9,8 +9,6 @@
 
 BOOST_SERIALIZATION_SPLIT_FREE(QTableWidget)
 
-class QTableWidget;
-
 DECLARE_SAVE_LOAD_HEADER_SPEC(QTableWidget)
 
 BOOST_CLASS_EXPORT_KEY(QTableWidget)
