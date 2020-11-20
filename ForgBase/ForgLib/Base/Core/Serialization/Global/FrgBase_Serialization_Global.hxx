@@ -11,9 +11,11 @@
 
 #include <boost/serialization/list.hpp>
 #include <boost/serialization/vector.hpp>
-#include <boost/serialization/shared_ptr.hpp>>
+#include <boost/serialization/shared_ptr.hpp>
 
 #include <FrgBase_Serialization_IO.hxx>
+
+#include <tuple>
 
 #define VOID_CAST_REGISTER(Derived, Base)											\
 boost::serialization::void_cast_register<Derived, Base>								\
@@ -22,12 +24,12 @@ boost::serialization::void_cast_register<Derived, Base>								\
 	static_cast<Base*>(NULL)														\
 	);
 
-#define DECLARE_SAVE_LOAD_HEADER	 												\
+#define DECLARE_SAVE_LOAD_HEADER(Export)	 												\
 	friend class boost::serialization::access;										\
 	template<class Archive>															\
-	void save(Archive & ar, const unsigned int version) const;						\
+	void Export save(Archive & ar, const unsigned int version) const;						\
 	template<class Archive>															\
-	void load(Archive & ar, const unsigned int version);							\
+	void Export load(Archive & ar, const unsigned int version);							\
 	BOOST_SERIALIZATION_SPLIT_MEMBER()												
 
 #define DECLARE_SAVE_LOAD_HEADER_SPEC(C) 											\
@@ -42,15 +44,15 @@ namespace boost																		\
 	}																				\
 }
 
-#define DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(C) 														\
+#define DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(C, Export) 														\
 namespace boost																						\
 {																									\
 	namespace serialization																			\
 	{																								\
 		template<class Archive>																		\
-		void save_construct_data(Archive& ar, const C* m, const unsigned int version);				\
+		void Export save_construct_data(Archive& ar, const C* m, const unsigned int version);				\
 		template<class Archive>																		\
-		void load_construct_data(Archive& ar, C* m, const unsigned int version);					\
+		void Export load_construct_data(Archive& ar, C* m, const unsigned int version);					\
 	}																								\
 }
 
@@ -78,14 +80,14 @@ void boost::serialization::load(Archive & ar, C& m, const unsigned int version)
 template<class Archive>																					  \
 void boost::serialization::load_construct_data(Archive & ar, C* t, const unsigned int version)
 
-#define DECLARE_SAVE_CONSTRUCT_DATA(C) \
+#define DECLARE_SAVE_CONSTRUCT_DATA(C, Export) \
 template<class Archive>\
-void save_construct_data\
+void Export save_construct_data\
 (\
 	Archive & ar, const C* t, const unsigned int file_version\
 )\
 
-#define DECLARE_LOAD_CONSTRUCT_DATA(C) \
+#define DECLARE_LOAD_CONSTRUCT_DATA(C, Export) \
 template<class Archive>\
 void load_construct_data\
 (\
@@ -142,6 +144,34 @@ namespace boost																										\
 }																													\
 }
 
+#define BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE 																						   \
+namespace boost																														   \
+{																																	   \
+	namespace serialization																											   \
+	{																																   \
+		template __declspec(dllexport) void serialize<boost::archive::text_iarchive>												   \
+		(boost::archive::text_iarchive & ar, std::tuple<>& t, const unsigned int version);											   \
+		template __declspec(dllexport) void serialize<boost::archive::text_oarchive>									 			   \
+		(boost::archive::text_oarchive & ar, std::tuple<>& t, const unsigned int version);											   \
+		template __declspec(dllexport) void serialize<boost::archive::binary_iarchive>												   \
+		(boost::archive::binary_iarchive & ar, std::tuple<>& t, const unsigned int version);										   \
+		template __declspec(dllexport) void serialize<boost::archive::binary_oarchive>												   \
+		(boost::archive::binary_oarchive & ar, std::tuple<>& t, const unsigned int version);										   \
+		template __declspec(dllexport) void serialize<boost::archive::polymorphic_iarchive>											   \
+		(boost::archive::polymorphic_iarchive & ar, std::tuple<>& t, const unsigned int version);									   \
+		template __declspec(dllexport) void serialize<boost::archive::polymorphic_oarchive>											   \
+		(boost::archive::polymorphic_oarchive & ar, std::tuple<>& t, const unsigned int version);									   \
+		template __declspec(dllexport) void serialize<boost::archive::polymorphic_text_iarchive>									   \
+		(boost::archive::polymorphic_text_iarchive & ar, std::tuple<>& t, const unsigned int version);								   \
+		template __declspec(dllexport) void serialize<boost::archive::polymorphic_text_oarchive>									   \
+		(boost::archive::polymorphic_text_oarchive & ar, std::tuple<>& t, const unsigned int version);								   \
+		template __declspec(dllexport) void serialize<boost::archive::polymorphic_binary_iarchive>									   \
+		(boost::archive::polymorphic_binary_iarchive & ar, std::tuple<>& t, const unsigned int version);							   \
+		template __declspec(dllexport) void serialize<boost::archive::polymorphic_binary_oarchive>									   \
+		(boost::archive::polymorphic_binary_oarchive & ar, std::tuple<>& t, const unsigned int version);							   \
+	}																																   \
+}
+
 #define DECLARE_BOOST_DATA_TYPES_CONSTRUCT(C)																		\
 namespace boost																										\
 {																													\
@@ -171,14 +201,18 @@ namespace serialization																								\
 }
 
 #define BOOST_CLASS_EXPORT_CXX(C)				   \
-BOOST_CLASS_EXPORT_IMPLEMENT(C)					   \
-DECLARE_BOOST_DATA_TYPES(C)
+DECLARE_BOOST_DATA_TYPES(C)						   \
+BOOST_CLASS_EXPORT_IMPLEMENT(C)
 
 #define BOOST_CLASS_EXPORT_CXX_SPEC(C)				   \
 DECLARE_BOOST_DATA_TYPES_SPEC(C)
 
 #define BOOST_CLASS_EXPORT_CXX_CONSTRUCT(C)				   \
 DECLARE_BOOST_DATA_TYPES_CONSTRUCT(C)
+
+#define BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(C)  \
+BOOST_CLASS_EXPORT_CXX_CONSTRUCT(C)					 \
+BOOST_CLASS_EXPORT_CXX(C)
 
 // override for non-default constructor
 #define SAVE_CONSTRUCT_DATA_TITEM(Archive, Class)													 \
