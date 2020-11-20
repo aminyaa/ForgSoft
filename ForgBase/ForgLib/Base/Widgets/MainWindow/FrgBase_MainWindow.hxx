@@ -9,6 +9,11 @@
 
 class QDockWidget;
 
+namespace chaiscript
+{
+	class ChaiScript;
+}
+
 BeginForgBaseLib
 
 class FrgBase_Menu;
@@ -16,6 +21,7 @@ class FrgBase_Tree;
 class FrgBase_ProgressBar;
 class FrgBase_PropertiesPanel;
 class FrgBase_TabWidget;
+class FrgBase_FramelessWindow;
 
 class FORGBASE_EXPORT FrgBase_MainWindow
 	: public QMainWindow
@@ -42,9 +48,9 @@ protected:
 	FrgBase_ProgressBar* theProgressBar_ = nullptr;
 	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 
-	QDockWidget* theTreeDockWidget_ = NullPtr;
-	QDockWidget* theProgressBarDockWidget_ = nullptr;
-	QDockWidget* thePropertiesPanelDockWidget_ = NullPtr;
+	QDockWidget* theTreeDockWidget_ = nullptr;
+	QDockWidget* thePropertiesPanelDockWidget_ = nullptr;
+	QDockWidget* theConsoleOutputDockWidget_ = nullptr;
 
 	FrgString theConsoleEngineName_;
 
@@ -53,13 +59,26 @@ protected:
 	QString theWindowTitle_;
 	bool theProgramIsModified_ = false;
 
+	QString theProjectExtension_;
+
+	std::shared_ptr<chaiscript::ChaiScript> theChaiScript_;
+
+	FrgBase_FramelessWindow* theFrameLessWindow_ = nullptr;
+	bool theIsThemeDark_;
+	QStyle* theDefaultStyle_ = nullptr;
+
+	QApplication* theQApplication_ = nullptr;
+
 protected:
 
 	virtual void InitMainWindow();
-	void FormMenus();
-	void SetMainWindowStyleSheet();
-	void AddMainWindowStyleSheet(const QString& styleSheet);
-	void CreateConsoleOutput();
+	virtual void InitTree();
+	virtual void InitProgressBar();
+	virtual void InitConsoleOutput();
+	
+	virtual void FormMenus();
+
+	virtual void CorrectConsoleOutput();
 
 public:
 
@@ -78,13 +97,28 @@ public:
 
 	FrgBase_TabWidget* GetTabWidget() const { return theTabWidget_; }
 
-	void ShowTabWidget(QWidget* widget, const QString& title);
+	bool IsThemeDark() const { return theIsThemeDark_; }
+
+	void ShowTabWidget(QWidget* widget, const QString& title) const;
 	void SetTabText(QWidget* widget, const QString& title);
-	void SetTabText(int index, const QString& title);
+	void SetTabText(int index, const QString& title) const;
 	FrgBase_Tree* GetTree() const { return theTree_; }
 
 	void SetWindowTitle(QString title);
 	QString GetWindowTitle() const;
+
+	void SetGeometry(int PercentageOfScreen);
+
+	auto& GetChaiScriptRef() { return theChaiScript_; }
+	const auto& GetChaiScript() const { return theChaiScript_; }
+	void SetChaiScript(const std::shared_ptr<chaiscript::ChaiScript>& chaiScript) { theChaiScript_ = chaiScript; }
+
+	virtual void Show(bool darkTheme = false);
+
+	void SetThemeDark(bool condition = true);
+
+	void SetQApplication(QApplication* qapplication) { theQApplication_ = qapplication; }
+	QApplication* GetQApplication() const { return theQApplication_; }
 
 protected slots:
 
