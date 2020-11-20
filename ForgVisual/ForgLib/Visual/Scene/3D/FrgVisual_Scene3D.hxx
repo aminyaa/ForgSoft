@@ -10,60 +10,32 @@
 namespace ForgBaseLib
 {
 	class FrgBase_MainWindow;
-	class FrgBase_Pnt3d;
 }
 
 BeginForgVisualLib
 
-class FrgVisual_3DPointActor;
-class FrgVisual_3DLineActor;
-class FrgVisual_3DPolylineActor;
-class FrgVisual_3DBoxActor;
-
 class FORGVISUAL_EXPORT FrgVisual_Scene3D
-	: public FrgVisual_Scene
+	: public FrgVisual_Scene<3>
 {
 
 public:
 
-	FrgVisual_Scene3D(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
-	void Init() override;
+	FrgVisual_Scene3D(ForgBaseLib::FrgBase_MainWindow* parentMainWindow = nullptr);
+
+	//void Init() override;
 
 	void RenderScene(bool resetCamera = true) override;
 
-	template <typename Triangulation>
-	void AddTriangulations(std::vector<Triangulation> triangulations, bool render);
-
-	FrgVisual_3DPointActor* AddPoint(std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> pt, bool render = true);
-	FrgVisual_3DPointActor* AddPoint(double x = 0.0, double y = 0.0, double z = 0.0, bool render = true);
-
-	FrgVisual_3DLineActor* AddLine(std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P1, bool render = true);
-	FrgVisual_3DLineActor* AddLine(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render = true);
-
-	FrgVisual_3DPolylineActor* AddPolyline(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d>> pts, bool render = true);
-
-	FrgVisual_3DBoxActor* AddBox(std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P1, bool render = true);
-	FrgVisual_3DBoxActor* AddBox(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render = true);
-
-	template <typename T>
-	void ClearAllDataType();
-
-	void ClearAllPoints();
-	void ClearAllLines();
-	void ClearAllPolylines();
-
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER( )
 };
 
 EndForgVisualLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D)
+#include <FrgVisual_Scene3DI.hxx>
 
 BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Scene3D)
-
-#include <FrgVisual_Scene3DI.hxx>
 
 #endif // !_FrgVisual_Scene3D_Header
 

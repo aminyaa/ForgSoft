@@ -5,12 +5,14 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_Scene_TItem.hxx>
 
+#include <FrgVisual_Serialization_Global.hxx>
+
 BeginForgVisualLib
 
 class FrgVisual_Scene2D;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene2D_TItem
-	: public FrgVisual_Scene_TItem
+	: public FrgVisual_Scene_TItem<2>
 {
 	Q_OBJECT
 
@@ -23,8 +25,18 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	void FormTItem() override;
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)
+
 };
 
 EndForgVisualLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Scene2D_TItem, FORGVISUAL_EXPORT)
+
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Scene2D_TItem)
 
 #endif // !_FrgVisual_Scene2D_TItem_Header

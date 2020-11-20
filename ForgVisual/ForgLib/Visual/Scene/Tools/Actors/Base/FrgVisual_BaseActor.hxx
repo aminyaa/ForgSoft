@@ -3,35 +3,39 @@
 #define _FrgVisual_BaseActor_Header
 
 #include <FrgVisual_Global.hxx>
-#include <vtkOpenGLActor.h>
-
-#include <FrgVisual_Serialization_Global.hxx>
+#include <FrgVisual_BaseActor_Entity.hxx>
 
 BeginForgVisualLib
 
+template<int Dim>
 class FORGVISUAL_EXPORT FrgVisual_BaseActor
-	: public vtkOpenGLActor
+	: public FrgVisual_BaseActor_Entity
 {
-	typedef vtkOpenGLActor SuperClass;
+
+	typedef FrgVisual_BaseActor_Entity SuperClass;
 
 public:
 
 	FrgVisual_BaseActor();
 
 	static FrgVisual_BaseActor* New();
-	vtkTypeMacro(FrgVisual_BaseActor, vtkOpenGLActor);
+	vtkTypeMacro(FrgVisual_BaseActor, FrgVisual_BaseActor_Entity);
 
 	~FrgVisual_BaseActor();
 
-	void SetColor(double red, double green, double blue);
+	virtual void TranslateActor(double dx, double dy);
+	virtual void TranslateActor(double dx, double dy, double dz);
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER( )
 };
 
 EndForgVisualLib
 
-BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_BaseActor)
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_BaseActor<2>)
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_BaseActor<3>)
+
+#include <FrgVisual_BaseActorI.hxx>
 
 #endif // !_FrgVisual_BaseActor_Header

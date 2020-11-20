@@ -1,33 +1,54 @@
 #include <FrgVisual_BaseActor.hxx>
 
 #include <vtkObjectFactory.h>
-#include <vtkProperty.h>
 
-vtkStandardNewMacro(ForgVisualLib::FrgVisual_BaseActor);
+template<int Dim>
+vtkStandardNewMacro(ForgVisualLib::FrgVisual_BaseActor<Dim>);
 
-ForgVisualLib::FrgVisual_BaseActor::FrgVisual_BaseActor()
+template<int Dim>
+inline ForgVisualLib::FrgVisual_BaseActor<Dim>::FrgVisual_BaseActor()
 {
 
 }
 
-ForgVisualLib::FrgVisual_BaseActor::~FrgVisual_BaseActor()
+template<int Dim>
+inline ForgVisualLib::FrgVisual_BaseActor<Dim>::~FrgVisual_BaseActor()
 {
 
 }
 
-void ForgVisualLib::FrgVisual_BaseActor::SetColor(double red, double green, double blue)
+template<int Dim>
+//template<typename>
+inline void ForgVisualLib::FrgVisual_BaseActor<Dim>::TranslateActor(double dx, double dy)
 {
-	GetProperty()->SetColor(red, green, blue);
+	this->AddPosition(dx, dy, 0.0);
+
+	emit DataChangedSignal();
 }
 
-DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BaseActor)
+template<int Dim>
+//template<typename>
+inline void ForgVisualLib::FrgVisual_BaseActor<Dim>::TranslateActor(double dx, double dy, double dz)
 {
+	this->AddPosition(dx, dy, dz);
 
+	emit DataChangedSignal();
 }
 
-DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BaseActor)
+template<int Dim>
+DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BaseActor<Dim>)
 {
-
+	ar& boost::serialization::base_object<FrgVisual_BaseActor_Entity>(*this);
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_BaseActor)
+template<int Dim>
+DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BaseActor<Dim>)
+{
+	ar& boost::serialization::base_object<FrgVisual_BaseActor_Entity>(*this);
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_BaseActor<2>)
+BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_BaseActor<3>)
+
+template FORGVISUAL_EXPORT class ForgVisualLib::FrgVisual_BaseActor<2>;
+template FORGVISUAL_EXPORT class ForgVisualLib::FrgVisual_BaseActor<3>;

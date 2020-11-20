@@ -116,27 +116,40 @@
 
 #pragma once
 #ifndef _FrgVisual_Scene_InterStyle3D_Header
-#define  _FrgVisual_Scene_InterStyle3D_Header
+#define _FrgVisual_Scene_InterStyle3D_Header
 
 #include <FrgVisual_Global.hxx>
+#include <FrgVisual_Scene_InterStyle.hxx>
 
 #include <vtkInteractorStyleTrackballCamera.h>
 #include <vtkSetGet.h>
+
+#include <QtCore/QList>
+#include <QtGui/QColor>
 
 class vtkCollection;
 
 BeginForgVisualLib
 
 class FrgVisual_Scene_CameraManip;
+class FrgVisual_BaseActor_Entity;
+class FrgVisual_Scene3D;
+//class FrgVisual_3DPointActor;
+template<int Dim>
+class FrgVisual_PointActor;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene_InterStyle3D
-	: public vtkInteractorStyleTrackballCamera
+	: public FrgVisual_Scene_InterStyle<3, vtkInteractorStyleTrackballCamera>
 {
-	typedef vtkInteractorStyleTrackballCamera SuperClass;
+	Q_OBJECT
+
+public:
+
+	typedef FrgVisual_Scene_InterStyle<3, vtkInteractorStyleTrackballCamera> SuperClass;
 
 public:
 	static ForgVisualLib::FrgVisual_Scene_InterStyle3D* New();
-	vtkTypeMacro(ForgVisualLib::FrgVisual_Scene_InterStyle3D, vtkInteractorStyleTrackballCamera);
+	vtkTypeMacro(ForgVisualLib::FrgVisual_Scene_InterStyle3D, SuperClass);
 	void PrintSelf(ostream& os, vtkIndent indent) override;
 
 	//@{
@@ -153,6 +166,8 @@ public:
 	void OnRightButtonUp() override;
 	void OnMouseWheelBackward() override;
 	void OnMouseWheelForward() override;
+
+	void Rotate() override;
 	//@}
 
 	//@{
@@ -198,8 +213,8 @@ public:
 	 * i.e. after a button press but before a button up
 	 * has no effect until the next button press.
 	 */
-	vtkSetVector3Macro(CenterOfRotation, double);
-	vtkGetVector3Macro(CenterOfRotation, double);
+	/*vtkSetVector3Macro(CenterOfRotation, double);
+	vtkGetVector3Macro(CenterOfRotation, double);*/
 	//@}
 
 	//@{
@@ -224,7 +239,7 @@ public:
 	/**
 	 * Dolly the renderer's camera to a specific point
 	 */
-	static void DollyToPosition(double fact, int* position, vtkRenderer* renderer);
+	void DollyToPosition(double fact, int* position, vtkRenderer* renderer);
 
 	/**
 	 * Translate the renderer's camera
@@ -233,6 +248,32 @@ public:
 
 	using SuperClass::Dolly;
 
+	void SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render = true);
+	void UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render = true);
+	void SelectAllActors(bool render = true);
+	void UnSelectAllActors(bool render = true);
+
+#ifdef EliminateUnSelectedActors
+
+	void SetUnselectedActorsEliminated(bool render = true);
+
+#endif // EliminateUnSelectedActors
+
+	void HideSelectedActors(bool render = true);
+	void UnHideHiddenActors(bool render = true);
+
+	int IsActorSelected(FrgVisual_BaseActor_Entity* actor);
+	int IsActorHidden(FrgVisual_BaseActor_Entity* actor);
+
+	std::vector<FrgVisual_BaseActor_Entity*> GetAllActors();
+
+	void SetCenterOfRotation(double* centerOfRotation)
+	{
+		theCenterOfRotaion_[0] = centerOfRotation[0];
+		theCenterOfRotaion_[1] = centerOfRotation[1];
+		theCenterOfRotaion_[2] = centerOfRotation[2];
+	}
+
 protected:
 	FrgVisual_Scene_InterStyle3D();
 	~FrgVisual_Scene_InterStyle3D() override;
@@ -240,7 +281,7 @@ protected:
 	void Dolly(double factor) override;
 
 	FrgVisual_Scene_CameraManip* CurrentManipulator;
-	double CenterOfRotation[3];
+	//double CenterOfRotation[3];
 	double RotationFactor;
 
 	// The CameraInteractors also store there button and modifier.
@@ -250,10 +291,26 @@ protected:
 	void OnButtonUp(int button);
 	void ResetLights();
 
+	void Get3DPointOnScreen(int x, int y, double* point);
+
 	FrgVisual_Scene_InterStyle3D(const FrgVisual_Scene_InterStyle3D&) = delete;
 	void operator=(const FrgVisual_Scene_InterStyle3D&) = delete;
 
 	int PreviousPosition[2];
+	int ResetPixelDistance;
+
+	QList<FrgVisual_BaseActor_Entity*> theSelectedActors_;
+	QList<FrgVisual_BaseActor_Entity*> theHiddenActors_;
+
+	QColor theSelectedColor_;
+
+	double theCenterOfRotaion_[3];
+	FrgVisual_PointActor<3>* theRotationPoint_ = nullptr;
+
+public slots:
+
+	void HideActionIsCalledSlot() override;
+	void UnHideActionIsCalledSlot() override;
 };
 
 

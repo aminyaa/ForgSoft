@@ -1,13 +1,13 @@
 #include <FrgVisual_Scene3D.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgVisual_Scene_InterStyle3D.hxx>
-#include <FrgBase_Pnt3d.hxx>
-#include <FrgVisual_3DPointActor.hxx>
-#include <FrgVisual_3DLineActor.hxx>
-#include <FrgVisual_3DPolylineActor.hxx>
-#include <FrgVisual_3DBoxActor.hxx>
+#include <FrgVisual_GridActor.hxx>
 
 #include <FrgBase_SerialSpec_QString.hxx>
+#include <FrgBase_SerialSpec_QColor.hxx>
+#include <FrgBase_Pnt2d.hxx>
+#include <FrgBase_Pnt3d.hxx>
+#include <FrgBase_Menu.hxx>
 
 #include <vtkActor.h>
 #include <vtkProperty.h>
@@ -22,342 +22,252 @@
 #include <vtkPolyLine.h>
 #include <vtkCubeSource.h>
 #include <vtkAssemblyPath.h>
+#include <vtkDoubleArray.h>
+#include <vtkRectilinearGrid.h>
+#include <vtkDataSetMapper.h>
+#include <vtkLine.h>
+#include <vtkPolyData.h>
+#include <vtkCellData.h>
+
+#include <FrgVisual_PolylineActor.hxx>
 
 #define IS_FRGVISUAL_ACTOR "IS_FRGVISUAL_ACTOR"
 #define IS_NOT_FRGVISUAL_ACTOR "IS_NOT_FRGVISUAL_ACTOR"
 
 ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 (ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
-	: FrgVisual_Scene(parentMainWindow)
+	: ForgVisualLib::FrgVisual_Scene<3>(parentMainWindow)
 {
-
+	theMajorGridColor_.setRgb(154, 162, 169);
+	theMinorGridColor_.setRgb(119, 175, 230);
 }
 
-void ForgVisualLib::FrgVisual_Scene3D::Init()
-{
-	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
-	theRenderer_->SetBackground(1.0, 1.0, 1.0);
-	theRenderer_->SetBackground2(0.7, 0.7, 0.7);
-	theRenderer_->SetGradientBackground(true);
-
-	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
-
-	theRenderWindow_->AddRenderer(theRenderer_);
-
-	theRenderWindowInteractor_ = vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	theRenderWindowInteractor_->SetRenderWindow(theRenderWindow_);
-
-	theInteractorStyle_ = vtkSmartPointer<FrgVisual_Scene_InterStyle3D>::New();
-	//FrgVisual_Scene_InterStyle3D::SafeDownCast(theInteractorStyle_)->AddManipulator(FrgVisual_Scene_CameraManip::New());
-
-	//theInteractorStyle_->SetParent(this);
-
-	theInteractorStyle_->SetMouseWheelMotionFactor(0.5);
-
-	theRenderWindowInteractor_->SetInteractorStyle(theInteractorStyle_);
-
-	vtkAxesActor* axes = vtkAxesActor::New();
-
-	axes->PickableOff();
-	axes->SetShaftTypeToLine();
-
-	vtkOrientationMarkerWidget* widget = vtkOrientationMarkerWidget::New();
-
-	widget->SetOutlineColor(0.9300, 0.5700, 0.1300);
-	widget->SetOrientationMarker(axes);
-	widget->SetInteractor(theRenderWindowInteractor_);
-	widget->SetViewport(0.0, 0.0, 0.4, 0.4);
-	widget->SetEnabled(1);
-	widget->InteractiveOff();
-
-	// Create a TextActor
-	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
-	theLogoActor_->SetInput("Forg Soft");
-	vtkTextProperty* tprop = theLogoActor_->GetTextProperty();
-	tprop->SetFontFamilyToArial();
-	tprop->ShadowOff();
-
-	tprop->SetLineSpacing(1.0);
-	tprop->SetFontSize(24);
-	//tprop->SetFontFamilyToArial();
-	tprop->BoldOn();
-	tprop->SetFontFile(":/Fonts/swissek.ttf");
-	tprop->ShadowOn();
-	tprop->SetColor(0.91, 0.91, 0.91); // (Black) Color
-
-	theLogoActor_->SetDisplayPosition(20, 20);
-	theRenderer_->AddActor2D(theLogoActor_);
-	//theRenderer_->AddActor(axes);
-
-	theCamera_ = vtkSmartPointer<vtkCamera>::New();
-	theRenderer_->LightFollowCameraOn();
-	theRenderer_->TwoSidedLightingOn();
-
-	RenderScene(true);
-}
+//void ForgVisualLib::FrgVisual_Scene3D::Init()
+//{
+//	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
+//	theRenderer_->SetBackground(1.0, 1.0, 1.0);
+//	theRenderer_->SetBackground2(0.7, 0.7, 0.7);
+//	theRenderer_->SetGradientBackground(true);
+//
+//	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+//
+//	theRenderWindow_->AddRenderer(theRenderer_);
+//
+//	theRenderWindowInteractor_ = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+//	theRenderWindowInteractor_->SetRenderWindow(theRenderWindow_);
+//
+//	theInteractorStyle_ = FrgVisual_Scene_InterStyle3D::New();
+//
+//	auto castedInteractorStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+//	castedInteractorStyle->SetParentScene(this);
+//	castedInteractorStyle->SetCurrentRenderer(theRenderer_);
+//	//FrgVisual_Scene_InterStyle3D::SafeDownCast(theInteractorStyle_)->AddManipulator(FrgVisual_Scene_CameraManip::New());
+//
+//	//theInteractorStyle_->SetParent(this);
+//
+//	castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
+//
+//	theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
+//
+//	theAxesActor_ = vtkAxesActor::New();
+//
+//	theAxesActor_->PickableOff();
+//	theAxesActor_->SetShaftTypeToLine();
+//	theAxesActor_->SetOrigin(0.0, 0.0, 0.0);
+//	theAxesActor_->SetScale(10.0);
+//
+//	vtkOrientationMarkerWidget* widget = vtkOrientationMarkerWidget::New();
+//
+//	widget->SetOutlineColor(0.9300, 0.5700, 0.1300);
+//	widget->SetOrientationMarker(theAxesActor_);
+//	widget->SetInteractor(theRenderWindowInteractor_);
+//	widget->SetViewport(0.0, 0.0, 0.4, 0.4);
+//	widget->SetEnabled(1);
+//	widget->InteractiveOff();
+//
+//	// Create a TextActor
+//	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
+//	theLogoActor_->SetInput("Forg Soft");
+//	vtkTextProperty* tprop = theLogoActor_->GetTextProperty();
+//	tprop->SetFontFamilyToArial();
+//	tprop->ShadowOff();
+//
+//	tprop->SetLineSpacing(1.0);
+//	tprop->SetFontSize(24);
+//	//tprop->SetFontFamilyToArial();
+//	tprop->BoldOn();
+//	tprop->SetFontFile(":/Fonts/swissek.ttf");
+//	tprop->ShadowOn();
+//	tprop->SetColor(0.91, 0.91, 0.91); // (Black) Color
+//
+//	theLogoActor_->SetDisplayPosition(20, 20);
+//	theRenderer_->AddActor2D(theLogoActor_);
+//	//theRenderer_->AddActor(axes);
+//
+//	theCamera_ = vtkSmartPointer<vtkCamera>::New();
+//	theRenderer_->LightFollowCameraOn();
+//	theRenderer_->TwoSidedLightingOn();
+//
+//	connect(theContextMenuInScene_->GetItem("Hide"), SIGNAL(triggered()), theInteractorStyle_, SLOT(HideActionIsCalledSlot()));
+//	connect(theContextMenuInScene_->GetItem("UnHide"), SIGNAL(triggered()), theInteractorStyle_, SLOT(UnHideActionIsCalledSlot()));
+//
+//	theRenderWindowInteractor_->Initialize();
+//	theRenderer_->SetActiveCamera(theCamera_);
+//
+//	this->SetRenderWindow(theRenderWindow_);
+//
+//	RenderScene(true);
+//}
 
 void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
 {
 	if (resetCamera)
 	{
-		theCamera_->SetPosition(0, 1, 0);
+		theCamera_->SetPosition(0, -1, 0);
 		theCamera_->SetFocalPoint(0, 0, 0);
 		theCamera_->SetViewUp(0, 0, 1);
-		theCamera_->Azimuth(-180);
+		theCamera_->Azimuth(45);
+		theCamera_->Elevation(25);
 
-		theRenderer_->SetActiveCamera(theCamera_);
+		auto my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+
+		auto myActors = my3DStyle->GetAllActors();
+		std::vector<FrgVisual_GridActor*> myGrids;
+		for (auto myActor : myActors)
+		{
+			auto myGrid = dynamic_cast<FrgVisual_GridActor*>(myActor);
+			if (myGrid)
+			{
+				myGrids.push_back(myGrid);
+				myGrid->VisibilityOff();
+			}
+		}
+
 		theRenderer_->ResetCamera();
+
+		double myBounds[6];
+		theRenderer_->ComputeVisiblePropBounds(myBounds);
+
+		double centerOfRotation[3];
+		centerOfRotation[0] = (myBounds[1] - myBounds[0]) / 2.0;
+		centerOfRotation[1] = (myBounds[3] - myBounds[2]) / 2.0;
+		centerOfRotation[2] = (myBounds[5] - myBounds[4]) / 2.0;
+		my3DStyle->SetCenterOfRotation(centerOfRotation);
+
+		for (auto myGrid : myGrids)
+		{
+			myGrid->VisibilityOn();
+		}
+
+		//theCamera_->Elevation(15);
+		theCamera_->Dolly(1.5);
+		theCamera_->OrthogonalizeViewUp();
+
 		theRenderer_->ResetCameraClippingRange();
-
-		this->SetRenderWindow(theRenderWindow_);
-
+		
 		theRenderWindow_->Render();
-		theRenderWindowInteractor_->Initialize();
 	}
 	else
 		theRenderWindow_->Render();
 }
 
-ForgVisualLib::FrgVisual_3DPointActor* ForgVisualLib::FrgVisual_Scene3D::AddPoint
-(
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> pt,
-	bool render
-)
-{
-	if (!pt)
-	{
-		std::cout << "pt is null in ForgVisualLib::FrgVisual_PointActor* ForgVisualLib::FrgVisual_Scene3D::AddPoint\n";
-		return nullptr;
-	}
-
-	vtkSmartPointer<FrgVisual_3DPointActor> actor =
-		vtkSmartPointer<FrgVisual_3DPointActor>::New();
-
-	actor->SetData(pt);
-	actor->SetColor(1.0, 0.0, 0.0);
-	actor->SetSize(5);
-
-	theRenderer_->AddActor(actor);
-
-	if (render)
-		RenderScene(false);
-
-	return actor;
-}
-
-ForgVisualLib::FrgVisual_3DPointActor* ForgVisualLib::FrgVisual_Scene3D::AddPoint
-(
-	double x,
-	double y,
-	double z,
-	bool render
-)
-{
-	return AddPoint(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(x, y, z), render);
-}
-
-ForgVisualLib::FrgVisual_3DLineActor * ForgVisualLib::FrgVisual_Scene3D::AddLine
-(
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P0,
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P1,
-	bool render
-)
-{
-	if (!P0 || !P1)
-	{
-		std::cout << "P0 or P1 or both of them is/are null in ForgVisualLib::FrgVisual_LineActor * ForgVisualLib::FrgVisual_Scene3D::AddLine()\n";
-		return nullptr;
-	}
-
-	vtkSmartPointer<FrgVisual_3DLineActor> actor =
-		vtkSmartPointer<FrgVisual_3DLineActor>::New();
-
-	actor->SetData(P0, P1);
-
-	actor->SetLineWidth(1);
-	actor->SetColor(1.0, 0.0, 0.0);
-	actor->SetRenderLinesAsTubes(true);
-
-	theRenderer_->AddActor(actor);
-
-	if (render)
-		RenderScene(false);
-
-	return actor;
-}
-
-ForgVisualLib::FrgVisual_3DLineActor * ForgVisualLib::FrgVisual_Scene3D::AddLine
-(
-	double P0_X,
-	double P0_Y,
-	double P0_Z,
-	double P1_X,
-	double P1_Y,
-	double P1_Z,
-	bool render
-)
-{
-	return AddLine(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(P0_X, P0_Y, P0_Z), std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(P1_X, P1_Y, P1_Z), render);
-}
-
-ForgVisualLib::FrgVisual_3DPolylineActor * ForgVisualLib::FrgVisual_Scene3D::AddPolyline
-(
-	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d>> pts,
-	bool render
-)
-{
-	if (pts.size() == 0)
-	{
-		std::cout << "pts vector is empty in ForgVisualLib::FrgVisual_PolylineActor * ForgVisualLib::FrgVisual_Scene3D::AddPolyline()\n";
-		return nullptr;
-	}
-
-
-	vtkSmartPointer<FrgVisual_3DPolylineActor> actor =
-		vtkSmartPointer<FrgVisual_3DPolylineActor>::New();
-
-	actor->SetData(pts);
-
-	actor->SetColor(1.0, 0.0, 0.0);
-
-	theRenderer_->AddActor(actor);
-
-	if (render)
-		RenderScene(false);
-
-	return actor;
-}
-
-ForgVisualLib::FrgVisual_3DBoxActor * ForgVisualLib::FrgVisual_Scene3D::AddBox
-(
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P0,
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt3d> P1,
-	bool render
-)
-{
-	if (!P0 || !P1)
-	{
-		std::cout << "P0 or P1 or both of them is/are null in ForgVisualLib::FrgVisual_BoxActor * ForgVisualLib::FrgVisual_Scene3D::AddBox()\n";
-		return nullptr;
-	}
-
-	// Actor
-	vtkNew<FrgVisual_3DBoxActor> cubeActor;
-
-	cubeActor->SetData(P0, P1);
-
-	cubeActor->SetColor(1.0, 0.0, 0.0);
-
-	theRenderer_->AddActor(cubeActor);
-
-	if (render)
-		RenderScene(false);
-
-	return cubeActor;
-}
-
-ForgVisualLib::FrgVisual_3DBoxActor * ForgVisualLib::FrgVisual_Scene3D::AddBox
-(
-	double P0_X,
-	double P0_Y,
-	double P0_Z,
-	double P1_X,
-	double P1_Y,
-	double P1_Z,
-	bool render
-)
-{
-	return AddBox(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(P0_X, P0_Y, P0_Z), std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(P1_X, P1_Y, P1_Z), render);
-}
-
-void ForgVisualLib::FrgVisual_Scene3D::ClearAllPoints()
-{
-	ClearAllDataType<FrgVisual_3DPointActor>();
-}
-
-void ForgVisualLib::FrgVisual_Scene3D::ClearAllLines()
-{
-	ClearAllDataType<FrgVisual_3DLineActor>();
-}
-
-void ForgVisualLib::FrgVisual_Scene3D::ClearAllPolylines()
-{
-	ClearAllDataType<FrgVisual_3DPolylineActor>();
-}
-
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene3D)
 {
-	VOID_CAST_REGISTER(ForgVisualLib::FrgVisual_Scene3D, ForgVisualLib::FrgVisual_Scene);
+	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_Scene<3>>(*this);
+
+	double mouseWheelMotionFactor = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_))->GetMouseWheelMotionFactor();
+	ar& mouseWheelMotionFactor;
 
 	vtkActorCollection* ac;
 	vtkActor* anActor;
-	FrgVisual_3DBaseActor* aPart;
+	FrgVisual_BaseActor_Entity* aPart;
 
 	int numberOfItems = theRenderer_->GetActors()->GetNumberOfItems();
-	ar & numberOfItems;
+	ar& numberOfItems;
 
 	ac = theRenderer_->GetActors();
 	vtkCollectionSimpleIterator ait;
 	for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
 	{
-		aPart = dynamic_cast<FrgVisual_3DBaseActor*>(anActor);
+		aPart = dynamic_cast<FrgVisual_BaseActor_Entity*>(anActor);
 		QString isFrgVisualActor;
 
 		if (aPart)
 		{
 			isFrgVisualActor = IS_FRGVISUAL_ACTOR;
 
-			ar & isFrgVisualActor;
-			ar & aPart;
+			ar& isFrgVisualActor;
+			ar& aPart;
 		}
 		else
 		{
 			isFrgVisualActor = IS_NOT_FRGVISUAL_ACTOR;
 
-			ar & isFrgVisualActor;
+			ar& isFrgVisualActor;
 		}
 	}
+
+	ar& theMajorGridColor_;
+	ar& theMinorGridColor_;
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene3D)
 {
-	VOID_CAST_REGISTER(ForgVisualLib::FrgVisual_Scene3D, ForgVisualLib::FrgVisual_Scene);
+	Init();
+
+	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_Scene<3>>(*this);
+
+	double mouseWheelMotionFactor;
+	ar& mouseWheelMotionFactor;
 
 	int numberOfItems;
-	ar & numberOfItems;
+	ar& numberOfItems;
 
-	FrgVisual_3DBaseActor* aPart;
 	for (int i = 0; i < numberOfItems; i++)
 	{
 		QString isFrgVisualActor;
 
-		ar & isFrgVisualActor;
+		ar& isFrgVisualActor;
 
 		if (isFrgVisualActor == IS_FRGVISUAL_ACTOR)
 		{
-			ar & aPart;
+			FrgVisual_BaseActor_Entity* aPart;
+			ar& aPart;
 
-			theRenderer_->AddActor(aPart);
+			//theRenderer_->AddActor(aPart);
+
+			/*auto myGrid = dynamic_cast<FrgVisual_2DGridActor*>(aPart);
+			if (myGrid)
+			{
+				if (myGrid->GetXLine())
+					theMajorGridActor_ = myGrid;
+				else
+					theMinorGridActor_ = myGrid;
+			}*/
 		}
 		else if (isFrgVisualActor == IS_NOT_FRGVISUAL_ACTOR)
 		{
 
 		}
 	}
+
+	ar& theMajorGridColor_;
+	ar& theMinorGridColor_;
+
+	this->RenderScene(false);
 }
 
-DECLARE_SAVE_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D)
-{
-
-}
-
-DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D)
-{
-
-}
+//DECLARE_SAVE_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D)
+//{
+//
+//}
+//
+//DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D)
+//{
+//
+//}
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Scene3D)
-BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D)
 
 //#include <FrgVisual_Scene3D.hxx>
 //#include <FrgVisual_Scene_InterStyle3D.hxx>

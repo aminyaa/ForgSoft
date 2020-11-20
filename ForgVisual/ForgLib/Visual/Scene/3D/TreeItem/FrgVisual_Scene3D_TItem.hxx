@@ -12,7 +12,7 @@ BeginForgVisualLib
 class FrgVisual_Scene3D;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene3D_TItem
-	: public FrgVisual_Scene_TItem
+	: public FrgVisual_Scene_TItem<3>
 {
 	Q_OBJECT
 
@@ -25,15 +25,17 @@ public:
 		ForgBaseLib::FrgBase_Tree* parentTree
 	);
 
+	void FormTItem() override;
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)
 
 };
 
 EndForgVisualLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Scene3D_TItem, FORGVISUAL_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Scene3D_TItem)
 

@@ -619,6 +619,10 @@
 
 #include <FrgVisual_Scene_InterStyle3D.hxx>
 #include <FrgVisual_Scene_CameraManip.hxx>
+#include <FrgVisual_BaseActor.hxx>
+#include <FrgVisual_Scene3D.hxx>
+#include <FrgVisual_PointActor.hxx>
+#include <FrgVisual_GridActor.hxx>
 
 #include <vtkCamera.h>
 #include <vtkCollection.h>
@@ -632,20 +636,31 @@
 #include <vtkRenderer.h>
 #include <vtkMath.h>
 #include <vtkTransform.h>
+#include <vtkPropPicker.h>
+#include <vtkProperty.h>
+#include <vtkPicker.h>
+#include <vtkCellPicker.h>
+
+#include <QtCore\QPoint>
 
 vtkStandardNewMacro(ForgVisualLib::FrgVisual_Scene_InterStyle3D);
 
 //-------------------------------------------------------------------------
 ForgVisualLib::FrgVisual_Scene_InterStyle3D::FrgVisual_Scene_InterStyle3D()
+	: ResetPixelDistance(5)
 {
 	this->UseTimers = 0;
 	this->CameraManipulators = vtkCollection::New();
 	this->CurrentManipulator = NULL;
-	this->CenterOfRotation[0] = this->CenterOfRotation[1] = this->CenterOfRotation[2] = 0;
+	//this->CenterOfRotation[0] = this->CenterOfRotation[1] = this->CenterOfRotation[2] = 0;
 	this->RotationFactor = 1.0;
 
 	this->PreviousPosition[0] = 0;
 	this->PreviousPosition[1] = 0;
+
+	theSelectedColor_.setRedF(1.0);
+	theSelectedColor_.setGreenF(0.0);
+	theSelectedColor_.setBlueF(1.0);
 }
 
 //-------------------------------------------------------------------------
@@ -670,38 +685,11 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::AddManipulator(FrgVisual_Scene
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonDown()
 {
-	//// Zoom relatively to the cursor position
-	//double viewFocus[4], originalViewFocus[3], cameraPos[3], newCameraPos[3];
-	//double newFocalPoint[4], norm[3];
+	int pickPosition[2];
+	this->GetInteractor()->GetEventPosition(pickPosition);
 
-	//vtkCamera* cam = this->CurrentRenderer->GetActiveCamera();
-	//// Move focal point to cursor position
-	//cam->GetPosition(cameraPos);
-	//cam->GetFocalPoint(viewFocus);
-	//cam->GetFocalPoint(originalViewFocus);
-	//cam->GetViewPlaneNormal(norm);
-
-	//auto position = this->Interactor->GetEventPosition();
-	//FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(this->CurrentRenderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
-
-	//FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(this->CurrentRenderer, double(position[0]), double(position[1]), viewFocus[2], newFocalPoint);
-
-	//cam->SetFocalPoint(newFocalPoint);
-
-	//// Find new focal point
-	//cam->GetPosition(newCameraPos);
-
-	//double newPoint[3];
-	//newPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
-	//newPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
-	//newPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
-
-	//cam->SetFocalPoint(newPoint);
-
-	//SuperClass::OnLeftButtonDown();
-	//return;
-
-	//this->OnButtonDown(1, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
+	this->PreviousPosition[0] = pickPosition[0];
+	this->PreviousPosition[1] = pickPosition[1];
 }
 
 //-------------------------------------------------------------------------
@@ -716,43 +704,29 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonDown()
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonDown()
 {
-	//auto position = this->Interactor->GetEventPosition();
+	int pickPosition[2];
+	this->GetInteractor()->GetEventPosition(pickPosition);
 
-	//vtkCamera* cam = this->CurrentRenderer->GetActiveCamera();
+	this->PreviousPosition[0] = pickPosition[0];
+	this->PreviousPosition[1] = pickPosition[1];
 
-	//double viewFocus[3], originalViewFocus[3], cameraPos[3], newCameraPos[3];
-	//double newFocalPoint[4], norm[3];
-
-	//// Move focal point to cursor position
-	//cam->GetPosition(cameraPos);
-	//cam->GetFocalPoint(viewFocus);
-	//cam->GetFocalPoint(originalViewFocus);
-	//cam->GetViewPlaneNormal(norm);
-
-	//FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(
-	//	this->CurrentRenderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
-
-	//FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(
-	//	this->CurrentRenderer, double(position[0]), double(position[1]), viewFocus[2], newFocalPoint);
-
-	//cam->SetFocalPoint(newFocalPoint);
-
-	//// Find new focal point
-	//cam->GetPosition(newCameraPos);
-
-	//double newPoint[3];
-	//newPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
-	//newPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
-	//newPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
-
-	//cam->SetFocalPoint(newPoint);
-
-
+	if (theRotationPoint_)
+	{
+		this->CurrentRenderer->RemoveActor(theRotationPoint_);
+	}
 
 	SuperClass::OnLeftButtonDown();
-	return;
 
-	//this->OnButtonDown(3, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
+	Get3DPointOnScreen(pickPosition[0], pickPosition[1], theCenterOfRotaion_);
+
+	theRotationPoint_ = FrgVisual_PointActor<3>::New();
+	theRotationPoint_->SetSize(8.0f);
+	theRotationPoint_->SetRenderPointsAsSpheres(true);
+	theRotationPoint_->SetColor(1.0, 0.0, 1.0);
+	theRotationPoint_->SetData(theCenterOfRotaion_[0], theCenterOfRotaion_[1], theCenterOfRotaion_[2]);
+	this->CurrentRenderer->AddActor(theRotationPoint_);
+
+	return;
 }
 
 //-------------------------------------------------------------------------
@@ -779,7 +753,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnButtonDown(int button, int s
 	{
 		this->CurrentManipulator->Register(this);
 		this->InvokeEvent(vtkCommand::StartInteractionEvent);
-		this->CurrentManipulator->SetCenter(this->CenterOfRotation);
+		this->CurrentManipulator->SetCenter(this->theCenterOfRotaion_);
 		this->CurrentManipulator->SetRotationFactor(this->RotationFactor);
 		this->CurrentManipulator->StartInteraction();
 		this->CurrentManipulator->OnButtonDown(this->Interactor->GetEventPosition()[0],
@@ -807,6 +781,36 @@ ForgVisualLib::FrgVisual_Scene_CameraManip* ForgVisualLib::FrgVisual_Scene_Inter
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonUp()
 {
+	int pickPosition[2];
+	this->GetInteractor()->GetEventPosition(pickPosition);
+
+	int xdist = pickPosition[0] - this->PreviousPosition[0];
+	int ydist = pickPosition[1] - this->PreviousPosition[1];
+	int moveDistance = (int)sqrt((double)(xdist * xdist + ydist * ydist));
+
+	if (moveDistance > this->ResetPixelDistance)
+	{
+
+	}
+	else
+	{
+		int* clickPos = this->GetInteractor()->GetEventPosition();
+
+		// Pick from this location.
+		auto myPicker = vtkSmartPointer<vtkCellPicker>::New();
+		myPicker->SetTolerance(0.001);
+		int pick = myPicker->Pick(clickPos[0], clickPos[1], 0, this->CurrentRenderer);
+
+		SelectActor(FrgVisual_BaseActor_Entity::SafeDownCast(myPicker->GetActor()), this->Interactor->GetControlKey(), true);
+
+#ifdef EliminateUnSelectedActors
+
+		SetUnselectedActorsEliminated(true);
+
+#endif // EliminateUnSelectedActors
+
+	}
+
 	/*SuperClass::OnLeftButtonUp();
 	return;*/
 
@@ -823,6 +827,23 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonUp()
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonUp()
 {
+	if (theRotationPoint_)
+	{
+		this->CurrentRenderer->RemoveActor(theRotationPoint_);
+	}
+
+	int pickPosition[2];
+	this->GetInteractor()->GetEventPosition(pickPosition);
+
+	int xdist = pickPosition[0] - this->PreviousPosition[0];
+	int ydist = pickPosition[1] - this->PreviousPosition[1];
+	int moveDistance = (int)sqrt((double)(xdist * xdist + ydist * ydist));
+
+	if (moveDistance < this->ResetPixelDistance)
+	{
+		theParentScene_->customContextMenuRequested(QPoint(pickPosition[0], this->CurrentRenderer->GetRenderWindow()->GetSize()[1] - pickPosition[1]));
+	}
+
 	SuperClass::OnLeftButtonUp();
 	return;
 
@@ -833,12 +854,42 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 {
 	double factor = this->MotionFactor * -0.2 * this->MouseWheelMotionFactor;
 
+	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
+	double distance0 = camera->GetDistance();
+
 	FrgVisual_Scene_InterStyle3D::DollyToPosition(pow(1.1, factor), this->Interactor->GetEventPosition(), this->CurrentRenderer);
 
 	if (this->CurrentRenderer == nullptr)
 		return;
 
-	vtkCamera *camera = this->CurrentRenderer->GetActiveCamera();
+	if (camera->GetParallelProjection())
+		camera->SetParallelScale(camera->GetParallelScale() / (factor));
+	else
+		if (this->AutoAdjustCameraClippingRange)
+			this->CurrentRenderer->ResetCameraClippingRange();
+
+	if (this->Interactor->GetLightFollowCamera())
+		this->CurrentRenderer->UpdateLightsGeometryToFollowCamera();
+
+	double distance1 = camera->GetDistance();
+
+	//this->MouseWheelMotionFactor *= (distance1 / distance0);
+
+	this->Interactor->Render();
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
+{
+	double factor = -(this->MotionFactor * -0.2 * this->MouseWheelMotionFactor);
+
+
+	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
+
+	FrgVisual_Scene_InterStyle3D::DollyToPosition(pow(1.1, factor), this->Interactor->GetEventPosition(), this->CurrentRenderer);
+
+	if (this->CurrentRenderer == nullptr)
+		return;
+
 	if (camera->GetParallelProjection())
 		camera->SetParallelScale(camera->GetParallelScale() / (factor));
 	else
@@ -851,26 +902,101 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 	this->Interactor->Render();
 }
 
-void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Rotate()
 {
-	double factor = -(this->MotionFactor * -0.2 * this->MouseWheelMotionFactor);
-
-	FrgVisual_Scene_InterStyle3D::DollyToPosition(pow(1.1, factor), this->Interactor->GetEventPosition(), this->CurrentRenderer);
-
 	if (this->CurrentRenderer == nullptr)
+	{
 		return;
+	}
 
-	vtkCamera *camera = this->CurrentRenderer->GetActiveCamera();
-	if (camera->GetParallelProjection())
-		camera->SetParallelScale(camera->GetParallelScale() / (factor));
-	else
-		if (this->AutoAdjustCameraClippingRange)
-			this->CurrentRenderer->ResetCameraClippingRange();
+	vtkRenderWindowInteractor* rwi = this->Interactor;
 
-	if (this->Interactor->GetLightFollowCamera())
+	int dx = rwi->GetEventPosition()[0] - rwi->GetLastEventPosition()[0];
+	int dy = rwi->GetEventPosition()[1] - rwi->GetLastEventPosition()[1];
+
+	int* size = this->CurrentRenderer->GetRenderWindow()->GetSize();
+
+	double delta_elevation = -15.0 / size[1];
+	double delta_azimuth = -15.0 / size[0];
+
+	double rxf = dx * delta_azimuth * this->MotionFactor;
+	double ryf = dy * delta_elevation * this->MotionFactor;
+
+
+	int* clickPos = this->GetInteractor()->GetEventPosition();
+
+	/*FrgVisual_3DPointActor* myPointActor = FrgVisual_3DPointActor::New();
+	myPointActor->SetData(pt[0], pt[1], pt[2]);
+	myPointActor->SetColor(1.0, 0.0, 0.0);
+	myPointActor->SetSize(10.0f);
+	this->CurrentRenderer->AddActor(myPointActor);*/
+
+	//camera->SetFocalPoint(newFocalPoint);
+
+	// Move camera in/out along projection direction
+
+	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
+
+	/*vtkNew<vtkCamera> tmpCamera;
+	tmpCamera->SetPosition(camera->GetFocalPoint());
+	tmpCamera->SetFocalPoint(theCenterOfRotaion_);
+	tmpCamera->SetViewUp(camera->GetViewUp());
+	tmpCamera->Azimuth(rxf);
+	tmpCamera->Elevation(ryf);*/
+	double newFocalPoint[3];
+
+	// For Elevation
+	{
+		camera->GetFocalPoint(newFocalPoint);
+
+		camera->Roll(-90.0);
+		camera->SetFocalPoint(theCenterOfRotaion_);
+
+		vtkNew<vtkCamera> tmpCamera;
+		tmpCamera->DeepCopy(camera);
+		tmpCamera->SetPosition(newFocalPoint);
+		tmpCamera->SetFocalPoint(theCenterOfRotaion_);
+		tmpCamera->Azimuth(ryf);
+		camera->Azimuth(ryf);
+		camera->SetFocalPoint(tmpCamera->GetPosition());
+		camera->Roll(90.0);
+	}
+
+	// For Azimuth
+	{
+		camera->GetFocalPoint(newFocalPoint);
+
+		vtkNew<vtkCamera> tmpCamera;
+		tmpCamera->DeepCopy(camera);
+		tmpCamera->SetPosition(newFocalPoint);
+		tmpCamera->SetFocalPoint(theCenterOfRotaion_);
+		tmpCamera->Azimuth(rxf);
+
+		camera->SetFocalPoint(theCenterOfRotaion_);
+		camera->Azimuth(rxf);
+		camera->SetFocalPoint(tmpCamera->GetPosition());
+
+		/*FrgVisual_PointActor<3>* pt = FrgVisual_PointActor<3>::New();
+		pt->SetData(tmpCamera->GetPosition()[0], tmpCamera->GetPosition()[1], tmpCamera->GetPosition()[2]);
+		pt->SetSize(5.0f);
+		pt->SetColor(1.0, 0.0, 0.0);
+		pt->SetRenderPointsAsSpheres(true);
+		this->CurrentRenderer->AddActor(pt);*/
+
+		//camera->OrthogonalizeViewUp();
+	}
+
+	if (this->AutoAdjustCameraClippingRange)
+	{
+		this->CurrentRenderer->ResetCameraClippingRange();
+	}
+
+	if (rwi->GetLightFollowCamera())
+	{
 		this->CurrentRenderer->UpdateLightsGeometryToFollowCamera();
+	}
 
-	this->Interactor->Render();
+	rwi->Render();
 }
 
 //-------------------------------------------------------------------------
@@ -929,6 +1055,13 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnChar()
 		// 'q'.
 		rwi->ExitCallback();
 		break;
+	case 'R':
+	case 'r':
+
+		if (GetParentScene())
+			GetParentScene()->RenderScene(true);
+
+		break;
 	}
 }
 
@@ -953,6 +1086,160 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::ResetLights()
 	}
 	light->SetPosition(camera->GetPosition());
 	light->SetFocalPoint(camera->GetFocalPoint());
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int y, double* point)
+{
+	double viewFocus[4], cameraPos[3], newCameraPos[3];
+	double newFocalPoint[4], norm[3];
+
+	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
+
+	camera->GetPosition(cameraPos);
+	camera->GetFocalPoint(viewFocus);
+	camera->GetViewPlaneNormal(norm);
+	double L = camera->GetDistance();
+
+	FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(
+		this->CurrentRenderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
+
+	FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(
+		this->CurrentRenderer, double(x), double(y), viewFocus[2], newFocalPoint);
+
+	int* clickPos = this->GetInteractor()->GetEventPosition();
+
+	// Pick from this location.
+	auto myPicker = vtkSmartPointer<vtkCellPicker>::New();
+	myPicker->SetTolerance(0.001);
+	int pick = myPicker->Pick(clickPos[0], clickPos[1], 0, this->CurrentRenderer);
+
+	double presentFocalPoint[3];
+	camera->GetFocalPoint(presentFocalPoint);
+
+	if (pick > 0)
+	{
+		myPicker->GetPickPosition(point);
+
+		theCenterOfRotaion_[0] = point[0];
+		theCenterOfRotaion_[1] = point[1];
+		theCenterOfRotaion_[2] = point[2];
+	}
+	else
+	{
+
+		auto myActors = GetAllActors();
+		std::vector<FrgVisual_GridActor*> myGrids;
+		for (auto myActor : myActors)
+		{
+			auto myGrid = dynamic_cast<FrgVisual_GridActor*>(myActor);
+			if (myGrid)
+			{
+				myGrids.push_back(myGrid);
+				myGrid->VisibilityOff();
+			}
+		}
+
+		/*double myBounds[6];
+		this->CurrentRenderer->ComputeVisiblePropBounds(myBounds);
+
+		double xDistance = cameraPos[0] - (myBounds[1] + myBounds[0]) / 2.0;
+		double yDistance = cameraPos[0] - (myBounds[3] + myBounds[2]) / 2.0;
+		double zDistance = cameraPos[2] - (myBounds[5] + myBounds[4]) / 2.0;*/
+		//double distance = std::sqrt(std::pow(xDistance, 2.0) + std::pow(yDistance, 2.0) + std::pow(zDistance, 2.0));
+
+
+
+		//std::cout << camera->GetClippingRange()[0] << ", " << camera->GetClippingRange()[1] << std::endl;
+
+		//double distance = (camera->GetClippingRange()[0] + camera->GetClippingRange()[1]) / 2.0;
+		//double distance = camera->GetClippingRange()[1];
+		//double distance = camera->GetClippingRange()[0];
+
+		for (auto myGrid : myGrids)
+		{
+			myGrid->VisibilityOn();
+		}
+
+		if (1)
+		{
+			/*auto myActors = GetAllActors();
+			std::vector<FrgVisual_GridActor*> myGrids;
+			for (auto myActor : myActors)
+			{
+				auto myGrid = dynamic_cast<FrgVisual_GridActor*>(myActor);
+				if (myGrid)
+				{
+					myGrids.push_back(myGrid);
+					myGrid->VisibilityOff();
+				}
+			}
+
+			double myBounds[6];
+			this->CurrentRenderer->ComputeVisiblePropBounds(myBounds);
+
+			for (auto myGrid : myGrids)
+			{
+				myGrid->VisibilityOn();
+			}*/
+
+			/*point[0] = (myBounds[1] + myBounds[0]) / 2.0;
+			point[1] = (myBounds[3] + myBounds[2]) / 2.0;
+			point[2] = (myBounds[5] + myBounds[4]) / 2.0;
+		}
+		else
+		{*/
+		/*point[0] = newFocalPoint[0];
+		point[1] = newFocalPoint[1];
+		point[2] = newFocalPoint[2];
+
+		double AC[3];
+		AC[0] = point[0] - cameraPos[0];
+		AC[1] = point[1] - cameraPos[1];
+		AC[2] = point[2] - cameraPos[2];
+
+		double mag = std::sqrt(AC[0] * AC[0] + AC[1] * AC[1] + AC[2] * AC[2]);
+		double unitAC[3];
+		unitAC[0] = AC[0] / mag;
+		unitAC[1] = AC[1] / mag;
+		unitAC[2] = AC[2] / mag;
+
+		double AP[3];
+		AP[0] = unitAC[0] * distance;
+		AP[1] = unitAC[1] * distance;
+		AP[2] = unitAC[2] * distance;
+
+		point[0] = cameraPos[0] + AP[0];
+		point[1] = cameraPos[1] + AP[1];
+		point[2] = cameraPos[2] + AP[2];*/
+
+			double BC[3];
+			BC[0] = cameraPos[0] - newFocalPoint[0];
+			BC[1] = cameraPos[1] - newFocalPoint[1];
+			BC[2] = cameraPos[2] - newFocalPoint[2];
+
+			double mag = std::sqrt(std::pow(BC[0], 2.0) + std::pow(BC[1], 2.0) + std::pow(BC[2], 2.0));
+
+			double d[3]; // unit vector of BC
+			d[0] = BC[0] / mag;
+			d[1] = BC[1] / mag;
+			d[2] = BC[2] / mag;
+
+			double v[3]; // vector BA (B = newFocalPoint, A = presentFocalPoint, C = cameraPos)
+			v[0] = theCenterOfRotaion_[0] - newFocalPoint[0];
+			v[1] = theCenterOfRotaion_[1] - newFocalPoint[1];
+			v[2] = theCenterOfRotaion_[2] - newFocalPoint[2];
+
+			double t = v[0] * d[0] + v[1] * d[1] + v[2] * d[2]; // dot product of v and d
+
+			point[0] = newFocalPoint[0] + t * d[0];
+			point[1] = newFocalPoint[1] + t * d[1];
+			point[2] = newFocalPoint[2] + t * d[2];
+		}
+
+		/*std::cout << newFocalPoint[0] << ", " << newFocalPoint[1] << ", " << newFocalPoint[2] << std::endl;
+		std::cout << point[0] << ", " << point[1] << ", " << point[2] << std::endl;
+		std::cout << camera->GetThickness() << std::endl;*/
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -1014,35 +1301,35 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::DollyToPosition(double fact, i
 	else
 	{
 		// Zoom relatively to the cursor position
-		double viewFocus[4], originalViewFocus[3], cameraPos[3], newCameraPos[3];
-		double newFocalPoint[4], norm[3];
+		double originalViewFocus[3], cameraPos[3], newCameraPos[3];
+		double newFocalPoint[3];
 
-		// Move focal point to cursor position
 		cam->GetPosition(cameraPos);
-		cam->GetFocalPoint(viewFocus);
 		cam->GetFocalPoint(originalViewFocus);
-		cam->GetViewPlaneNormal(norm);
 
-		FrgVisual_Scene_InterStyle3D::ComputeWorldToDisplay(
-			renderer, viewFocus[0], viewFocus[1], viewFocus[2], viewFocus);
+		double directionOfProjectionOfCamera[3];
+		cam->GetDirectionOfProjection(directionOfProjectionOfCamera);
 
-		FrgVisual_Scene_InterStyle3D::ComputeDisplayToWorld(
-			renderer, double(position[0]), double(position[1]), viewFocus[2], newFocalPoint);
+		Get3DPointOnScreen(position[0], position[1], newFocalPoint);
 
 		cam->SetFocalPoint(newFocalPoint);
 
 		// Move camera in/out along projection direction
 		cam->Dolly(fact);
+		double distance = cam->GetDistance();
 
-		// Find new focal point
+		//		// Find new focal point
 		cam->GetPosition(newCameraPos);
 
-		double newPoint[3];
-		newPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
-		newPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
-		newPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
 
-		cam->SetFocalPoint(newPoint);
+		double myFocalPoint[3];
+
+		myFocalPoint[0] = originalViewFocus[0] + newCameraPos[0] - cameraPos[0];
+		myFocalPoint[1] = originalViewFocus[1] + newCameraPos[1] - cameraPos[1];
+		myFocalPoint[2] = originalViewFocus[2] + newCameraPos[2] - cameraPos[2];
+
+		cam->SetFocalPoint(myFocalPoint);
+		cam->SetDistance(distance);
 	}
 }
 
@@ -1081,9 +1368,218 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::TranslateCamera(
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::PrintSelf(ostream& os, vtkIndent indent)
 {
-	this->Superclass::PrintSelf(os, indent);
-	os << indent << "CenterOfRotation: " << this->CenterOfRotation[0] << ", "
-		<< this->CenterOfRotation[1] << ", " << this->CenterOfRotation[2] << endl;
-	os << indent << "RotationFactor: " << this->RotationFactor << endl;
-	os << indent << "CameraManipulators: " << this->CameraManipulators << endl;
+
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render)
+{
+
+	if (!actor && !isControlKeyPressed)
+		UnSelectAllActors(true);
+	else if (actor)
+	{
+		int index = IsActorSelected(actor);
+		if (index >= 0)
+		{
+			if (isControlKeyPressed)
+				UnSelectActor(actor, true);
+			else
+			{
+				UnSelectAllActors(false);
+				SelectActor(actor, isControlKeyPressed);
+			}
+		}
+		else
+		{
+			if (!isControlKeyPressed)
+				UnSelectAllActors(false);
+
+			actor->SelectActor(theSelectedColor_);
+			theSelectedActors_.push_back(actor);
+
+			if (render)
+				this->Interactor->Render();
+		}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render)
+{
+	int index = IsActorSelected(actor);
+
+	if (index >= 0)
+	{
+		theSelectedActors_[index]->UnSelectActor();
+		theSelectedActors_.removeAt(index);
+	}
+
+	if (render)
+		this->Interactor->Render();
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectAllActors(bool render)
+{
+	auto myAllActors = GetAllActors();
+	for (int i = 0; i < myAllActors.size(); i++)
+	{
+		SelectActor(myAllActors[i], 1, false);
+	}
+
+	if (render)
+		this->Interactor->Render();
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectAllActors(bool render)
+{
+	if (theSelectedActors_.size() == 0)
+		return;
+
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		theSelectedActors_[i]->UnSelectActor();
+	}
+	theSelectedActors_.clear();
+
+	if (render)
+		this->Interactor->Render();
+}
+
+#ifdef EliminateUnSelectedActors
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SetUnselectedActorsEliminated(bool render)
+{
+	auto myAllActors = GetAllActors();
+	if (myAllActors.size() == 0)
+		return;
+
+	for (int i = 0; i < myAllActors.size(); i++)
+	{
+		int index = IsActorSelected(myAllActors[i]);
+		if (index < 0)
+		{
+			if (!myAllActors[i]->IsSelectable())
+				continue;
+
+			if (theSelectedActors_.size() != 0)
+				myAllActors[i]->GetProperty()->SetOpacity(0.5);
+			else
+				myAllActors[i]->GetProperty()->SetOpacity(1.0);
+		}
+		else
+			myAllActors[i]->GetProperty()->SetOpacity(1.0);
+	}
+
+	if (render)
+		this->Interactor->Render();
+}
+
+#endif // EliminateUnSelectedActors
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render)
+{
+	if (theSelectedActors_.size() == 0)
+		return;
+
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		theSelectedActors_[i]->HideActor();
+		theHiddenActors_.push_back(theSelectedActors_[i]);
+	}
+
+	UnSelectAllActors(false);
+
+#ifdef EliminateUnSelectedActors
+
+	auto myAllActors = GetAllActors();
+	for (int i = 0; i < myAllActors.size(); i++)
+	{
+		if (myAllActors[i]->IsSelectable())
+			myAllActors[i]->GetProperty()->SetOpacity(1.0);
+	}
+
+#endif // EliminateUnSelectedActors
+
+	if (render)
+		this->Interactor->Render();
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnHideHiddenActors(bool render)
+{
+	if (theHiddenActors_.size() == 0)
+		return;
+
+	for (int i = 0; i < theHiddenActors_.size(); i++)
+	{
+		theHiddenActors_[i]->UnHideActor();
+
+#ifdef EliminateUnSelectedActors
+
+		if (theSelectedActors_.size() == 0)
+			theHiddenActors_[i]->GetProperty()->SetOpacity(1.0);
+
+#endif // EliminateUnSelectedActors
+	}
+	theHiddenActors_.clear();
+
+	if (render)
+		this->Interactor->Render();
+}
+
+int ForgVisualLib::FrgVisual_Scene_InterStyle3D::IsActorSelected(FrgVisual_BaseActor_Entity* actor)
+{
+	for (int i = 0; i < theSelectedActors_.size(); i++)
+	{
+		if (theSelectedActors_[i] == actor)
+			return i;
+	}
+
+	return -1;
+}
+
+int ForgVisualLib::FrgVisual_Scene_InterStyle3D::IsActorHidden(FrgVisual_BaseActor_Entity* actor)
+{
+	for (int i = 0; i < theHiddenActors_.size(); i++)
+	{
+		if (theHiddenActors_[i] == actor)
+			return i;
+	}
+
+	return -1;
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle3D::GetAllActors()
+{
+	std::vector<FrgVisual_BaseActor_Entity*> myActors;
+
+	vtkRenderWindowInteractor* rwi = this->Interactor;
+	vtkActorCollection* ac;
+	FrgVisual_BaseActor_Entity* anActor;
+
+	if (GetCurrentRenderer() != nullptr)
+	{
+		ac = GetCurrentRenderer()->GetActors();
+		vtkCollectionSimpleIterator ait;
+		for (ac->InitTraversal(ait); (anActor = FrgVisual_BaseActor_Entity::SafeDownCast(ac->GetNextActor(ait))); )
+		{
+			if (anActor)
+				myActors.push_back(anActor);
+		}
+	}
+	else
+	{
+		std::cout << "no current renderer on the interactor style.\n";
+	}
+	rwi->Render();
+
+	return myActors;
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideActionIsCalledSlot()
+{
+	HideSelectedActors(true);
+}
+
+void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnHideActionIsCalledSlot()
+{
+	UnHideHiddenActors(true);
 }
