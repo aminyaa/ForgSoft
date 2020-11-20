@@ -39,6 +39,8 @@ public:
 
 	virtual ~FrgVisual_Plot2D_TItem() {}
 
+	void FormTItem() override;
+
 	ForgBaseLib::FrgBase_TreeItem* GetDataSeriesTItem() const { return theDataSeriesTItem_; }
 	FrgVisual_Plot2DAxes_TItem* GetAxesTItem() const { return theAxesTItem_; }
 	FrgVisual_Plot2DLegend_TItem* GetLegendTItem() const { return theLegendTItem_; }
@@ -94,9 +96,13 @@ public:
 
 	vtkPlot* AddPlot(std::vector<double> x, std::vector<double> y, const char* title);
 
+	FrgVisual_Plot2DDataSeries_TItem* GetPlotDataSeriesTItem(vtkPlot* vtkplot) const;
+
+	void AddPointToPlot(vtkPlot* vtkplot, double x, double y, bool render = true);
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)
 
 protected slots:
 
@@ -114,7 +120,7 @@ private:
 
 EndForgVisualLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2D_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2D_TItem, FORGVISUAL_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2D_TItem)
 

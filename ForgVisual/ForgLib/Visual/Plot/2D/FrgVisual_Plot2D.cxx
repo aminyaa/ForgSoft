@@ -1,5 +1,6 @@
 #include <FrgVisual_Plot2D.hxx>
 #include <FrgVisual_Plot2D_ChartXY.hxx>
+#include <FrgBase_MainWindow.hxx>
 
 #include <vtkContextView.h>
 #include <vtkRenderer.h>
@@ -23,8 +24,11 @@
 #include <vtkPostScriptWriter.h>
 #include <vtkPDFExporter.h>
 #include <vtkOpenGLGL2PSExporter.h>
+#include <vtkContext2D.h>
+#include <vtkBrush.h>
 
 #include <QtCore/QRandomGenerator>
+#include <QtGui/QWheelEvent>
 
 QColor* ForgVisualLib::FrgVisual_Plot2D::theHighlightColor_ = new QColor(255, 0, 255);
 
@@ -42,7 +46,7 @@ void ForgVisualLib::FrgVisual_Plot2D::Init()
 	// Set up the view
 	theView_ = vtkSmartPointer<vtkContextView>::New();
 
-	theView_->GetRenderer()->SetBackground(1.0, 1.0, 1.0);
+	theView_->GetRenderer()->SetBackground(0.1647, 0.1647, 0.1647);
 
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
@@ -59,7 +63,33 @@ void ForgVisualLib::FrgVisual_Plot2D::Init()
 	SetBottomAxisTitle("X Axis");
 	SetLeftAxisTitle("Y Axis");
 
+	if(theParentMainWindow_)
+		SetThemeDark(theParentMainWindow_->IsThemeDark());
+
 	RenderView();
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::wheelEvent(QWheelEvent* event)
+{
+	int* size = this->GetRenderWindow()->GetSize();
+	const vtkVector2f pos(event->pos().x(), size[1] - event->pos().y());
+
+	if (
+		pos.GetX() < theChart_->GetPoint1()[0] ||
+		pos.GetX() > theChart_->GetPoint2()[0] ||
+		pos.GetY() < theChart_->GetPoint1()[1] ||
+		pos.GetY() > theChart_->GetPoint2()[1]
+		)
+	{
+		vtkContextMouseEvent mouseEvent;
+		mouseEvent.SetPos(pos);
+
+		int delta = std::floor(event->delta() / 120);
+		if (delta == 0)
+			delta = event->delta() > 0 ? 1 : -1;
+		
+		theChart_->MouseWheelEvent(mouseEvent, delta);
+	}
 }
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
@@ -67,10 +97,10 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	QList<double>& x,
 	QList<double>& y,
 	const char* title
-)
+) const
 {
 	//theTables_.push_back(vtkSmartPointer<vtkTable>::New());
-	auto& table = vtkSmartPointer<vtkTable>::New();
+	auto table = vtkSmartPointer<vtkTable>::New();
 
 	vtkSmartPointer<vtkFloatArray> arrX =
 		vtkSmartPointer<vtkFloatArray>::New();
@@ -82,11 +112,21 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	arrY->SetName(title);
 	table->AddColumn(arrY);
 
+	if (theChart_->GetNumberOfPlots() == 0)
+	{
+		theChart_->theBoundingBox_.P0().X() = x[0];
+		theChart_->theBoundingBox_.P0().Y() = y[0];
+		theChart_->theBoundingBox_.P1().X() = x[0];
+		theChart_->theBoundingBox_.P1().Y() = y[0];
+	}
+
 	table->SetNumberOfRows(x.size());
 	for (int i = 0; i < x.size(); i++)
 	{
 		table->SetValue(i, 0, x.at(i));
 		table->SetValue(i, 1, y.at(i));
+
+		theChart_->UpdateBoundingBox(ForgBaseLib::FrgBase_Pnt<2>(x[i], y[i]));
 	}
 
 	// Add multiple line plots, setting the colors etc
@@ -101,8 +141,8 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	//theView_->GetScene()->AddItem(theChart_);
 	vtkPlot* line = theChart_->AddPlot(vtkChart::LINE);
 
-	int high = 255;
-	int low = 0;
+	const int high = 255;
+	const int low = 0;
 
 	line->SetInputData(table, 0, 1);
 
@@ -112,7 +152,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	int rand2 = low + int((high - low + 1) * rand() / int(RAND_MAX + 1.0));
 
 	//line->SetColor(rand0, rand1, rand2, 255);
-	auto rndColor = QColor::fromRgb(QRandomGenerator::global()->generate());
+	const auto rndColor = QColor::fromRgb(QRandomGenerator::global()->generate());
 	line->SetColor(rndColor.redF(), rndColor.greenF(), rndColor.blueF());
 	line->SetWidth(1.0);
 	line->SetTooltipLabelFormat("%l: (%x, %y)");
@@ -144,7 +184,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	std::vector<double>& x,
 	std::vector<double>& y,
 	const char * title
-)
+) const
 {
 	QList<double> Qx, Qy;
 
@@ -157,11 +197,52 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	return AddPlot(Qx, Qy, title);
 }
 
-vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title)
+void ForgVisualLib::FrgVisual_Plot2D::AddPointToPlot(vtkPlot* vtkplot, double x, double y, bool render) const
+{
+	if (!vtkplot)
+		return;
+
+	int markerSize = 1;
+	int markerStyle = 1;
+	auto VTKPlotPoints = dynamic_cast<vtkPlotPoints*>(vtkplot);
+	if (VTKPlotPoints)
+	{
+		markerSize = VTKPlotPoints->GetMarkerSize();
+		markerStyle = VTKPlotPoints->GetMarkerStyle();
+	}
+
+	int lineType = vtkplot->GetPen()->GetLineType();
+
+	auto myTable = vtkplot->GetInput();
+	const auto id = myTable->InsertNextBlankRow();
+
+	myTable->SetValue(id, 0, x);
+	myTable->SetValue(id, 1, y);
+
+	theView_->GetRenderWindow()->SetMultiSamples(0);
+	/*theChart_->RecalculateBounds();
+	theChart_->GetScene()->SetDirty(true);*/
+
+	theChart_->UpdateBoundingBox(ForgBaseLib::FrgBase_Pnt<2>(x, y));
+
+	if (VTKPlotPoints)
+	{
+		VTKPlotPoints->SetMarkerSize(markerSize);
+		VTKPlotPoints->SetMarkerStyle(6);
+		VTKPlotPoints->SetMarkerStyle(markerStyle);
+	}
+
+	vtkplot->GetPen()->SetLineType(6);
+	vtkplot->GetPen()->SetLineType(lineType);
+
+	if(render)
+		RenderView();
+}
+
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title, const int nbPts) const
 {
 	QList<double>x, y;
 
-	int nbPts = 350;
 	double dx = 2.0 * 3.1415 / (double)nbPts;
 
 	for (int i = 0; i <= nbPts; i++)
@@ -175,11 +256,10 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title)
 	return AddPlot(x, y, title);
 }
 
-vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddCosX(const char* title)
+vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddCosX(const char* title, const int nbPts) const
 {
 	QList<double>x, y;
 
-	int nbPts = 350;
 	double dx = 2.0 * 3.1415 / (double)nbPts;
 
 	for (int i = 0; i <= nbPts; i++)
@@ -193,7 +273,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddCosX(const char* title)
 	return AddPlot(x, y, title);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetLegendVisible(bool condition)
+void ForgVisualLib::FrgVisual_Plot2D::SetLegendVisible(bool condition) const
 {
 	if (theChart_)
 	{
@@ -257,7 +337,7 @@ const char * ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitle() const
 	return "Y Axis";
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetAxisVisible(int axisNumber, bool condition)
+void ForgVisualLib::FrgVisual_Plot2D::SetAxisVisible(int axisNumber, bool condition) const
 {
 	if (theChart_)
 	{
@@ -285,6 +365,7 @@ bool ForgVisualLib::FrgVisual_Plot2D::GetAxisVisible(int axisNumber) const
 
 		return false;
 	}
+	return false;
 }
 
 void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisVisible(bool condition)
@@ -307,7 +388,7 @@ bool ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisVisible() const
 	return GetAxisVisible(vtkAxis::LEFT);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleVisible(int axisNumber, bool condition)
+void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleVisible(int axisNumber, bool condition) const
 {
 	if (theChart_)
 	{
@@ -344,14 +425,17 @@ bool ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitleVisible() const
 	return GetAxisTitleVisible(vtkAxis::LEFT);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetAxisLogarithmic(int axisNumber, bool condition)
+void ForgVisualLib::FrgVisual_Plot2D::SetAxisLogarithmic(int axisNumber, bool condition) const
 {
 	if (theChart_)
 	{
 		auto axis = theChart_->GetAxis(axisNumber);
-		theChart_->SetAdjustLowerBoundForLogPlot(condition);
+		if (axis->GetLogScale() == condition)
+			return;
+		
+		//theChart_->SetAdjustLowerBoundForLogPlot(condition);
 		axis->SetLogScale(condition);
-		theChart_->RecalculateBounds();
+		theChart_->RecalculateAndUpdateBoundingBox();
 
 		RenderView();
 	}
@@ -389,7 +473,7 @@ bool ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisLogarithmic() const
 	return GetAxisLogarithmic(vtkAxis::LEFT);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleRotation(int axisNumber, int degree)
+void ForgVisualLib::FrgVisual_Plot2D::SetAxisTitleRotation(int axisNumber, int degree) const
 {
 	if (theChart_)
 	{
@@ -597,9 +681,9 @@ void ForgVisualLib::FrgVisual_Plot2D::HighlightAxis(int axisNumber, bool conditi
 
 		if (condition)
 		{
-			double red = theHighlightColor_->redF();
-			double green = theHighlightColor_->greenF();
-			double blue = theHighlightColor_->blueF();
+			const double red = theHighlightColor_->redF();
+			const double green = theHighlightColor_->greenF();
+			const double blue = theHighlightColor_->blueF();
 
 			axis->GetTitleProperties()->SetColor(red, green, blue);
 			axis->GetLabelProperties()->SetColor(red, green, blue);
@@ -652,7 +736,7 @@ void ForgVisualLib::FrgVisual_Plot2D::HighlightLeftAxis(bool condition)
 	HighlightAxis(vtkAxis::LEFT, condition);
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetLegendPosition(LEGEND_POSITION_ENUM position)
+void ForgVisualLib::FrgVisual_Plot2D::SetLegendPosition(LEGEND_POSITION_ENUM position) const
 {
 	if (theChart_)
 	{
@@ -749,19 +833,23 @@ ForgVisualLib::LEGEND_POSITION_ENUM ForgVisualLib::FrgVisual_Plot2D::GetLegendPo
 			else
 				return NOT_VALID;
 		}
+		return NORTH_EAST;
 	}
+	return NORTH_EAST;
 }
 
 bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsCSV(std::string myFileName)
 {
-	const auto& myChartXY = dynamic_cast<FrgVisual_Plot2D_ChartXY*>(this->GetChartXY().Get());
+	const auto& myChartXY = this->GetChartXY();
 	if (myChartXY)
 	{
 		return myChartXY->ExportDataAsCSV(myFileName);
 	}
+
+	return false;
 }
 
-bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName)
+bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName) const
 {
 	std::fstream testForOpen;
 	testForOpen.open(myFileName.toStdString(), std::ios::out);
@@ -830,7 +918,7 @@ bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName)
 		vtkSmartPointer<vtkWindowToImageFilter>::New();
 	windowToImageFilter->SetInput(theRenderWindow_);
 
-	int Magnification = 2;
+	const int Magnification = 2;
 
 	windowToImageFilter->SetScale(Magnification); // image quality
 	windowToImageFilter->ReadFrontBufferOff(); // read from the back buffer
@@ -843,4 +931,51 @@ bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName)
 	theRenderWindow_->Render();
 
 	return true;
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::SetThemeDark(bool condition) const
+{
+	if(condition)
+	{
+		theView_->GetRenderer()->GradientBackgroundOn();
+		theView_->GetRenderer()->SetBackground(0.2, 0.2, 0.2);
+		theView_->GetRenderer()->SetBackground2(0.1497, 0.1497, 0.1497);
+
+		if(theChart_)
+		{
+			theChart_->GetBackgroundBrush()->SetColor(42, 42, 42, 255);
+			
+			const auto nbAxes = theChart_->GetNumberOfAxes();
+			for(auto i = 0; i < nbAxes; i++)
+			{
+				auto* const axis = theChart_->GetAxis(i);
+				axis->GetPen()->SetColor(255, 255, 255, 255);
+				axis->GetLabelProperties()->SetColor(1.0, 1.0, 1.0);
+				axis->GetTitleProperties()->SetColor(1.0, 1.0, 1.0);
+				axis->GetGridPen()->SetColor(220, 220, 220, 60);
+				axis->GetGridPen()->SetLineType(vtkPen::SOLID_LINE);
+			}
+		}
+	}
+	else
+	{
+		theView_->GetRenderer()->GradientBackgroundOff();
+		theView_->GetRenderer()->SetBackground(1.0, 1.0, 1.0);
+
+		if (theChart_)
+		{
+			theChart_->GetBackgroundBrush()->SetColor(255, 255, 255, 255);
+
+			const auto nbAxes = theChart_->GetNumberOfAxes();
+			for (auto i = 0; i < nbAxes; i++)
+			{
+				auto* const axis = theChart_->GetAxis(i);
+				axis->GetPen()->SetColor(0, 0, 0, 255);
+				axis->GetLabelProperties()->SetColor(0.0, 0.0, 0.0);
+				axis->GetTitleProperties()->SetColor(0.0, 0.0, 0.0);
+				axis->GetGridPen()->SetColor(220, 220, 220, 200);
+				axis->GetGridPen()->SetLineType(vtkPen::SOLID_LINE);
+			}
+		}
+	}
 }

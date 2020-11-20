@@ -24,6 +24,11 @@ ForgVisualLib::FrgVisual_Plot_TItem::~FrgVisual_Plot_TItem()
 	FreePointer(thePlot_);
 }
 
+void ForgVisualLib::FrgVisual_Plot_TItem::FormTItem()
+{
+	ForgBaseLib::FrgBase_TreeItem::FormTItem();
+}
+
 void ForgVisualLib::FrgVisual_Plot_TItem::Init()
 {
 	if (!GetParentMainWindow())
@@ -37,7 +42,7 @@ void ForgVisualLib::FrgVisual_Plot_TItem::TItemNameToTabTitleChangedSlot(const Q
 	GetParentMainWindow()->SetTabText(thePlot_, title + " - Plot");
 }
 
-void ForgVisualLib::FrgVisual_Plot_TItem::ShowTabWidget()
+void ForgVisualLib::FrgVisual_Plot_TItem::ShowTabWidget() const
 {
 	if(!GetParentMainWindow())
 		return;
@@ -65,6 +70,14 @@ bool ForgVisualLib::FrgVisual_Plot_TItem::RemovePlot(vtkPlot * plot)
 	}
 }
 
+void ForgVisualLib::FrgVisual_Plot_TItem::SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow * parentMainWindow)
+{
+	ForgBaseLib::FrgBase_TreeItem::SetParentMainWindow(parentMainWindow);
+
+	if (thePlot_)
+		thePlot_->SetParentMainWindow(parentMainWindow);
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot_TItem)
 {
 
@@ -85,5 +98,4 @@ DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot_TItem)
 	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot_TItem)
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot_TItem)
-BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot_TItem)
+BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot_TItem)

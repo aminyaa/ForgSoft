@@ -101,5 +101,4 @@ DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem)
 	::new(t)ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem(myTItemTitle, parentTItem, parentTree, myPlot2DTItem);
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem)
-BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem)
+BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxisEntity_TItem)

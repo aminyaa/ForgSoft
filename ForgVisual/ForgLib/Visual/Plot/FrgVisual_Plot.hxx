@@ -7,7 +7,6 @@
 
 class vtkContextView;
 class vtkTable;
-class vtkChartXY;
 class vtkPlot;
 
 namespace ForgBaseLib
@@ -16,6 +15,8 @@ namespace ForgBaseLib
 }
 
 BeginForgVisualLib
+
+class FrgVisual_Plot2D_ChartXY;
 
 enum LEGEND_POSITION_ENUM
 {
@@ -45,16 +46,22 @@ public:
 	void RenderView() const;
 
 	vtkSmartPointer<vtkContextView> GetView() const { return theView_; }
-	vtkSmartPointer<vtkChartXY> GetChartXY() const { return theChart_; }
+	vtkSmartPointer<FrgVisual_Plot2D_ChartXY> GetChartXY() const { return theChart_; }
 
 	bool RemovePlot(vtkPlot* plot);
+
+	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
+
+	virtual void SetThemeDark(bool condition = true) const = 0;
 
 protected:
 
 	vtkSmartPointer<vtkContextView> theView_;
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> theRenderWindow_;
 	//QList<vtkSmartPointer<vtkTable>> theTables_;
-	vtkSmartPointer<vtkChartXY> theChart_;
+	vtkSmartPointer<FrgVisual_Plot2D_ChartXY> theChart_;
+
+	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;
 
 	virtual void Init() {}
 };

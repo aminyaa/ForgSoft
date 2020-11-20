@@ -4,6 +4,7 @@
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
 #include <FrgVisual_Plot2DAxes_TItem.hxx>
 #include <FrgVisual_Plot2DLegend_TItem.hxx>
+#include <FrgVisual_Plot2D_ChartXY.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_Menu.hxx>
@@ -13,7 +14,6 @@
 #include <FrgVisual_Plot2DLnStyle_TItem.hxx>
 #include <FrgVisual_Plot2DSmblStyle_TItem.hxx>
 #include <FrgBase_SerialSpec_QColor.hxx>
-#include <vtkChartXY.h>
 #include <vtkPlot.h>
 #include <vtkTable.h>
 #include <vtkAbstractArray.h>
@@ -22,6 +22,8 @@
 #include <FrgBase_Tree.hxx>
 
 #include <QtWidgets/QFileDialog>
+
+#include <vtkPlotPoints.h>
 
 ForgVisualLib::FrgVisual_Plot2D_TItem::FrgVisual_Plot2D_TItem
 (
@@ -43,6 +45,11 @@ ForgVisualLib::FrgVisual_Plot2D_TItem::FrgVisual_Plot2D_TItem
 
 	connect(myExportAction, SIGNAL(triggered()), this, SLOT(ExportDataAsCSVSlot()));
 	connect(myExportAsImageAction, SIGNAL(triggered()), this, SLOT(ExportDataAsImageSlot()));
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::FormTItem()
+{
+	FrgVisual_Plot_TItem::FormTItem();
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_TItem::Init()
@@ -301,6 +308,27 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlot(std::vector<double> x, s
 	}
 
 	return nullptr;
+}
+
+ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem* ForgVisualLib::FrgVisual_Plot2D_TItem::GetPlotDataSeriesTItem
+(
+	vtkPlot* vtkplot
+) const
+{
+	for (const auto& x : thePlotsTItem_)
+	{
+		if (x->GetVTKPlot() == vtkplot)
+			return x;
+	}
+
+	return nullptr;
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_TItem::AddPointToPlot(vtkPlot* vtkplot, double x, double y, bool render)
+{
+	const auto& plot2D = GetPlot2D();
+	if (plot2D)
+		plot2D->AddPointToPlot(vtkplot, x, y, render);
 }
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlotSinXSlot()
@@ -656,5 +684,4 @@ DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2D_TItem)
 	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot2D_TItem)
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot2D_TItem)
-BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2D_TItem)
+BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2D_TItem)

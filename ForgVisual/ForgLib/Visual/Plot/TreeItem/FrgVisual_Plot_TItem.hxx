@@ -7,6 +7,11 @@
 
 #include <FrgVisual_Serialization_Global.hxx>
 
+namespace ForgBaseLib
+{
+	class FrgBase_MainWindow;
+}
+
 class vtkPlot;
 
 BeginForgVisualLib
@@ -29,16 +34,20 @@ public:
 
 	~FrgVisual_Plot_TItem();
 
-	void ShowTabWidget();
+	void FormTItem() override;
+
+	void ShowTabWidget() const;
 
 	FrgVisual_Plot* GetPlot() const { return thePlot_; }
 	void RenderView() const;
 
 	bool RemovePlot(vtkPlot* plot);
 
+	void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow) override;
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER( )
 
 protected:
 
@@ -57,7 +66,7 @@ private slots:
 
 EndForgVisualLib
 
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot_TItem, FORGVISUAL_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot_TItem)
 

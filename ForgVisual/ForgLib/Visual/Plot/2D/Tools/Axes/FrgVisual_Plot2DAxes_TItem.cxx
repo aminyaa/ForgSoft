@@ -57,5 +57,4 @@ DECLARE_LOAD_IMP_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
 	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
-BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
+BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)

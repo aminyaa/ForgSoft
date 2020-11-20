@@ -14,6 +14,8 @@
 #include <vtkFloatArray.h>
 #include <vtkTable.h>
 #include <vtkContextTransform.h>
+#include <vtkContextKeyEvent.h>
+#include <vtkStringArray.h>
 
 #include <FrgBase_SerialSpec_QString.hxx>
 
@@ -28,9 +30,17 @@ ForgVisualLib::FrgVisual_Plot2D_ChartXY* ForgVisualLib::FrgVisual_Plot2D_ChartXY
 ForgVisualLib::FrgVisual_Plot2D_ChartXY::FrgVisual_Plot2D_ChartXY()
 	: theMouseFraction_(0.01)
 {
-	this->ForceAxesToBoundsOn();
-	this->GetAxis(0)->GetGridPen()->SetColor(220, 220, 220);
+	theBoundingBox_.P0().X() = 0.0;
+	theBoundingBox_.P0().Y() = 0.0;
+	theBoundingBox_.P1().X() = 0.0;
+	theBoundingBox_.P1().Y() = 0.0;
+
+	//this->ForceAxesToBoundsOn();
+	/*this->GetAxis(0)->GetGridPen()->SetColor(220, 220, 220);
 	this->GetAxis(1)->GetGridPen()->SetColor(220, 220, 220);
+
+	this->GetAxis(0)->GetGridPen()->SetLineType(vtkPen::DASH_LINE);
+	this->GetAxis(1)->GetGridPen()->SetLineType(vtkPen::DASH_LINE);*/
 
 	this->SetActionToButton(vtkChart::PAN, vtkContextMouseEvent::RIGHT_BUTTON);
 	this->SetActionToButton(vtkChart::SELECT, vtkContextMouseEvent::LEFT_BUTTON);
@@ -38,6 +48,8 @@ ForgVisualLib::FrgVisual_Plot2D_ChartXY::FrgVisual_Plot2D_ChartXY()
 	this->SetShowLegend(true);
 	//this->GetLegend()->SetInline(false);
 	this->GetLegend()->GetLabelProperties()->SetFontFamilyToTimes();
+
+	FitWindowToBoundingBox();
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_ChartXY::SetLegendVisible(bool condition)
@@ -52,7 +64,7 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::GetLegendVisible() const
 	return theLegendIsVisible_;
 }
 
-bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseWheelEvent(const vtkContextMouseEvent & mouse, int delta)
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseWheelEvent(const vtkContextMouseEvent& mouse, int delta)
 {
 	if (theHorizontalIndicatorLine_ || theVericalIndicatorLine_)
 	{
@@ -60,78 +72,75 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseWheelEvent(const vtkContextMo
 		this->RemovePlotInstance(theVericalIndicatorLine_);
 	}
 
-	return vtkChartXY::MouseWheelEvent(mouse, delta);
+	if (this->Tooltip)
+	{
+		this->Tooltip->SetVisible(false);
+	}
+	if (!this->ZoomWithMouseWheel)
+	{
+		return false;
+	}
 
-	//if (this->Tooltip)
-	//{
-	//	this->Tooltip->SetVisible(false);
-	//}
-	//if (!this->ZoomWithMouseWheel)
-	//{
-	//	return false;
-	//}
+	double deltaAxes[4];
 
-	//// Zoom into the chart by the specified amount, and recalculate the bounds
-	//vtkVector2f point2(mouse.GetPos());
+	int amin = this->GetPoint1()[0];
+	int amax = this->GetPoint2()[0];
+	int bmin = this->GetPoint1()[1];
+	int bmax = this->GetPoint2()[1];
 
-	//this->ZoomInAxes(this->ChartPrivate->axes[vtkAxis::BOTTOM],
-	//	this->ChartPrivate->axes[vtkAxis::LEFT], this->MouseBox.GetData(), point2.GetData());
-	//this->ZoomInAxes(this->ChartPrivate->axes[vtkAxis::TOP],
-	//	this->ChartPrivate->axes[vtkAxis::RIGHT], this->MouseBox.GetData(), point2.GetData());
-
-	//this->RecalculatePlotTransforms();
-	//this->MouseBox.SetWidth(0.0);
-	//this->MouseBox.SetHeight(0.0);
-	//this->DrawBox = false;
-	//// Mark the scene as dirty
-	//this->Scene->SetDirty(true);
-	//this->InvokeEvent(vtkCommand::InteractionEvent);
-	//return true;
-
-
-	vtkVector2f point2(mouse.GetPos());
-
-	// Get the bounds of each plot.
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		vtkAxis* axis = this->GetAxis(i);
-		double min = axis->GetMinimum();
-		double max = axis->GetMaximum();
-		double maxMmin = max - min;
+		double minValue = axis->GetUnscaledMinimum();
+		double maxValue = axis->GetUnscaledMaximum();
+		ForgBaseLib::FrgBase_Pnt<2> P0;
+		ForgBaseLib::FrgBase_Pnt<2> P1;
 
-		if (delta > 0)
-		{
-			double center = 0;
-			if (i == vtkAxis::BOTTOM || i == vtkAxis::TOP)
-				center = (double)(point2.GetX()) / (double)(this->GetGeometry()[0]);
-			else if (i == vtkAxis::LEFT || i == vtkAxis::RIGHT)
-				center = (double)(point2.GetY()) / (double)(this->GetGeometry()[1]);
+		P0.X() = (i == vtkAxis::BOTTOM || i == vtkAxis::TOP) ? amin : bmin;
+		P1.X() = (i == vtkAxis::BOTTOM || i == vtkAxis::TOP) ? amax : bmax;
 
-			center = center * (max - min) + min;
+		P0.Y() = axis->GetLogScale() ? std::pow(10.0, minValue) : minValue;
+		P1.Y() = axis->GetLogScale() ? std::pow(10.0, maxValue) : maxValue;
 
-			min = center - (1.0 - theMouseFraction_)*maxMmin / 2.0;
-			max = center + (1.0 - theMouseFraction_)*maxMmin / 2.0;
-		}
-		else
-		{
-			/*min -= delta * frac;
-			max += delta * frac;*/
-		}
-		axis->SetRange(min, max);
-		axis->RecalculateTickSpacing();
+		double mousePos = (i == vtkAxis::BOTTOM || i == vtkAxis::TOP) ? (double)(mouse.GetPos()[0]) : (double)(mouse.GetPos()[1]);
+		double xAxis = LinearEquation(P0, P1, mousePos);
+ 		if (axis->GetLogScale())
+ 			xAxis = std::log10(xAxis);
+
+		if (xAxis < axis->GetUnscaledMinimum())
+			xAxis = axis->GetUnscaledMinimum();
+
+		if (xAxis > axis->GetUnscaledMaximum())
+			xAxis = axis->GetUnscaledMaximum();
+
+		double accuracy = 0.1;
+		/*if (axis->GetLogScale())
+			accuracy = std::log10(accuracy);*/
+
+		double fracMax = std::abs(maxValue - xAxis) * accuracy;
+		double fracMin = std::abs(xAxis - minValue) * accuracy;
+
+		minValue += delta * fracMin;
+		maxValue -= delta * fracMax;
+
+		if (minValue < axis->GetUnscaledMinimumLimit())
+			minValue = axis->GetUnscaledMinimumLimit();
+		if (maxValue > axis->GetUnscaledMaximumLimit())
+			maxValue = axis->GetUnscaledMaximumLimit();
+
+		axis->SetUnscaledMinimum(minValue);
+		axis->SetUnscaledMaximum(maxValue);
 	}
 
 	this->RecalculatePlotTransforms();
-
 	// Mark the scene as dirty
 	this->Scene->SetDirty(true);
-
 	this->InvokeEvent(vtkCommand::InteractionEvent);
 
 	return true;
 }
 
-bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseMoveEvent(const vtkContextMouseEvent & mouse)
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseMoveEvent(const vtkContextMouseEvent& mouse)
 {
 	auto nbPlots = GetNumberOfPlots();
 
@@ -209,24 +218,23 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseMoveEvent(const vtkContextMou
 
 					table->SetNumberOfRows(2);
 
-					table->SetValue(0, 0, plotPosd.GetX());
-					table->SetValue(0, 1, plotPosd.GetY());
+					double x0 = myPlot->GetXAxis()->GetLogScale() ? std::pow(10.0, plotPosd.GetX()) : plotPosd.GetX();
+					double y0 = myPlot->GetYAxis()->GetLogScale() ? std::pow(10.0, plotPosd.GetY()) : plotPosd.GetY();
+
+					table->SetValue(0, 0, x0);
+					table->SetValue(0, 1, y0);
 
 					if (iLine == 0)
 					{
 						// Vertical Line
-						table->SetValue(1, 0, plotPosd.GetX());
-						double range[2];
-						myPlot->GetYAxis()->GetRange(range);
-						table->SetValue(1, 1, range[0]);
+						table->SetValue(1, 0, x0);
+						table->SetValue(1, 1, myPlot->GetYAxis()->GetUnscaledMinimum());
 					}
 					else
 					{
 						// Horizontal Line
-						double range[2];
-						myPlot->GetXAxis()->GetRange(range);
-						table->SetValue(1, 0, range[0]);
-						table->SetValue(1, 1, plotPosd.GetY());
+						table->SetValue(1, 0, myPlot->GetXAxis()->GetUnscaledMinimum());
+						table->SetValue(1, 1, y0);
 					}
 
 					vtkPlot* myLine = nullptr;
@@ -276,7 +284,7 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseMoveEvent(const vtkContextMou
 	return vtkChartXY::MouseMoveEvent(mouse);
 }
 
-bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseButtonPressEvent(const vtkContextMouseEvent & mouse)
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseButtonPressEvent(const vtkContextMouseEvent& mouse)
 {
 	auto nbPlots = GetNumberOfPlots();
 
@@ -298,7 +306,7 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseButtonPressEvent(const vtkCon
 
 		if (seriesIndex >= 0)
 		{
-			
+
 			// Mark the scene as dirty
 			this->Scene->SetDirty(true);
 
@@ -310,6 +318,28 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseButtonPressEvent(const vtkCon
 	}
 
 	return vtkChartXY::MouseButtonPressEvent(mouse);
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::KeyPressEvent(const vtkContextKeyEvent& key)
+{
+	if (key.GetKeyCode() == 'r' || key.GetKeyCode() == 'R')
+	{
+		auto offset = theBoundingBox_.OffSet(0.01 * theBoundingBox_.Diameter());
+
+		auto bottomAxis = this->GetAxis(vtkAxis::BOTTOM);
+		auto leftAxis = this->GetAxis(vtkAxis::LEFT);
+
+		bottomAxis->SetUnscaledMinimum(bottomAxis->GetUnscaledMinimumLimit());
+		bottomAxis->SetUnscaledMaximum(bottomAxis->GetUnscaledMaximumLimit());
+		leftAxis->SetUnscaledMinimum(leftAxis->GetUnscaledMinimumLimit());
+		leftAxis->SetUnscaledMaximum(leftAxis->GetUnscaledMaximumLimit());
+	}
+
+	// Mark the scene as dirty
+	this->Scene->SetDirty(true);
+	this->InvokeEvent(vtkCommand::KeyPressEvent);
+	
+	return true;
 }
 
 bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSV(std::string myFileName)
@@ -389,6 +419,113 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSV(std::string myFile
 	return true;
 }
 
+void ForgVisualLib::FrgVisual_Plot2D_ChartXY::RecalculateAndUpdateBoundingBox()
+{
+	const auto& nbPlots = this->GetNumberOfPlots();
+
+	for (vtkIdType iPlot = 0; iPlot < nbPlots; iPlot++)
+	{
+		auto myPlot = GetPlot(iPlot);
+		vtkTable* myTable = myPlot->GetInput();
+		auto nbRow = myTable->GetNumberOfRows();
+		auto nbColumns = myTable->GetNumberOfColumns();
+
+		for (vtkIdType j = 0; j < nbColumns - 1; j++)
+			for (vtkIdType i = 0; i < nbRow; i++)
+			{
+				double x = myTable->GetValue(i, j).ToDouble();
+				double y = myTable->GetValue(i, j + 1).ToDouble();
+
+				UpdateBoundingBox(ForgBaseLib::FrgBase_Pnt<2>(x, y));
+			}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_ChartXY::UpdateBoundingBox(const ForgBaseLib::FrgBase_Pnt<2>& P)
+{
+	if (!theBoundingBox_.IsInside(P))
+	{
+		FrgVisual_Plot2DChartXY_BoundingBox b1(P, P);
+		theBoundingBox_ = FrgVisual_Plot2DChartXY_BoundingBox::Union(b1, theBoundingBox_);
+
+		FitWindowToBoundingBox();
+	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_ChartXY::FitWindowToBoundingBox()
+{
+	auto offset = theBoundingBox_.OffSet(0.01 * theBoundingBox_.Diameter());
+
+	auto bottomAxis = this->GetAxis(vtkAxis::BOTTOM);
+	auto leftAxis = this->GetAxis(vtkAxis::LEFT);
+
+	if (bottomAxis->GetLogScale())
+	{
+		double x = theBoundingBox_.P0().X();
+		if (x <= 0.0)
+			x = 0.01;
+		
+		//if(bottomAxis->GetUnscaledMinimum() == bottomAxis->GetUnscaledMinimumLimit())
+			bottomAxis->SetUnscaledMinimum(x);
+
+		bottomAxis->SetUnscaledMinimumLimit(x);
+	}
+	else
+	{
+		//if (bottomAxis->GetUnscaledMinimum() == bottomAxis->GetUnscaledMinimumLimit())
+			bottomAxis->SetUnscaledMinimum(offset.P0().X());
+
+		bottomAxis->SetUnscaledMinimumLimit(offset.P0().X());
+	}
+	
+	//if (bottomAxis->GetUnscaledMaximum() == bottomAxis->GetUnscaledMaximumLimit())
+		bottomAxis->SetUnscaledMaximum(offset.P1().X());
+
+	bottomAxis->SetUnscaledMaximumLimit(offset.P1().X());
+
+	if (leftAxis->GetLogScale())
+	{
+		double y = theBoundingBox_.P0().Y();
+		if (y <= 0.0)
+			y = 0.01;
+		
+		//if (leftAxis->GetUnscaledMinimum() == leftAxis->GetUnscaledMinimumLimit())
+			leftAxis->SetUnscaledMinimum(y);
+
+		leftAxis->SetUnscaledMinimumLimit(y);
+	}
+	else
+	{
+		//if (leftAxis->GetUnscaledMinimum() == leftAxis->GetUnscaledMinimumLimit())
+			leftAxis->SetUnscaledMinimum(offset.P0().Y());
+
+		leftAxis->SetUnscaledMinimumLimit(offset.P0().Y());
+	}
+	
+	//if (leftAxis->GetUnscaledMaximum() == leftAxis->GetUnscaledMaximumLimit())
+		leftAxis->SetUnscaledMaximum(offset.P1().Y());
+
+	leftAxis->SetUnscaledMaximumLimit(offset.P1().Y());
+}
+
+void ForgVisualLib::FrgVisual_Plot2D_ChartXY::RecalculateBounds()
+{
+	FitWindowToBoundingBox();
+}
+
+double ForgVisualLib::FrgVisual_Plot2D_ChartXY::LinearEquation
+(
+	ForgBaseLib::FrgBase_Pnt<2> P0,
+	ForgBaseLib::FrgBase_Pnt<2> P1,
+	double x
+)
+{
+	double t = (P1.Y() - P0.Y()) / (P1.X() - P0.X());
+	double y0 = P1.Y() - P1.X() * t;
+
+	return x * t + y0;
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
 {
 	QString isLegendVisibleText;
@@ -398,14 +535,14 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
 	else
 		isLegendVisibleText = "FALSE";
 
-	ar & isLegendVisibleText;
+	ar& isLegendVisibleText;
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Plot2D_ChartXY)
 {
 	QString isLegendVisible;
 
-	ar & isLegendVisible;
+	ar& isLegendVisible;
 
 	if (isLegendVisible == "TRUE")
 		this->SetLegendVisible(true);

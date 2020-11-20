@@ -33,7 +33,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)
 
 private:
 
@@ -46,7 +46,7 @@ private:
 EndForgVisualLib
 
 // override for non-default constructor
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgVisualLib::FrgVisual_Plot2DAxes_TItem, FORGVISUAL_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Plot2DAxes_TItem)
 

@@ -23,14 +23,16 @@ public:
 		ForgBaseLib::FrgBase_MainWindow* parentMainWindow
 	);
 
-	vtkPlot* AddPlot(QList<double>& x, QList<double>& y,const char* title);
-	vtkPlot* AddPlot(std::vector<double>& x, std::vector<double>& y, const char* title);
+	vtkPlot* AddPlot(QList<double>& x, QList<double>& y,const char* title) const;
+	vtkPlot* AddPlot(std::vector<double>& x, std::vector<double>& y, const char* title) const;
+
+	void AddPointToPlot(vtkPlot* vtkplot, double x, double y, bool render = true) const;
 
 	// Add some predefined function such as Sin(x), Cos(x)
-	vtkPlot* AddSinX(const char* title);
-	vtkPlot* AddCosX(const char* title);
+	vtkPlot* AddSinX(const char* title, const int nbPts = 350) const;
+	vtkPlot* AddCosX(const char* title, const int nbPts = 350) const;
 
-	void SetLegendVisible(bool condition);
+	void SetLegendVisible(bool condition) const;
 	bool GetLegendVisible() const;
 
 	void SetBottomAxisTitle(const char* title);
@@ -69,28 +71,31 @@ public:
 	void HighlightBottomAxis(bool condition);
 	void HighlightLeftAxis(bool condition);
 
-	void SetLegendPosition(LEGEND_POSITION_ENUM position);
+	void SetLegendPosition(LEGEND_POSITION_ENUM position) const;
 	LEGEND_POSITION_ENUM GetLegendPosition() const;
 
 	bool ExportDataAsCSV(std::string myFileName);
-	bool ExportDataAsImage(QString myFileName);
+	bool ExportDataAsImage(QString myFileName) const;
+
+	void SetThemeDark(bool condition = true) const override;
 
 protected:
 
 	void Init() override;
+	void wheelEvent(QWheelEvent* event) override;
 
 private:
 
-	void SetAxisVisible(int axisNumber, bool condition);
+	void SetAxisVisible(int axisNumber, bool condition) const;
 	bool GetAxisVisible(int axisNumber) const;
 
-	void SetAxisTitleVisible(int axisNumber, bool condition);
+	void SetAxisTitleVisible(int axisNumber, bool condition) const;
 	bool GetAxisTitleVisible(int axisNumber) const;
 
-	void SetAxisLogarithmic(int axisNumber, bool condition);
+	void SetAxisLogarithmic(int axisNumber, bool condition) const;
 	bool GetAxisLogarithmic(int axisNumber) const;
 
-	void SetAxisTitleRotation(int axisNumber, int degree);
+	void SetAxisTitleRotation(int axisNumber, int degree) const;
 	int GetAxisTitleRotation(int axisNumber) const;
 
 	void HighlightAxisTitle(int axisNumber, bool condition);
