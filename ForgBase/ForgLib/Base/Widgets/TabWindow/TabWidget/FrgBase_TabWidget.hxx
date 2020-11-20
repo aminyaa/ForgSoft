@@ -26,6 +26,10 @@ public:
 
 	void ShowTabWidget(QWidget* widget, const QString& title);
 
+protected:
+
+	void keyPressEvent(QKeyEvent*) override;
+
 private:
 
 	FrgBase_TabBar* theTabBar_ = NullPtr;
@@ -33,6 +37,8 @@ private:
 private slots:
 
 	void CloseMyTabSlot(int index);
+	void closeAllActionClickedSlot();
+	void closeOtherActionClickedSLot(int index);
 };
 
 EndForgBaseLib
