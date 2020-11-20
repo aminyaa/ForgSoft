@@ -54,9 +54,15 @@ public:
 	FrgGetMacro(QToolBar*, ToolBar, theToolBar_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 
+	bool HasTitleAsAnAction() const { return theHasTitleAsAnAction_; }
+
 public slots:
 
 	void MenuTitleChangedSlot(const QString& name);
+
+private:
+
+	bool theHasTitleAsAnAction_;
 };
 
 EndForgBaseLib

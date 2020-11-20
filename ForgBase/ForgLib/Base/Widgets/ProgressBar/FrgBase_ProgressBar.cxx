@@ -1,32 +1,62 @@
 #include <FrgBase_ProgressBar.hxx>
 #include <FrgBase_MainWindow.hxx>
 
+#include <QtWidgets/QProgressBar>
+#include <QtWidgets/QLabel>
 #include <QtCore/QLocale>
+#include <QtWidgets/QHBoxLayout>
 
 ForgBaseLib::FrgBase_ProgressBar::FrgBase_ProgressBar(FrgBase_MainWindow* parentMainWindow)
-	: QProgressBar(parentMainWindow)
+	: QWidget(parentMainWindow)
 {
-	QString style = "QProgressBar:horizontal{"
-		"background:#bdc1c9;"
-		"border: 1px solid #b6b6b6;"
-		"text-align: center;"
-		"padding: 1px;"
-		"border-radius: 4px;}"
-		"QProgressBar::Chunk:horizontal{"
-		"background-color: qlineargradient(spread:pad, x1:1, y1:0.545, x2:1, y2:0, stop:0 #3874f2, stop:1 #5e90fa);"
-		"border-radius: 3px;}";
+	theProgressBar_ = new QProgressBar(this);
+	theLabel_ = new QLabel;
+	
+	theProgressBar_->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
 
-	this->setStyleSheet(style);
-	this->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
+	theProgressBar_->setFixedHeight(12);
+	theProgressBar_->setMaximumWidth(350);
+	theProgressBar_->setMinimumWidth(350);
+	theProgressBar_->setRange(0, 1);
 
-	this->setFixedHeight(12);
-	this->setRange(0, 1);
+	QHBoxLayout* layout = new QHBoxLayout;
+	layout->addWidget(theProgressBar_, 1);
+	layout->addWidget(theLabel_);
+
+	layout->setContentsMargins(0, 0, 0, 0);
+	this->setLayout(layout);
+	this->setContentsMargins(0, 0, 5, 0);
+	this->adjustSize();
+
+	SetProgressBarBusy(false);
+	SetLabelHidden();
 }
 
 void ForgBaseLib::FrgBase_ProgressBar::SetProgressBarBusy(bool condition)
 {
 	if (condition)
-		this->setRange(0, 0);
+	{
+		theProgressBar_->setRange(0, 0);
+		this->setHidden(false);
+	}
 	else
-		this->setRange(0, 1);
+	{
+		theProgressBar_->setRange(0, 1);
+		this->setHidden(true);
+	}
+}
+
+auto ForgBaseLib::FrgBase_ProgressBar::GetLabel() const -> const QString&
+{
+	return theLabel_->text();
+}
+
+void ForgBaseLib::FrgBase_ProgressBar::SetLabel(const QString& label) const
+{
+	theLabel_->setText(label);
+}
+
+void ForgBaseLib::FrgBase_ProgressBar::SetLabelHidden(bool condition) const
+{
+	theLabel_->setHidden(condition);
 }

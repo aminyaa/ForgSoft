@@ -9,6 +9,7 @@
 
 #include <QtCore/QMetaProperty>
 #include <QtCore/QObject>
+#include <QtCore/QCollator>
 
 //BOOST_CLASS_EXPORT_GUID(ForgBaseLib::FrgBase_TreeItem, "ForgBaseLib::FrgBase_TreeItem")
 
@@ -25,6 +26,9 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	if (parentTree)
 		if (parentTree->GetParentMainWindow())
 			parentTree->GetParentMainWindow()->ProgramModifiedSlot(true);
+
+	theTItemIsSortable_ = false;
+	theTItemIsDeletable_ = true;
 }
 
 ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()
@@ -52,7 +56,7 @@ void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 	theTItemName_ = new FrgBase_PrptsVrntString("Name", "");
 	RenameTItemSlot(itemTitle);
 
-	theContextMenu_ = FrgNew FrgBase_Menu(theTItemName_->GetValue(), theParentMainWindow_, FrgTrue);
+	theContextMenu_ = FrgNew FrgBase_Menu(theTItemName_->GetValue(), theParentMainWindow_, false);
 	theContextMenu_->SetToolBarHidden(true);
 
 	connect(this, SIGNAL(TItemNameChanged(const QString&)), theContextMenu_, SLOT(MenuTitleChangedSlot(const QString&)));
@@ -81,7 +85,25 @@ void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 	thePropertiesPanel_->AddRow<FrgBase_PrptsVrntString>(theTItemName_);
 }
 
-void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name)
+void ForgBaseLib::FrgBase_TreeItem::FormTItem()
+{
+	auto myParent = dynamic_cast<FrgBase_TreeItem*>(QTreeWidgetItem::parent());
+	if (myParent)
+	{
+		if (myParent->IsTItemSortable())
+			myParent->SortTItem();
+	}
+}
+
+void ForgBaseLib::FrgBase_TreeItem::SortTItem(Qt::SortOrder sortOrder_)
+{
+	if (theTItemIsSortable_)
+	{
+		this->sortChildren(0, sortOrder_);
+	}
+}
+
+void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name, bool sortParentTItem)
 {
 	FrgString str = name;
 	str = str.simplified();
@@ -93,19 +115,42 @@ void ForgBaseLib::FrgBase_TreeItem::SetTItemName(const QString& name)
 	{
 		if (QTreeWidgetItem::parent())
 		{
+			this->setText(0, "___tempName___");
+			str = CorrectName(QTreeWidgetItem::parent(), name);
+		}
+
+		/*if (QTreeWidgetItem::parent())
+		{
 			while (IsSameNameTItem(str))
 				str += " (Copy)";
-		}
+		}*/
 
 		this->setObjectName(str);
 		theTItemName_->SetValue(str);
 		this->setText(0, str);
 
 		emit TItemNameChanged(theTItemName_->GetValue());
+
+		if (sortParentTItem)
+		{
+			auto myParent = dynamic_cast<FrgBase_TreeItem*>(QTreeWidgetItem::parent());
+			if (myParent)
+			{
+				if (myParent->IsTItemSortable())
+					myParent->SortTItem();
+			}
+		}
 	}
 }
 
-QList<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_TreeItem::GetChildren()
+bool ForgBaseLib::FrgBase_TreeItem::operator<(const QTreeWidgetItem& other) const
+{
+	QCollator collator;
+	collator.setNumericMode(true);
+	return collator.compare(text(0), other.text(0)) < 0;
+}
+
+QList<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_TreeItem::GetChildren() const
 {
 	QList<FrgBase_TreeItem*> listOfItems;
 	int nbIems = this->childCount();
@@ -134,6 +179,47 @@ ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_TreeItem::GetChild(const QSt
 	return NullPtr;
 }
 
+std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_TreeItem::GetAllChildrenToTheRoot() const
+{
+	std::vector<FrgBase_TreeItem*> results;
+
+	int i = 0;
+	QTreeWidgetItemIterator it((QTreeWidgetItem*)(this));
+	while (*it)
+	{
+		bool founded = false;
+		QTreeWidgetItem* itParent = (*it)->parent();
+		while (itParent)
+		{
+			if (itParent == this)
+			{
+				founded = true;
+				break;
+			}
+
+			itParent = itParent->parent();
+		}
+
+		if (!founded && i == 0)
+		{
+			++it;
+			continue;
+		}
+
+		if(!founded)
+			break;
+
+		auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
+		if (myTItem)
+			results.push_back(myTItem);
+
+		++it;
+		i++;
+	}
+
+	return results;
+}
+
 bool ForgBaseLib::FrgBase_TreeItem::IsSameNameTItem(const QString & name)
 {
 	if (dynamic_cast<FrgBase_TreeItem*>(QTreeWidgetItem::parent())->GetChild(name))
@@ -142,22 +228,22 @@ bool ForgBaseLib::FrgBase_TreeItem::IsSameNameTItem(const QString & name)
 	return false;
 }
 
-void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot()
+void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(bool sortParentTItem)
 {
 	std::shared_ptr<FrgBase_DlgRename> dlg = std::make_shared<FrgBase_DlgRename>(this->text(0), theParentMainWindow_);
 
 	if (dlg->exec() == FrgBase_DlgRename::Accepted)
 	{
-		SetTItemName(dlg->GetLineEditName());
+		SetTItemName(dlg->GetLineEditName(), sortParentTItem);
 	}
 }
 
-void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString & name)
+void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString & name, bool sortParentTItem)
 {
 	if (sender() == theTItemName_)
 		theTItemName_->blockSignals(true);
 
-	SetTItemName(name);
+	SetTItemName(name, sortParentTItem);
 
 	if (sender() == theTItemName_)
 		theTItemName_->blockSignals(false);
@@ -236,5 +322,4 @@ DECLARE_LOAD_IMP_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)
 	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgBaseLib::FrgBase_TreeItem)
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_TreeItem)
-BOOST_CLASS_EXPORT_CXX_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)
+BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)

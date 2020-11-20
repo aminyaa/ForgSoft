@@ -37,10 +37,12 @@ protected:
 	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
 	FrgBase_Menu* theContextMenu_ = NullPtr;
 	bool theTItemIsClickable_ = true;
+	bool theTItemIsSortable_;
+	bool theTItemIsDeletable_;
 
 	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
 
-	void FormPropertiesPanel();
+	virtual void FormPropertiesPanel();
 
 signals:
 
@@ -57,20 +59,26 @@ public:
 		FrgBase_Tree* parentTree
 	);
 
-	~FrgBase_TreeItem();
+	virtual ~FrgBase_TreeItem();
 
-	void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow) { theParentMainWindow_ = parentMainWindow; }
+	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow) { theParentMainWindow_ = parentMainWindow; }
 
 	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBase_PropertiesPanel*, PropertiesPanel, thePropertiesPanel_);
 	FrgGetMacro(FrgBase_Menu*, ContextMenu, theContextMenu_);
 
-	QList<FrgBase_TreeItem*> GetChildren();
+	QList<FrgBase_TreeItem*> GetChildren() const;
 	FrgBase_TreeItem* GetChild(const QString& name);
+
+	std::vector<FrgBase_TreeItem*> GetAllChildrenToTheRoot() const;
+
 	bool IsSameNameTItem(const QString& name);
 	bool IsTItemClickable() const { return theTItemIsClickable_; }
 	void SetTItemClickable(bool condition) { theTItemIsClickable_ = condition; }
+
+	void SetTItemSortable(bool condition = true) { theTItemIsSortable_ = condition; }
+	bool IsTItemSortable() const { return theTItemIsSortable_; }
 
 	virtual void DoAfterConstruct() {}
 
@@ -89,18 +97,27 @@ public:
 		FrgBase_Tree * parentTree
 	);
 
+	virtual void FormTItem();
+
+	virtual void SortTItem(Qt::SortOrder sortOrder_ = Qt::AscendingOrder);
+
+	virtual bool IsDeletable() const { return theTItemIsDeletable_; }
+	void SetDeletable(bool deletable) { theTItemIsDeletable_ = deletable; }
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER( )
 
 private:
 
-	void SetTItemName(const QString& name);
+	void SetTItemName(const QString& name, bool sortParentTItem = true);
+
+	bool operator<(const QTreeWidgetItem& other) const override;
 
 public slots:
 
-	void RenameTItemSlot();
-	void RenameTItemSlot(const QString& name);
+	void RenameTItemSlot(bool sortParentTItem = true);
+	void RenameTItemSlot(const QString& name, bool sortParentTItem = true);
 	virtual void TItemDoubleClickedSlot() {}
 	virtual void TItemClickedSlot() {}
 	virtual void TItemNotClickedSlot() {}
@@ -109,109 +126,7 @@ public slots:
 EndForgBaseLib
 
 // override for non-default constructor
-DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)
-
-//namespace boost {
-//	namespace serialization {
-//		template<class Archive>
-//		inline void save_construct_data
-//		(
-//			Archive & ar, const ForgBaseLib::FrgBase_TreeItem * t, const unsigned int file_version
-//		)
-//		{
-//			// ============================================
-//			// store FrgBase_TreeItem title
-//			// ============================================
-//			QString myTItemTitle = t->text(0);
-//			ar << myTItemTitle;
-//
-//			// ============================================
-//			// store FrgBase_TreeItem parentTItem
-//			// ============================================
-//			QString parentTItemIsNull;
-//			ForgBaseLib::FrgBase_TreeItem* parentTItem = dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(((QTreeWidgetItem*)t)->parent());
-//
-//			if (!parentTItem)
-//			{
-//				parentTItemIsNull = "PARENT_TITEM_IS_NULL";
-//
-//				ar << parentTItemIsNull;
-//			}
-//			else
-//			{
-//				parentTItemIsNull = "PARENT_TITEM_IS_NOT_NULL";
-//
-//				ar << parentTItemIsNull;
-//				ar << parentTItem;
-//			}
-//
-//			// ============================================
-//			// store FrgBase_TreeItem parentTree
-//			// ============================================
-//			QString parentTreeIsNull;
-//			ForgBaseLib::FrgBase_Tree* parentTree = (t->GetParentTree());
-//
-//			if (!parentTree)
-//			{
-//				parentTreeIsNull = "PARENT_TREE_IS_NULL";
-//
-//				ar << parentTreeIsNull;
-//			}
-//			else
-//			{
-//				parentTreeIsNull = "PARENT_TREE_IS_NOT_NULL";
-//
-//				ar << parentTreeIsNull;
-//				ar << parentTree;
-//			}
-//
-//		}
-//
-//		template<class Archive>
-//		inline void load_construct_data
-//		(
-//			Archive & ar, ForgBaseLib::FrgBase_TreeItem * t, const unsigned int file_version
-//		)
-//		{
-//			// ============================================
-//			// load FrgBase_TreeItem title
-//			// ============================================
-//			QString myTItemTitle;;
-//			ar >> myTItemTitle;
-//
-//			// ============================================
-//			// load FrgBase_TreeItem parentTItem
-//			// ============================================
-//			QString parentTItemIsNull;
-//			ForgBaseLib::FrgBase_TreeItem* parentTItem;
-//
-//			ar >> parentTItemIsNull;
-//
-//			if (parentTItemIsNull == "PARENT_TITEM_IS_NULL")
-//				parentTItem = nullptr;
-//			else if (parentTItemIsNull == "PARENT_TITEM_IS_NOT_NULL")
-//				ar >> parentTItem;
-//
-//			// ============================================
-//			// load FrgBase_TreeItem parentTree
-//			// ============================================
-//			QString parentTreeIsNull;
-//			ForgBaseLib::FrgBase_Tree* parentTree;
-//
-//			ar >> parentTreeIsNull;
-//
-//			if (parentTreeIsNull == "PARENT_TREE_IS_NULL")
-//				parentTree = nullptr;
-//			else if (parentTreeIsNull == "PARENT_TREE_IS_NOT_NULL")
-//				ar >> parentTree;
-//
-//			// =============================================================
-//			// invoke inplace constructor to initialize instance of my_class
-//			// =============================================================
-//			::new(t)ForgBaseLib::FrgBase_TreeItem(myTItemTitle, parentTItem, parentTree);
-//		}
-//	}
-//}
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem, FORGBASE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_TreeItem)
 

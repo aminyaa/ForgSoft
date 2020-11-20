@@ -56,7 +56,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER
+	DECLARE_SAVE_LOAD_HEADER( )
 // 	friend class boost::serialization::access;
 // 	template<class Archive>
 // 	void save(Archive & ar, const unsigned int version) const;
@@ -79,28 +79,6 @@ public Q_SLOTS:
 
 EndForgBaseLib
 
-//DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_TreeItem)
-//{
-//	std::list<ForgBaseLib::FrgBase_TreeItem*> myItems;
-//
-//	QTreeWidgetItemIterator it((QTreeWidget*)this);
-//	while (*it)
-//	{
-//		myItems.push_back(dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it));
-//
-//		++it;
-//	}
-//
-//	ar & myItems;
-//}
-//
-//DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_TreeItem)
-//{
-//	std::list<FrgBase_TreeItem*> myItems;
-//
-//	ar & myItems;
-//}
-
-//BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_Tree)
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_Tree)
 
 #endif // !_FrgBase_Tree_Header

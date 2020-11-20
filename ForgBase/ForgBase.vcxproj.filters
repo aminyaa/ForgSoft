@@ -376,6 +376,78 @@
     <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QTableWidget">
       <UniqueIdentifier>{0767e5fc-6c3c-4e4a-a9cf-ba1d9b4da0c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\Tuple">
+      <UniqueIdentifier>{0f687fb2-70fc-43d4-91e7-df490e7feb9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\StringDouble">
+      <UniqueIdentifier>{ba6d502c-ecde-4c24-97aa-1a00f269e09d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\StringDouble">
+      <UniqueIdentifier>{ad213aca-5e15-4731-8ed6-2b63c6ce1c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\FrgVariant">
+      <UniqueIdentifier>{3249042c-d613-4bad-bb8a-aa20774b176b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Serialization\Specialization\QStringList">
+      <UniqueIdentifier>{15ebbd36-9861-42bb-ae70-a4bf29303505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools">
+      <UniqueIdentifier>{2374f219-fdc3-4008-a097-997aecb86ea0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Parameters">
+      <UniqueIdentifier>{ca84db24-7d58-4016-8674-119390ba1385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter">
+      <UniqueIdentifier>{ac1e219c-b97a-43b6-800c-980b9352877f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Vector">
+      <UniqueIdentifier>{ab532eaf-aa01-4164-adaa-8de81383db1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar">
+      <UniqueIdentifier>{ad142ca7-1902-4559-8cb1-2ae64b5c4afc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Field">
+      <UniqueIdentifier>{ac612abf-16fe-41fd-b7e0-56499b5fcaa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Field\Scalar">
+      <UniqueIdentifier>{9827a279-0b48-494b-98c4-ef60c0fba0f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\Field\Vector">
+      <UniqueIdentifier>{bb910ea4-21aa-4586-94f9-6d5b551b8abc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Field">
+      <UniqueIdentifier>{5860d999-fdfb-446c-a715-ead0b552ca50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Scalar">
+      <UniqueIdentifier>{c2199b4f-0f9c-4960-955b-113e5579586b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Vector">
+      <UniqueIdentifier>{9fd5fa6b-b448-4c3f-8fa8-3ad40e673b9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Dialog">
+      <UniqueIdentifier>{ed854db2-d06d-457b-ad71-e7686d24a0e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Script">
+      <UniqueIdentifier>{c9a1fda1-7352-4a26-b6b5-c011abfddc7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectPath">
+      <UniqueIdentifier>{f45b8c56-02e4-4356-b09c-9ff24742731d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectPath">
+      <UniqueIdentifier>{1526610d-0cf4-4510-bdf7-38f0f5d07926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Styles">
+      <UniqueIdentifier>{7eb1a204-375b-4ba8-ae77-9b838df8fdbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Styles\DarkStyle">
+      <UniqueIdentifier>{0a905784-7a27-42d5-a841-276916b3b2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\MainWindow\FramelessWindow">
+      <UniqueIdentifier>{42d882f5-2ff6-476b-aea5-d1e99b97e232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\MainWindow\WindowDragger">
+      <UniqueIdentifier>{3653e69a-652f-4724-9641-289348d49997}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -642,6 +714,75 @@
     <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem\FrgBase_SerialSpec_QTreeWidgetItem.cxx">
       <Filter>ForgLib\Base\Core\Serialization\Specialization\QTreeWidgetItem</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\Tuple\FrgBase_SerialSpec_Tuple.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\Tuple</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\StringDouble\FrgBase_PrptsVrntStringDouble.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\StringDouble</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\StringDouble\FrgBase_PrptsWdgStringDouble.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\StringDouble</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValue.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Serialization\Specialization\QStringList\FrgBase_SerialSpec_QStringList.cxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QStringList</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Point\FrgBase_Pnt.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools_TItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\FrgBase_ToolsParameters_TItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\FrgBase_ToolsParameter_TItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters\Parameter</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar\FrgBase_ToolsParameterScalar_TItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Field\Scalar\FrgBase_PrptsVrntFieldScalar.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Field\Scalar</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\Field\Vector\FrgBase_PrptsVrntFieldVector.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Field\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Scalar\FrgBase_PrptsWdgFieldScalar.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field\Scalar</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Vector\FrgBase_PrptsWdgFieldVector.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Dialog\FrgBase_PrptsWdgFieldDialog.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\Field\FrgBase_PrptsWdgField.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Vector\FrgBase_ToolsParameterVector_TItem.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters\Parameter\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Script\FrgBase_Script.cxx">
+      <Filter>ForgLib\Base\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\SelectPath\FrgBase_PrptsVrntSelectPath.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectPath</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectPath\FrgBase_PrptsWdgSelectPath.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectPath</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Styles\DarkStyle\FrgBase_StylesDarkStyle.cxx">
+      <Filter>ForgLib\Base\Widgets\Styles\DarkStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\MainWindow\FramelessWindow\FrgBase_FramelessWindow.cxx">
+      <Filter>ForgLib\Base\Widgets\MainWindow\FramelessWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\MainWindow\WindowDragger\FrgBase_WindowDragger.cxx">
+      <Filter>ForgLib\Base\Widgets\MainWindow\WindowDragger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrgBaseGlobals\FrgBaseGlobals.hxx">
@@ -860,6 +1001,30 @@
     <ClInclude Include="ForgLib\Base\Core\Serialization\Global\FrgBase_Serialization_IO.hxx">
       <Filter>ForgLib\Base\Core\Serialization\Global</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\Tuple\FrgBase_SerialSpec_Tuple.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\Tuple</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\FrgVariant\FrgBase_SerialSpec_FrgVariant.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\FrgVariant</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Serialization\Specialization\QStringList\FrgBase_SerialSpec_QStringList.hxx">
+      <Filter>ForgLib\Base\Core\Serialization\Specialization\QStringList</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Point\Pnt2d\FrgBase_Pnt2dI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point\Pnt2d</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Point\Pnt3d\FrgBase_Pnt3dI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point\Pnt3d</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Point\FrgBase_Pnt.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Point\FrgBase_PntI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Script\FrgBase_Script.hxx">
+      <Filter>ForgLib\Base\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.hxx">
@@ -1017,6 +1182,60 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Core\Thread\FrgBase_Thread.hxx">
       <Filter>ForgLib\Base\Core\Thread</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\StringDouble\FrgBase_PrptsVrntStringDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\StringDouble</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\StringDouble\FrgBase_PrptsWdgStringDouble.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\StringDouble</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools_TItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\FrgBase_ToolsParameters_TItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\FrgBase_ToolsParameter_TItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters\Parameter</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar\FrgBase_ToolsParameterScalar_TItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Field\Scalar\FrgBase_PrptsVrntFieldScalar.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Field\Scalar</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\Field\Vector\FrgBase_PrptsVrntFieldVector.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\Field\Vector</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Scalar\FrgBase_PrptsWdgFieldScalar.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field\Scalar</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Dialog\FrgBase_PrptsWdgFieldDialog.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field\Dialog</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Field\FrgBase_PrptsWdgField.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Vector\FrgBase_PrptsWdgFieldVector.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\Field\Vector</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Vector\FrgBase_ToolsParameterVector_TItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Parameters\Parameter\Vector</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\SelectPath\FrgBase_PrptsVrntSelectPath.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectPath</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectPath\FrgBase_PrptsWdgSelectPath.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectPath</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Styles\DarkStyle\FrgBase_StylesDarkStyle.hxx">
+      <Filter>ForgLib\Base\Widgets\Styles\DarkStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\MainWindow\FramelessWindow\FrgBase_FramelessWindow.hxx">
+      <Filter>ForgLib\Base\Widgets\MainWindow\FramelessWindow</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\MainWindow\WindowDragger\FrgBase_WindowDragger.hxx">
+      <Filter>ForgLib\Base\Widgets\MainWindow\WindowDragger</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

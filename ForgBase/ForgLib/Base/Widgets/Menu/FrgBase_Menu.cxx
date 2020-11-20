@@ -15,7 +15,9 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 {
 	theToolBar_ = FrgNew QToolBar(menuTitle, parentMainWindow);
 	
-	if (addTitleAsAnAction)
+	theHasTitleAsAnAction_ = addTitleAsAnAction;
+
+	if (theHasTitleAsAnAction_)
 	{
 		theTitleAsAnAction_ = AddItem(menuTitle, FrgFalse);
 		theTitleAsAnAction_->setEnabled(FrgFalse);
@@ -35,6 +37,7 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 	: QMenu(parentMainWindow)
 {
 	theToolBar_ = FrgNew QToolBar("", parentMainWindow);
+	theHasTitleAsAnAction_ = false;
 }
 
 ForgBaseLib::FrgBase_Menu::~FrgBase_Menu()

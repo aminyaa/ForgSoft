@@ -10,10 +10,8 @@
 #include <QtWidgets/QHeaderView>
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QTreeWidgetItemIterator>
-#include <FrgBase_TreeItem.hxx>
 
-//BOOST_CLASS_EXPORT_GUID(ForgBaseLib::FrgBase_Tree, "ForgBaseLib::FrgBase_Tree")
-//BOOST_CLASS_EXPORT(ForgBaseLib::FrgBase_Tree)
+#include <chaiscript.hpp>
 
 ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 (
@@ -29,32 +27,6 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	this->setFocusPolicy(Qt::StrongFocus);
-
-	QString style = "QTreeView::branch:has-siblings:!adjoins-item {"
-		"border-image:url(:/Icons/TreeStyle/stylesheet-vline.png)0;"
-		"}"
-
-		"QTreeView::branch:has-siblings:adjoins-item {"
-		"    border-image: url(:/Icons/TreeStyle/stylesheet-branch-more.png) 0;"
-		"}"
-
-		"QTreeView::branch:!has-children:!has-siblings:adjoins-item {"
-		"    border-image: url(:/Icons/TreeStyle/stylesheet-branch-end.png) 0;"
-		"}"
-
-		"QTreeView::branch:has-children:!has-siblings:closed,"
-		"QTreeView::branch:closed:has-children:has-siblings {"
-		"        border-image: none;"
-		"        image: url(:/Icons/TreeStyle/User-Interface-Plus-icon.png);"
-		"}"
-
-		"QTreeView::branch:open:has-children:!has-siblings,"
-		"QTreeView::branch:open:has-children:has-siblings  {"
-		"        border-image: none;"
-		"        image: url(:/Icons/TreeStyle/User-Interface-Minus-icon.png);"
-		"}";
-
-	this->setStyleSheet(style);
 
 	QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
 	QObject::connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(itemDoubleClickedSlot(QTreeWidgetItem*, int)));
@@ -73,12 +45,7 @@ ForgBaseLib::FrgBase_Tree::~FrgBase_Tree()
 
 void ForgBaseLib::FrgBase_Tree::FormTree()
 {
-	auto geometryTItem = new FrgBase_TreeItem("Geometry", nullptr, this);
-	new FrgBase_TreeItem("Parts", geometryTItem, this);
-	new FrgBase_TreeItem("Continua", nullptr, this);
-	new FrgBase_TreeItem("Regions", nullptr, this);
-	new FrgBase_TreeItem("Plots", nullptr, this);
-	new FrgBase_TreeItem("Scenes", nullptr, this);
+
 }
 
 void ForgBaseLib::FrgBase_Tree::keyPressEvent
@@ -105,7 +72,7 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 	case Qt::Key_F2:
 		if (this->selectedItems().size() == 1)
 		{
-			auto TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
+			FrgBase_TreeItem* TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
 			if (TItem->GetContextMenu()->GetItem("Rename"))
 				if (TItem->GetContextMenu()->GetItem("Rename")->isEnabled())
 					TItem->RenameTItemSlot();
@@ -116,7 +83,7 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 	case Qt::Key_Space:
 		if (this->selectedItems().size() == 1)
 		{
-			auto TItem = this->selectedItems()[0];
+			QTreeWidgetItem* TItem = this->selectedItems()[0];
 			if (this->isItemExpanded(TItem))
 				this->collapseItem(TItem);
 			else
@@ -128,7 +95,7 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 	case Qt::Key_Delete:
 		if (this->selectedItems().size() == 1)
 		{
-			auto TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
+			FrgBase_TreeItem* TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
 			if(TItem->GetContextMenu()->GetItem("Delete"))
 				if(TItem->GetContextMenu()->GetItem("Delete")->isEnabled())
 					DeleteTreeItemSlot(TItem);
@@ -149,13 +116,13 @@ void ForgBaseLib::FrgBase_Tree::itemClickedSlot
 	if (theLastLeftClickedTItem_)
 		theParentMainWindow_->SetPropertiesPanel(theLastLeftClickedTItem_->GetPropertiesPanel());
 
-	auto TItem = dynamic_cast<FrgBase_TreeItem*>(item);
+	FrgBase_TreeItem* TItem = dynamic_cast<FrgBase_TreeItem*>(item);
 	if (TItem)
 	{
 		QTreeWidgetItemIterator it(this);
 		while (*it)
 		{
-			auto TItemFromIT = dynamic_cast<FrgBase_TreeItem*>((*it));
+			FrgBase_TreeItem* TItemFromIT = dynamic_cast<FrgBase_TreeItem*>((*it));
 			if (TItemFromIT)
 			{
 				TItemFromIT->TItemNotClickedSlot();
@@ -203,8 +170,19 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 	{
 		theLastRightClickedTItem_ = item;
 		if (item->GetContextMenu())
-			if (item->GetContextMenu()->actions().size() > 2)
-				item->GetContextMenu()->exec(globalPos);
+		{
+			if (item->GetContextMenu()->HasTitleAsAnAction())
+			{
+				if (item->GetContextMenu()->actions().size() > 2)
+					item->GetContextMenu()->exec(globalPos);
+			}
+			else
+			{
+				if (item->GetContextMenu()->actions().size() > 0)
+					item->GetContextMenu()->exec(globalPos);
+			}
+		}
+			
 	}
 }
 
@@ -216,12 +194,20 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 
 		if (deleteDlg->exec() == QDialog::Accepted)
 		{
-			auto parentItem = dynamic_cast<FrgBase_TreeItem*>
+			const auto parentItem = dynamic_cast<FrgBase_TreeItem*>
 				(dynamic_cast<QTreeWidgetItem*>(TItem) ? dynamic_cast<QTreeWidgetItem*>(TItem)->parent() : NullPtr);
 
-			emit TItem->TItemIsGoingToBeDeleted();
+			try
+			{
+				emit TItem->TItemIsGoingToBeDeleted();
 
-			delete TItem;
+				delete TItem;
+			}
+			catch (const std::exception& myException)
+			{
+				if (GetParentMainWindow())
+					GetParentMainWindow()->PrintErrorToConsole(QString(myException.what()));
+			}
 
 			ScrollToItem(parentItem);
 		}
@@ -230,7 +216,7 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 
 void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot()
 {
-	auto TItem = dynamic_cast<FrgBase_TreeItem*>(sender());
+	const auto TItem = dynamic_cast<FrgBase_TreeItem*>(sender());
 	DeleteTreeItemSlot(TItem);
 }
 
@@ -275,7 +261,7 @@ ForgBaseLib::FrgBase_TreeItem * ForgBaseLib::FrgBase_Tree::FindTItemByObjectName
 	QTreeWidgetItemIterator it(this);
 	while (*it)
 	{
-		auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
+		const auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
 
 		if (!myTItem)
 		{
@@ -302,7 +288,7 @@ void ForgBaseLib::FrgBase_Tree::SetParentMainWindow(FrgBase_MainWindow* parentMa
 	QTreeWidgetItemIterator it((QTreeWidget*)this);
 	while (*it)
 	{
-		auto myTItem = dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it);
+		ForgBaseLib::FrgBase_TreeItem* myTItem = dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it);
 
 		if (myTItem)
 			myTItem->SetParentMainWindow(theParentMainWindow_);
@@ -313,24 +299,12 @@ void ForgBaseLib::FrgBase_Tree::SetParentMainWindow(FrgBase_MainWindow* parentMa
 
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_Tree)
 {
-	/*std::list<ForgBaseLib::FrgBase_TreeItem*> myItems;
-
-	QTreeWidgetItemIterator it((QTreeWidget*)this);
-	while (*it)
-	{
-		myItems.push_back(dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(*it));
-
-		++it;
-	}
-
-	ar & myItems;*/
+	
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_Tree)
 {
-	/*std::list<FrgBase_TreeItem*> myItems;
-
-	ar & myItems;*/
+	
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_Tree)
