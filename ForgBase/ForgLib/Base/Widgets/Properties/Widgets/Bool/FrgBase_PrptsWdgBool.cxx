@@ -16,10 +16,7 @@ ForgBaseLib::FrgBase_PrptsWdgBool::FrgBase_PrptsWdgBool
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {
-	if (variant)
-	{
-		FormWidget();
-	}
+	
 }
 
 ForgBaseLib::FrgBase_PrptsWdgBool::~FrgBase_PrptsWdgBool()
@@ -37,10 +34,10 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::FormWidget()
 		return;
 	}
 
-	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(ValueChangedSignal(const bool&)), this, SLOT(ValueChangedSlot(const bool&)));
-	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(PrefixChangedSignal(const QString&)), this, SLOT(PrefixChangedSlot(const QString&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntBool*>(theVariant_), SIGNAL(SuffixChangedSignal(const QString&)), this, SLOT(SuffixChangedSlot(const QString&)));
 
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
@@ -76,12 +73,12 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::SetValue(const bool & value)
 	FrgBase_PrptsWdgOneValue<bool, false>::SetValue(value);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgBool::SetPrefix(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgBool::SetPrefix(const QString& prefix)
 {
 	FrgBase_PrptsWdgOneValue<bool, false>::SetPrefix(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgBool::SetSuffix(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgBool::SetSuffix(const QString& suffix)
 {
 	FrgBase_PrptsWdgOneValue<bool, false>::SetSuffix(suffix);
 }
@@ -113,7 +110,7 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::SetVariant(const FrgBase_PrptsVrntOneVal
 //	return FrgBase_PrptsWdgOneValue<bool, false>::eventFilter(obj, event);
 //}
 
-void ForgBaseLib::FrgBase_PrptsWdgBool::DisplayNameChangedSlot(const char* displayName)
+void ForgBaseLib::FrgBase_PrptsWdgBool::DisplayNameChangedSlot(const QString& displayName)
 {
 
 }
@@ -124,18 +121,18 @@ void ForgBaseLib::FrgBase_PrptsWdgBool::ValueChangedSlot(const bool& value)
 		theCheckBox_->setChecked(value);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgBool::PrefixChangedSlot(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgBool::PrefixChangedSlot(const QString& prefix)
 {
 	if (!thePrefixLabel_)
-		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
+		thePrefixLabel_ = new QLabel(prefix + " ");
 	else
 		thePrefixLabel_->setText(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgBool::SuffixChangedSlot(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgBool::SuffixChangedSlot(const QString& suffix)
 {
 	if (!theSuffixLabel_)
-		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
+		theSuffixLabel_ = new QLabel(" " + suffix);
 	else
 		theSuffixLabel_->setText(suffix);
 }

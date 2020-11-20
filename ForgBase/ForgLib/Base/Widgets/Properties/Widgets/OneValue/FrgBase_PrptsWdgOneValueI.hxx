@@ -32,25 +32,25 @@ inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetValue(con
 }
 
 template<typename Type, bool IsBounded>
-inline const char * ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetPrefix() const
+inline const QString& ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetPrefix() const
 {
 	return static_cast<FrgBase_PrptsVrntOneValue<Type, IsBounded>*>(theVariant_)->GetPrefix();
 }
 
 template<typename Type, bool IsBounded>
-inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetPrefix(const char * prefix)
+inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetPrefix(const QString& prefix)
 {
 	static_cast<FrgBase_PrptsVrntOneValue<Type, IsBounded>*>(theVariant_)->SetPrefix(prefix);
 }
 
 template<typename Type, bool IsBounded>
-inline const char * ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetSuffix() const
+inline const QString& ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::GetSuffix() const
 {
 	return static_cast<FrgBase_PrptsVrntOneValue<Type, IsBounded>*>(theVariant_)->GetSuffix();
 }
 
 template<typename Type, bool IsBounded>
-inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetSuffix(const char * suffix)
+inline void ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::SetSuffix(const QString& suffix)
 {
 	static_cast<FrgBase_PrptsVrntOneValue<Type, IsBounded>*>(theVariant_)->SetSuffix(suffix);
 }

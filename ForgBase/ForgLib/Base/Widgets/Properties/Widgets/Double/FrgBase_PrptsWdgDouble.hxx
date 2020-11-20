@@ -35,22 +35,22 @@ public:
 	const double& GetStepValue() const;
 	void SetStepValue(const double& stepValue);
 
-	void SetPrefix(const char* prefix) override;
-	void SetSuffix(const char* suffix) override;
+	void SetPrefix(const QString& prefix) override;
+	void SetSuffix(const QString& suffix) override;
 
 	void SetVariant(const FrgBase_PrptsVrntOneValue<double>& variant) override;
 
-	void FormWidget();
+	void FormWidget() override;
 
 private slots:
 
-	void DisplayNameChangedSlot(const char* displayName);
+	void DisplayNameChangedSlot(const QString& displayName);
 	void ValueChangedSlot(const double& value);
 	void MinimumValueChangedSlot(const double& value);
 	void MaximumValueChangedSlot(const double& value);
 	void StepValueChangedSlot(const double& value);
-	void PrefixChangedSlot(const char* prefix);
-	void SuffixChangedSlot(const char* suffix);
+	void PrefixChangedSlot(const QString& prefix);
+	void SuffixChangedSlot(const QString& suffix);
 	void WdgValueChangedSlot();
 
 private:

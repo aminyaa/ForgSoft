@@ -120,7 +120,7 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, int role, const
 		this->setItem(row, 1, item);
 		this->setCellWidget(row, 1, myWidget);
 
-		if (!std::strcmp(myVariant->GetDisplayName(), "Name"))
+		if (myVariant->GetDisplayName() ==  "Name")
 		{
 			this->cellWidget(row, 1)->setEnabled(false);
 		}

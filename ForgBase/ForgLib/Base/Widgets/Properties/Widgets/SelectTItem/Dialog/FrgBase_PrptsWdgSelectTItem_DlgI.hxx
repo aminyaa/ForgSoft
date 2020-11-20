@@ -14,9 +14,9 @@
 template<typename Type>
 inline ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::FrgBase_PrptsWdgSelectTItem_Dlg
 (
-	const QString & dialogTitle,
-	FrgBase_MainWindow * parentMainWindow,
-	QTreeWidgetItem * selectedTItem
+	const QString& dialogTitle,
+	FrgBase_MainWindow* parentMainWindow,
+	QTreeWidgetItem* selectedTItem
 )
 	: FrgBase_PrptsWdgSelectTItem_Dlg_Base(dialogTitle, parentMainWindow, selectedTItem)
 {
@@ -38,6 +38,8 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::setupLayout()
 
 	theTree_ = new FrgBase_PrptsWdgSelectTItem_Tree();
 
+	connect(theTree_, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
+
 	auto myMainWindow = dynamic_cast<FrgBase_MainWindow*>(this->parentWidget());
 	auto myTree = myMainWindow->GetTree();
 	QTreeWidgetItemIterator it(myTree);
@@ -50,12 +52,22 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::setupLayout()
 			++it;
 			continue;
 		}
-		
+
 		int nTopLevelTItemCount = theTree_->topLevelItemCount();
 		bool found = false;
-		for (int iTopLevelTItemCount = 0; iTopLevelTItemCount < nTopLevelTItemCount; iTopLevelTItemCount++)
+		//for (int iTopLevelTItemCount = 0; iTopLevelTItemCount < nTopLevelTItemCount; iTopLevelTItemCount++)
 		{
-			if (theTree_->topLevelItem(iTopLevelTItemCount) == theMapTreeToSelectionTree_.at((*it)->parent()))
+			int iTopLevelTItemCount;
+			for (auto x : theMapTreeToSelectionTree_)
+			{
+				if (x.first == (*it)->parent())
+				{
+					found = true;
+					iTopLevelTItemCount = theTree_->indexOfTopLevelItem(x.second);
+					break;
+				}
+			}
+			if (found)
 			{
 				auto item = new QTreeWidgetItem();
 				item->setText(0, (*it)->text(0));
@@ -65,8 +77,9 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::setupLayout()
 
 				theMapTreeToSelectionTree_.insert(std::pair<QTreeWidgetItem*, QTreeWidgetItem*>((*it), item));
 				theMapSelectionTreeToTree_.insert(std::pair<QTreeWidgetItem*, QTreeWidgetItem*>(item, (*it)));
+
 				found = true;
-				break;
+				//break;
 			}
 		}
 		if (!found)
@@ -101,7 +114,7 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::setupLayout()
 
 	QObject::connect(theOKButton_, SIGNAL(clicked()), dynamic_cast<FrgBase_PrptsWdgSelectTItem_Dlg_Base*>(this), SLOT(onOK()));
 	QObject::connect(theCancelButton_, SIGNAL(clicked()), dynamic_cast<FrgBase_PrptsWdgSelectTItem_Dlg_Base*>(this), SLOT(reject()));
-	QObject::connect(theTree_, SIGNAL(itemClicked(QTreeWidgetItem *, int)), dynamic_cast<FrgBase_PrptsWdgSelectTItem_Dlg_Base*>(this), SLOT(itemClickedSlot(QTreeWidgetItem *, int)));
+	QObject::connect(theTree_, SIGNAL(itemClicked(QTreeWidgetItem*, int)), dynamic_cast<FrgBase_PrptsWdgSelectTItem_Dlg_Base*>(this), SLOT(itemClickedSlot(QTreeWidgetItem*, int)));
 
 	theOKButton_->setFocus();
 	this->setModal(true);
@@ -110,7 +123,7 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::setupLayout()
 }
 
 template<typename Type>
-inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::TItemIsClicked(QTreeWidgetItem *item, int column)
+inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg<Type>::TItemIsClicked(QTreeWidgetItem* item, int column)
 {
 	if (theTree_->selectedItems().size() == 0)
 		return;

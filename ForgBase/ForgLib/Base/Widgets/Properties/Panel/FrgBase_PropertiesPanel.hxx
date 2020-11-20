@@ -5,6 +5,9 @@
 #include <FrgBase_Global.hxx>
 #include <QtWidgets/QTableWidget>
 
+#include <FrgBase_PrptsVrnt_Include.hxx>
+#include <FrgBase_PrptsWdg_Include.hxx>
+
 BeginForgBaseLib
 
 class FrgBase_PrptsVrnt;
@@ -25,11 +28,18 @@ public:
 	~FrgBase_PropertiesPanel();
 
 	QWidget* GetParentWidget() const { return theParentWidget_; }
+	QObject* GetParentObject() const { return theParentObject_; }
 
 	template<typename T>
-	void AddRow(T* frgVairant, int row);
+	auto AddRow(T* frgVairant, int row);
 	template<typename T>
-	void AddRow(T* frgVairant);
+	auto AddRow(T* frgVairant);
+
+	template<typename T>
+	void RemoveRow(T* frgVariant);
+
+	template<typename T>
+	auto GetWidgetFromVariant(T* frgVariant);
 
 signals:
 

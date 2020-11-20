@@ -14,10 +14,7 @@ ForgBaseLib::FrgBase_PrptsWdgColor::FrgBase_PrptsWdgColor
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {
-	if (variant)
-	{
-		FormWidget();
-	}
+	
 }
 
 ForgBaseLib::FrgBase_PrptsWdgColor::~FrgBase_PrptsWdgColor()
@@ -34,10 +31,10 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::FormWidget()
 		return;
 	}
 
-	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(ValueChangedSignal(const QColor&)), this, SLOT(ValueChangedSlot(const QColor&)));
-	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(PrefixChangedSignal(const QString&)), this, SLOT(PrefixChangedSlot(const QString&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntColor*>(theVariant_), SIGNAL(SuffixChangedSignal(const QString&)), this, SLOT(SuffixChangedSlot(const QString&)));
 
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
@@ -80,12 +77,12 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::SetValue(const QColor & value)
 	FrgBase_PrptsWdgOneValue::SetValue(value);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgColor::SetPrefix(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgColor::SetPrefix(const QString& prefix)
 {
 	FrgBase_PrptsWdgOneValue::SetPrefix(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgColor::SetSuffix(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgColor::SetSuffix(const QString& suffix)
 {
 	FrgBase_PrptsWdgOneValue::SetSuffix(suffix);
 }
@@ -96,7 +93,7 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::SetVariant(const FrgBase_PrptsVrntOneVa
 	this->FormWidget();
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgColor::DisplayNameChangedSlot(const char* displayName)
+void ForgBaseLib::FrgBase_PrptsWdgColor::DisplayNameChangedSlot(const QString& displayName)
 {
 
 }
@@ -114,18 +111,18 @@ void ForgBaseLib::FrgBase_PrptsWdgColor::ValueChangedSlot(const QColor & value)
 	SetLabelWidgetColor(myVariant->GetValue());
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgColor::PrefixChangedSlot(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgColor::PrefixChangedSlot(const QString& prefix)
 {
 	if (!thePrefixLabel_)
-		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
+		thePrefixLabel_ = new QLabel(prefix + " ");
 	else
 		thePrefixLabel_->setText(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgColor::SuffixChangedSlot(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgColor::SuffixChangedSlot(const QString& suffix)
 {
 	if (!theSuffixLabel_)
-		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
+		theSuffixLabel_ = new QLabel(" " + suffix);
 	else
 		theSuffixLabel_->setText(suffix);
 }

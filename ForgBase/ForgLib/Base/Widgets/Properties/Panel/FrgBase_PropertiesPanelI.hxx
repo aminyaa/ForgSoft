@@ -2,8 +2,7 @@
 #ifndef _FrgBase_PropertiesPanelI_Header
 #define _FrgBase_PropertiesPanelI_Header
 
-#include <FrgBase_PrptsVrnt_Include.hxx>
-#include <FrgBase_PrptsWdg_Include.hxx>
+#include <FrgBase_TreeItem.hxx>
 
 #include <QtCore/QMetaObject>
 #include <QtCore/QMetaProperty>
@@ -11,7 +10,7 @@
 #include <QtWidgets/QHeaderView>
 
 template<typename T>
-inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
+inline auto ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 (
 	T* frgVairant,
 	int row
@@ -24,6 +23,8 @@ inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 
 	QTableWidgetItem* item = new QTableWidgetItem;
 	get_widget_type_from_variant<T>::type* myWidget = new get_widget_type_from_variant<T>::type(this, frgVairant);
+	myWidget->FormWidget();
+	myWidget->SetParentTItem(dynamic_cast<FrgBase_TreeItem*>(this->GetParentObject()));
 	this->setItem(row, 1, item);
 	this->setCellWidget(row, 1, myWidget);
 
@@ -33,12 +34,12 @@ inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 		{
 			this->item(row, j)->setFlags(Qt::ItemIsEnabled);
 
-			if (row % 2 == 0)
-				this->item(row, j)->setBackgroundColor(QColor(240, 240, 240));
+			/*if (row % 2 == 0)
+				this->item(row, j)->setBackgroundColor(QColor(240, 240, 240));*/
 		}
 	}
 
-	if (!std::strcmp(frgVairant->GetDisplayName(), "Name"))
+	if (frgVairant->GetDisplayName() == "Name")
 		this->cellWidget(row, 1)->setEnabled(false);
 
 	this->resizeColumnsToContents();
@@ -46,15 +47,47 @@ inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 
 	this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	this->horizontalHeader()->setStretchLastSection(true);
+
+	return myWidget;
 }
 
 template<typename T>
-inline void ForgBaseLib::FrgBase_PropertiesPanel::AddRow
+inline auto ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 (
 	T* frgVairant
 )
 {
-	this->AddRow<T>(frgVairant, this->rowCount());
+	return this->AddRow<T>(frgVairant, this->rowCount());
+}
+
+template<typename T>
+inline void ForgBaseLib::FrgBase_PropertiesPanel::RemoveRow(T* frgVariant)
+{
+	for (int i = 0; i < this->rowCount(); i++)
+	{
+		auto myCastedWidget = dynamic_cast<get_widget_type_from_variant<T>::type*>(this->cellWidget(i, 1));
+		if (myCastedWidget)
+		{
+			if (this->item(i, 0)->data(0).toString() == frgVariant->GetDisplayName())
+				this->removeRow(i);
+		}
+	}
+}
+
+template<typename T>
+inline auto ForgBaseLib::FrgBase_PropertiesPanel::GetWidgetFromVariant(T* frgVariant)
+{
+	for (int i = 0; i < this->rowCount(); i++)
+	{
+		auto myCastedWidget = dynamic_cast<get_widget_type_from_variant<T>::type*>(this->cellWidget(i, 1));
+		if (myCastedWidget)
+		{
+			if(this->item(i, 0)->data(0).toString() == frgVariant->GetDisplayName())
+				return myCastedWidget;
+		}
+	}
+
+	return (get_widget_type_from_variant<T>::type*)(nullptr);
 }
 
 #endif // !_FrgBase_PropertiesPanel_Header

@@ -16,10 +16,7 @@ ForgBaseLib::FrgBase_PrptsWdgSelectTItems::FrgBase_PrptsWdgSelectTItems
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {
-	if (variant)
-	{
-		FormWidget();
-	}
+	
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::FormWidget()
@@ -30,9 +27,9 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::FormWidget()
 		return;
 	}
 
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_), SIGNAL(PrefixChangedSignal(const QString&)), this, SLOT(PrefixChangedSlot(const QString&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItems*>(theVariant_), SIGNAL(SuffixChangedSignal(const QString&)), this, SLOT(SuffixChangedSlot(const QString&)));
 
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
@@ -75,12 +72,12 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SetValue(FrgBase_TreeItem* const
 	FrgBase_PrptsWdgOneValue::SetValue(value);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SetPrefix(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SetPrefix(const QString& prefix)
 {
 	FrgBase_PrptsWdgOneValue::SetPrefix(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SetSuffix(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SetSuffix(const QString& suffix)
 {
 	FrgBase_PrptsWdgOneValue::SetSuffix(suffix);
 }
@@ -90,23 +87,23 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SetVariant(const FrgBase_PrptsVr
 	FrgBase_PrptsWdgOneValue::SetVariant(variant);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::DisplayNameChangedSlot(const char* displayName)
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::DisplayNameChangedSlot(const QString& displayName)
 {
 
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::PrefixChangedSlot(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::PrefixChangedSlot(const QString& prefix)
 {
 	if (!thePrefixLabel_)
-		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
+		thePrefixLabel_ = new QLabel(prefix + " ");
 	else
 		thePrefixLabel_->setText(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SuffixChangedSlot(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItems::SuffixChangedSlot(const QString& suffix)
 {
 	if (!theSuffixLabel_)
-		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
+		theSuffixLabel_ = new QLabel(" " + suffix);
 	else
 		theSuffixLabel_->setText(suffix);
 }

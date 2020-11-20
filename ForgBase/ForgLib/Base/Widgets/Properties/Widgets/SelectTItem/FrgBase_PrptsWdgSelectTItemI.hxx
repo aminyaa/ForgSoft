@@ -2,6 +2,7 @@
 #include <FrgBase_PrptsWdgSelectTItem_Dlg.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_MainWindow.hxx>
+#include <FrgBase_Tree.hxx>
 
 #include <QtWidgets/QLabel>
 
@@ -36,5 +37,13 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItem<Type>::OnButtonClicked()
 	{
 		myVariant->SetValue(dynamic_cast<FrgBase_TreeItem*>(selectTItemDlg->GetSelectedTItem()));
 		theSelectedTItemLabel_->setText(selectTItemDlg->GetSelectedTItem()->text(0));
+	}
+
+	FrgBase_PropertiesPanel* myPanel = dynamic_cast<FrgBase_PropertiesPanel*>(theParent_);
+	if (myPanel)
+	{
+		QTreeWidgetItem* myTItem = dynamic_cast<QTreeWidgetItem*>(myPanel->GetParentObject());
+		if (myTItem)
+			emit myMainWindow->GetTree()->itemClicked(myTItem, 0);
 	}
 }

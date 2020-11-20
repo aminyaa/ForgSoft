@@ -29,18 +29,18 @@ public:
 	~FrgBase_PrptsWdgSelectTItems();
 
 	void SetValue(FrgBase_TreeItem*const & value) override;
-	void SetPrefix(const char* prefix) override;
-	void SetSuffix(const char* suffix) override;
+	void SetPrefix(const QString& prefix) override;
+	void SetSuffix(const QString& suffix) override;
 
 	void SetVariant(const FrgBase_PrptsVrntOneValue<FrgBase_TreeItem*, false>& variant) override;
 
-	void FormWidget();
+	void FormWidget() override;
 
 private slots:
 
-	void DisplayNameChangedSlot(const char* displayName);
-	void PrefixChangedSlot(const char* prefix);
-	void SuffixChangedSlot(const char* suffix);
+	void DisplayNameChangedSlot(const QString& displayName);
+	void PrefixChangedSlot(const QString& prefix);
+	void SuffixChangedSlot(const QString& suffix);
 
 	void OnButtonClickedSlot();
 

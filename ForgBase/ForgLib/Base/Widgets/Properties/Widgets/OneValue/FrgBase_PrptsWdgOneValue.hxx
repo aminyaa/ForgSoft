@@ -10,6 +10,7 @@
 BeginForgBaseLib
 
 class FrgBase_PrptsVrnt;
+class FrgBase_TreeItem;
 
 template <typename Type, bool IsBounded = true>
 class FrgBase_PrptsWdgOneValue
@@ -29,17 +30,25 @@ public:
 	virtual const Type& GetValue() const;
 	virtual void SetValue(const Type& value);
 
-	virtual const char* GetPrefix() const;
-	virtual void SetPrefix(const char* prefix);
-	virtual const char* GetSuffix() const;
-	virtual void SetSuffix(const char* suffix);
+	virtual const QString& GetPrefix() const;
+	virtual void SetPrefix(const QString& prefix);
+	virtual const QString& GetSuffix() const;
+	virtual void SetSuffix(const QString& suffix);
+
+	FrgBase_PrptsVrnt* GetVariantBasePtr() const { return theVariant_; }
 
 	virtual const FrgBase_PrptsVrntOneValue<Type, IsBounded>& GetVariant() const;
 	virtual void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
 
+	virtual void FormWidget() {}
+
+	FrgBase_TreeItem* GetParentTItem() const { return theParentTItem_; }
+	void SetParentTItem(FrgBase_TreeItem* parentTItem) { theParentTItem_ = parentTItem; }
+
 protected:
 
 	FrgBase_PrptsVrnt* theVariant_ = nullptr;
+	FrgBase_TreeItem* theParentTItem_ = nullptr;
 };
 
 EndForgBaseLib

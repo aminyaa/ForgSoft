@@ -1,5 +1,6 @@
 #include <FrgBase_PrptsWdgSelectTItem_Dlg_Base.hxx>
 #include <FrgBase_MainWindow.hxx>
+#include <FrgBase_Tree.hxx>
 #include <FrgBase_TreeItem.hxx>
 #include <FrgBase_PrptsWdgSelectTItem_Tree.hxx>
 
@@ -111,4 +112,13 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg_Base::onOK()
 void ForgBaseLib::FrgBase_PrptsWdgSelectTItem_Dlg_Base::itemClickedSlot(QTreeWidgetItem * item, int column)
 {
 	TItemIsClicked(item, column);
+
+	auto iter = theMapSelectionTreeToTree_.find(item);
+	if (iter == theMapSelectionTreeToTree_.end())
+		return;
+
+	auto myMainWindow = dynamic_cast<FrgBase_MainWindow*>(this->parentWidget());
+	auto myTree = myMainWindow->GetTree();
+
+	emit myTree->itemClicked(theMapSelectionTreeToTree_.at(item), column);
 }

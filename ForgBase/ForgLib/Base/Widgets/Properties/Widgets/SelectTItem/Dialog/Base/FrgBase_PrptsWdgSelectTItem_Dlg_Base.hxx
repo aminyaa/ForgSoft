@@ -52,7 +52,7 @@ public:
 private slots:
 
 	void onOK();
-	void itemClickedSlot(QTreeWidgetItem *item, int column);
+	virtual void itemClickedSlot(QTreeWidgetItem *item, int column);
 
 protected:
 

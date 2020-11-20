@@ -14,10 +14,7 @@ ForgBaseLib::FrgBase_PrptsWdgDouble::FrgBase_PrptsWdgDouble
 )
 	: FrgBase_PrptsWdgOneValue(parent, variant)
 {
-	if (variant)
-	{
-		FormWidget();
-	}
+	
 }
 
 ForgBaseLib::FrgBase_PrptsWdgDouble::~FrgBase_PrptsWdgDouble()
@@ -35,13 +32,13 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::FormWidget()
 		return;
 	}
 
-	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const char*)), this, SLOT(DisplayNameChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(ValueChangedSignal(const double&)), this, SLOT(ValueChangedSlot(const double&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(MinimumValueChangedSignal(const double&)), this, SLOT(MinimumValueChangedSlot(const double&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(MaximumValueChangedSignal(const double&)), this, SLOT(MaximumValueChangedSlot(const double&)));
 	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(StepValueChangedSignal(const double&)), this, SLOT(StepValueChangedSlot(const double&)));
-	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(PrefixChangedSignal(const char*)), this, SLOT(PrefixChangedSlot(const char*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(SuffixChangedSignal(const char*)), this, SLOT(SuffixChangedSlot(const char*)));
+	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(PrefixChangedSignal(const QString&)), this, SLOT(PrefixChangedSlot(const QString&)));
+	connect(dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_), SIGNAL(SuffixChangedSignal(const QString&)), this, SLOT(SuffixChangedSlot(const QString&)));
 
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
@@ -112,12 +109,12 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::SetStepValue(const double & stepValue)
 	dynamic_cast<FrgBase_PrptsVrntDouble*>(theVariant_)->SetStepValue(stepValue);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgDouble::SetPrefix(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgDouble::SetPrefix(const QString& prefix)
 {
 	FrgBase_PrptsWdgOneValue<double>::SetPrefix(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgDouble::SetSuffix(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgDouble::SetSuffix(const QString& suffix)
 {
 	FrgBase_PrptsWdgOneValue<double>::SetSuffix(suffix);
 }
@@ -128,7 +125,7 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::SetVariant(const ForgBaseLib::FrgBase_
 	theSpinBox_->setValue(variant.GetValue());
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgDouble::DisplayNameChangedSlot(const char* displayName)
+void ForgBaseLib::FrgBase_PrptsWdgDouble::DisplayNameChangedSlot(const QString& displayName)
 {
 
 }
@@ -157,18 +154,18 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::StepValueChangedSlot(const double & st
 		theSpinBox_->setSingleStep(stepValue);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgDouble::PrefixChangedSlot(const char * prefix)
+void ForgBaseLib::FrgBase_PrptsWdgDouble::PrefixChangedSlot(const QString& prefix)
 {
 	if (!thePrefixLabel_)
-		thePrefixLabel_ = new QLabel((std::string(prefix) + std::string(" ")).c_str());
+		thePrefixLabel_ = new QLabel(prefix + " ");
 	else
 		thePrefixLabel_->setText(prefix);
 }
 
-void ForgBaseLib::FrgBase_PrptsWdgDouble::SuffixChangedSlot(const char * suffix)
+void ForgBaseLib::FrgBase_PrptsWdgDouble::SuffixChangedSlot(const QString& suffix)
 {
 	if (!theSuffixLabel_)
-		theSuffixLabel_ = new QLabel((std::string(" ") + std::string(suffix)).c_str());
+		theSuffixLabel_ = new QLabel(" " + suffix);
 	else
 		theSuffixLabel_->setText(suffix);
 }

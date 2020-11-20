@@ -22,7 +22,7 @@ public:
 
 	~FrgBase_PrptsWdgSelectTItem();
 
-protected:
+public:
 
 	void OnButtonClicked() override;
 };
