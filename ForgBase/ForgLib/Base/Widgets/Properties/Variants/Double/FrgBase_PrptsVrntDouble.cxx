@@ -1,14 +1,15 @@
 #include <FrgBase_PrptsVrntDouble.hxx>
+#include <FrgBase_SerialSpec_QString.hxx>
 
 ForgBaseLib::FrgBase_PrptsVrntDouble::FrgBase_PrptsVrntDouble
 (
-	const char* displayName,
+	const QString& displayName,
 	double value,
 	double min,
 	double max,
 	double step,
-	const char * prefix,
-	const char * suffix
+	const QString& prefix,
+	const QString& suffix
 )
 	: FrgBase_PrptsVrntOneValue<double>(displayName, value, min, max, step, prefix, suffix)
 {
@@ -49,3 +50,15 @@ void ForgBaseLib::FrgBase_PrptsVrntDouble::SuffixChanged()
 {
 	emit SuffixChangedSignal(GetSuffix());
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_PrptsVrntDouble)
+{
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<double>>(*this);
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_PrptsVrntDouble)
+{
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<double>>(*this);
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_PrptsVrntDouble)

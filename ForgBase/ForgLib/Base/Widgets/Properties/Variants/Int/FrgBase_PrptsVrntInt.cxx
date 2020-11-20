@@ -2,12 +2,12 @@
 
 ForgBaseLib::FrgBase_PrptsVrntInt::FrgBase_PrptsVrntInt
 (
-	const char* displayName,
+	const QString& displayName,
 	int value,
 	int min, int max,
 	int step,
-	const char* prefix,
-	const char* suffix
+	const QString& prefix,
+	const QString& suffix
 )
 	: FrgBase_PrptsVrntOneValue<int>(displayName, value, min, max, step, prefix, suffix)
 {
@@ -48,3 +48,15 @@ void ForgBaseLib::FrgBase_PrptsVrntInt::SuffixChanged()
 {
 	emit SuffixChangedSignal(GetSuffix());
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_PrptsVrntInt)
+{
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<int>>(*this);
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_PrptsVrntInt)
+{
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<int>>(*this);
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_PrptsVrntInt)

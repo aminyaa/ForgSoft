@@ -4,6 +4,8 @@
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_PrptsVrntOneValue.hxx>
+#include <FrgBase_Serialization_Global.hxx>
+
 #include <QtCore/QMetaType>
 #include <QtCore/QObject>
 
@@ -22,13 +24,17 @@ public:
 
 	explicit FrgBase_PrptsVrntString
 	(
-		const char* displayName = "",
+		const QString& displayName = "",
 		const QString& value = "",
-		const char* prefix = "",
-		const char* suffix = ""
+		const QString& prefix = "",
+		const QString& suffix = ""
 	);
 
 	typedef FrgBase_PrptsWdgString VariantWidget;
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
 protected:
 
@@ -39,16 +45,18 @@ protected:
 
 Q_SIGNALS:
 
-	void DisplayNameChangedSignal(const char*);
+	void DisplayNameChangedSignal(const QString&);
 	void ValueChangedSignal(const QString&);
-	void PrefixChangedSignal(const char*);
-	void SuffixChangedSignal(const char*);
+	void PrefixChangedSignal(const QString&);
+	void SuffixChangedSignal(const QString&);
 };
 
 //Q_DECLARE_METATYPE(FrgBase_PrptsVrntString)
 Q_DECLARE_METATYPE(FrgBase_PrptsVrntString*)
 
 EndForgBaseLib
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_PrptsVrntString)
 
 //Q_DECLARE_METATYPE(ForgBaseLib::FrgBase_PrptsVrntString)
 //Q_DECLARE_METATYPE(ForgBaseLib::FrgBase_PrptsVrntString*)

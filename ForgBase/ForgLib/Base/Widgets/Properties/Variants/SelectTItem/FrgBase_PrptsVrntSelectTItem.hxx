@@ -21,10 +21,10 @@ public:
 
 	explicit FrgBase_PrptsVrntSelectTItem
 	(
-		const char* displayName = "",
+		const QString& displayName = "",
 		FrgBase_TreeItem* tItem = nullptr,
-		const char* prefix = "",
-		const char* suffix = ""
+		const QString& prefix = "",
+		const QString& suffix = ""
 	);
 
 	typedef FrgBase_PrptsWdgSelectTItem<Type> VariantWidget;

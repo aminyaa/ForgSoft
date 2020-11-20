@@ -21,10 +21,10 @@ public:
 
 	explicit FrgBase_PrptsVrntSelectTItem_Base
 	(
-		const char* displayName = "",
+		const QString& displayName = "",
 		FrgBase_TreeItem* tItem = nullptr,
-		const char* prefix = "",
-		const char* suffix = ""
+		const QString& prefix = "",
+		const QString& suffix = ""
 	);
 
 protected:
@@ -36,10 +36,10 @@ protected:
 
 Q_SIGNALS:
 
-	void DisplayNameChangedSignal(const char*);
+	void DisplayNameChangedSignal(const QString&);
 	void ValueChangedSignal(FrgBase_TreeItem*);
-	void PrefixChangedSignal(const char*);
-	void SuffixChangedSignal(const char*);
+	void PrefixChangedSignal(const QString&);
+	void SuffixChangedSignal(const QString&);
 };
 
 EndForgBaseLib

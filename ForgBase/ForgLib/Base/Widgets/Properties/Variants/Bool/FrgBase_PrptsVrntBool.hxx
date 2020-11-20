@@ -4,6 +4,8 @@
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_PrptsVrntOneValue.hxx>
+#include <FrgBase_Serialization_Global.hxx>
+
 #include <QtCore/QMetaType>
 #include <QtCore/QObject>
 
@@ -22,13 +24,17 @@ public:
 
 	explicit FrgBase_PrptsVrntBool
 	(
-		const char* displayName = "",
+		const QString& displayName = "",
 		bool value = false,
-		const char* prefix = "",
-		const char* suffix = ""
+		const QString& prefix = "",
+		const QString& suffix = ""
 	);
 
 	typedef FrgBase_PrptsWdgBool VariantWidget;
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
 protected:
 
@@ -39,10 +45,10 @@ protected:
 
 Q_SIGNALS:
 
-	void DisplayNameChangedSignal(const char*);
+	void DisplayNameChangedSignal(const QString&);
 	void ValueChangedSignal(const bool&);
-	void PrefixChangedSignal(const char*);
-	void SuffixChangedSignal(const char*);
+	void PrefixChangedSignal(const QString&);
+	void SuffixChangedSignal(const QString&);
 
 };
 
@@ -50,6 +56,8 @@ Q_SIGNALS:
 Q_DECLARE_METATYPE(FrgBase_PrptsVrntBool*)
 
 EndForgBaseLib
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_PrptsVrntBool)
 
 //Q_DECLARE_METATYPE(ForgBaseLib::FrgBase_PrptsVrntBool)
 //Q_DECLARE_METATYPE(ForgBaseLib::FrgBase_PrptsVrntBool*)

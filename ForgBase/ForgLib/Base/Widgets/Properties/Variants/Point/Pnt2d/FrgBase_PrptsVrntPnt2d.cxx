@@ -3,10 +3,10 @@
 
 ForgBaseLib::FrgBase_PrptsVrntPnt2d::FrgBase_PrptsVrntPnt2d
 (
-	const char* displayName,
+	const QString& displayName,
 	ForgBaseLib::FrgBase_Pnt2d* value,
-	const char* prefix,
-	const char* suffix
+	const QString& prefix,
+	const QString& suffix
 )
 	: FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>(displayName, value, prefix, suffix)
 {
@@ -44,3 +44,27 @@ void ForgBaseLib::FrgBase_PrptsVrntPnt2d::SuffixChanged()
 {
 	emit SuffixChangedSignal(GetSuffix());
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_PrptsVrntPnt2d)
+{
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>>(*this);
+
+	ar& theXPrefixLabel_;
+	ar& theYPrefixLabel_;
+
+	ar& theXSuffixLabel_;
+	ar& theYSuffixLabel_;
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_PrptsVrntPnt2d)
+{
+	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<FrgBase_Pnt2d*, false>>(*this);
+
+	ar& theXPrefixLabel_;
+	ar& theYPrefixLabel_;
+
+	ar& theXSuffixLabel_;
+	ar& theYSuffixLabel_;
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_PrptsVrntPnt2d)

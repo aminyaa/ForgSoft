@@ -2,10 +2,10 @@
 
 ForgBaseLib::FrgBase_PrptsVrntSelectTItem_Base::FrgBase_PrptsVrntSelectTItem_Base
 (
-	const char* displayName,
+	const QString& displayName,
 	FrgBase_TreeItem* tItem,
-	const char* prefix,
-	const char* suffix
+	const QString& prefix,
+	const QString& suffix
 )
 	: FrgBase_PrptsVrntOneValue(displayName, tItem, prefix, suffix)
 {

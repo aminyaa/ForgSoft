@@ -1,16 +1,22 @@
 #pragma once
 
+template<typename Type, bool IsBounded>
+inline ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::FrgBase_PrptsVrntOneValue()
+{
+
+}
+
 template <typename Type, bool IsBounded>
 template <typename>
 inline ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::FrgBase_PrptsVrntOneValue
 (
-	const char* displayName,
+	const QString& displayName,
 	Type value,
 	Type min,
 	Type max,
 	Type step,
-	const char * prefix,
-	const char * suffix
+	const QString& prefix,
+	const QString& suffix
 )
 	: theDisplayName_(displayName)
 	, theValue_(value)
@@ -27,10 +33,10 @@ template<typename Type, bool IsBounded>
 template<typename>
 inline ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::FrgBase_PrptsVrntOneValue
 (
-	const char* displayName,
+	const QString& displayName,
 	Type value,
-	const char * prefix,
-	const char * suffix
+	const QString& prefix,
+	const QString& suffix
 )
 	: theDisplayName_(displayName)
 	, theValue_(value)
@@ -41,13 +47,13 @@ inline ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::FrgBase_PrptsVrn
 }
 
 template<typename Type, bool IsBounded>
-inline const char * ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetDisplayName() const
+inline const QString& ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetDisplayName() const
 {
 	return theDisplayName_;
 }
 
 template<typename Type, bool IsBounded>
-inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetDisplayName(const char * name)
+inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetDisplayName(const QString& name)
 {
 	theDisplayName_ = name;
 	DisplayNameChanged();
@@ -55,6 +61,12 @@ inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetDisplayN
 
 template<typename Type, bool IsBounded>
 inline const Type& ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetValue() const
+{
+	return theValue_;
+}
+
+template<typename Type, bool IsBounded>
+inline Type& ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetValueRef()
 {
 	return theValue_;
 }
@@ -118,26 +130,26 @@ inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetStepValu
 }
 
 template<typename Type, bool IsBounded>
-inline const char * ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetPrefix() const
+inline const QString& ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetPrefix() const
 {
 	return thePrefix_;
 }
 
 template<typename Type, bool IsBounded>
-inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetPrefix(const char * prefix)
+inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetPrefix(const QString& prefix)
 {
 	thePrefix_ = prefix;
 	PrefixChanged();
 }
 
 template<typename Type, bool IsBounded>
-inline const char * ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetSuffix() const
+inline const QString& ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::GetSuffix() const
 {
 	return theSuffix_;
 }
 
 template<typename Type, bool IsBounded>
-inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetSuffix(const char * suffix)
+inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetSuffix(const QString& suffix)
 {
 	theSuffix_ = suffix;
 	SuffixChanged();
@@ -149,7 +161,8 @@ inline void ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>::SetVariant(
 	theDisplayName_ = variant.GetDisplayName();
 	theValue_ = variant.GetValue();
 
-	if constexpr (is_number<Type>::value)
+	//if constexpr (is_number<Type>::value)
+	if constexpr (IsBounded)
 	{
 		theMinValue_ = variant.GetMinimumValue();
 		theMaxValue_ = variant.GetMaximumValue();

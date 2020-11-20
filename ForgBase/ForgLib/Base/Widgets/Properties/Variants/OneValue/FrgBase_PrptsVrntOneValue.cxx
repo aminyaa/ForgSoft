@@ -1,0 +1,1 @@
+#include <FrgBase_PrptsVrntOneValue.hxx>

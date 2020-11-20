@@ -4,6 +4,10 @@
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_Object.hxx>
+#include <FrgBase_Serialization_Global.hxx>
+#include <FrgBase_SerialSpec_FrgVariant.hxx>
+
+#include <QtCore/QString>
 
 BeginForgBaseLib
 
@@ -17,11 +21,11 @@ public:
 
 	virtual ~FrgBase_PrptsVrnt() {}
 
-	virtual const char* GetDisplayName() const { return ""; }
-	virtual const char* GetPrefix() const { return ""; }
-	virtual void SetPrefix(const char* prefix) {}
-	virtual const char* GetSuffix() const { return ""; }
-	virtual void SetSuffix(const char* suffix) {}
+	virtual const QString& GetDisplayName() const { return std::move(QString("")); }
+	virtual const QString& GetPrefix() const { return std::move(QString("")); }
+	virtual void SetPrefix(const QString& prefix) {}
+	virtual const QString& GetSuffix() const { return std::move(QString("")); }
+	virtual void SetSuffix(const QString& suffix) {}
 };
 
 template <typename Type, bool IsBounded = true>
@@ -45,19 +49,22 @@ public:
 	using resolveNumberType = std::enable_if_t<std::is_same_v<IntType, T1> || std::is_same_v<DoubleType, T1> || std::is_same_v<FloatType, T1>>;
 	/*==============================================================================================================================*/
 	/* Constructors*/
-	template <typename  = typename std::enable_if_t<IsBounded>>
-	FrgBase_PrptsVrntOneValue(const char* displayName, Type value, Type min, Type max, Type step, const char* prefix, const char* suffix);
+	FrgBase_PrptsVrntOneValue();
+
+	template <typename = typename std::enable_if_t<IsBounded>>
+	FrgBase_PrptsVrntOneValue(const QString& displayName, Type value, Type min, Type max, Type step, const QString& prefix, const QString& suffix);
 
 	template <typename = typename std::enable_if_t<!IsBounded>>
-	FrgBase_PrptsVrntOneValue(const char* displayName, Type value, const char* prefix, const char* suffix);
+	FrgBase_PrptsVrntOneValue(const QString& displayName, Type value, const QString& prefix, const QString& suffix);
 	/*==============================================================================================================================*/
 
 	virtual ~FrgBase_PrptsVrntOneValue() {}
 
-	const char* GetDisplayName() const override;
-	void SetDisplayName(const char* name);
+	const QString& GetDisplayName() const override;
+	void SetDisplayName(const QString& name);
 
 	const Type& GetValue() const;
+	Type& GetValueRef();
 	void SetValue(const Type& value);
 
 	template <typename = typename std::enable_if_t<IsBounded>>
@@ -78,12 +85,16 @@ public:
 	template <typename = typename std::enable_if_t<IsBounded>>
 	void SetStepValue(const Type& stepValue);
 
-	const char* GetPrefix() const override;
-	void SetPrefix(const char* prefix) override;
-	const char* GetSuffix() const override;
-	void SetSuffix(const char* suffix) override;
+	const QString& GetPrefix() const override;
+	void SetPrefix(const QString& prefix) override;
+	const QString& GetSuffix() const override;
+	void SetSuffix(const QString& suffix) override;
 
 	void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
+
+//private:
+//
+//	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
 protected:
 
@@ -99,19 +110,39 @@ protected:
 
 private:
 
-	const char* theDisplayName_ = "";
+	QString theDisplayName_ = "";
 	Type theValue_;
 
 	Type theMinValue_;
 	Type theMaxValue_;
 	Type theStepValue_;
 
-	const char* thePrefix_ = "";
-	const char* theSuffix_ = "";
+	QString thePrefix_ = "";
+	QString theSuffix_ = "";
 };
 
 EndForgBaseLib
 
 #include <FrgBase_PrptsVrntOneValueI.hxx>
+
+//template<typename Type, bool IsBounded>
+//using myArgument = ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>;
+//
+//namespace boost
+//{
+//	namespace serialization
+//	{
+//		
+//		template <typename Type, bool IsBounded>
+//		struct guid_defined<ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>> : boost::mpl::true_ {};
+//
+//		
+//		template <typename Type, bool IsBounded>
+//		inline const char* guid<ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>>()
+//		{
+//			return "ForgBaseLib::FrgBase_PrptsVrntOneValue<Type, IsBounded>";
+//		}
+//	} /* serialization */
+//} /* boost */
 
 #endif // !_FrgBase_PrptsVrntOneValue_Header

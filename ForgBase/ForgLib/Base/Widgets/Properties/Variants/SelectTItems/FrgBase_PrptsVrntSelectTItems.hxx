@@ -24,10 +24,10 @@ public:
 
 	explicit FrgBase_PrptsVrntSelectTItems
 	(
-		const char* displayName = "",
+		const QString& displayName = "",
 		FrgBase_TreeItem* parentOfTItems = NullPtr,
-		const char* prefix = "",
-		const char* suffix = ""
+		const QString& prefix = "",
+		const QString& suffix = ""
 	);
 
 	typedef FrgBase_PrptsWdgSelectTItems VariantWidget;
@@ -48,10 +48,10 @@ public:
 
 Q_SIGNALS:
 
-	void DisplayNameChangedSignal(const char*);
+	void DisplayNameChangedSignal(const QString&);
 	void ValueChangedSignal(FrgBase_TreeItem*);
-	void PrefixChangedSignal(const char*);
-	void SuffixChangedSignal(const char*);
+	void PrefixChangedSignal(const QString&);
+	void SuffixChangedSignal(const QString&);
 	void SelectedTItemsChangedSignal(std::vector<QTreeWidgetItem*>);
 
 private:
