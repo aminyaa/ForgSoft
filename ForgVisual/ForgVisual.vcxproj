@@ -13,16 +13,16 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{09FAA12B-7698-41FE-85C6-4FDBD685C868}</ProjectGuid>
     <Keyword>QtVS_v301</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -31,9 +31,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)D</TargetName>
+    <LibraryPath>$(OPENCASCADE_INCLUDELIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCASCADE_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -68,7 +72,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(BOOST_INCLUDEDIR);$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkActor;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkContextView;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\ChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Legend;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManip;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Base;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Point;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Line;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Polyline;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Box;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Base;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(BOOST_INCLUDEDIR);$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkActor;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkContextView;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\ChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Legend;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\Actors\Grid;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManip;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Base\Entity;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Base;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve\line;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Surface;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Mesh;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Point;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Solid;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Solid\Conic;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Text;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Background Color;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Axes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -79,7 +83,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;libboost_serialization-vc141-mt-gd-x64-1_69.lib;ForgBaseD.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;TKernel.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKMath.lib;TKStd.lib;boost_serialization-vc142-mt-gd-x64-1_73.lib;ForgBaseD.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)ForgBase\ThirdParties\VTK\lib\Debug;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -88,6 +92,13 @@ if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
 for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
 for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;libboost_serialization-vc142-mt-gd-x64-1_73.lib;ForgBaseD.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)ForgBase\ThirdParties\VTK\lib\Debug;$(BOOST_INCLUDELIB);C:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -95,7 +106,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(BOOST_INCLUDEDIR);$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkActor;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkContextView;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\ChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Legend;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManip;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Base;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Point;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Line;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Polyline;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Box;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Base;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\include;$(BOOST_INCLUDEDIR);$(MsBuildProjectDirectory)\ThirdParties\VTK\include;$(MsBuildProjectDirectory)\ForgLib\Visual\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Global;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkActor;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkContextView;$(MsBuildProjectDirectory)\ForgLib\Visual\Serialization\Specialization\vtkChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\ChartXY;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Data Series\Symbol Style;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Bottom Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\2D\Tools\Legend;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Plot\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\Actors\Grid;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\CameraManip;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Base\Entity;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Base;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve\line;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Surface;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Mesh;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Point;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Solid;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Solid\Conic;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Actors\Text;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\InteractorStyle;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Background Color;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid;$(MsBuildProjectDirectory)\ForgLib\Visual\Scene\TreeItem\Attributes\Axes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -106,7 +117,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;boost_serialization-vc141-mt-x64-1_69.lib;ForgBase.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;TKernel.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKMath.lib;TKStd.lib;boost_serialization-vc142-mt-x64-1_73.lib;ForgBase.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)ForgBase\ThirdParties\VTK\lib\Debug;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
@@ -115,6 +126,9 @@ if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
 for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
 for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
     </PostBuildEvent>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.cxx" />
@@ -123,6 +137,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Entity\Title\FrgVisual_Plot2DAxisTitle_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\FrgVisual_Plot2DAxes_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Axes\Left Axis\FrgVisual_Plot2DLeftAxis_TItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.cxx" />
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\FrgVisual_Plot2D_ChartXY.cxx" />
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Data Series\FrgVisual_Plot2DDataSeries_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\Data Series\Line Style\FrgVisual_Plot2DLnStyle_TItem.cxx" />
@@ -132,22 +147,40 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClCompile Include="ForgLib\Visual\Plot\FrgVisual_Plot.cxx" />
     <ClCompile Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\Actors\Grid\FrgVisual_GridActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle\FrgVisual_RectangleActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx" />
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base\FrgVisual_3DBaseActor.cxx" />
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_3DBoxActor.cxx" />
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_3DLineActor.cxx" />
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_3DPointActor.cxx" />
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_3DPolylineActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box\FrgVisual_BoxActor.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper\FrgVisual_Scene_CameraManipGUIHelper.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\FrgVisual_Scene.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Base\Entity\FrgVisual_BaseActor_Entity.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\FrgVisual_CurveActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line\FrgVisual_LineActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\FrgVisual_PolylineActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\FrgVisual_MeshActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint\FrgVisual_CtrlPointActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Point\FrgVisual_PointActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic\FrgVisual_ConicActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Solid\FrgVisual_SolidActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Surface\FrgVisual_SurfaceActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Text\FrgVisual_TextActor.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite\FrgVisual_ContoursLUTable_BlackAndWhite.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow\FrgVisual_ContoursLUTable_InverseRainbow.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow\FrgVisual_ContoursLUTable_Rainbow.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes\FrgVisual_SceneAttAxes_TItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\FrgVisual_SceneAttBackColor_TItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient\FrgVisual_SceneAttBackColorGradient_TItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid\FrgVisual_SceneAttBackColorSolid_TItem.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\FrgVisual_SceneAttributes_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Serialization\Specialization\vtkActor\FrgVisual_SerialSpec_vtkActor.cxx" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc" />
@@ -156,10 +189,45 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global.hxx" />
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Build.hxx" />
     <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base\FrgVisual_3DBaseActor.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_3DLineActor.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_3DPointActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2DI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\Actors\Grid\FrgVisual_GridActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle\FrgVisual_RectangleActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box\FrgVisual_BoxActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_SceneI.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActor.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\Tools\Actors\Base\Entity\FrgVisual_BaseActor_Entity.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\FrgVisual_CurveActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\FrgVisual_CurveActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line\FrgVisual_LineActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line\FrgVisual_LineActorI.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\FrgVisual_PolylineActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\FrgVisual_PolylineActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\FrgVisual_MeshActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\FrgVisual_MeshActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint\FrgVisual_CtrlPointActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint\FrgVisual_CtrlPointActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\FrgVisual_PointActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\FrgVisual_PointActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic\FrgVisual_ConicActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic\FrgVisual_ConicActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\FrgVisual_SolidActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\FrgVisual_SolidActorI.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Surface\FrgVisual_SurfaceActor.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyle.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Text\FrgVisual_TextActor.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite\FrgVisual_ContoursLUTable_BlackAndWhite.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow\FrgVisual_ContoursLUTable_InverseRainbow.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow\FrgVisual_ContoursLUTable_Rainbow.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyleI.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\FrgVisual_SceneAttributes_TItem.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\FrgVisual_SceneAttBackColor_TItem.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient\FrgVisual_SceneAttBackColorGradient_TItem.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid\FrgVisual_SceneAttBackColorSolid_TItem.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes\FrgVisual_SceneAttAxes_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Serialization\Global\FrgVisual_Serialization_Global.hxx" />
     <ClInclude Include="ForgLib\Visual\Serialization\Specialization\vtkActor\FrgVisual_SerialSpec_vtkActor.hxx" />
     <ClInclude Include="ForgLib\Visual\Serialization\Specialization\vtkChartXY\FrgVisual_SerialSpec_vtkChartXY.hxx" />
@@ -181,18 +249,24 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClInclude Include="ForgLib\Visual\Plot\FrgVisual_Plot.hxx" />
     <QtMoc Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />
     <QtMoc Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_3DBoxActor.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_3DPolylineActor.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper\FrgVisual_Scene_CameraManipGUIHelper.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx" />
     <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx" />
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ForgBase\ForgBase.vcxproj">
+      <Project>{81f5e528-f15d-4792-8c1b-84c8d6f3a8ee}</Project>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

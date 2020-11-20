@@ -122,18 +122,6 @@
     <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors">
       <UniqueIdentifier>{aaa2dfb4-ecd7-4f56-b11b-5715b0ee32c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line">
-      <UniqueIdentifier>{025c7017-8a24-4651-9b8b-fdbbba1c4da7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point">
-      <UniqueIdentifier>{56f1e3bc-01a9-4418-b67d-4d7302065701}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline">
-      <UniqueIdentifier>{345eeafd-2713-4381-b9e0-acf0ea71a0e9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box">
-      <UniqueIdentifier>{e1316c4d-3331-44fa-ae3c-95cf0f842c2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ForgLib\Visual\Serialization">
       <UniqueIdentifier>{51190512-6f66-439c-80ee-1769f2577019}</UniqueIdentifier>
     </Filter>
@@ -158,20 +146,110 @@
     <Filter Include="ForgLib\Visual\Serialization\Specialization\vtkActor">
       <UniqueIdentifier>{47480f2d-dc22-4e41-9366-3c40e3c83c48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base">
-      <UniqueIdentifier>{4cf15a68-77b4-4220-a7e9-dc328b17f20f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ForgLib\Visual\Scene\Tools\Actors">
       <UniqueIdentifier>{8cb396cc-58f6-425a-a609-e3b6be07ed6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Base">
       <UniqueIdentifier>{761ce9c6-13ca-4490-8979-c4f7e6704061}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Curve">
+      <UniqueIdentifier>{d4b0400a-a292-45cb-8353-9e37c75610b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Surface">
+      <UniqueIdentifier>{d8536b3c-2d54-493b-a336-2041817f8fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Mesh">
+      <UniqueIdentifier>{e57edc41-532a-4c20-9b4e-369a5da76166}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Point">
+      <UniqueIdentifier>{4a89dd08-db22-494a-899d-d4cd812ae8a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Solid">
+      <UniqueIdentifier>{4b2e54af-46e8-472a-98ed-6a15ac6c3379}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic">
+      <UniqueIdentifier>{a5b3008f-03a5-470c-b358-603abcbd7eba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid">
+      <UniqueIdentifier>{3b634cc2-cba5-426a-8d83-1d14036ae3a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic">
+      <UniqueIdentifier>{317f7c27-c0a3-4ff4-8a91-5d94feb4e193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box">
+      <UniqueIdentifier>{7dfee12f-7c00-4f22-bd29-08a7e00743cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\InteractorStyle">
+      <UniqueIdentifier>{847a8988-02cc-49cf-829c-b03b08d74452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\Actors">
+      <UniqueIdentifier>{b1495a21-dd16-4ee9-8be4-a91b849daffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid">
+      <UniqueIdentifier>{0f845253-593a-4a6f-9968-c8dac73c3e82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic">
+      <UniqueIdentifier>{e96618c0-0998-465e-938c-77e3eebd7f47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle">
+      <UniqueIdentifier>{dab50c6a-3bd0-44ef-b0fa-79636a24aad8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\Actors\Grid">
+      <UniqueIdentifier>{1fb02c42-e2d0-4b3b-a146-246cc18334bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\TreeItem\Attributes">
+      <UniqueIdentifier>{9dfdd527-f9cc-4cd1-a48c-6c212e70c8aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color">
+      <UniqueIdentifier>{b35eb4ee-e2eb-4893-8233-44c7969fc6e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient">
+      <UniqueIdentifier>{ab748cde-2117-4463-8a5a-682d03cff4da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid">
+      <UniqueIdentifier>{22ab0242-02d2-4832-b9f3-dab917cf9c8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes">
+      <UniqueIdentifier>{cd5a7c9b-d2d8-40c4-b71a-b82992f531a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Base\Entity">
+      <UniqueIdentifier>{8e0e1b46-a9e7-4a25-8234-4b5284215ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint">
+      <UniqueIdentifier>{4dbe0129-2b1c-4db0-911a-5ca12fc3c336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line">
+      <UniqueIdentifier>{6b13c2c9-2142-4bde-aefd-ac83f5abc7f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline">
+      <UniqueIdentifier>{42537a7a-7eb8-4047-b5aa-3740bf1bdf3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine">
+      <UniqueIdentifier>{800a8e36-99c8-4e9e-abb7-f26130164568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Contours">
+      <UniqueIdentifier>{36e5b10f-9f13-4f0a-870f-9f28d5241480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables">
+      <UniqueIdentifier>{76575636-8d46-428f-ae68-ce33b7b22b84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow">
+      <UniqueIdentifier>{4fb4a30a-3dd0-418d-8664-0d1a4b751cda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow">
+      <UniqueIdentifier>{55b6695e-465d-43cb-b381-e7f6ed879f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite">
+      <UniqueIdentifier>{bfc677c7-1b52-4bbd-b539-42c39348f9a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Text">
+      <UniqueIdentifier>{b90f6d75-1f6a-4231-bc47-26ee1e8a44b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox">
+      <UniqueIdentifier>{a315b5de-2c03-4f62-9913-1ada48fce809}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
     </ClCompile>
@@ -244,23 +322,83 @@
     <ClCompile Include="ForgLib\Visual\Serialization\Specialization\vtkActor\FrgVisual_SerialSpec_vtkActor.cxx">
       <Filter>ForgLib\Visual\Serialization\Specialization\vtkActor</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_3DLineActor.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Line</Filter>
-    </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_3DBoxActor.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Box</Filter>
-    </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_3DPointActor.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Point</Filter>
-    </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_3DPolylineActor.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Polyline</Filter>
-    </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base\FrgVisual_3DBaseActor.cxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Base</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActor.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\FrgVisual_CurveActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Surface\FrgVisual_SurfaceActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Surface</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\FrgVisual_MeshActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Point\FrgVisual_PointActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Solid\FrgVisual_SolidActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Solid</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic\FrgVisual_ConicActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Solid\Conic</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.cxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\FrgVisual_SceneAttributes_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\FrgVisual_SceneAttBackColor_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Background Color</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient\FrgVisual_SceneAttBackColorGradient_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid\FrgVisual_SceneAttBackColorSolid_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes\FrgVisual_SceneAttAxes_TItem.cxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Axes</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Base\Entity\FrgVisual_BaseActor_Entity.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Base\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint\FrgVisual_CtrlPointActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line\FrgVisual_LineActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\FrgVisual_PolylineActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box\FrgVisual_BoxActor.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle\FrgVisual_RectangleActor.cxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\Actors\Grid\FrgVisual_GridActor.cxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\Actors\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow\FrgVisual_ContoursLUTable_Rainbow.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow\FrgVisual_ContoursLUTable_InverseRainbow.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite\FrgVisual_ContoursLUTable_BlackAndWhite.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Text\FrgVisual_TextActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.cxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,15 +418,6 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx">
       <Filter>ForgLib\Visual\Scene\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx">
-      <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
-      <Filter>ForgLib\Visual\Scene</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
@@ -329,31 +458,103 @@
     <ClInclude Include="ForgLib\Visual\Serialization\Specialization\vtkActor\FrgVisual_SerialSpec_vtkActor.hxx">
       <Filter>ForgLib\Visual\Serialization\Specialization\vtkActor</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Base\FrgVisual_3DBaseActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Base</Filter>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\FrgVisual_CurveActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Line\FrgVisual_3DLineActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Line</Filter>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Surface\FrgVisual_SurfaceActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Surface</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Box\FrgVisual_3DBoxActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Box</Filter>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\FrgVisual_MeshActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Point\FrgVisual_3DPointActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Point</Filter>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\FrgVisual_PointActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Polyline\FrgVisual_3DPolylineActor.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Polyline</Filter>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\FrgVisual_SolidActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Solid</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic\FrgVisual_ConicActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Solid\Conic</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyleI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\InteractorStyle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2DI.hxx">
+      <Filter>ForgLib\Visual\Scene\2D</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActor.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Base\FrgVisual_BaseActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\FrgVisual_CurveActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\FrgVisual_PointActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint\FrgVisual_CtrlPointActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint\FrgVisual_CtrlPointActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\CtrlPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line\FrgVisual_LineActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Line\FrgVisual_LineActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\FrgVisual_PolylineActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\FrgVisual_PolylineActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\FrgVisual_SolidActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Solid</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Solid\Conic\FrgVisual_ConicActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Solid\Conic</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\FrgVisual_MeshActorI.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box\FrgVisual_BoxActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle\FrgVisual_RectangleActor.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\Actors\Grid\FrgVisual_GridActor.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\Actors\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\FrgVisual_SceneI.hxx">
+      <Filter>ForgLib\Visual\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow\FrgVisual_ContoursLUTable_Rainbow.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow\FrgVisual_ContoursLUTable_InverseRainbow.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite\FrgVisual_ContoursLUTable_BlackAndWhite.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\BlackAndWhite</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Text\FrgVisual_TextActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.hxx">
+      <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
       <Filter>ForgLib\Visual\Scene\TreeItem</Filter>
-    </QtMoc>
-    <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.hxx">
-      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.hxx">
       <Filter>ForgLib\Visual\Scene\2D\TreeItem</Filter>
@@ -390,6 +591,42 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Plot\2D\Tools\Axes\FrgVisual_Plot2DAxes_TItem.hxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\Axes</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\FrgVisual_Scene.hxx">
+      <Filter>ForgLib\Visual\Scene</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyle.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\InteractorStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\FrgVisual_SceneAttributes_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\FrgVisual_SceneAttBackColor_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Background Color</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient\FrgVisual_SceneAttBackColorGradient_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid\FrgVisual_SceneAttBackColorSolid_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Solid</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes\FrgVisual_SceneAttAxes_TItem.hxx">
+      <Filter>ForgLib\Visual\Scene\TreeItem\Attributes\Axes</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\Tools\Actors\Base\Entity\FrgVisual_BaseActor_Entity.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Base\Entity</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
