@@ -53,5 +53,37 @@
         <file>Icons/TreeStyle/P Sub Icon.png</file>
         <file>Icons/Plots/2D/Plot2D.png</file>
         <file>Icons/TreeStyle/Circle.png</file>
+        <file>styles/QCodeEditor/drakula.xml</file>
+        <file>styles/DarkStyle/DarkStyle.qss</file>
+        <file>styles/DarkStyle/icon_branch_closed.png</file>
+        <file>styles/DarkStyle/icon_branch_end.png</file>
+        <file>styles/DarkStyle/icon_branch_more.png</file>
+        <file>styles/DarkStyle/icon_branch_open.png</file>
+        <file>styles/DarkStyle/icon_checkbox_checked.png</file>
+        <file>styles/DarkStyle/icon_checkbox_checked_disabled.png</file>
+        <file>styles/DarkStyle/icon_checkbox_checked_pressed.png</file>
+        <file>styles/DarkStyle/icon_checkbox_indeterminate.png</file>
+        <file>styles/DarkStyle/icon_checkbox_indeterminate_disabled.png</file>
+        <file>styles/DarkStyle/icon_checkbox_indeterminate_pressed.png</file>
+        <file>styles/DarkStyle/icon_checkbox_unchecked.png</file>
+        <file>styles/DarkStyle/icon_checkbox_unchecked_disabled.png</file>
+        <file>styles/DarkStyle/icon_checkbox_unchecked_pressed.png</file>
+        <file>styles/DarkStyle/icon_close.png</file>
+        <file>styles/DarkStyle/icon_radiobutton_checked.png</file>
+        <file>styles/DarkStyle/icon_radiobutton_checked_disabled.png</file>
+        <file>styles/DarkStyle/icon_radiobutton_checked_pressed.png</file>
+        <file>styles/DarkStyle/icon_radiobutton_unchecked.png</file>
+        <file>styles/DarkStyle/icon_radiobutton_unchecked_disabled.png</file>
+        <file>styles/DarkStyle/icon_radiobutton_unchecked_pressed.png</file>
+        <file>styles/DarkStyle/icon_restore.png</file>
+        <file>styles/DarkStyle/icon_undock.png</file>
+        <file>styles/DarkStyle/icon_vline.png</file>
+        <file>styles/DarkStyle/images/icon_window_close.png</file>
+        <file>styles/DarkStyle/images/icon_window_maximize.png</file>
+        <file>styles/DarkStyle/images/icon_window_minimize.png</file>
+        <file>styles/DarkStyle/images/icon_window_restore.png</file>
+        <file>styles/Default/Default.qss</file>
+        <file>Icons/TreeStyle/User-Interface-Minus-icon_Black.png</file>
+        <file>Icons/TreeStyle/User-Interface-Plus-icon_Black.png</file>
     </qresource>
 </RCC>
