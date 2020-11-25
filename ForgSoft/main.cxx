@@ -13,9 +13,9 @@ int main(int argc, char** argv)
 	std::shared_ptr<ForgMarineLib::FrgMarine_MainWindow> mainWindow = std::make_shared<ForgMarineLib::FrgMarine_MainWindow>();
 
 	mainWindow->SetQApplication(&app);
-	mainWindow->Show();
+	mainWindow->Show(true);
 	mainWindow->SetGeometry(80);
-	mainWindow->GetProgressBar()->SetProgressBarBusy();
+	//mainWindow->GetProgressBar()->SetProgressBarBusy();
 
 	return app.exec();
 }
