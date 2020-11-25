@@ -3,7 +3,7 @@
 #define _FrgVisual_Scene_Header
 
 #include <FrgVisual_Global.hxx>
-#include <QVTKOpenGLNativeWidget.h>
+#include <QtWidgets/QMainWindow>
 
 #include <FrgVisual_Serialization_Global.hxx>
 
@@ -14,8 +14,10 @@ class vtkInteractorStyle;
 class vtkCamera;
 class vtkTextActor;
 class vtkAxesActor;
+class vtkCameraInterpolator;
 
 class QPoint;
+class QVTKOpenGLNativeWidget;
 
 template<class T>
 class vtkSmartPointer;
@@ -34,7 +36,7 @@ BeginForgVisualLib
 class FrgVisual_Scene_InterStyle_Base;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene_Entity
-	: public QVTKOpenGLNativeWidget
+	: public QMainWindow
 {
 
 	Q_OBJECT
@@ -61,6 +63,11 @@ public:
 
 	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
 
+protected:
+
+	QVTKOpenGLNativeWidget* theOpenGLWidget_ = nullptr;
+	QToolBar* theToolBar_ = nullptr;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)
@@ -74,6 +81,7 @@ protected:
 	vtkSmartPointer<vtkCamera> theCamera_;
 	vtkSmartPointer<vtkTextActor> theLogoActor_;
 	vtkAxesActor* theAxesActor_ = nullptr;
+	vtkCameraInterpolator* theCameraInterpolator_ = nullptr;
 
 	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;
 
@@ -81,12 +89,16 @@ protected:
 
 	virtual void Init() {}
 
+	virtual void FormToolBar() {}
+
 public slots:
 
 	void customContextMenuRequestedSlot(const QPoint& pos);
 
 	void HideActionIsCalledSlot();
 	void UnHideActionIsCalledSlot();
+
+	void CurrentTabChangedSlot(int index);
 
 };
 

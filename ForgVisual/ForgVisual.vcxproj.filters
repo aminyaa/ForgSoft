@@ -253,9 +253,6 @@
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
-      <Filter>ForgLib\Visual\Scene\3D</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\FrgVisual_Scene.cxx">
       <Filter>ForgLib\Visual\Scene</Filter>
     </ClCompile>
@@ -400,6 +397,9 @@
     <ClCompile Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.cxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
+      <Filter>ForgLib\Visual\Scene\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -418,9 +418,6 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx">
       <Filter>ForgLib\Visual\Scene\2D</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
-      <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
@@ -551,6 +548,9 @@
     <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.hxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Icons.hxx">
+      <Filter>ForgLib\Visual\Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
@@ -627,6 +627,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine\FrgVisual_BSPLineActor.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Curve\Polyline\BSPLine</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
+      <Filter>ForgLib\Visual\Scene\3D</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

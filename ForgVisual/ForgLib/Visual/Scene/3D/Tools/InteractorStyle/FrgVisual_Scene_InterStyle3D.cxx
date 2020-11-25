@@ -863,7 +863,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 		return;
 
 	if (camera->GetParallelProjection())
-		camera->SetParallelScale(camera->GetParallelScale() / (factor));
+		camera->SetParallelScale(camera->GetParallelScale() / std::abs(factor));
 	else
 		if (this->AutoAdjustCameraClippingRange)
 			this->CurrentRenderer->ResetCameraClippingRange();
@@ -1094,6 +1094,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 	double newFocalPoint[4], norm[3];
 
 	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
+	/*bool wasParallel = camera->GetParallelProjection();
+	if (wasParallel)
+		camera->ParallelProjectionOff();*/
 
 	camera->GetPosition(cameraPos);
 	camera->GetFocalPoint(viewFocus);
@@ -1240,6 +1243,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 		std::cout << point[0] << ", " << point[1] << ", " << point[2] << std::endl;
 		std::cout << camera->GetThickness() << std::endl;*/
 	}
+
+	/*if (wasParallel)
+		camera->ParallelProjectionOn();*/
 }
 
 //-------------------------------------------------------------------------

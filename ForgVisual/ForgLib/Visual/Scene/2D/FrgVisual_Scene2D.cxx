@@ -6,19 +6,11 @@
 #include <FrgVisual_GridActor.hxx>
 #include <FrgBase_Menu.hxx>
 
-#include <vtkActor.h>
-#include <vtkProperty.h>
+#include <QVTKOpenGLNativeWidget.h>
 #include <vtkRenderer.h>
 #include <vtkGenericOpenGLRenderWindow.h>
-#include <vtkAxesActor.h>
-#include <vtkOrientationMarkerWidget.h>
-#include <vtkTextActor.h>
-#include <vtkTextProperty.h>
 #include <vtkCamera.h>
-#include <vtkLineSource.h>
-#include <vtkPolyLine.h>
 #include <vtkCubeSource.h>
-#include <vtkAssemblyPath.h>
 
 ForgVisualLib::FrgVisual_Scene2D::FrgVisual_Scene2D
 (ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
@@ -146,7 +138,7 @@ void ForgVisualLib::FrgVisual_Scene2D::RenderScene(bool resetCamera)
 
 		theRenderer_->ResetCameraClippingRange();
 
-		this->SetRenderWindow(theRenderWindow_);
+		theOpenGLWidget_->SetRenderWindow(theRenderWindow_);
 
 		theRenderWindow_->Render();
 		theRenderWindowInteractor_->Initialize();

@@ -2,34 +2,26 @@
 #include <FrgBase_MainWindow.hxx>
 #include <FrgVisual_Scene_InterStyle3D.hxx>
 #include <FrgVisual_GridActor.hxx>
+#include <FrgVisual_Global_Icons.hxx>
 
 #include <FrgBase_SerialSpec_QString.hxx>
 #include <FrgBase_SerialSpec_QColor.hxx>
-#include <FrgBase_Pnt2d.hxx>
-#include <FrgBase_Pnt3d.hxx>
 #include <FrgBase_Menu.hxx>
+#include <FrgBase_TabWidget.hxx>
+#include <FrgBase_StylesMenuItemStyle.hxx>
+#include <FrgBase_Global_Thread.hxx>
 
+#include <vtkCameraInterpolator.h>
 #include <vtkActor.h>
-#include <vtkProperty.h>
 #include <vtkRenderer.h>
 #include <vtkGenericOpenGLRenderWindow.h>
-#include <vtkAxesActor.h>
-#include <vtkOrientationMarkerWidget.h>
-#include <vtkTextActor.h>
-#include <vtkTextProperty.h>
 #include <vtkCamera.h>
-#include <vtkLineSource.h>
-#include <vtkPolyLine.h>
-#include <vtkCubeSource.h>
 #include <vtkAssemblyPath.h>
-#include <vtkDoubleArray.h>
-#include <vtkRectilinearGrid.h>
 #include <vtkDataSetMapper.h>
-#include <vtkLine.h>
-#include <vtkPolyData.h>
 #include <vtkCellData.h>
 
-#include <FrgVisual_PolylineActor.hxx>
+#include <QtWidgets/QToolBar>
+#include <QtWidgets/QToolButton>
 
 #define IS_FRGVISUAL_ACTOR "IS_FRGVISUAL_ACTOR"
 #define IS_NOT_FRGVISUAL_ACTOR "IS_NOT_FRGVISUAL_ACTOR"
@@ -40,6 +32,8 @@ ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 {
 	theMajorGridColor_.setRgb(154, 162, 169);
 	theMinorGridColor_.setRgb(119, 175, 230);
+
+	connect(this, SIGNAL(RenderSceneSignal(double)), this, SLOT(RenderSceneSlot(double)));
 }
 
 //void ForgVisualLib::FrgVisual_Scene3D::Init()
@@ -121,13 +115,16 @@ ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 
 void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
 {
+	if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
+		return;
+
 	if (resetCamera)
 	{
-		theCamera_->SetPosition(0, -1, 0);
+		/*theCamera_->SetPosition(0, -1, 0);
 		theCamera_->SetFocalPoint(0, 0, 0);
 		theCamera_->SetViewUp(0, 0, 1);
 		theCamera_->Azimuth(45);
-		theCamera_->Elevation(25);
+		theCamera_->Elevation(25);*/
 
 		auto my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
 
@@ -164,11 +161,325 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
 		theCamera_->OrthogonalizeViewUp();
 
 		theRenderer_->ResetCameraClippingRange();
-		
+
 		theRenderWindow_->Render();
 	}
 	else
 		theRenderWindow_->Render();
+}
+
+#define AddViewsToMenu(viewsMenu, MenuTitle, proxyStyle, I1, I1Title, I2, I2Title, I3, I3Title, I4, I4Title) \
+	{\
+	ForgBaseLib::FrgBase_Menu* Menu = new ForgBaseLib::FrgBase_Menu(MenuTitle, theParentMainWindow_); \
+	Menu->setStyle(proxyStyle); \
+	auto I1Action = Menu->AddItem(QIcon(I1), I1Title, false); \
+	auto I2Action = Menu->AddItem(QIcon(I2), I2Title, false); \
+	auto I3Action = Menu->AddItem(QIcon(I3), I3Title, false); \
+	auto I4Action = Menu->AddItem(QIcon(I4), I4Title, false); \
+	connect(I1Action, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool))); \
+	connect(I2Action, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool))); \
+	connect(I3Action, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool))); \
+	connect(I4Action, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool))); \
+	(viewsMenu)->addMenu(Menu); \
+	}
+
+
+
+void ForgVisualLib::FrgVisual_Scene3D::FormToolBar()
+{
+	if (!theToolBar_)
+	{
+		theToolBar_ = new QToolBar("Visual");
+		theToolBar_->setAllowedAreas(Qt::ToolBarArea::TopToolBarArea);
+		theToolBar_->setFloatable(false);
+		theToolBar_->setMovable(false);
+		theToolBar_->setContextMenuPolicy(Qt::PreventContextMenu);
+
+		auto* resetView = new QToolButton();
+		resetView->setIcon(QIcon(ICON_FRGVISUAL_SCENE_RESETVIEW));
+		resetView->setShortcut(QKeySequence(Qt::Key_R));
+		resetView->setToolTip("Reset View (R)");
+		connect(resetView, &QToolButton::clicked, [this]() {RenderScene(true); });
+
+		auto* cameraViews = new QToolButton();
+		cameraViews->setIcon(QIcon(":/ForgVisual/Resources/Scene/Camera.png"));
+		cameraViews->setPopupMode(QToolButton::ToolButtonPopupMode::InstantPopup);
+		cameraViews->setToolTip("Camera Views");
+
+		auto* cameraViewsMenu = new ForgBaseLib::FrgBase_Menu("Camera Views", theParentMainWindow_);
+		auto* projectionModeMenu = new ForgBaseLib::FrgBase_Menu("Projection Mode", theParentMainWindow_);
+		auto* perspectiveAction = projectionModeMenu->AddItem("Perspective", false);
+		auto* parallelAction = projectionModeMenu->AddItem("Parallel", false);
+		auto* projectionModeGroup = new QActionGroup(theParentMainWindow_);
+		projectionModeGroup->addAction(perspectiveAction);
+		projectionModeGroup->addAction(parallelAction);
+		projectionModeGroup->setExclusive(true);
+		perspectiveAction->setCheckable(true);
+		parallelAction->setCheckable(true);
+		perspectiveAction->setChecked(true);
+
+		connect(projectionModeGroup, SIGNAL(triggered(QAction*)), this, SLOT(SetProjectionModeSlot(QAction*)));
+
+		auto* viewsMenu = new ForgBaseLib::FrgBase_Menu("Views", theParentMainWindow_);
+		auto* myProxyStyle = new ForgBaseLib::FrgBase_StylesMenuItemStyle(viewsMenu->style());
+		myProxyStyle->SetIconSize(35);
+
+		AddViewsToMenu
+		(
+			viewsMenu,
+			"+X",
+			myProxyStyle,
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPPLUSZ,
+			"Up +Z",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPMINUSZ,
+			"Up -Z",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPPLUSY,
+			"Up +Y",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPMINUSY,
+			"Up -Y"
+		);
+
+		AddViewsToMenu
+		(
+			viewsMenu,
+			"-X",
+			myProxyStyle,
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPPLUSZ,
+			"Up +Z",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPMINUSZ,
+			"Up -Z",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPPLUSY,
+			"Up +Y",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPMINUSY,
+			"Up -Y"
+		);
+
+		AddViewsToMenu
+		(
+			viewsMenu,
+			"+Y",
+			myProxyStyle,
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPPLUSZ,
+			"Up +Z",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPMINUSZ,
+			"Up -Z",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPPLUSX,
+			"Up +X",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPMINUSX,
+			"Up -X"
+		);
+
+		AddViewsToMenu
+		(
+			viewsMenu,
+			"-Y",
+			myProxyStyle,
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPPLUSZ,
+			"Up +Z",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPMINUSZ,
+			"Up -Z",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPPLUSX,
+			"Up +X",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPMINUSX,
+			"Up -X"
+		);
+
+		AddViewsToMenu
+		(
+			viewsMenu,
+			"+Z",
+			myProxyStyle,
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPPLUSY,
+			"Up +Y",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPMINUSY,
+			"Up -Y",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPPLUSX,
+			"Up +X",
+			ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPMINUSX,
+			"Up -X"
+		);
+
+		AddViewsToMenu
+		(
+			viewsMenu,
+			"-Z",
+			myProxyStyle,
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPPLUSY,
+			"Up +Y",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPMINUSY,
+			"Up -Y",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPPLUSX,
+			"Up +X",
+			ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPMINUSX,
+			"Up -X"
+		);
+
+		auto* standardViewsMenu = new ForgBaseLib::FrgBase_Menu("Standard Views", theParentMainWindow_);
+		standardViewsMenu->setStyle(myProxyStyle);
+		const auto* rightViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPPLUSZ), "(+Y) right", false);
+		const auto* leftViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPPLUSZ), "(-Y) left", false);
+		standardViewsMenu->addSeparator();
+		const auto* topViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPPLUSY), "(+Z) top", false);
+		const auto* bottomViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPPLUSY), "(-Z) bottom", false);
+		standardViewsMenu->addSeparator();
+		const auto* frontViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPPLUSZ), "(-X) front", false);
+		const auto* backViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPPLUSZ), "(+X) back", false);
+
+		connect(rightViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
+		connect(leftViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
+		connect(topViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
+		connect(bottomViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
+		connect(frontViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
+		connect(backViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
+
+		cameraViewsMenu->addMenu(projectionModeMenu);
+		cameraViewsMenu->addSeparator();
+		cameraViewsMenu->addMenu(viewsMenu);
+		cameraViewsMenu->addSeparator();
+		cameraViewsMenu->addMenu(standardViewsMenu);
+
+		cameraViews->setMenu(cameraViewsMenu);
+
+		theToolBar_->addWidget(resetView);
+		theToolBar_->addWidget(cameraViews);
+		this->addToolBar(theToolBar_);
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::SetCameraView(const QString& firstDir, const QString& secondDir)
+{
+	if(firstDir == "Standard Views")
+	{
+		if (secondDir == "(+Y) right")
+			SetCameraView("+Y", "Up +Z");
+		else if (secondDir == "(-Y) left")
+			SetCameraView("-Y", "Up +Z");
+		else if (secondDir == "(+Z) top")
+			SetCameraView("+Z", "Up +Y");
+		else if (secondDir == "(-Z) bottom")
+			SetCameraView("-Z", "Up +Y");
+		else if (secondDir == "(-X) front")
+			SetCameraView("-X", "Up +Z");
+		else if (secondDir == "(+X) back")
+			SetCameraView("+X", "Up +Z");
+
+		return;
+	}
+	
+	double fPoint[3];
+	double fOldPoint[3];
+	theCamera_->GetFocalPoint(fPoint);
+	theCamera_->GetFocalPoint(fOldPoint);
+
+	vtkCamera* cam1 = vtkCamera::New();
+	cam1->DeepCopy(theCamera_);
+
+	if(firstDir == "+X")
+		fPoint[0] += theCamera_->GetDistance();
+	else if(firstDir == "-X")
+		fPoint[0] -= theCamera_->GetDistance();
+	else if (firstDir == "+Y")
+		fPoint[1] += theCamera_->GetDistance();
+	else if (firstDir == "-Y")
+		fPoint[1] -= theCamera_->GetDistance();
+	else if (firstDir == "+Z")
+		fPoint[2] += theCamera_->GetDistance();
+	else if (firstDir == "-Z")
+		fPoint[2] -= theCamera_->GetDistance();
+	
+	theCamera_->SetPosition(fPoint);
+	theCamera_->SetFocalPoint(fOldPoint);
+
+	if (secondDir == "Up +Z")
+		theCamera_->SetViewUp(0.0, 0.0, 1.0);
+	if (secondDir == "Up -Z")
+		theCamera_->SetViewUp(0.0, 0.0, -1.0);
+	if (secondDir == "Up +Y")
+		theCamera_->SetViewUp(0.0, 1.0, 0.0);
+	if (secondDir == "Up -Y")
+		theCamera_->SetViewUp(0.0, -1.0, 0.0);
+	if (secondDir == "Up +X")
+		theCamera_->SetViewUp(1.0, 0.0, 0.0);
+	if (secondDir == "Up -X")
+		theCamera_->SetViewUp(-1.0, 0.0, 0.0);
+
+	MoveCameraFromTo(cam1, theCamera_, 0.5, 60);
+
+	cam1->Delete();
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::MoveCameraFromTo(vtkCamera* from, vtkCamera* to, double time, int fps)
+{
+	theCameraInterpolator_->Initialize();
+	theCameraInterpolator_->SetInterpolationTypeToSpline();
+	theCameraInterpolator_->AddCamera(0.0, from);
+	theCameraInterpolator_->AddCamera(time, to);
+
+	QMutex* mutex = new QMutex();
+	ExecuteFunctionInProcess
+	(
+		nullptr,
+		{
+			int nt = time * fps;
+	double dt = time / static_cast<double>(nt);
+			for (int i = 0; i <= nt; i++)
+			{
+				double t = i * dt;
+				emit RenderSceneSignal(t);
+				QThread::msleep(1000.0 / static_cast<double>(fps));
+			}
+		},
+		mutex,
+			[]() {}
+		);
+
+	delete mutex;
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::SetProjectionModeSlot(QAction* action)
+{
+	if (!action || !theCamera_)
+		return;
+
+	if (action->isChecked())
+	{
+		if (action->text() == "Perspective")
+		{
+			theCamera_->ParallelProjectionOff();
+		}
+		else if (action->text() == "Parallel")
+		{
+			theCamera_->ParallelProjectionOn();
+		}
+
+		RenderScene(false);
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::SetViewToSlot(bool)
+{
+	if (!theCamera_)
+		return;
+
+	const auto& myAction = dynamic_cast<QAction*>(sender());
+	if (myAction)
+	{
+		const auto& myMenu = dynamic_cast<QMenu*>(myAction->parentWidget());
+		if (myMenu)
+		{
+			SetCameraView(myMenu->title(), myAction->text());
+			
+			//theParentMainWindow_->PrintInfoToConsole("From \"" + myMenu->title() + "\" the \"" + myAction->text() + "\" was clicked.");
+			RenderScene(false);
+		}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(double t)
+{
+	theCameraInterpolator_->InterpolateCamera(t, theCamera_);
+	theRenderer_->ResetCameraClippingRange();
+	RenderScene(false);
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene3D)

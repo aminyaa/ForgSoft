@@ -151,7 +151,12 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Rectangle\FrgVisual_RectangleActor.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.cxx" />
-    <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Box\FrgVisual_BoxActor.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper\FrgVisual_Scene_CameraManipGUIHelper.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\CameraManip\FrgVisual_Scene_CameraManip.cxx" />
@@ -188,6 +193,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
   <ItemGroup>
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global.hxx" />
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Build.hxx" />
+    <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Icons.hxx" />
     <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx" />
     <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2DI.hxx" />
@@ -250,7 +256,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <QtMoc Include="ForgLib\Visual\Plot\TreeItem\FrgVisual_Plot_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\2D\FrgVisual_Scene2D.hxx" />
     <QtMoc Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx" />
-    <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />
+    <QtMoc Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx" />
     <QtMoc Include="ForgLib\Visual\Scene\2D\TreeItem\FrgVisual_Scene2D_TItem.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\CameraManipGUIHelper\FrgVisual_Scene_CameraManipGUIHelper.hxx" />

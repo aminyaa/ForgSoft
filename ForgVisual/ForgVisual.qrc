@@ -1,4 +1,30 @@
 <RCC>
-    <qresource prefix="ForgVisual">
+    <qresource prefix="/ForgVisual">
+        <file>Resources/Scene/ResetView.png</file>
+        <file>Resources/Scene/Camera.png</file>
+        <file>Resources/Scene/Axes/+X/Up +Y.png</file>
+        <file>Resources/Scene/Axes/+X/Up +Z.png</file>
+        <file>Resources/Scene/Axes/+X/Up -Y.png</file>
+        <file>Resources/Scene/Axes/+X/Up -Z.png</file>
+        <file>Resources/Scene/Axes/+Y/Up +X.png</file>
+        <file>Resources/Scene/Axes/+Y/Up +Z.png</file>
+        <file>Resources/Scene/Axes/+Y/Up -X.png</file>
+        <file>Resources/Scene/Axes/+Y/Up -Z.png</file>
+        <file>Resources/Scene/Axes/+Z/Up +X.png</file>
+        <file>Resources/Scene/Axes/+Z/Up +Y.png</file>
+        <file>Resources/Scene/Axes/+Z/Up -X.png</file>
+        <file>Resources/Scene/Axes/+Z/Up -Y.png</file>
+        <file>Resources/Scene/Axes/-X/Up +Y.png</file>
+        <file>Resources/Scene/Axes/-X/Up +Z.png</file>
+        <file>Resources/Scene/Axes/-X/Up -Y.png</file>
+        <file>Resources/Scene/Axes/-X/Up -Z.png</file>
+        <file>Resources/Scene/Axes/-Y/Up +X.png</file>
+        <file>Resources/Scene/Axes/-Y/Up +Z.png</file>
+        <file>Resources/Scene/Axes/-Y/Up -X.png</file>
+        <file>Resources/Scene/Axes/-Y/Up -Z.png</file>
+        <file>Resources/Scene/Axes/-Z/Up +X.png</file>
+        <file>Resources/Scene/Axes/-Z/Up +Y.png</file>
+        <file>Resources/Scene/Axes/-Z/Up -X.png</file>
+        <file>Resources/Scene/Axes/-Z/Up -Y.png</file>
     </qresource>
 </RCC>

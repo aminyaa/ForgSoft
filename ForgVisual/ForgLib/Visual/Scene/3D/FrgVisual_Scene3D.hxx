@@ -18,6 +18,8 @@ class FORGVISUAL_EXPORT FrgVisual_Scene3D
 	: public FrgVisual_Scene<3>
 {
 
+	Q_OBJECT
+
 public:
 
 	FrgVisual_Scene3D(ForgBaseLib::FrgBase_MainWindow* parentMainWindow = nullptr);
@@ -25,6 +27,24 @@ public:
 	//void Init() override;
 
 	void RenderScene(bool resetCamera = true) override;
+
+protected:
+
+	void FormToolBar() override;
+
+	void SetCameraView(const QString& firstDir, const QString& secondDir);
+	void MoveCameraFromTo(vtkCamera* from, vtkCamera* to, double time = 0.5, int fps = 30);
+
+Q_SIGNALS:
+
+	void RenderSceneSignal(double t);
+
+protected slots:
+
+	void SetProjectionModeSlot(QAction*);
+	void SetViewToSlot(bool);
+
+	void RenderSceneSlot(double t);
 
 private:
 

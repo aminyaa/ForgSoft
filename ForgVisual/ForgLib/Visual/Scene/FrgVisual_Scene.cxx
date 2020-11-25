@@ -19,7 +19,9 @@
 #include <FrgVisual_Scene_InterStyle3D.hxx>
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Pnt.hxx>
+#include <FrgBase_TabWidget.hxx>
 
+#include <QVTKOpenGLNativeWidget.h>
 #include <vtkActor.h>
 #include <vtkProperty.h>
 #include <vtkRenderer.h>
@@ -33,8 +35,8 @@
 #include <vtkPolyLine.h>
 #include <vtkCubeSource.h>
 #include <vtkAssemblyPath.h>
-
 #include <vtkCollection.h>
+#include <vtkCameraInterpolator.h>
 
 #include <vtkAutoInit.h>
 
@@ -51,9 +53,11 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 (
 	ForgBaseLib::FrgBase_MainWindow* parentMainWindow
 )
-	: QVTKOpenGLNativeWidget(parentMainWindow)
+	: QMainWindow(parentMainWindow)
 	, theParentMainWindow_(parentMainWindow)
 {
+	theOpenGLWidget_ = new QVTKOpenGLNativeWidget(parentMainWindow);
+	
 	theContextMenuInScene_ = new ForgBaseLib::FrgBase_Menu("Scene Settings", parentMainWindow, false);
 	theContextMenuInScene_->SetToolBarHidden(true);
 
@@ -61,6 +65,13 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 	auto unHideAction = theContextMenuInScene_->AddItem("UnHide", false);
 
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(customContextMenuRequestedSlot(const QPoint&)));
+
+	this->setCentralWidget(theOpenGLWidget_);
+
+	if(theParentMainWindow_)
+	{
+		connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
+	}
 }
 
 ForgVisualLib::FrgVisual_Scene_Entity::~FrgVisual_Scene_Entity()
@@ -96,6 +107,8 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetParentMainWindow(ForgBaseLib::Frg
 {
 	this->setParent(parentMainWindow);
 	theParentMainWindow_ = parentMainWindow;
+
+	connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::ComputeVisiblePropBounds(double bounds[6]) const
@@ -119,6 +132,12 @@ void ForgVisualLib::FrgVisual_Scene_Entity::UnHideActionIsCalledSlot()
 
 }
 
+void ForgVisualLib::FrgVisual_Scene_Entity::CurrentTabChangedSlot(int index)
+{
+	if (theParentMainWindow_->GetTabWidget()->widget(index) == this)
+		RenderScene(false);
+}
+
 template<int Dim>
 ForgVisualLib::FrgVisual_Scene<Dim>::FrgVisual_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
 	: FrgVisual_Scene_Entity(parentMainWindow)
@@ -131,11 +150,33 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 {
 	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
 
-	theRenderer_->SetBackground(1.0, 1.0, 1.0);
-	if constexpr (Dim == 3)
+	if (theParentMainWindow_)
 	{
-		theRenderer_->SetBackground2(0.7, 0.7, 0.7);
-		theRenderer_->SetGradientBackground(true);
+		if (theParentMainWindow_->IsThemeDark())
+		{
+			theRenderer_->SetBackground(30.0 / 255.0, 94.0 / 255.0, 144.0 / 255.0);
+			theRenderer_->SetBackground2(0.0, 0.0, 0.0);
+			theRenderer_->SetGradientBackground(true);
+		}
+		else
+		{
+			theRenderer_->SetBackground(1.0, 1.0, 1.0);
+			theRenderer_->SetGradientBackground(false);
+		}
+	}
+	else
+	{
+		if constexpr (Dim == 2)
+		{
+			theRenderer_->SetBackground(1.0, 1.0, 1.0);
+			theRenderer_->SetGradientBackground(false);
+		}
+		else if constexpr (Dim == 3)
+		{
+			theRenderer_->SetBackground(1.0, 1.0, 1.0);
+			theRenderer_->SetBackground2(0.7, 0.7, 0.7);
+			theRenderer_->SetGradientBackground(true);
+		}
 	}
 
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
@@ -218,9 +259,13 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	theRenderWindowInteractor_->Initialize();
 	theRenderer_->SetActiveCamera(theCamera_);
 
-	this->SetRenderWindow(theRenderWindow_);
+	theOpenGLWidget_->SetRenderWindow(theRenderWindow_);
 
 	RenderScene(true);
+
+	FormToolBar();
+
+	theCameraInterpolator_ = vtkCameraInterpolator::New();
 }
 
 template<int Dim>
