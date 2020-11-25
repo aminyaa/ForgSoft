@@ -93,11 +93,51 @@ void ForgBaseLib::FrgBase_MainWindow::InitTree()
 	theTree_->FormTree();
 }
 
+static float CalculateCPULoad(unsigned long long idleTicks, unsigned long long totalTicks)
+{
+	static unsigned long long _previousTotalTicks = 0;
+	static unsigned long long _previousIdleTicks = 0;
+
+	unsigned long long totalTicksSinceLastTime = totalTicks - _previousTotalTicks;
+	unsigned long long idleTicksSinceLastTime = idleTicks - _previousIdleTicks;
+
+	float ret = 1.0f - ((totalTicksSinceLastTime > 0) ? ((float)idleTicksSinceLastTime) / totalTicksSinceLastTime : 0);
+
+	_previousTotalTicks = totalTicks;
+	_previousIdleTicks = idleTicks;
+	return ret;
+}
+
+static unsigned long long FileTimeToInt64(const FILETIME& ft) { return (((unsigned long long)(ft.dwHighDateTime)) << 32) | ((unsigned long long)ft.dwLowDateTime); }
+
+// Returns 1.0f for "CPU fully pinned", 0.0f for "CPU idle", or somewhere in between
+// You'll need to call this at regular intervals, since it measures the load between
+// the previous call and the current one.  Returns -1.0 on error.
+float GetCPULoad()
+{
+	FILETIME idleTime, kernelTime, userTime;
+	return GetSystemTimes(&idleTime, &kernelTime, &userTime) ? CalculateCPULoad(FileTimeToInt64(idleTime), FileTimeToInt64(kernelTime) + FileTimeToInt64(userTime)) : -1.0f;
+}
+
+#include "windows.h"
+#include "psapi.h"
+
 void ForgBaseLib::FrgBase_MainWindow::InitProgressBar()
 {
-	theProgressBar_ = new ForgBaseLib::FrgBase_ProgressBar(this);
-
 	this->statusBar()->addWidget(new QWidget, 1);
+
+	theCPUUsageLabel_ = new QLabel;
+	theRAMUsageLabel_ = new QLabel;
+	
+	this->statusBar()->addWidget(theCPUUsageLabel_, 0);
+	this->statusBar()->addWidget(theRAMUsageLabel_, 0);
+
+	QTimer* timerForUpdatingCPUandRAMUsages = new QTimer;
+	connect(timerForUpdatingCPUandRAMUsages, SIGNAL(timeout()), this, SLOT(UpdateCPUUsageSlot()));
+	connect(timerForUpdatingCPUandRAMUsages, SIGNAL(timeout()), this, SLOT(UpdateRAMUsageSlot()));
+	timerForUpdatingCPUandRAMUsages->start(1000);
+	
+	theProgressBar_ = new ForgBaseLib::FrgBase_ProgressBar(this);
 	this->statusBar()->addWidget(theProgressBar_, 0);
 	this->statusBar()->adjustSize();
 	this->statusBar()->setContentsMargins(0, 0, 0, 0);
@@ -156,7 +196,8 @@ void ForgBaseLib::FrgBase_MainWindow::CorrectConsoleOutput()
 	const auto text = editor->toPlainText();
 	editor->setPlainText(text);
 
-	editor->verticalScrollBar()->setValue(editor->verticalScrollBar()->maximum());
+	if(editor->verticalScrollBar()->value() == editor->verticalScrollBar()->maximum())
+		editor->verticalScrollBar()->setValue(editor->verticalScrollBar()->maximum());
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetGeometry(int PercentageOfScreen)
@@ -268,7 +309,7 @@ void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 
 
 	std::ifstream myFile(fileName.toStdString());
-	boost::archive::text_iarchive ia(myFile);
+	boost::archive::polymorphic_text_iarchive ia(myFile);
 
 	FrgBase_Tree* myTree;
 
@@ -400,4 +441,24 @@ void ForgBaseLib::FrgBase_MainWindow::SetThemeDark(bool condition)
 		else
 			editor->setStyleSheet("QPlainTextEdit {color : black;}");
 	}
+}
+
+void ForgBaseLib::FrgBase_MainWindow::UpdateCPUUsageSlot()
+{
+	auto cpuUsage = GetCPULoad();
+	theCPUUsageLabel_->setText("CPU Usage: " + QString::number(static_cast<int>(cpuUsage * 100)) + " %");
+}
+
+void ForgBaseLib::FrgBase_MainWindow::UpdateRAMUsageSlot()
+{
+	PROCESS_MEMORY_COUNTERS_EX pmc;
+	GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	float physMemUsedByMe = static_cast<float>(pmc.WorkingSetSize) / 1024.0 / 1024.0;
+	bool isGB = false;
+	if (physMemUsedByMe >= 1024)
+	{
+		physMemUsedByMe /= 1024;
+		isGB = true;
+	}
+	theRAMUsageLabel_->setText("RAM Usage: " + QString::number(physMemUsedByMe, 'f', 2) + (isGB ? " GB" : " MB"));
 }

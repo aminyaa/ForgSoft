@@ -8,6 +8,7 @@
 #include <QtWidgets/QMainWindow>
 
 class QDockWidget;
+class QLabel;
 
 namespace chaiscript
 {
@@ -68,6 +69,9 @@ protected:
 	QStyle* theDefaultStyle_ = nullptr;
 
 	QApplication* theQApplication_ = nullptr;
+
+	QLabel* theCPUUsageLabel_ = nullptr;
+	QLabel* theRAMUsageLabel_ = nullptr;
 
 protected:
 
@@ -132,6 +136,9 @@ protected slots:
 	virtual void FileImportActionSlot() {}
 	virtual void FileExportActionSlot() {}
 	virtual void FileExitActionSlot() {}
+
+	void UpdateCPUUsageSlot();
+	void UpdateRAMUsageSlot();
 
 public slots:
 

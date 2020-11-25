@@ -52,6 +52,7 @@ void ForgBaseLib::FrgBase_TabBar::mouseReleaseEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::MouseButton::MiddleButton)
 	{
+		setCurrentIndex(tabAt(event->pos()));
 		emit this->tabCloseRequested(this->currentIndex());
 	}
 	if (event->button() == Qt::MouseButton::RightButton)

@@ -1,5 +1,7 @@
 #include <FrgBase_StylesDarkStyle.hxx>
 
+#include <QtWidgets/QStyleOption>
+
 ForgBaseLib::FrgBase_StylesDarkStyle::FrgBase_StylesDarkStyle()
 	: FrgBase_StylesDarkStyle(styleBase())
 {
@@ -71,4 +73,14 @@ void ForgBaseLib::FrgBase_StylesDarkStyle::polish(QApplication* app)
 		app->setStyleSheet(qsStylesheet);
 		qfDarkstyle.close();
 	}
+}
+
+int ForgBaseLib::FrgBase_StylesDarkStyle::pixelMetric
+(
+	PixelMetric metric,
+	const QStyleOption* option,
+	const QWidget* widget
+) const
+{
+	return QProxyStyle::pixelMetric(metric, option, widget);
 }

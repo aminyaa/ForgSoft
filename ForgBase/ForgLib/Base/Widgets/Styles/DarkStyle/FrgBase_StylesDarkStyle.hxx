@@ -26,6 +26,8 @@ public:
 	void polish(QPalette& palette) override;
 	void polish(QApplication* app) override;
 
+	int pixelMetric(PixelMetric metric, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
+
 private:
 	QStyle* styleBase(QStyle* style = Q_NULLPTR) const;
 };

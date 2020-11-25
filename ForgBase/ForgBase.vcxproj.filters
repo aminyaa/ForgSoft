@@ -448,6 +448,9 @@
     <Filter Include="ForgLib\Base\Widgets\MainWindow\WindowDragger">
       <UniqueIdentifier>{3653e69a-652f-4724-9641-289348d49997}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Styles\MenuItemStyle">
+      <UniqueIdentifier>{7164434b-621e-4588-b0a1-3f49ddc3267e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FrgWidgets\FrgBaseDlgs\FrgBaseDlgLoadSim.cxx">
@@ -782,6 +785,9 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\MainWindow\WindowDragger\FrgBase_WindowDragger.cxx">
       <Filter>ForgLib\Base\Widgets\MainWindow\WindowDragger</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Styles\MenuItemStyle\FrgBase_StylesMenuItemStyle.cxx">
+      <Filter>ForgLib\Base\Widgets\Styles\MenuItemStyle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1236,6 +1242,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\MainWindow\WindowDragger\FrgBase_WindowDragger.hxx">
       <Filter>ForgLib\Base\Widgets\MainWindow\WindowDragger</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Styles\MenuItemStyle\FrgBase_StylesMenuItemStyle.hxx">
+      <Filter>ForgLib\Base\Widgets\Styles\MenuItemStyle</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
