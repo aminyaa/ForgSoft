@@ -23,7 +23,7 @@ ForgMarineLib::FrgMarine_GeomPModelShipT01_TItem::FrgMarine_GeomPModelShipT01_TI
 
 	theParameters_ = new FrgMarine_ShipT01Params_TItem("Parameters", this, parentTree, shipModel);
 
-	theParameters_->setHidden(true);
+	//theParameters_->setHidden(true);
 
 	connect(theParameters_, SIGNAL(ModelPerformedToPreviewSignal()), this, SIGNAL(ModelPerformedToPreviewSignal()));
 
