@@ -8,6 +8,8 @@ int main(int argc, char** argv)
 	// needed to ensure appropriate OpenGL context is created for VTK rendering.
 	QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
 
+	vtkObject::GlobalWarningDisplayOff();
+
 	QApplication app(argc, argv);
 
 	std::shared_ptr<ForgMarineLib::FrgMarine_MainWindow> mainWindow = std::make_shared<ForgMarineLib::FrgMarine_MainWindow>();
