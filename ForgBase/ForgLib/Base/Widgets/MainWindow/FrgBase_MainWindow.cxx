@@ -44,6 +44,18 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 	theProjectExtension_ = "Forg (*.Forg)";
 
 	theChaiScript_ = std::make_shared<chaiscript::ChaiScript>();
+
+	connect(this, &FrgBase_MainWindow::PrintInfoToConsole, this, &FrgBase_MainWindow::PrintInfoToConsoleSlot);
+	connect(this, &FrgBase_MainWindow::PrintWarningToConsole, this, &FrgBase_MainWindow::PrintWarningToConsoleSlot);
+	connect(this, &FrgBase_MainWindow::PrintErrorToConsole, this, &FrgBase_MainWindow::PrintErrorToConsoleSlot);
+
+	if (!theFrameLessWindow_)
+	{
+		theFrameLessWindow_ = new FrgBase_FramelessWindow();
+		theFrameLessWindow_->setWindowTitle(this->windowTitle());
+		theFrameLessWindow_->window()->setWindowIcon(this->window()->windowIcon());
+	}
+	theFrameLessWindow_->setContent(this);
 }
 
 ForgBaseLib::FrgBase_MainWindow::~FrgBase_MainWindow()
@@ -244,19 +256,19 @@ void ForgBaseLib::FrgBase_MainWindow::SetGeometry(int PercentageOfScreen)
 		theFrameLessWindow_->SetGeometry(PercentageOfScreen);
 }
 
-void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsole(const FrgString& info)
+void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsoleSlot(const QString& info)
 {
 	LOG_INFO_E(theConsoleEngineName_, info);
 	CorrectConsoleOutput();
 }
 
-void ForgBaseLib::FrgBase_MainWindow::PrintWarningToConsole(const FrgString& warning)
+void ForgBaseLib::FrgBase_MainWindow::PrintWarningToConsoleSlot(const QString& warning)
 {
 	LOG_WARNING_E(theConsoleEngineName_, warning);
 	CorrectConsoleOutput();
 }
 
-void ForgBaseLib::FrgBase_MainWindow::PrintErrorToConsole(const FrgString& error)
+void ForgBaseLib::FrgBase_MainWindow::PrintErrorToConsoleSlot(const QString& error)
 {
 	LOG_ERROR_E(theConsoleEngineName_, error);
 	CorrectConsoleOutput();
@@ -393,12 +405,12 @@ void ForgBaseLib::FrgBase_MainWindow::Show(bool darkTheme)
 {
 	SetThemeDark(darkTheme);
 	
-	if (!theFrameLessWindow_)
+	/*if (!theFrameLessWindow_)
 	{
 		theFrameLessWindow_ = new FrgBase_FramelessWindow();
 		theFrameLessWindow_->setWindowTitle(this->windowTitle());
 	}
-	theFrameLessWindow_->setContent(this);
+	theFrameLessWindow_->setContent(this);*/
 	
 	theFrameLessWindow_->show();
 }

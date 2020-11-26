@@ -21,12 +21,18 @@ public:
 
 	FrgBase_ProgressBar(FrgBase_MainWindow* parentMainWindow);
 
-	void SetProgressBarBusy(bool condition = true);
-
 	auto GetLabel() const -> const QString&;
 	void SetLabel(const QString& label) const;
 
 	void SetLabelHidden(bool condition = true) const;
+
+	Q_SIGNALS:
+
+	void SetProgressBarBusy(bool condition = true);
+
+protected slots:
+
+	void SetProgressBarBusySlot(bool condition = true);
 
 private:
 

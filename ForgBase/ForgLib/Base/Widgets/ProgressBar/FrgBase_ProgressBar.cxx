@@ -1,10 +1,12 @@
 #include <FrgBase_ProgressBar.hxx>
 #include <FrgBase_MainWindow.hxx>
+#include <FrgBase_FramelessWindow.hxx>
 
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QLabel>
 #include <QtCore/QLocale>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QStyle>
 
 ForgBaseLib::FrgBase_ProgressBar::FrgBase_ProgressBar(FrgBase_MainWindow* parentMainWindow)
 	: QWidget(parentMainWindow)
@@ -28,12 +30,16 @@ ForgBaseLib::FrgBase_ProgressBar::FrgBase_ProgressBar(FrgBase_MainWindow* parent
 	this->setContentsMargins(0, 0, 5, 0);
 	this->adjustSize();
 
-	SetProgressBarBusy(false);
 	SetLabelHidden();
+
+	connect(this, &FrgBase_ProgressBar::SetProgressBarBusy, this, &FrgBase_ProgressBar::SetProgressBarBusySlot);
+
+	SetProgressBarBusy(false);
 }
 
-void ForgBaseLib::FrgBase_ProgressBar::SetProgressBarBusy(bool condition)
+void ForgBaseLib::FrgBase_ProgressBar::SetProgressBarBusySlot(bool condition)
 {
+	
 	if (condition)
 	{
 		theProgressBar_->setRange(0, 0);

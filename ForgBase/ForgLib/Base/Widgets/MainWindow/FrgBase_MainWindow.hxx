@@ -79,7 +79,7 @@ protected:
 	virtual void InitTree();
 	virtual void InitProgressBar();
 	virtual void InitConsoleOutput();
-	
+
 	virtual void FormMenus();
 
 	virtual void CorrectConsoleOutput();
@@ -89,10 +89,6 @@ public:
 	FrgBase_MainWindow(QWidget* parent = NullPtr);
 
 	~FrgBase_MainWindow();
-
-	void PrintInfoToConsole(const FrgString& info);
-	void PrintWarningToConsole(const FrgString& info);
-	void PrintErrorToConsole(const FrgString& info);
 
 	FrgBase_ProgressBar* GetProgressBar() const { return theProgressBar_; }
 
@@ -124,6 +120,14 @@ public:
 	void SetQApplication(QApplication* qapplication) { theQApplication_ = qapplication; }
 	QApplication* GetQApplication() const { return theQApplication_; }
 
+	FrgBase_FramelessWindow* GetFramelessWindow() const { return theFrameLessWindow_; }
+
+Q_SIGNALS:
+
+	void PrintInfoToConsole(const QString& info);
+	void PrintWarningToConsole(const QString& info);
+	void PrintErrorToConsole(const QString& info);
+
 protected slots:
 
 	/*=========================*/
@@ -139,6 +143,10 @@ protected slots:
 
 	void UpdateCPUUsageSlot();
 	void UpdateRAMUsageSlot();
+
+	void PrintInfoToConsoleSlot(const QString& info);
+	void PrintWarningToConsoleSlot(const QString& info);
+	void PrintErrorToConsoleSlot(const QString& info);
 
 public slots:
 
