@@ -113,18 +113,30 @@ ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 //	RenderScene(true);
 //}
 
-void ForgVisualLib::FrgVisual_Scene3D::RenderScene(bool resetCamera)
+void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool resetView)
 {
+	if(!theInitiated_)
+	{
+		theCamera_->SetPosition(0, -1, 0);
+		theCamera_->SetFocalPoint(0, 0, 0);
+		theCamera_->SetViewUp(0, 0, 1);
+		theCamera_->Azimuth(45);
+		theCamera_->Elevation(25);
+	}
+	
 	if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
 		return;
 
 	if (resetCamera)
 	{
-		/*theCamera_->SetPosition(0, -1, 0);
-		theCamera_->SetFocalPoint(0, 0, 0);
-		theCamera_->SetViewUp(0, 0, 1);
-		theCamera_->Azimuth(45);
-		theCamera_->Elevation(25);*/
+		if (resetView)
+		{
+			theCamera_->SetPosition(0, -1, 0);
+			theCamera_->SetFocalPoint(0, 0, 0);
+			theCamera_->SetViewUp(0, 0, 1);
+			theCamera_->Azimuth(45);
+			theCamera_->Elevation(25);
+		}
 
 		auto my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
 
@@ -316,14 +328,14 @@ void ForgVisualLib::FrgVisual_Scene3D::FormToolBar()
 
 		auto* standardViewsMenu = new ForgBaseLib::FrgBase_Menu("Standard Views", theParentMainWindow_);
 		standardViewsMenu->setStyle(myProxyStyle);
-		const auto* rightViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPPLUSZ), "(+Y) right", false);
-		const auto* leftViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPPLUSZ), "(-Y) left", false);
+		auto* rightViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSY_UPPLUSZ), "(+Y) right", false);
+		auto* leftViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSY_UPPLUSZ), "(-Y) left", false);
 		standardViewsMenu->addSeparator();
-		const auto* topViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPPLUSY), "(+Z) top", false);
-		const auto* bottomViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPPLUSY), "(-Z) bottom", false);
+		auto* topViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSZ_UPPLUSY), "(+Z) top", false);
+		auto* bottomViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPPLUSY), "(-Z) bottom", false);
 		standardViewsMenu->addSeparator();
-		const auto* frontViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPPLUSZ), "(-X) front", false);
-		const auto* backViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPPLUSZ), "(+X) back", false);
+		auto* frontViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_MINUSX_UPPLUSZ), "(-X) front", false);
+		auto* backViewAction = standardViewsMenu->AddItem(QIcon(ICON_FRGVISUAL_SCENE_VIEW_PLUSX_UPPLUSZ), "(+X) back", false);
 
 		connect(rightViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
 		connect(leftViewAction, SIGNAL(triggered(bool)), this, SLOT(SetViewToSlot(bool)));
@@ -389,6 +401,7 @@ void ForgVisualLib::FrgVisual_Scene3D::SetCameraView(const QString& firstDir, co
 	
 	theCamera_->SetPosition(fPoint);
 	theCamera_->SetFocalPoint(fOldPoint);
+	theCamera_->OrthogonalizeViewUp();
 
 	if (secondDir == "Up +Z")
 		theCamera_->SetViewUp(0.0, 0.0, 1.0);
@@ -420,11 +433,11 @@ void ForgVisualLib::FrgVisual_Scene3D::MoveCameraFromTo(vtkCamera* from, vtkCame
 	(
 		nullptr,
 		{
-			int nt = time * fps;
-	double dt = time / static_cast<double>(nt);
+			const int nt = time * fps;
+	const double dt = time / static_cast<double>(nt);
 			for (int i = 0; i <= nt; i++)
 			{
-				double t = i * dt;
+				const double t = i * dt;
 				emit RenderSceneSignal(t);
 				QThread::msleep(1000.0 / static_cast<double>(fps));
 			}
@@ -478,6 +491,7 @@ void ForgVisualLib::FrgVisual_Scene3D::SetViewToSlot(bool)
 void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(double t)
 {
 	theCameraInterpolator_->InterpolateCamera(t, theCamera_);
+	theCamera_->OrthogonalizeViewUp();
 	theRenderer_->ResetCameraClippingRange();
 	RenderScene(false);
 }

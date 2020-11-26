@@ -72,6 +72,10 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 	{
 		connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 	}
+
+	theInitiated_ = false;
+
+	connect(this, &FrgVisual_Scene_Entity::RenderScene, this, &FrgVisual_Scene_Entity::RenderSceneSlot);
 }
 
 ForgVisualLib::FrgVisual_Scene_Entity::~FrgVisual_Scene_Entity()
@@ -261,15 +265,17 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	theOpenGLWidget_->SetRenderWindow(theRenderWindow_);
 
-	RenderScene(true);
+	RenderScene(true, true);
 
 	FormToolBar();
 
 	theCameraInterpolator_ = vtkCameraInterpolator::New();
+
+	theInitiated_ = true;
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_Scene<Dim>::RenderScene(bool resetCamera)
+void ForgVisualLib::FrgVisual_Scene<Dim>::RenderSceneSlot(bool resetCamera, bool resetView)
 {
 
 }

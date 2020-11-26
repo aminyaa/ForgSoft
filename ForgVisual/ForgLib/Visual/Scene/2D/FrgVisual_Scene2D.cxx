@@ -5,6 +5,7 @@
 #include <FrgVisual_BaseActor.hxx>
 #include <FrgVisual_GridActor.hxx>
 #include <FrgBase_Menu.hxx>
+#include <FrgBase_TabWidget.hxx>
 
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkRenderer.h>
@@ -92,14 +93,28 @@ ForgVisualLib::FrgVisual_Scene2D::FrgVisual_Scene2D
 //	RenderScene(true);
 //}
 
-void ForgVisualLib::FrgVisual_Scene2D::RenderScene(bool resetCamera)
+void ForgVisualLib::FrgVisual_Scene2D::RenderSceneSlot(bool resetCamera, bool resetView)
 {
-	if (resetCamera)
+	if (!theInitiated_)
 	{
 		theCamera_->SetPosition(0, 0, 1);
 		theCamera_->SetFocalPoint(0, 0, 0);
 		theCamera_->SetViewUp(0, 1, 0);
 		theCamera_->SetParallelProjection(true);
+	}
+
+	if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
+		return;
+	
+	if (resetCamera)
+	{
+		if(resetView)
+		{
+			theCamera_->SetPosition(0, 0, 1);
+			theCamera_->SetFocalPoint(0, 0, 0);
+			theCamera_->SetViewUp(0, 1, 0);
+			theCamera_->SetParallelProjection(true);
+		}
 
 		theRenderer_->SetActiveCamera(theCamera_);
 

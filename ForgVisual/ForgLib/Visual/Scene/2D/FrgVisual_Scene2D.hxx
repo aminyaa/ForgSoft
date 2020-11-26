@@ -37,7 +37,7 @@ public:
 
 	//void Init() override;
 
-	void RenderScene(bool resetCamera = true) override;
+	void RenderSceneSlot(bool resetCamera = true, bool resetView = false) override;
 
 private:
 

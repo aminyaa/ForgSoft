@@ -57,11 +57,14 @@ public:
 
 	void RemoveAllActors();
 	virtual void SetLogoText(const char* logoText);
-	virtual void RenderScene(bool resetCamera = true) {}
 
 	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
 	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
+
+Q_SIGNALS:
+
+	void RenderScene(bool resetCamera = true, bool resetView = false);
 
 protected:
 
@@ -84,8 +87,11 @@ protected:
 	vtkCameraInterpolator* theCameraInterpolator_ = nullptr;
 
 	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;
-
 	ForgBaseLib::FrgBase_Menu* theContextMenuInScene_ = nullptr;
+
+	bool theInitiated_;
+
+protected:
 
 	virtual void Init() {}
 
@@ -99,6 +105,10 @@ public slots:
 	void UnHideActionIsCalledSlot();
 
 	void CurrentTabChangedSlot(int index);
+
+protected slots:
+
+	virtual void RenderSceneSlot(bool resetCamera = true, bool resetView = false) {}
 
 };
 
@@ -132,7 +142,7 @@ public:
 
 	void Init() override;
 
-	void RenderScene(bool resetCamera = true) override;
+	void RenderSceneSlot(bool resetCamera = true, bool resetView = false) override;
 
 	// ==================================================================================
 	// Add Point
@@ -337,7 +347,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER( )
+	DECLARE_SAVE_LOAD_HEADER()
 
 protected:
 

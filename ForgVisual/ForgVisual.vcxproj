@@ -83,8 +83,8 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;TKernel.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKMath.lib;TKStd.lib;boost_serialization-vc142-mt-gd-x64-1_73.lib;ForgBaseD.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)ForgBase\ThirdParties\VTK\lib\Debug;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;TKernel.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKMath.lib;TKStd.lib;boost_serialization-vc142-mt-gd-x64-1_73.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParties\VTK\lib\Deb;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
@@ -117,8 +117,8 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;TKernel.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKMath.lib;TKStd.lib;boost_serialization-vc142-mt-x64-1_73.lib;ForgBase.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)ForgBase\ThirdParties\VTK\lib\Debug;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;TKernel.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKMath.lib;TKStd.lib;boost_serialization-vc142-mt-x64-1_73.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)ThirdParties\VTK\lib\Rel;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
@@ -269,9 +269,6 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
   <ItemGroup>
     <ProjectReference Include="..\ForgBase\ForgBase.vcxproj">
       <Project>{81f5e528-f15d-4792-8c1b-84c8d6f3a8ee}</Project>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
