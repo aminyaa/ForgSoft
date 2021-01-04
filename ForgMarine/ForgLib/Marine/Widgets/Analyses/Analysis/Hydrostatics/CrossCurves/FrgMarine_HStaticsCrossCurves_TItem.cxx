@@ -249,11 +249,11 @@ void ForgMarineLib::FrgMarine_HStaticsCrossCurves_TItem::DrawSections
 				auto mesh = edges[iEdge]->Mesh();
 				auto tnbPoints = mesh->Points();
 
-				std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myPoints;
+				std::vector<ForgBaseLib::FrgBase_Pnt<3>> myPoints;
 				for (int iPoint = 0; iPoint < tnbPoints.size(); iPoint++)
 				{
 					auto pt = tnbPoints[iPoint];
-					myPoints.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(theModelTItem_->GetModel()->Sections()[iSection]->X(), pt.X(), pt.Y()));
+					myPoints.push_back(ForgBaseLib::FrgBase_Pnt<3>(theModelTItem_->GetModel()->Sections()[iSection]->X(), pt.X(), pt.Y()));
 				}
 
 				if (thePreviewTItem_)

@@ -106,17 +106,17 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 					continue;
 
 				auto myMeshNodes = myMesh->Nodes();
-				std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myMeshPoints;
+				std::vector<ForgBaseLib::FrgBase_Pnt<3>> myMeshPoints;
 				for (int iPt = 0; iPt < myMeshNodes.Size(); iPt++)
 				{
 					auto x = myMeshNodes.Value(iPt + 1).X();
 					auto y = myMeshNodes.Value(iPt + 1).Y();
 					auto z = myMeshNodes.Value(iPt + 1).Z();
-					myMeshPoints.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt3d>(x, y, z));
+					myMeshPoints.push_back(ForgBaseLib::FrgBase_Pnt3d(x, y, z));
 				}
 
 				auto myTrianglesNodes = myMesh->Triangles();
-				std::vector<std::shared_ptr<std::tuple<int, int, int>>> myTriangles;
+				std::vector<std::tuple<int, int, int>> myTriangles;
 
 				for (int iTri = 0; iTri < myTrianglesNodes.Size(); iTri++)
 				{
@@ -124,24 +124,24 @@ void ForgMarineLib::FrgMarine_GeomPModelPView_TItem::UpdatePreviewSlot()
 					int I2 = myTrianglesNodes.Value(iTri + 1).Value(2);
 					int I3 = myTrianglesNodes.Value(iTri + 1).Value(3);
 					std::tuple<int, int, int> myData = std::make_tuple(I1, I2, I3);
-					myTriangles.push_back(std::make_shared<std::tuple<int, int, int>>(myData));
+					myTriangles.push_back(std::tuple<int, int, int>(myData));
 				}
 
 				myScene->AddTriangulation(myMeshPoints, myTriangles);
 			}
 
 			//myScene->AddTriangulations<opencascade::handle<Poly_Triangulation>>(myTris, true);
-			myScene->AddBox(0.0, -15.0, 0.0, 100.0, 20.0, 15.0)->SetColor(0.7, 0.7, 0.7);
-			myScene->AddPoint(0.0, 0.0, 0.0);
-			myScene->AddLine(0.0, 0.0, 0.0, 0.0, 0.0, 20.0);
+			//myScene->AddBox(0.0, -15.0, 0.0, 100.0, 20.0, 15.0)->SetColor(0.7, 0.7, 0.7);
+			//myScene->AddPoint(0.0, 0.0, 0.0);
+			//myScene->AddLine(0.0, 0.0, 0.0, 0.0, 0.0, 20.0);
 
-			std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myBSPPts;
-			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(0.0, 0.0, 0.0));
-			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(0.0, 0.0, 5.0));
-			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(50.0, 0.0, 5.0));
-			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(50.0, 0.0, 10.0));
-			myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(100.0, 0.0, 10.0));
-			myScene->AddBSPLine(myBSPPts, 2, false);
+			//std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>>> myBSPPts;
+			//myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(0.0, 0.0, 0.0));
+			//myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(0.0, 0.0, 5.0));
+			//myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(50.0, 0.0, 5.0));
+			//myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(50.0, 0.0, 10.0));
+			//myBSPPts.push_back(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(100.0, 0.0, 10.0));
+			//myScene->AddBSPLine(myBSPPts, 2, false);
 
 			//double t0 = 0.0;
 			//double tn = PI;
