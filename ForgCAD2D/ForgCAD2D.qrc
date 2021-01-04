@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/ForgCAD2D">
+        <file>Resources/Icons/Scene/Aim.png</file>
+        <file>Resources/Icons/Scene/Circle.png</file>
+        <file>Resources/Icons/Scene/Cursor.png</file>
+        <file>Resources/Icons/Scene/Polyline.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="ForgLib">
+      <UniqueIdentifier>{76a8d219-7d7f-41a5-a514-8f25213037b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD2D">
+      <UniqueIdentifier>{8d82e2cd-5e7b-4b17-a487-6a3054146a87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD2D\Global">
+      <UniqueIdentifier>{bf5a3d98-51ab-408a-acfe-e45c796cd206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD2D\Scene">
+      <UniqueIdentifier>{18c8e76f-70a2-4874-b25d-267f8d9e7c04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD2D\Tools">
+      <UniqueIdentifier>{b24e1ba5-040c-41bb-948a-aa1cf68011b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD2D\Tools\InteractorStyle">
+      <UniqueIdentifier>{92fbe370-12d4-497c-895e-2b6f2225c719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD2D\Scene\TreeItem">
+      <UniqueIdentifier>{890a23a5-d08c-4b4c-88cf-69d4fbb591c0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="ForgCAD2D.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="ForgCAD2D.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ForgLib\CAD2D\Scene\FrgCAD2D_Scene.cxx">
+      <Filter>ForgLib\CAD2D\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD2D\Tools\InteractorStyle\FrgCAD2D_Scene_InteractorStyle.cxx">
+      <Filter>ForgLib\CAD2D\Tools\InteractorStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD2D\Scene\TreeItem\FrgCAD2D_Scene_TItem.cxx">
+      <Filter>ForgLib\CAD2D\Scene\TreeItem</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ForgLib\CAD2D\Global\FrgCAD2D_Global.hxx">
+      <Filter>ForgLib\CAD2D\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\CAD2D\Global\FrgCAD2D_Global_Build.hxx">
+      <Filter>ForgLib\CAD2D\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\CAD2D\Scene\FrgCAD2D_Scene.hxx">
+      <Filter>ForgLib\CAD2D\Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ForgLib\CAD2D\Tools\InteractorStyle\FrgCAD2D_Scene_InteractorStyle.hxx">
+      <Filter>ForgLib\CAD2D\Tools\InteractorStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD2D\Scene\TreeItem\FrgCAD2D_Scene_TItem.hxx">
+      <Filter>ForgLib\CAD2D\Scene\TreeItem</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>
