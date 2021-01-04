@@ -29,6 +29,7 @@
 
 #include <QtCore/QRandomGenerator>
 #include <QtGui/QWheelEvent>
+#include <QtCore/QThread>
 
 QColor* ForgVisualLib::FrgVisual_Plot2D::theHighlightColor_ = new QColor(255, 0, 255);
 
@@ -173,7 +174,30 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 
 	//theChart_->SetSelectionMode(vtkContextScene::SELECTION_ADDITION);
 
-	theView_->GetRenderWindow()->SetMultiSamples(0);
+	theView_->GetRenderWindow()->SetMultiSamples(8);
+
+	/*static int iii = 0;
+	if(iii == 1)
+	{
+		auto context = this->GetView()->GetContext();
+
+		float radius = context->GetPen()->GetWidth() * 0.475;
+
+		unsigned char oldColor[4];
+		context->GetBrush()->GetColor(oldColor);
+
+		context->GetBrush()->SetColor(context->GetPen()->GetColor());
+
+		unsigned char color[4] = { 255, 0, 0, 255 };
+		context->DrawEllipseWedge(0.0, 0.0, radius, radius, 0, 0, 0, 360);
+
+		context->GetBrush()->SetColor(oldColor);
+	}
+
+	iii++;*/
+	
+	//this->GetView()->GetContext()->DrawEllipseWedge(1.0, 2.0, 1.5, 2.23, 1.0, 1.2, 0.0, 125.0);
+	QThread::msleep(1);
 	RenderView();
 
 	return line;
@@ -219,7 +243,7 @@ void ForgVisualLib::FrgVisual_Plot2D::AddPointToPlot(vtkPlot* vtkplot, double x,
 	myTable->SetValue(id, 0, x);
 	myTable->SetValue(id, 1, y);
 
-	theView_->GetRenderWindow()->SetMultiSamples(0);
+	theView_->GetRenderWindow()->SetMultiSamples(8);
 	/*theChart_->RecalculateBounds();
 	theChart_->GetScene()->SetDirty(true);*/
 
@@ -235,8 +259,11 @@ void ForgVisualLib::FrgVisual_Plot2D::AddPointToPlot(vtkPlot* vtkplot, double x,
 	vtkplot->GetPen()->SetLineType(6);
 	vtkplot->GetPen()->SetLineType(lineType);
 
-	if(render)
+	if (render)
+	{
+		QThread::msleep(1);
 		RenderView();
+	}
 }
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title, const int nbPts) const
@@ -933,7 +960,7 @@ bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName) cons
 	return true;
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetThemeDark(bool condition) const
+void ForgVisualLib::FrgVisual_Plot2D::SetThemeDarkSlot(bool condition) const
 {
 	if(condition)
 	{

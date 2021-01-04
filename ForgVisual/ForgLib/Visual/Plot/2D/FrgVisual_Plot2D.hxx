@@ -16,6 +16,8 @@ class FORGVISUAL_EXPORT FrgVisual_Plot2D
 	: public FrgVisual_Plot
 {
 
+	Q_OBJECT
+
 public:
 
 	FrgVisual_Plot2D
@@ -77,12 +79,14 @@ public:
 	bool ExportDataAsCSV(std::string myFileName);
 	bool ExportDataAsImage(QString myFileName) const;
 
-	void SetThemeDark(bool condition = true) const override;
-
 protected:
 
 	void Init() override;
 	void wheelEvent(QWheelEvent* event) override;
+
+protected slots:
+
+	void SetThemeDarkSlot(bool condition = true) const override;
 
 private:
 

@@ -18,10 +18,12 @@ ForgVisualLib::FrgVisual_Plot::FrgVisual_Plot
 	: QVTKOpenGLNativeWidget(parentMainWindow)
 	, theParentMainWindow_(parentMainWindow)
 {
-	
+	connect(this, &FrgVisual_Plot::RenderView, this, &FrgVisual_Plot::RenderViewSlot, Qt::QueuedConnection);
+	connect(this, &FrgVisual_Plot::SetThemeDark, this, &FrgVisual_Plot::SetThemeDarkSlot);
+	connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
 }
 
-void ForgVisualLib::FrgVisual_Plot::RenderView() const
+void ForgVisualLib::FrgVisual_Plot::RenderViewSlot() const
 {
 	if (theView_)
 	{
@@ -48,5 +50,6 @@ void ForgVisualLib::FrgVisual_Plot::SetParentMainWindow(ForgBaseLib::FrgBase_Mai
 	theParentMainWindow_ = parentMainWindow;
 	this->setParent(parentMainWindow);
 
+	connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
 	SetThemeDark(parentMainWindow->IsThemeDark());
 }
