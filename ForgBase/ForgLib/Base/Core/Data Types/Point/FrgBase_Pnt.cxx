@@ -247,8 +247,8 @@ bool ForgBaseLib::FrgBase_Pnt<Dim>::operator==(const FrgBase_Pnt& pt)
 	bool result = true;
 	for (int i = 0; i < Dim; i++)
 	{
-		if (theCoords_[i] != pt.Coord(i));
-		result = false;
+		if (theCoords_[i] != pt.Coord(i))
+			result = false;
 	}
 
 	return result;
