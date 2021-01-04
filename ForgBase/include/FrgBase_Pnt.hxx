@@ -9,12 +9,12 @@
 BeginForgBaseLib
 
 template <int Dim>
-class FORGBASE_EXPORT FrgBase_Pnt
+class FrgBase_Pnt
 {
 
 public:
 
-	FrgBase_Pnt();
+	FORGBASE_EXPORT FrgBase_Pnt();
 
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	FrgBase_Pnt(double x, double y);
@@ -22,56 +22,56 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 3>>
 	FrgBase_Pnt(double x, double y, double z);
 
-	FrgBase_Pnt(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT FrgBase_Pnt(const FrgBase_Pnt& pt);
 
-	FrgBase_Pnt& operator=(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT FrgBase_Pnt& operator=(const FrgBase_Pnt& pt);
 
-	const double& X() const;
-	double& X();
+	FORGBASE_EXPORT const double& X() const;
+	FORGBASE_EXPORT double& X();
 
-	const double& Y() const;
-	double& Y();
+	FORGBASE_EXPORT const double& Y() const;
+	FORGBASE_EXPORT double& Y();
 
 	template <typename = typename std::enable_if_t<Dim == 3>>
-	const double& Z() const;
+	FORGBASE_EXPORT const double& Z() const;
 	template <typename = typename std::enable_if_t<Dim == 3>>
-	double& Z();
+	FORGBASE_EXPORT double& Z();
 
-	const double& Coord(int i) const;
+	FORGBASE_EXPORT const double& Coord(int i) const;
 
-	FrgBase_Pnt& operator+=(const FrgBase_Pnt& pt);
-	FrgBase_Pnt& operator-=(const FrgBase_Pnt& pt);
-	FrgBase_Pnt& operator*=(const FrgBase_Pnt& pt);
-	FrgBase_Pnt& operator=(double value);
-	FrgBase_Pnt& operator+=(double value);
-	FrgBase_Pnt& operator-=(double value);
-	FrgBase_Pnt& operator*=(double value);
-	FrgBase_Pnt& operator/=(double value);
-	FrgBase_Pnt& operator+();
-	FrgBase_Pnt operator-();
+	FORGBASE_EXPORT FrgBase_Pnt& operator+=(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT FrgBase_Pnt& operator-=(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT FrgBase_Pnt& operator*=(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT FrgBase_Pnt& operator=(double value);
+	FORGBASE_EXPORT FrgBase_Pnt& operator+=(double value);
+	FORGBASE_EXPORT FrgBase_Pnt& operator-=(double value);
+	FORGBASE_EXPORT FrgBase_Pnt& operator*=(double value);
+	FORGBASE_EXPORT FrgBase_Pnt& operator/=(double value);
+	FORGBASE_EXPORT FrgBase_Pnt& operator+();
+	FORGBASE_EXPORT FrgBase_Pnt operator-();
 
-	bool operator==(const FrgBase_Pnt& pt);
-	bool operator!=(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT bool operator==(const FrgBase_Pnt& pt);
+	FORGBASE_EXPORT bool operator!=(const FrgBase_Pnt& pt);
 
-	double SquareTwoNorm() const;
-	double TwoNorm() const;
-	FrgBase_Pnt UnitLength() const;
+	FORGBASE_EXPORT double SquareTwoNorm() const;
+	FORGBASE_EXPORT double TwoNorm() const;
+	FORGBASE_EXPORT FrgBase_Pnt UnitLength() const;
 	double DotProduct(const FrgBase_Pnt& pt) const;
 	FrgBase_Pnt<3> CrossProduct(const FrgBase_Pnt& pt) const;
 
 	double SquareDistance(const FrgBase_Pnt& pt) const;
-	double Distance(const FrgBase_Pnt& pt) const;
+	FORGBASE_EXPORT double Distance(const FrgBase_Pnt& pt) const;
 
-	void Print(std::ostream& os = std::cout) const;
+	FORGBASE_EXPORT void Print(std::ostream& os = std::cout) const;
 
 	template <typename = typename std::enable_if_t<Dim == 2>>
-	void Translate(double dx, double dy);
+	FORGBASE_EXPORT void Translate(double dx, double dy);
 	template <typename = typename std::enable_if_t<Dim == 3>>
-	void Translate(double dx, double dy, double dz);
+	FORGBASE_EXPORT void Translate(double dx, double dy, double dz);
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER( )
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
 private:
 

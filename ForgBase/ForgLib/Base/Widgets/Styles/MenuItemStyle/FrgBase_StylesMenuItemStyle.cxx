@@ -1,14 +1,14 @@
 #include <FrgBase_StylesMenuItemStyle.hxx>
 
 ForgBaseLib::FrgBase_StylesMenuItemStyle::FrgBase_StylesMenuItemStyle()
-	: QProxyStyle()
+	: FrgBase_MainStyle()
 	, theIconSize_(40)
 {
 
 }
 
 ForgBaseLib::FrgBase_StylesMenuItemStyle::FrgBase_StylesMenuItemStyle(QStyle* style)
-	: QProxyStyle(style)
+	: FrgBase_MainStyle(style)
 	, theIconSize_(40)
 {
 

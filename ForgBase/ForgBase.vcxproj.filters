@@ -349,9 +349,6 @@
     <Filter Include="ForgLib\Base\Widgets\Styles">
       <UniqueIdentifier>{7eb1a204-375b-4ba8-ae77-9b838df8fdbe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Base\Widgets\Styles\DarkStyle">
-      <UniqueIdentifier>{0a905784-7a27-42d5-a841-276916b3b2ca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ForgLib\Base\Widgets\MainWindow\FramelessWindow">
       <UniqueIdentifier>{42d882f5-2ff6-476b-aea5-d1e99b97e232}</UniqueIdentifier>
     </Filter>
@@ -360,6 +357,15 @@
     </Filter>
     <Filter Include="ForgLib\Base\Widgets\Styles\MenuItemStyle">
       <UniqueIdentifier>{7164434b-621e-4588-b0a1-3f49ddc3267e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Styles\MainStyle">
+      <UniqueIdentifier>{0a905784-7a27-42d5-a841-276916b3b2ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Solvers">
+      <UniqueIdentifier>{4035e53c-e0e2-4722-88d2-e34ace0a088f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Solvers\FullMtx">
+      <UniqueIdentifier>{7b3622a4-560e-487d-bf35-61799703dfe8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -612,9 +618,6 @@
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectPath\FrgBase_PrptsWdgSelectPath.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectPath</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Base\Widgets\Styles\DarkStyle\FrgBase_StylesDarkStyle.cxx">
-      <Filter>ForgLib\Base\Widgets\Styles\DarkStyle</Filter>
-    </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\MainWindow\FramelessWindow\FrgBase_FramelessWindow.cxx">
       <Filter>ForgLib\Base\Widgets\MainWindow\FramelessWindow</Filter>
     </ClCompile>
@@ -623,6 +626,9 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Styles\MenuItemStyle\FrgBase_StylesMenuItemStyle.cxx">
       <Filter>ForgLib\Base\Widgets\Styles\MenuItemStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Styles\MainStyle\FrgBase_MainStyle.cxx">
+      <Filter>ForgLib\Base\Widgets\Styles\MainStyle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -781,6 +787,15 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Script\FrgBase_Script.hxx">
       <Filter>ForgLib\Base\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Solvers\FullMtx\FrgBase_AbsMtx.hxx">
+      <Filter>ForgLib\Base\Core\Solvers\FullMtx</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Solvers\FullMtx\FrgBase_FullMtx.hxx">
+      <Filter>ForgLib\Base\Core\Solvers\FullMtx</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Solvers\FullMtx\FrgBase_Vcr.hxx">
+      <Filter>ForgLib\Base\Core\Solvers\FullMtx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -955,9 +970,6 @@
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectPath\FrgBase_PrptsWdgSelectPath.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectPath</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Base\Widgets\Styles\DarkStyle\FrgBase_StylesDarkStyle.hxx">
-      <Filter>ForgLib\Base\Widgets\Styles\DarkStyle</Filter>
-    </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\MainWindow\FramelessWindow\FrgBase_FramelessWindow.hxx">
       <Filter>ForgLib\Base\Widgets\MainWindow\FramelessWindow</Filter>
     </QtMoc>
@@ -966,6 +978,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Styles\MenuItemStyle\FrgBase_StylesMenuItemStyle.hxx">
       <Filter>ForgLib\Base\Widgets\Styles\MenuItemStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Styles\MainStyle\FrgBase_MainStyle.hxx">
+      <Filter>ForgLib\Base\Widgets\Styles\MainStyle</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

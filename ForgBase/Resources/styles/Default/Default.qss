@@ -178,3 +178,49 @@ QCheckBox::indicator:unchecked
 	color: #a9b7c6;
 	background-color: transparent;
 }
+
+QMenu{
+  background-color:palette(window);
+  border:1px solid palette(shadow);
+}
+QMenu::item{
+  padding:3px 25px 3px 25px;
+  border:1px solid transparent;
+}
+QMenu::item:disabled{
+  color:palette(disabled);
+}
+QMenu::item:selected{
+  border-color:palette(highlight);
+}
+QMenu::icon:checked{
+  background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(25,25,25,127),stop:1 rgba(53,53,53,75));
+  border:1px solid palette(highlight);
+  border-radius:2px;
+}
+QMenu::separator{
+  height:1px;
+  background-color: palette(highlight);
+  margin-left:5px;
+  margin-right:5px;
+}
+QMenu::indicator{
+  width:18px;
+  height:18px;
+}
+QMenu::indicator:non-exclusive:checked{
+  image:url(:/styles/DarkStyle/icon_checkbox_checked.png);
+  padding-left:2px;
+}
+QMenu::indicator:non-exclusive:unchecked{
+  image:url(:/styles/DarkStyle/icon_checkbox_unchecked.png);
+  padding-left:2px;
+}
+QMenu::indicator:exclusive:checked{
+  image:url(:/styles/DarkStyle/icon_radiobutton_checked.png);
+  padding-left:2px;
+}
+QMenu::indicator:exclusive:unchecked{
+  image:url(:/styles/DarkStyle/icon_radiobutton_unchecked.png);
+  padding-left:2px;
+}

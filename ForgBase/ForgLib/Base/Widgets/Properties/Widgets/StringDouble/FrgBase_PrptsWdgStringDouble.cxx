@@ -500,6 +500,8 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 
 							theLineEdit_->setText(QString::number(value, 'G'));
 							emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+							theLineEdit_->setFocus();
+							QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 						}
 
 						return true;
@@ -520,6 +522,8 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 							theLineEdit_->setText(QString::number(value, 'G'));
 
 							emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+							theLineEdit_->setFocus();
+							QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 						}
 
 						return true;
@@ -543,7 +547,7 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 					{
 						if (watched == theLineEdit_)
 						{
-							if (theLineEdit_->isEnabled())
+							if (theLineEdit_->hasFocus())
 							{
 								if (myVariant->IsStepped())
 								{
@@ -557,6 +561,8 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 									theLineEdit_->setText(QString::number(value, 'G'));
 
 									emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+									theLineEdit_->setFocus();
+									QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 								}
 
 								return true;

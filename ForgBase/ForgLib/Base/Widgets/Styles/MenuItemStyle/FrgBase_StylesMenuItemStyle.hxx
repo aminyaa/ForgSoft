@@ -2,12 +2,13 @@
 #ifndef _FrgBase_StylesMenuItemStyle_Header
 #define _FrgBase_StylesMenuItemStyle_Header
 
-#include <FrgBase_StylesDarkStyle.hxx>
+#include <FrgBase_Global.hxx>
+#include <FrgBase_MainStyle.hxx>
 
 BeginForgBaseLib
 
 class FORGBASE_EXPORT FrgBase_StylesMenuItemStyle
-	: public QProxyStyle
+	: public FrgBase_MainStyle
 {
 	Q_OBJECT
 

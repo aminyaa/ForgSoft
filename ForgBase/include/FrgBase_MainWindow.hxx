@@ -23,6 +23,7 @@ class FrgBase_ProgressBar;
 class FrgBase_PropertiesPanel;
 class FrgBase_TabWidget;
 class FrgBase_FramelessWindow;
+class FrgBase_MainStyle;
 
 class FORGBASE_EXPORT FrgBase_MainWindow
 	: public QMainWindow
@@ -66,12 +67,13 @@ protected:
 
 	FrgBase_FramelessWindow* theFrameLessWindow_ = nullptr;
 	bool theIsThemeDark_;
-	QStyle* theDefaultStyle_ = nullptr;
 
 	QApplication* theQApplication_ = nullptr;
 
 	QLabel* theCPUUsageLabel_ = nullptr;
 	QLabel* theRAMUsageLabel_ = nullptr;
+
+	FrgBase_MainStyle* theMainStyle_ = nullptr;
 
 protected:
 
@@ -127,6 +129,8 @@ Q_SIGNALS:
 	void PrintInfoToConsole(const QString& info);
 	void PrintWarningToConsole(const QString& info);
 	void PrintErrorToConsole(const QString& info);
+
+	void ThemeModeChangedSignal(bool darkMode);
 
 protected slots:
 

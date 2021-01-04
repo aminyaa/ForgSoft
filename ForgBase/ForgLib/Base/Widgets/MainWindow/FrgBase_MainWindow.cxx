@@ -7,7 +7,7 @@
 #include <FrgBase_Tree.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_TabWidget.hxx>
-#include <FrgBase_StylesDarkStyle.hxx>
+#include <FrgBase_MainStyle.hxx>
 #include <FrgBase_FramelessWindow.hxx>
 #include <FrgBase_ProgressBar.hxx>
 
@@ -32,8 +32,6 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 )
 	: QMainWindow(parent)
 {
-	theDefaultStyle_ = QApplication::style();
-	
 	this->window()->setWindowIcon(QIcon(ICONLogo));
 
 	theTabWidget_ = new FrgBase_TabWidget(this);
@@ -45,9 +43,9 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 
 	theChaiScript_ = std::make_shared<chaiscript::ChaiScript>();
 
-	connect(this, &FrgBase_MainWindow::PrintInfoToConsole, this, &FrgBase_MainWindow::PrintInfoToConsoleSlot);
-	connect(this, &FrgBase_MainWindow::PrintWarningToConsole, this, &FrgBase_MainWindow::PrintWarningToConsoleSlot);
-	connect(this, &FrgBase_MainWindow::PrintErrorToConsole, this, &FrgBase_MainWindow::PrintErrorToConsoleSlot);
+	connect(this, &FrgBase_MainWindow::PrintInfoToConsole, this, &FrgBase_MainWindow::PrintInfoToConsoleSlot, Qt::QueuedConnection);
+	connect(this, &FrgBase_MainWindow::PrintWarningToConsole, this, &FrgBase_MainWindow::PrintWarningToConsoleSlot, Qt::QueuedConnection);
+	connect(this, &FrgBase_MainWindow::PrintErrorToConsole, this, &FrgBase_MainWindow::PrintErrorToConsoleSlot, Qt::QueuedConnection);
 
 	if (!theFrameLessWindow_)
 	{
@@ -55,7 +53,12 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 		theFrameLessWindow_->setWindowTitle(this->windowTitle());
 		theFrameLessWindow_->window()->setWindowIcon(this->window()->windowIcon());
 	}
-	theFrameLessWindow_->setContent(this);
+	//theFrameLessWindow_->setContent(this);
+
+	theIsThemeDark_ = true;
+	theMainStyle_ = new FrgBase_MainStyle(theIsThemeDark_);
+
+	QApplication::setStyle(theMainStyle_);
 }
 
 ForgBaseLib::FrgBase_MainWindow::~FrgBase_MainWindow()
@@ -81,7 +84,7 @@ void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
 	FormMenus();
 
 	InitTree();
-	
+
 	thePropertiesPanel_ = new FrgBase_PropertiesPanel(this, nullptr);
 
 	theTreeDockWidget_ = new QDockWidget("Tree", this);
@@ -140,7 +143,7 @@ void ForgBaseLib::FrgBase_MainWindow::InitProgressBar()
 
 	theCPUUsageLabel_ = new QLabel;
 	theRAMUsageLabel_ = new QLabel;
-	
+
 	this->statusBar()->addWidget(theCPUUsageLabel_, 0);
 	this->statusBar()->addWidget(theRAMUsageLabel_, 0);
 
@@ -148,7 +151,7 @@ void ForgBaseLib::FrgBase_MainWindow::InitProgressBar()
 	connect(timerForUpdatingCPUandRAMUsages, SIGNAL(timeout()), this, SLOT(UpdateCPUUsageSlot()));
 	connect(timerForUpdatingCPUandRAMUsages, SIGNAL(timeout()), this, SLOT(UpdateRAMUsageSlot()));
 	timerForUpdatingCPUandRAMUsages->start(1000);
-	
+
 	theProgressBar_ = new ForgBaseLib::FrgBase_ProgressBar(this);
 	this->statusBar()->addWidget(theProgressBar_, 0);
 	this->statusBar()->adjustSize();
@@ -198,6 +201,10 @@ void ForgBaseLib::FrgBase_MainWindow::InitConsoleOutput()
 
 	this->addDockWidget(Qt::BottomDockWidgetArea, theConsoleOutputDockWidget_);
 	this->setCorner(Qt::Corner::BottomLeftCorner, Qt::LeftDockWidgetArea);
+
+	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
+	const auto editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
+	editor->setMaximumBlockCount(0);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::CorrectConsoleOutput()
@@ -207,9 +214,6 @@ void ForgBaseLib::FrgBase_MainWindow::CorrectConsoleOutput()
 
 	const auto text = editor->toPlainText();
 	editor->setPlainText(text);
-
-	if(editor->verticalScrollBar()->value() == editor->verticalScrollBar()->maximum())
-		editor->verticalScrollBar()->setValue(editor->verticalScrollBar()->maximum());
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetGeometry(int PercentageOfScreen)
@@ -258,20 +262,43 @@ void ForgBaseLib::FrgBase_MainWindow::SetGeometry(int PercentageOfScreen)
 
 void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsoleSlot(const QString& info)
 {
-	LOG_INFO_E(theConsoleEngineName_, info);
-	CorrectConsoleOutput();
+	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
+	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
+
+	QString color = theIsThemeDark_ ? "white" : "black";
+	QString message = "<a style=\"color:" + color + ";white-space:pre\">" + (QTime::currentTime().toString() + " [Info   ]  " + info).toHtmlEscaped() + "</a>";
+	editor->appendHtml(message);
+	
+	//LOG_INFO_E(theConsoleEngineName_, info);
+	//CorrectConsoleOutput();
 }
 
 void ForgBaseLib::FrgBase_MainWindow::PrintWarningToConsoleSlot(const QString& warning)
 {
-	LOG_WARNING_E(theConsoleEngineName_, warning);
-	CorrectConsoleOutput();
+	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
+	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
+	QPlainTextEdit* editor2 = engine->plainTextEdit(WidgetLoggerEngine::WarningsPlainTextEdit);
+
+	QString message = "<a style=\"color:rgb(240, 137, 48);white-space:pre\">" + (QTime::currentTime().toString() + " [Warning]  " + warning).toHtmlEscaped() + "</a>";
+	editor->appendHtml(message);
+	editor2->appendHtml(message);
+
+	/*LOG_WARNING_E(theConsoleEngineName_, warning);
+	CorrectConsoleOutput();*/
 }
 
 void ForgBaseLib::FrgBase_MainWindow::PrintErrorToConsoleSlot(const QString& error)
 {
-	LOG_ERROR_E(theConsoleEngineName_, error);
-	CorrectConsoleOutput();
+	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
+	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
+	QPlainTextEdit* editor2 = engine->plainTextEdit(WidgetLoggerEngine::ErrorsPlainTextEdit);
+
+	QString message = "<a style=\"color:rgb(255, 0, 0);white-space:pre\">" + (QTime::currentTime().toString() + " [Error  ]  " + error).toHtmlEscaped() + "</a>";
+	editor->appendHtml(message);
+	editor2->appendHtml(message);
+
+	/*LOG_ERROR_E(theConsoleEngineName_, error);
+	CorrectConsoleOutput();*/
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetPropertiesPanel(FrgBase_PropertiesPanel* propertiesPanel)
@@ -335,7 +362,7 @@ void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 		myFile.close();
 		return;
 	}
-	
+
 	myFile.close();
 
 	delete theTree_;
@@ -404,55 +431,54 @@ QString ForgBaseLib::FrgBase_MainWindow::GetWindowTitle() const
 void ForgBaseLib::FrgBase_MainWindow::Show(bool darkTheme)
 {
 	SetThemeDark(darkTheme);
-	
+
 	/*if (!theFrameLessWindow_)
 	{
 		theFrameLessWindow_ = new FrgBase_FramelessWindow();
 		theFrameLessWindow_->setWindowTitle(this->windowTitle());
 	}
 	theFrameLessWindow_->setContent(this);*/
-	
-	theFrameLessWindow_->show();
+
+	//theFrameLessWindow_->show();
+	this->show();
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetThemeDark(bool condition)
 {
+	if (theIsThemeDark_ == condition)
+		return;
+
 	theIsThemeDark_ = condition;
-	if (theIsThemeDark_)
-		QApplication::setStyle(new FrgBase_StylesDarkStyle);
-	else
-	{
-		QApplication::setStyle(theDefaultStyle_);
-		//QApplication::setStyle(QStyleFactory::create(QStringLiteral("Fusion")));
-
-		QFile File(":/styles/Default/Default.qss");
-		File.open(QFile::ReadOnly);
-		const QString StyleSheet = QLatin1String(File.readAll());
-		File.close();
-
-		if (theQApplication_)
-			theQApplication_->setStyleSheet(StyleSheet);
-		else
-			this->setStyleSheet(StyleSheet);
-	}
+	theMainStyle_->SetThemeDark(theIsThemeDark_);
 
 	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
-	QPlainTextEdit* editor = nullptr;
+	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
 
-	for (int i = 0; i < 3; i++)
+	auto myText = editor->toPlainText();
+	QTextStream ssIn(&myText);
+	QString ssOut;
+	QString line;
+	QString color;
+
+	while (ssIn.readLineInto(&line))
 	{
-		if(i == 0)
-			editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
-		else if (i == 1)
-			editor = engine->plainTextEdit(WidgetLoggerEngine::WarningsPlainTextEdit);
+		if (line.contains("[Info"))
+			color = theIsThemeDark_ ? "white" : "black";
+		else if (line.contains("[Warning"))
+			color = "rgb(240, 137, 48)";
+		else if (line.contains("[Error"))
+			color = "rgb(255, 0, 0)";
 		else
-			editor = engine->plainTextEdit(WidgetLoggerEngine::ErrorsPlainTextEdit);
-		
-		if (theIsThemeDark_)
-			editor->setStyleSheet("QPlainTextEdit {color : white;}");
-		else
-			editor->setStyleSheet("QPlainTextEdit {color : black;}");
+			color = theIsThemeDark_ ? "white" : "black";
+		ssOut += "<a style=\"color:" + color + ";white-space:pre\">" + line.toHtmlEscaped() + "</a><br>";
 	}
+	//Set the device to pos 0
+	ssIn.seek(0);
+
+	editor->clear();
+	editor->appendHtml(ssOut);
+
+	emit ThemeModeChangedSignal(condition);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::UpdateCPUUsageSlot()

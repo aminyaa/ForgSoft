@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _FrgBase_StylesDarkStyle_Header
-#define _FrgBase_StylesDarkStyle_Header
+#ifndef _FrgBase_MainStyle_Header
+#define _FrgBase_MainStyle_Header
 
 #include <FrgBase_Global.hxx>
 
@@ -12,14 +12,14 @@
 
 BeginForgBaseLib
 
-class FORGBASE_EXPORT FrgBase_StylesDarkStyle
+class FORGBASE_EXPORT FrgBase_MainStyle
 	: public QProxyStyle
 {
 	Q_OBJECT
 
 public:
-	FrgBase_StylesDarkStyle();
-	explicit FrgBase_StylesDarkStyle(QStyle* style);
+	FrgBase_MainStyle(bool darkMode = true);
+	explicit FrgBase_MainStyle(QStyle* style);
 
 	QStyle* baseStyle() const;
 
@@ -28,10 +28,18 @@ public:
 
 	int pixelMetric(PixelMetric metric, const QStyleOption* option = nullptr, const QWidget* widget = nullptr) const override;
 
+	bool IsThemeDark() const { return theIsDarkMode_; }
+	void SetThemeDark(bool darkMode);
+
 private:
+	
 	QStyle* styleBase(QStyle* style = Q_NULLPTR) const;
+
+	QApplication* theQApplication_ = nullptr;
+	int* theDefaultFontSize_ = nullptr;
+	bool theIsDarkMode_;
 };
 
 EndForgBaseLib
 
-#endif // !_FrgBase_StylesDarkStyle_Header
+#endif // !_FrgBase_MainStyle_Header
