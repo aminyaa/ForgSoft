@@ -33,7 +33,11 @@ public:
 
 	void SetEdgeColor(double red, double green, double blue);
 
-	void SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P1);
+	void SetData(ForgBaseLib::FrgBase_Pnt<3> P0, ForgBaseLib::FrgBase_Pnt<3> P1);
+	void SetData(double P0_x, double P0_y, double P0_z, double P1_x, double P1_y, double P1_z);
+
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
 
 private:
 
@@ -41,8 +45,8 @@ private:
 
 private:
 
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> theP0_;
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> theP1_;
+	/*std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> theP0_;
+	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> theP1_;*/
 };
 
 EndForgVisualLib

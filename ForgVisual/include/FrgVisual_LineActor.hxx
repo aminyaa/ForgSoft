@@ -3,7 +3,7 @@
 #define _FrgVisual_LineActor_Header
 
 #include <FrgVisual_Global.hxx>
-#include <FrgVisual_CurveActor.hxx>
+#include <FrgVisual_PolylineActor.hxx>
 
 #include <FrgVisual_Serialization_Global.hxx>
 
@@ -17,29 +17,33 @@ BeginForgVisualLib
 
 template<int Dim>
 class FORGVISUAL_EXPORT FrgVisual_LineActor
-	: public FrgVisual_CurveActor<Dim>
+	: public FrgVisual_PolylineActor<Dim>
 {
 
-	typedef FrgVisual_CurveActor<Dim> SuperClass;
+	typedef FrgVisual_PolylineActor<Dim> SuperClass;
 
 public:
 
 	FrgVisual_LineActor();
 
-	~FrgVisual_LineActor();
-
 	static FrgVisual_LineActor* New();
-	vtkTypeMacro(FrgVisual_LineActor, FrgVisual_CurveActor<Dim>);
+	vtkTypeMacro(FrgVisual_LineActor, FrgVisual_PolylineActor<Dim>);
 
-	void SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P1);
+	//void SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P1);
+	void SetData(ForgBaseLib::FrgBase_Pnt<Dim> P0, ForgBaseLib::FrgBase_Pnt<Dim> P1);
 
 	template <typename = std::enable_if_t<Dim == 2>>
 	void SetData(double P0_X, double P0_Y, double P1_X, double P1_Y);
 	template <typename = std::enable_if_t<Dim == 3>>
 	void SetData(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z);
 
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetP0() const { return theP0_; }
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetP1() const { return theP1_; }
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
+
+	//void UpdateActor() override;
+
+	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetP0() const { return theP0_; }
+	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetP1() const { return theP1_; }
 
 private:
 
@@ -47,8 +51,8 @@ private:
 
 private:
 
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP0_;
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP1_;
+	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP0_;
+	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP1_;
 };
 
 EndForgVisualLib

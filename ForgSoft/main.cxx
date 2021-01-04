@@ -1,23 +1,44 @@
 #include <QtWidgets/QApplication>
-#include <FrgMarine_MainWindow.hxx>
 #include <QVTKOpenGLNativeWidget.h>
-#include <FrgBase_ProgressBar.hxx>
+#include <MainWindow.hxx>
+
+void SetSurfaceFormat();
 
 int main(int argc, char** argv)
 {
-	// needed to ensure appropriate OpenGL context is created for VTK rendering.
-	QSurfaceFormat::setDefaultFormat(QVTKOpenGLNativeWidget::defaultFormat());
+	SetSurfaceFormat();
 
 	vtkObject::GlobalWarningDisplayOff();
 
 	QApplication app(argc, argv);
 
-	std::shared_ptr<ForgMarineLib::FrgMarine_MainWindow> mainWindow = std::make_shared<ForgMarineLib::FrgMarine_MainWindow>();
+	std::shared_ptr<MainWindow> mainWindow = std::make_shared<MainWindow>();
 
 	mainWindow->SetQApplication(&app);
 	mainWindow->Show(true);
 	mainWindow->SetGeometry(80);
-	//mainWindow->GetProgressBar()->SetProgressBarBusy();
 
 	return app.exec();
+}
+
+void SetSurfaceFormat()
+{
+	QSurfaceFormat fmt = QSurfaceFormat::defaultFormat();
+
+	fmt.setRenderableType(QSurfaceFormat::OpenGL);
+	fmt.setVersion(3, 2);
+	fmt.setProfile(QSurfaceFormat::CoreProfile);
+	fmt.setSwapBehavior(QSurfaceFormat::DoubleBuffer);
+	fmt.setRedBufferSize(1);
+	fmt.setGreenBufferSize(1);
+	fmt.setBlueBufferSize(1);
+	fmt.setDepthBufferSize(1);
+	fmt.setStencilBufferSize(1);
+	fmt.setAlphaBufferSize(1);
+	fmt.setStereo(false);
+	fmt.setSamples(8);
+
+	//fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+
+	QSurfaceFormat::setDefaultFormat(fmt);
 }

@@ -17,7 +17,8 @@ public:
 	FrgMarine_MainWindow(QWidget* parent = nullptr);
 
 protected:
-	
+
+	void InitMainWindow() override;
 	void InitTree() override;
 };
 

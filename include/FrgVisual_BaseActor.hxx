@@ -5,6 +5,14 @@
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_BaseActor_Entity.hxx>
 
+class Standard_Transient;
+
+namespace ForgBaseLib
+{
+	template <int Dim>
+	class FrgBase_Pnt;
+}
+
 BeginForgVisualLib
 
 template<int Dim>
@@ -18,13 +26,15 @@ public:
 
 	FrgVisual_BaseActor();
 
-	static FrgVisual_BaseActor* New();
+	//static FrgVisual_BaseActor* New();
 	vtkTypeMacro(FrgVisual_BaseActor, FrgVisual_BaseActor_Entity);
 
 	~FrgVisual_BaseActor();
 
 	virtual void TranslateActor(double dx, double dy);
 	virtual void TranslateActor(double dx, double dy, double dz);
+
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> DiscreteCurve(Standard_Transient* curve, const double degree = 3.0);
 
 private:
 

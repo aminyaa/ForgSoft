@@ -36,24 +36,28 @@ public:
 	static FrgVisual_PointActor* New();
 	vtkTypeMacro(FrgVisual_PointActor, FrgVisual_BaseActor<Dim>);
 
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetData() const { return theP_; }
+	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetData() const { return theP_; }
 
-	void TranslateActor(double dx, double dy) override;
-	void TranslateActor(double dx, double dy, double dz) override;
+	//void TranslateActor(double dx, double dy) override;
+	//void TranslateActor(double dx, double dy, double dz) override;
 
 	bool SelectActor(const QColor& color) override;
 
-	void SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> pt);
+	void SetData(ForgBaseLib::FrgBase_Pnt<Dim> pt);
+	ForgBaseLib::FrgBase_Pnt<Dim> GetData();
 
-	void UpdateActor();
+	//void UpdateActor();
 
 	template <typename = std::enable_if_t<Dim == 2>>
 	void SetData(double x, double y);
 	template <typename = std::enable_if_t<Dim == 3>>
 	void SetData(double x, double y, double z);
 
-	virtual FrgVisual_PolylineActor<Dim>* GetParentPolylineActor() const { return theParentPolyLineActor_; }
-	virtual void SetParentPolylineActor(FrgVisual_PolylineActor<Dim>* parentPolyLineActor) { theParentPolyLineActor_ = parentPolyLineActor; }
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
+
+	//virtual FrgVisual_PolylineActor<Dim>* GetParentPolylineActor() const { return theParentPolyLineActor_; }
+	//virtual void SetParentPolylineActor(FrgVisual_PolylineActor<Dim>* parentPolyLineActor) { theParentPolyLineActor_ = parentPolyLineActor; }
 
 private:
 
@@ -61,9 +65,9 @@ private:
 
 protected:
 
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP_;
+	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP_;
 
-	FrgVisual_PolylineActor<Dim>* theParentPolyLineActor_ = nullptr;
+	//FrgVisual_PolylineActor<Dim>* theParentPolyLineActor_ = nullptr;
 };
 
 EndForgVisualLib

@@ -62,6 +62,8 @@ public:
 
 	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
 
+	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
+
 Q_SIGNALS:
 
 	void RenderScene(bool resetCamera = true, bool resetView = false);
@@ -95,7 +97,9 @@ protected:
 
 	virtual void Init() {}
 
-	virtual void FormToolBar() {}
+	virtual void FormToolBar();
+
+	virtual void InitInteractorStyle() {}
 
 public slots:
 
@@ -117,6 +121,8 @@ class FrgVisual_BaseActor_Entity;
 template<int Dim>
 class FrgVisual_PointActor;
 template<int Dim>
+class FrgVisual_PickingPointActor;
+template<int Dim>
 class FrgVisual_LineActor;
 template<int Dim>
 class FrgVisual_PolylineActor;
@@ -128,6 +134,7 @@ template<int Dim>
 class FrgVisual_TextActor;
 
 class FrgVisual_RectangleActor;
+class FrgVisual_CircleActor;
 class FrgVisual_GridActor;
 class FrgVisual_BoxActor;
 
@@ -150,7 +157,7 @@ public:
 
 	FrgVisual_PointActor<Dim>* AddPoint
 	(
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> pt,
+		ForgBaseLib::FrgBase_Pnt<Dim> pt,
 		bool render = true
 	);
 
@@ -171,14 +178,20 @@ public:
 		bool render = true
 	);
 
+	FrgVisual_PickingPointActor<Dim>* AddPickingPoint
+	(
+		ForgBaseLib::FrgBase_Pnt<Dim> pt,
+		bool render = true
+	);
+
 	// ==================================================================================
 	// Add Line
 	// ==================================================================================
 
 	FrgVisual_LineActor<Dim>* AddLine
 	(
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P0,
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P1,
+		ForgBaseLib::FrgBase_Pnt<Dim> P0,
+		ForgBaseLib::FrgBase_Pnt<Dim> P1,
 		bool render = true
 	);
 
@@ -210,7 +223,7 @@ public:
 
 	FrgVisual_PolylineActor<Dim>* AddPolyline
 	(
-		std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts,
+		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
 		bool render = true
 	);
 
@@ -221,8 +234,8 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	FrgVisual_RectangleActor* AddRectangle
 	(
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P0,
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P1,
+		ForgBaseLib::FrgBase_Pnt<2> P0,
+		ForgBaseLib::FrgBase_Pnt<2> P1,
 		bool render = true
 	);
 
@@ -233,6 +246,26 @@ public:
 		double P0_Y,
 		double P1_X,
 		double P1_Y,
+		bool render = true
+	);
+
+	// ==================================================================================
+	// Add Circle
+	// ==================================================================================
+
+	template <typename = typename std::enable_if_t<Dim == 2>>
+	FrgVisual_CircleActor* AddCircle
+	(
+		ForgBaseLib::FrgBase_Pnt<2> center,
+		double radius,
+		bool render = true
+	);
+
+	template <typename = typename std::enable_if_t<Dim == 2>>
+	FrgVisual_CircleActor* AddCircleUsingCenterAndPointOnCurve
+	(
+		ForgBaseLib::FrgBase_Pnt<2> center,
+		ForgBaseLib::FrgBase_Pnt<2> pointOnCurve,
 		bool render = true
 	);
 
@@ -249,8 +282,8 @@ public:
 
 	FrgVisual_MeshActor<Dim>* AddTriangulation
 	(
-		std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts,
-		std::vector<std::shared_ptr<std::tuple<int, int, int>>> connectivity,
+		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+		std::vector<std::tuple<int, int, int>> connectivity,
 		bool render = true
 	);
 
@@ -260,9 +293,16 @@ public:
 
 	FrgVisual_BSPLineActor<Dim>* AddBSPLine
 	(
-		std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> ctrlPts,
+		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts,
 		int degree,
-		bool drawCtrlPts = true,
+		bool render = true
+	);
+
+	// Interpolating BSPLine Curve
+	FrgVisual_BSPLineActor<Dim>* AddBSPLineThroughPoints
+	(
+		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+		int degree,
 		bool render = true
 	);
 
@@ -273,8 +313,8 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 3>>
 	FrgVisual_BoxActor* AddBox
 	(
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P0,
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P1,
+		ForgBaseLib::FrgBase_Pnt<3> P0,
+		ForgBaseLib::FrgBase_Pnt<3> P1,
 		bool render = true
 	);
 
@@ -344,6 +384,11 @@ public:
 	);
 
 	void ClearGrid();
+
+	public:
+
+		FrgVisual_GridActor* GetMajorGridActor() const { return theMajorGridActor_; }
+		FrgVisual_GridActor* GetMinorGridActor() const { return theMinorGridActor_; }
 
 private:
 

@@ -19,7 +19,7 @@ public:
 
 	FrgVisual_SolidActor();
 
-	static FrgVisual_SolidActor* New();
+	//static FrgVisual_SolidActor* New();
 	vtkTypeMacro(FrgVisual_SolidActor, FrgVisual_BaseActor<Dim>);
 
 private:

@@ -7,6 +7,8 @@
 
 #include <FrgVisual_Serialization_Global.hxx>
 
+class vtkPolyData;
+
 namespace ForgBaseLib
 {
 	template<int Dim>
@@ -31,39 +33,80 @@ public:
 
 	FrgVisual_PolylineActor();
 
-	~FrgVisual_PolylineActor();
-
 	static FrgVisual_PolylineActor* New();
 	vtkTypeMacro(FrgVisual_PolylineActor, FrgVisual_CurveActor<Dim>);
 
-	void SetData(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts);
-	void SetData(std::vector<FrgVisual_PointActor<Dim>*> ptsActors);
+	//void SetData(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts);
+	void SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts);
+	virtual void AddNextPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt);
+	virtual void SetLastPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt);
 
-	std::vector<FrgVisual_PointActor<Dim>*> GetPts() const { return thePts_; }
+	template <typename = typename std::enable_if_t<Dim == 2>>
+	void AddNextPoint(double x, double y);
+	template <typename = typename std::enable_if_t<Dim == 2>>
+	void SetLastPoint(double x, double y);
 
-	void TranslateActor(double dx, double dy) override;
-	void TranslateActor(double dx, double dy, double dz) override;
+	template <typename = typename std::enable_if_t<Dim == 3>>
+	void AddNextPoint(double x, double y, double z);
+	template <typename = typename std::enable_if_t<Dim == 3>>
+	void SetLastPoint(double x, double y, double z);
 
-	void UpdateActor() override;
+	virtual void RemoveLastPoint();
+
+	long long GetNumberOfPoints();
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetPoints();
+
+	ForgBaseLib::FrgBase_Pnt<Dim> GetPoint(long long i);
+	void SetPoint(long long i, ForgBaseLib::FrgBase_Pnt<Dim> pt);
+
+	template <typename = typename std::enable_if_t<Dim == 2>>
+	void SetPoint(long long i, double x, double y);
+	template <typename = typename std::enable_if_t<Dim == 3>>
+	void SetPoint(long long i, double x, double y, double z);
+
+	bool SelectActor(const QColor& color) override;
+	bool UnSelectActor() override;
+
+	virtual void ShowPoints(bool condition = true);
+
+	//void SetData(std::vector<FrgVisual_PointActor<Dim>*> ptsActors);
+
+	//std::vector<FrgVisual_PointActor<Dim>*> GetPts() const { return thePts_; }
+
+	//void TranslateActor(double dx, double dy) override;
+	//void TranslateActor(double dx, double dy, double dz) override;
+
+	//void UpdateActor() override;
 
 	void SetRenderer(vtkRenderer* renderer) override;
 
-	FrgVisual_BSPLineActor<Dim>* GetParentBSPLineActor() const { return theParentBSPLineActor_; }
-	void SetParentBSPLineActor(FrgVisual_BSPLineActor<Dim>* parentBSPLineActor);
+	//FrgVisual_BSPLineActor<Dim>* GetParentBSPLineActor() const { return theParentBSPLineActor_; }
+	//void SetParentBSPLineActor(FrgVisual_BSPLineActor<Dim>* parentBSPLineActor);
 
-	void SetSelectable(bool selectable = true) override;
+	//void SetSelectable(bool selectable = true) override;
 
 	void RemoveActors(vtkRenderer* renderer) override;
+
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
+
+	void UpdateActor() override;
 
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
 
-private:
+protected:
+
+	void AddNextIdIntoCell(vtkPolyData* polyData);
+	void UpdateIdListUsingPoints(vtkPolyData* polyData);
+
+protected:
 
 	std::vector<FrgVisual_PointActor<Dim>*> thePts_;
+	Standard_Transient* theCurve_ = nullptr;
 
-	FrgVisual_BSPLineActor<Dim>* theParentBSPLineActor_ = nullptr;
+	//FrgVisual_BSPLineActor<Dim>* theParentBSPLineActor_ = nullptr;
 
 };
 

@@ -28,10 +28,13 @@ public:
 
 	~FrgVisual_CtrlPointActor();
 
-	void TranslateActor(double dx, double dy) override;
-	void TranslateActor(double dx, double dy, double dz) override;
+	//void TranslateActor(double dx, double dy) override;
+	//void TranslateActor(double dx, double dy, double dz) override;
 
-	void SetParentPolylineActor(FrgVisual_PolylineActor<Dim>* parentPolyLineActor) override;
+	//void SetParentPolylineActor(FrgVisual_PolylineActor<Dim>* parentPolyLineActor) override;
+
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
 
 private:
 

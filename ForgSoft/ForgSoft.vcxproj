@@ -11,18 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Lib\Widgets\MainWindow\MainWindow.cxx" />
+    <ClCompile Include="Lib\Widgets\Tree\Tree.cxx" />
     <ClCompile Include="main.cxx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ForgBase\ForgBase.vcxproj">
       <Project>{81f5e528-f15d-4792-8c1b-84c8d6f3a8ee}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ForgMarine\ForgMarine.vcxproj">
-      <Project>{c9fd82ee-2529-469d-bf47-12073605ad71}</Project>
+    <ProjectReference Include="..\ForgCAD2D\ForgCAD2D.vcxproj">
+      <Project>{d0ef73c1-5618-4c45-b89d-11752f807bb4}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ForgVisual\ForgVisual.vcxproj">
       <Project>{09faa12b-7698-41fe-85c6-4fdbd685c868}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Lib\Widgets\MainWindow\MainWindow.hxx" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Lib\Widgets\Tree\Tree.hxx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
@@ -32,11 +40,11 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -44,12 +52,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(Qt_INCLUDEPATH_);$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(Qt_INCLUDEPATH_);$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(BOOST_INCLUDELIB);$(QTDIR)\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(Qt_INCLUDEPATH_);$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(Qt_INCLUDEPATH_);$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(BOOST_INCLUDELIB);$(QTDIR)\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -85,9 +93,10 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory);$(SolutionDir)ForgBase\include;$(SolutionDir)ForgMarine\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(ProjectDir)Lib\Widgets\MainWindow;$(ProjectDir)Lib\Widgets\Tree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,9 +116,10 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory);$(SolutionDir)ForgBase\include;$(SolutionDir)ForgMarine\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(SolutionDir)ForgBase\ThirdParties\QtPropertyBrowser\include;$(ProjectDir)Lib\Widgets\MainWindow;$(ProjectDir)Lib\Widgets\Tree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

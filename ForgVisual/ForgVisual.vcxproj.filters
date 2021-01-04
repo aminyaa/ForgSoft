@@ -248,6 +248,12 @@
     <Filter Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox">
       <UniqueIdentifier>{a315b5de-2c03-4f62-9913-1ada48fce809}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Circle">
+      <UniqueIdentifier>{4a802b91-8657-475d-8c70-05c4a862215f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint">
+      <UniqueIdentifier>{23a9acd7-757c-4783-ade8-e507429eff99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -400,6 +406,12 @@
     <ClCompile Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.cxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Circle\FrgVisual_CircleActor.cxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Circle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint\FrgVisual_PickingPointActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -421,12 +433,6 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3DI.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Plot\FrgVisual_Plot.hxx">
-      <Filter>ForgLib\Visual\Plot</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
-      <Filter>ForgLib\Visual\Plot\2D</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\FrgVisual_Plot2D_ChartXY.hxx">
       <Filter>ForgLib\Visual\Plot\2D\Tools\ChartXY</Filter>
@@ -551,6 +557,12 @@
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Icons.hxx">
       <Filter>ForgLib\Visual\Global</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Circle\FrgVisual_CircleActor.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\Actors\Solid\Conic\Circle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint\FrgVisual_PickingPointActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Visual\Scene\TreeItem\FrgVisual_Scene_TItem.hxx">
@@ -630,6 +642,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Scene\3D\FrgVisual_Scene3D.hxx">
       <Filter>ForgLib\Visual\Scene\3D</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\FrgVisual_Plot.hxx">
+      <Filter>ForgLib\Visual\Plot</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
+      <Filter>ForgLib\Visual\Plot\2D</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -36,14 +36,14 @@ class FORGVISUAL_EXPORT FrgVisual_Plot
 	: public QVTKOpenGLNativeWidget
 {
 
+	Q_OBJECT
+
 public:
 
 	FrgVisual_Plot
 	(
 		ForgBaseLib::FrgBase_MainWindow* parentMainWindow = nullptr
 	);
-
-	void RenderView() const;
 
 	vtkSmartPointer<vtkContextView> GetView() const { return theView_; }
 	vtkSmartPointer<FrgVisual_Plot2D_ChartXY> GetChartXY() const { return theChart_; }
@@ -52,7 +52,15 @@ public:
 
 	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
-	virtual void SetThemeDark(bool condition = true) const = 0;
+Q_SIGNALS:
+
+	void RenderView() const;
+	virtual void SetThemeDark(bool condition) const;
+
+protected slots:
+
+	void RenderViewSlot() const;
+	virtual void SetThemeDarkSlot(bool condition) const = 0;
 
 protected:
 

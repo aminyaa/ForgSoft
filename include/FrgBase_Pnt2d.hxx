@@ -11,14 +11,14 @@ BeginForgBaseLib
 
 //class FrgBase_Pnt3d;
 
-class FORGBASE_EXPORT FrgBase_Pnt2d
+class FrgBase_Pnt2d
 	: public FrgBase_Pnt<2>
 {
 	
 public:
 
-	FrgBase_Pnt2d(double x = 0.0, double y = 0.0);
-	FrgBase_Pnt2d(const FrgBase_Pnt2d& pt);
+	FORGBASE_EXPORT FrgBase_Pnt2d(double x = 0.0, double y = 0.0);
+	FORGBASE_EXPORT FrgBase_Pnt2d(const FrgBase_Pnt2d& pt);
 	/*FrgBase_Pnt2d& operator=(const FrgBase_Pnt2d& pt);
 
 	const double& X() const { return theX_; }
@@ -56,7 +56,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER( )
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
 //protected:
 //

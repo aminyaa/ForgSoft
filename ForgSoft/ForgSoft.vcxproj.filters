@@ -23,10 +23,36 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Lib">
+      <UniqueIdentifier>{ba2a7e49-027e-40cd-891b-02c35c29f311}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Widgets">
+      <UniqueIdentifier>{7af97120-4538-4ec7-85e2-2633afee3a93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Widgets\MainWindow">
+      <UniqueIdentifier>{fea20812-5e70-4591-8392-d8ff1b6f3504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lib\Widgets\Tree">
+      <UniqueIdentifier>{10d38327-b93b-478d-834e-662e218c1b01}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Lib\Widgets\MainWindow\MainWindow.cxx">
+      <Filter>Lib\Widgets\MainWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib\Widgets\Tree\Tree.cxx">
+      <Filter>Lib\Widgets\Tree</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="Lib\Widgets\MainWindow\MainWindow.hxx">
+      <Filter>Lib\Widgets\MainWindow</Filter>
+    </QtMoc>
+    <QtMoc Include="Lib\Widgets\Tree\Tree.hxx">
+      <Filter>Lib\Widgets\Tree</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

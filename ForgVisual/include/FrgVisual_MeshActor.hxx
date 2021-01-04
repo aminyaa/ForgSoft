@@ -30,9 +30,12 @@ public:
 
 	void SetDataTriangulation
 	(
-		std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts,
-		std::vector<std::shared_ptr<std::tuple<int, int, int>>> connectivity
+		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+		std::vector<std::tuple<int, int, int>> connectivity
 	);
+
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
 
 private:
 
@@ -40,8 +43,8 @@ private:
 
 protected:
 
-	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> thePoints_;
-	std::vector<std::shared_ptr<std::tuple<int, int, int>>> theConnectivity_;
+	//std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> thePoints_;
+	//std::vector<std::shared_ptr<std::tuple<int, int, int>>> theConnectivity_;
 };
 
 EndForgVisualLib

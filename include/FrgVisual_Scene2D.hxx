@@ -39,6 +39,10 @@ public:
 
 	void RenderSceneSlot(bool resetCamera = true, bool resetView = false) override;
 
+protected:
+
+	void InitInteractorStyle() override;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )

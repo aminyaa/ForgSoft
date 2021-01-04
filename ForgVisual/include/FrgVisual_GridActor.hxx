@@ -45,6 +45,9 @@ public:
 	void VisibilityOn() override;
 	void VisibilityOff() override;
 
+	std::vector<ActorType> GetActorTypes() const override;
+	ActorDimension GetActorDimension() const override;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
