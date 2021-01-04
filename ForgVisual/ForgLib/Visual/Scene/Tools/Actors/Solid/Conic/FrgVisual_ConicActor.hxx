@@ -19,7 +19,7 @@ public:
 
 	FrgVisual_ConicActor();
 
-	static FrgVisual_ConicActor* New();
+	//static FrgVisual_ConicActor* New();
 	vtkTypeMacro(FrgVisual_ConicActor, FrgVisual_SolidActor<Dim>);
 
 private:

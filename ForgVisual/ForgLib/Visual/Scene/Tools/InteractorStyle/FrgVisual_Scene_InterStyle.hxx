@@ -19,7 +19,7 @@ BeginForgVisualLib
 template<int Dim>
 class FrgVisual_Scene;
 
-class FORGVISUAL_EXPORT FrgVisual_Scene_InterStyle_Base
+class FrgVisual_Scene_InterStyle_Base
 	: public QObject
 {
 	Q_OBJECT
@@ -32,10 +32,14 @@ public slots:
 
 	virtual void HideActionIsCalledSlot() {}
 	virtual void UnHideActionIsCalledSlot() {}
+
+public:
+
+	virtual void FormInterStyle() {}
 };
 
 template <int Dim, class T>
-class FORGVISUAL_EXPORT FrgVisual_Scene_InterStyle
+class FrgVisual_Scene_InterStyle
 	: public FrgVisual_Scene_InterStyle_Base
 	, public T
 {

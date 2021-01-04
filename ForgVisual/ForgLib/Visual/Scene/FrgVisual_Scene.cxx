@@ -6,12 +6,15 @@
 #include <FrgBase_SerialSpec_QString.hxx>
 #include <FrgBase_SerialSpec_QColor.hxx>
 
+#include <FrgVisual_Global_Icons.hxx>
 #include <FrgVisual_PointActor.hxx>
+#include <FrgVisual_PickingPointActor.hxx>
 #include <FrgVisual_LineActor.hxx>
 #include <FrgVisual_PolylineActor.hxx>
 #include <FrgVisual_MeshActor.hxx>
 #include <FrgVisual_BSPLineActor.hxx>
 #include <FrgVisual_RectangleActor.hxx>
+#include <FrgVisual_CircleActor.hxx>
 #include <FrgVisual_GridActor.hxx>
 #include <FrgVisual_BoxActor.hxx>
 #include <FrgVisual_TextActor.hxx>
@@ -38,6 +41,9 @@
 #include <vtkCollection.h>
 #include <vtkCameraInterpolator.h>
 
+#include <QToolBar>
+#include <QToolButton>
+
 #include <vtkAutoInit.h>
 
 #define IS_FRGVISUAL_ACTOR "IS_FRGVISUAL_ACTOR"
@@ -57,6 +63,7 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 	, theParentMainWindow_(parentMainWindow)
 {
 	theOpenGLWidget_ = new QVTKOpenGLNativeWidget(parentMainWindow);
+	theOpenGLWidget_->setEnableHiDPI(true);
 	
 	theContextMenuInScene_ = new ForgBaseLib::FrgBase_Menu("Scene Settings", parentMainWindow, false);
 	theContextMenuInScene_->SetToolBarHidden(true);
@@ -75,7 +82,7 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 
 	theInitiated_ = false;
 
-	connect(this, &FrgVisual_Scene_Entity::RenderScene, this, &FrgVisual_Scene_Entity::RenderSceneSlot);
+	connect(this, &FrgVisual_Scene_Entity::RenderScene, this, &FrgVisual_Scene_Entity::RenderSceneSlot, Qt::QueuedConnection);
 }
 
 ForgVisualLib::FrgVisual_Scene_Entity::~FrgVisual_Scene_Entity()
@@ -121,6 +128,28 @@ void ForgVisualLib::FrgVisual_Scene_Entity::ComputeVisiblePropBounds(double boun
 		theRenderer_->ComputeVisiblePropBounds(bounds);
 }
 
+void ForgVisualLib::FrgVisual_Scene_Entity::FormToolBar()
+{
+	if (!theToolBar_)
+	{
+		theToolBar_ = new QToolBar("Visual");
+		theToolBar_->setAllowedAreas(Qt::ToolBarArea::TopToolBarArea);
+		theToolBar_->setFloatable(false);
+		theToolBar_->setMovable(false);
+		theToolBar_->setContextMenuPolicy(Qt::PreventContextMenu);
+
+		auto* resetView = new QToolButton();
+		resetView->setIcon(QIcon(ICON_FRGVISUAL_SCENE_RESETVIEW));
+		resetView->setShortcut(QKeySequence(Qt::Key_R));
+		resetView->setToolTip("Reset View (R)");
+		connect(resetView, &QToolButton::clicked, [this]() {RenderScene(true); });
+
+		theToolBar_->addWidget(resetView);
+
+		this->addToolBar(theToolBar_);
+	}
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::customContextMenuRequestedSlot(const QPoint& pos)
 {
 	theContextMenuInScene_->exec(this->mapToGlobal(pos));
@@ -156,30 +185,33 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	if (theParentMainWindow_)
 	{
-		if (theParentMainWindow_->IsThemeDark())
-		{
-			theRenderer_->SetBackground(30.0 / 255.0, 94.0 / 255.0, 144.0 / 255.0);
-			theRenderer_->SetBackground2(0.0, 0.0, 0.0);
-			theRenderer_->SetGradientBackground(true);
-		}
-		else
-		{
-			theRenderer_->SetBackground(1.0, 1.0, 1.0);
-			theRenderer_->SetGradientBackground(false);
-		}
-	}
-	else
-	{
 		if constexpr (Dim == 2)
 		{
-			theRenderer_->SetBackground(1.0, 1.0, 1.0);
-			theRenderer_->SetGradientBackground(false);
+			if (theParentMainWindow_->IsThemeDark())
+			{
+				theRenderer_->SetBackground(0.2, 0.2, 0.2);
+				theRenderer_->SetGradientBackground(false);
+			}
+			else
+			{
+				theRenderer_->SetBackground(1.0, 1.0, 1.0);
+				theRenderer_->SetGradientBackground(false);
+			}
 		}
 		else if constexpr (Dim == 3)
 		{
-			theRenderer_->SetBackground(1.0, 1.0, 1.0);
-			theRenderer_->SetBackground2(0.7, 0.7, 0.7);
-			theRenderer_->SetGradientBackground(true);
+			if (theParentMainWindow_->IsThemeDark())
+			{
+				theRenderer_->SetBackground(30.0 / 255.0, 94.0 / 255.0, 144.0 / 255.0);
+				theRenderer_->SetBackground2(0.0, 0.0, 0.0);
+				theRenderer_->SetGradientBackground(true);
+			}
+			else
+			{
+				theRenderer_->SetBackground(1.0, 1.0, 1.0);
+				theRenderer_->SetBackground2(0.7, 0.7, 0.7);
+				theRenderer_->SetGradientBackground(true);
+			}
 		}
 	}
 
@@ -190,12 +222,15 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	theRenderWindowInteractor_ = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	theRenderWindowInteractor_->SetRenderWindow(theRenderWindow_);
 
-	if constexpr (Dim == 2)
+	InitInteractorStyle();
+	theInteractorStyle_->FormInterStyle();
+
+	/*if constexpr (Dim == 2)
 		theInteractorStyle_ = FrgVisual_Scene_InterStyle2D::New();
 	else if constexpr (Dim == 3)
-		theInteractorStyle_ = FrgVisual_Scene_InterStyle3D::New();
+		theInteractorStyle_ = FrgVisual_Scene_InterStyle3D::New();*/
 
-	if constexpr (Dim == 2)
+	/*if constexpr (Dim == 2)
 	{
 		auto castedInteractorStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
 		castedInteractorStyle->SetParentScene(this);
@@ -210,7 +245,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 		castedInteractorStyle->SetCurrentRenderer(theRenderer_);
 		castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
 		theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
-	}
+	}*/
 
 	theAxesActor_ = vtkAxesActor::New();
 
@@ -282,15 +317,15 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::RenderSceneSlot(bool resetCamera, bool
 
 template<int Dim>
 ForgVisualLib::FrgVisual_PointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPoint(
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> pt,
+	ForgBaseLib::FrgBase_Pnt<Dim> pt,
 	bool render
 )
 {
-	if (!pt)
+	/*if (!pt)
 	{
 		std::exception myException("Pt cannot be null in order to add a point.");
 		throw myException;
-	}
+	}*/
 
 	vtkSmartPointer<FrgVisual_PointActor<Dim>> actor =
 		vtkSmartPointer<FrgVisual_PointActor<Dim>>::New();
@@ -305,7 +340,7 @@ ForgVisualLib::FrgVisual_PointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::A
 	if (render)
 		RenderScene(false);
 
-	return actor;
+	return std::move(actor);
 }
 
 template<int Dim>
@@ -317,7 +352,7 @@ ForgVisualLib::FrgVisual_PointActor<2>* ForgVisualLib::FrgVisual_Scene<Dim>::Add
 	bool render
 )
 {
-	return AddPoint(std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(x, y), render);
+	return std::move(AddPoint(ForgBaseLib::FrgBase_Pnt<Dim>(x, y), render));
 }
 
 template<int Dim>
@@ -330,22 +365,43 @@ ForgVisualLib::FrgVisual_PointActor<3>* ForgVisualLib::FrgVisual_Scene<Dim>::Add
 	bool render
 )
 {
-	return AddPoint(std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(x, y, z), render);
+	return std::move(AddPoint(ForgBaseLib::FrgBase_Pnt<Dim>(x, y, z), render));
+}
+
+template<int Dim>
+ForgVisualLib::FrgVisual_PickingPointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPickingPoint
+(
+	ForgBaseLib::FrgBase_Pnt<Dim> pt,
+	bool render
+)
+{
+	auto actor =
+		vtkSmartPointer<FrgVisual_PickingPointActor<Dim>>::New();
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetData(pt);
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
 }
 
 template<int Dim>
 ForgVisualLib::FrgVisual_LineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddLine
 (
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P0,
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> P1,
+	ForgBaseLib::FrgBase_Pnt<Dim> P0,
+	ForgBaseLib::FrgBase_Pnt<Dim> P1,
 	bool render
 )
 {
-	if (!P0 || !P1)
+	/*if (!P0 || !P1)
 	{
 		std::exception myException("P0 or P1 is null in order to add line.");
 		throw myException;
-	}
+	}*/
 
 	vtkSmartPointer<FrgVisual_LineActor<Dim>> actor =
 		vtkSmartPointer<FrgVisual_LineActor<Dim>>::New();
@@ -360,7 +416,7 @@ ForgVisualLib::FrgVisual_LineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 	if (render)
 		RenderScene(false);
 
-	return actor;
+	return std::move(actor);
 }
 
 template<int Dim>
@@ -374,7 +430,7 @@ ForgVisualLib::FrgVisual_LineActor<2>* ForgVisualLib::FrgVisual_Scene<Dim>::AddL
 	bool render
 )
 {
-	return AddLine(std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(P0_X, P0_Y), std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(P1_X, P1_Y), render);
+	return std::move(AddLine(ForgBaseLib::FrgBase_Pnt<Dim>(P0_X, P0_Y), ForgBaseLib::FrgBase_Pnt<Dim>(P1_X, P1_Y), render));
 }
 
 template<int Dim>
@@ -390,13 +446,13 @@ ForgVisualLib::FrgVisual_LineActor<3>* ForgVisualLib::FrgVisual_Scene<Dim>::AddL
 	bool render
 )
 {
-	return AddLine(std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(P0_X, P0_Y, P0_Z), std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(P1_X, P1_Y, P1_Z), render);
+	return std::move(AddLine(ForgBaseLib::FrgBase_Pnt<Dim>(P0_X, P0_Y, P0_Z), ForgBaseLib::FrgBase_Pnt<Dim>(P1_X, P1_Y, P1_Z), render));
 }
 
 template<int Dim>
 ForgVisualLib::FrgVisual_PolylineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPolyline
 (
-	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts,
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
 	bool render
 )
 {
@@ -419,37 +475,19 @@ ForgVisualLib::FrgVisual_PolylineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>
 	if (render)
 		RenderScene(false);
 
-	return actor;
+	return std::move(actor);
 }
 
 template<int Dim>
 template<typename>
 ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddRectangle
 (
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P0,
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P1,
+	ForgBaseLib::FrgBase_Pnt<2> P0,
+	ForgBaseLib::FrgBase_Pnt<2> P1,
 	bool render
 )
 {
-	if (!P0 || !P1)
-	{
-		std::exception myException("P0 or P1 are null in order to add rectangle.");
-		throw myException;
-	}
-
-	// Actor
-	vtkNew<FrgVisual_RectangleActor> actor;
-	actor->SetRenderer(theRenderer_);
-
-	actor->SetData(P0, P1);
-	actor->SetColor(1.0, 0.0, 0.0);
-
-	theRenderer_->AddActor(actor);
-
-	if (render)
-		RenderScene(false);
-
-	return actor;
+	return std::move(AddRectangle(P0.X(), P0.Y(), P1.X(), P1.Y()));
 }
 
 template<int Dim>
@@ -463,7 +501,67 @@ ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 	bool render
 )
 {
-	return AddRectangle(std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(P0_X, P0_Y), std::make_shared<ForgBaseLib::FrgBase_Pnt<Dim>>(P1_X, P1_Y), render);
+	// Actor
+	auto actor = vtkSmartPointer<FrgVisual_RectangleActor>::New();
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetData(P0_X, P0_Y, P1_X, P1_Y);
+	actor->SetColor(1.0, 0.0, 0.0);
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
+template<int Dim>
+template<typename>
+ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCircle
+(
+	ForgBaseLib::FrgBase_Pnt<2> center,
+	double radius,
+	bool render
+)
+{
+	// Actor
+	auto actor = vtkSmartPointer<FrgVisual_CircleActor>::New();
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetData(center, radius);
+	actor->SetColor(1.0, 0.0, 0.0);
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
+template<int Dim>
+template<typename>
+ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCircleUsingCenterAndPointOnCurve
+(
+	ForgBaseLib::FrgBase_Pnt<2> center,
+	ForgBaseLib::FrgBase_Pnt<2> pointOnCurve,
+	bool render
+)
+{
+	// Actor
+	auto actor = vtkSmartPointer<FrgVisual_CircleActor>::New();
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetDataCenterAndPointOnCurve(center, pointOnCurve);
+	actor->SetColor(1.0, 0.0, 0.0);
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
 }
 
 template<int Dim>
@@ -479,8 +577,8 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::AddTriangulations
 template<int Dim>
 ForgVisualLib::FrgVisual_MeshActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddTriangulation
 (
-	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts,
-	std::vector<std::shared_ptr<std::tuple<int, int, int>>> connectivity,
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+	std::vector<std::tuple<int, int, int>> connectivity,
 	bool render
 )
 {
@@ -500,14 +598,15 @@ ForgVisualLib::FrgVisual_MeshActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 
 	if (render)
 		RenderScene(false);
+
+	return std::move(actor);
 }
 
 template<int Dim>
 ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddBSPLine
 (
-	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> ctrlPts,
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts,
 	int degree,
-	bool drawCtrlPts,
 	bool render
 )
 {
@@ -520,11 +619,11 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 
 		actor->SetRenderer(theRenderer_);
 
-		actor->SetData(ctrlPts, degree, drawCtrlPts);
+		actor->SetData(ctrlPts, degree);
 		actor->SetColor(1.0, 0.0, 0.0);
 
 		theRenderer_->AddActor(actor);
-		theRenderer_->AddActor(actor->GetCtrlPtsPolyLine());
+		//theRenderer_->AddActor(actor->GetCtrlPtsPolyLine());
 
 		if (render)
 			RenderScene(false);
@@ -537,42 +636,48 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 		return nullptr;
 	}
 
-	return actor;
+	return std::move(actor);
 }
 
-template<>
-template<>
-ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox
+template<int Dim>
+ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddBSPLineThroughPoints
 (
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P0,
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P1,
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+	int degree,
 	bool render
 )
 {
-	if (!P0 || !P1)
-	{
-		std::exception myException("P0 or P1 is null in order to add line.");
-		throw myException;
-	}
+	auto actor = vtkSmartPointer<FrgVisual_BSPLineActor<Dim>>::New();
 
-	// Actor
-	vtkNew<FrgVisual_BoxActor> actor;
 	actor->SetRenderer(theRenderer_);
 
-	actor->SetData(P0, P1);
+	actor->SetDataInterpolate(pts, degree);
 	actor->SetColor(1.0, 0.0, 0.0);
 
 	theRenderer_->AddActor(actor);
+	//theRenderer_->AddActor(actor->GetCtrlPtsPolyLine());
 
 	if (render)
 		RenderScene(false);
 
-	return actor;
+	return std::move(actor);
 }
 
-template<>
-template<>
-ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox
+template<int Dim>
+template<typename>
+ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
+(
+	ForgBaseLib::FrgBase_Pnt<3> P0,
+	ForgBaseLib::FrgBase_Pnt<3> P1,
+	bool render
+)
+{
+	return AddBox(P0.X(), P0.Y(), P0.Z(), P1.X(), P1.Y(), P1.Z(), render);
+}
+
+template<int Dim>
+template<typename>
+ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
 (
 	double P0_X,
 	double P0_Y,
@@ -583,7 +688,19 @@ ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox
 	bool render
 )
 {
-	return AddBox(std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(P0_X, P0_Y, P0_Z), std::make_shared<ForgBaseLib::FrgBase_Pnt<3>>(P1_X, P1_Y, P1_Z), render);
+	// Actor
+	auto actor = vtkSmartPointer<FrgVisual_BoxActor>::New();
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetData(P0_X, P0_Y, P0_Z, P1_X, P1_Y, P1_Z);
+	actor->SetColor(1.0, 0.0, 0.0);
+
+	theRenderer_->AddActor(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
 }
 
 template<>
@@ -607,7 +724,7 @@ ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddTex
 	if (render)
 		RenderScene(false);
 
-	return actor;
+	return std::move(actor);
 }
 
 template<>
@@ -632,7 +749,7 @@ ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddTex
 	if (render)
 		RenderScene(false);
 
-	return actor;
+	return std::move(actor);
 }
 
 template<int Dim>
@@ -681,7 +798,7 @@ std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene<
 	myGrids.push_back(theMajorGridActor_);
 	myGrids.push_back(theMinorGridActor_);
 
-	return myGrids;
+	return std::move(myGrids);
 }
 
 template<int Dim>
@@ -696,7 +813,7 @@ std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene<
 	bool render
 )
 {
-	return DrawGrid(std::make_shared<ForgBaseLib::FrgBase_Pnt<2>>(xCenter, yCenter), L1, L2, numberOfDivisions1, numberOfDivisions2);
+	return std::move(DrawGrid(std::make_shared<ForgBaseLib::FrgBase_Pnt<2>>(xCenter, yCenter), L1, L2, numberOfDivisions1, numberOfDivisions2));
 }
 
 template<int Dim>
@@ -954,10 +1071,13 @@ template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_PointActor<3>* ForgVisualLib
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_LineActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddLine(double P0_X, double P0_Y, double P1_X, double P1_Y, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_LineActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddLine(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<2>::AddRectangle(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P1, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<2>::AddRectangle(ForgBaseLib::FrgBase_Pnt<2> P0, ForgBaseLib::FrgBase_Pnt<2> P1, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<2>::AddRectangle(double P0_X, double P0_Y, double P1_X, double P1_Y, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P1, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<2>::AddCircle(ForgBaseLib::FrgBase_Pnt<2> center, double radius, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<2>::AddCircleUsingCenterAndPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> center, ForgBaseLib::FrgBase_Pnt<2> pointOnCurve, bool render);
+
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(ForgBaseLib::FrgBase_Pnt<3> P0, ForgBaseLib::FrgBase_Pnt<3> P1, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render);
 
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddText(const QString& value, double posx, double posy, bool render);

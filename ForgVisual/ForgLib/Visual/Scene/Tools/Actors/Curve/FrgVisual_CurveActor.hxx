@@ -19,7 +19,7 @@ public:
 
 	FrgVisual_CurveActor();
 
-	static FrgVisual_CurveActor* New();
+	//static FrgVisual_CurveActor* New();
 	vtkTypeMacro(FrgVisual_CurveActor, FrgVisual_BaseActor<Dim>);
 
 	virtual void SetLineWidth(float width);

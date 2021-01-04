@@ -162,6 +162,17 @@ void ForgVisualLib::FrgVisual_Scene2D::RenderSceneSlot(bool resetCamera, bool re
 		theRenderWindow_->Render();
 }
 
+void ForgVisualLib::FrgVisual_Scene2D::InitInteractorStyle()
+{
+	theInteractorStyle_ = FrgVisual_Scene_InterStyle2D::New();
+
+	auto castedInteractorStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	castedInteractorStyle->SetParentScene(this);
+	castedInteractorStyle->SetCurrentRenderer(theRenderer_);
+	castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
+	theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene2D)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_Scene<2>>(*this);

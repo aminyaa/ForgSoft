@@ -14,21 +14,20 @@ ForgVisualLib::FrgVisual_BoxActor::FrgVisual_BoxActor()
 
 }
 
-void ForgVisualLib::FrgVisual_BoxActor::SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> P1)
+void ForgVisualLib::FrgVisual_BoxActor::SetData(ForgBaseLib::FrgBase_Pnt<3> P0, ForgBaseLib::FrgBase_Pnt<3> P1)
 {
-	if (P0 == nullptr || P1 == nullptr)
-		return;
-	
-	theP0_ = P0;
-	theP1_ = P1;
+	SetData(P0.X(), P1.X(), P0.Y(), P1.Y(), P0.Z(), P1.Z());
+}
 
+void ForgVisualLib::FrgVisual_BoxActor::SetData(double P0_x, double P0_y, double P0_z, double P1_x, double P1_y, double P1_z)
+{
 	// Create a cube.
-	vtkNew<vtkCubeSource> cube;
-	cube->SetBounds(P0->X(), P1->X(), P0->Y(), P1->Y(), P0->Z(), P1->Z());
+	auto cube = vtkSmartPointer<vtkCubeSource>::New();
+	cube->SetBounds(P0_x, P1_x, P0_y, P1_y, P0_z, P1_z);
 	cube->Update();
 
 	// mapper
-	vtkNew<vtkPolyDataMapper> cubeMapper;
+	auto cubeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	cubeMapper->SetInputData(cube->GetOutput());
 
 	this->SetMapper(cubeMapper);
@@ -59,22 +58,40 @@ void ForgVisualLib::FrgVisual_BoxActor::SetEdgeColor(double red, double green, d
 	this->GetProperty()->SetSpecular(0.0);
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_BoxActor::GetActorTypes() const
+{
+	std::vector<ActorType> types;
+
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Box);
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Conic);
+
+	return types;
+}
+
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisual_BoxActor::GetActorDimension() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::ThreeDim;
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BoxActor)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_ConicActor<3>>(*this);
 
-	ar & theP0_;
-	ar & theP1_;
+	/*ar & theP0_;
+	ar & theP1_;*/
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BoxActor)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_ConicActor<3>>(*this);
 
-	ar & theP0_;
-	ar & theP1_;
+	/*ar & theP0_;
+	ar & theP1_;*/
 
-	SetData(theP0_, theP1_);
+	ForgBaseLib::FrgBase_Pnt<3> p0;
+	ForgBaseLib::FrgBase_Pnt<3> p1;
+
+	SetData(p0, p1);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_BoxActor)

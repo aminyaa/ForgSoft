@@ -32,6 +32,8 @@ protected:
 
 	void FormToolBar() override;
 
+	void InitInteractorStyle() override;
+
 	void SetCameraView(const QString& firstDir, const QString& secondDir);
 	void MoveCameraFromTo(vtkCamera* from, vtkCamera* to, double time = 0.5, int fps = 30);
 

@@ -10,8 +10,8 @@
 
 #include <vtkObjectFactory.h>
 
-template<int Dim>
-vtkStandardNewMacro(ForgVisualLib::FrgVisual_CurveActor<Dim>);
+//template<int Dim>
+//vtkStandardNewMacro(ForgVisualLib::FrgVisual_CurveActor<Dim>);
 
 template<int Dim>
 inline ForgVisualLib::FrgVisual_CurveActor<Dim>::FrgVisual_CurveActor()

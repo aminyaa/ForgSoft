@@ -62,7 +62,7 @@ public:
 
 	/**
 	 * Overrides superclass behaviors to only support the key codes that make
-	 * sense in a ParaView application.
+	 * sense in application.
 	 */
 	void OnChar() override;
 

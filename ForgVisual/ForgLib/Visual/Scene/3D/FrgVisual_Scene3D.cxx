@@ -199,20 +199,10 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool re
 
 void ForgVisualLib::FrgVisual_Scene3D::FormToolBar()
 {
-	if (!theToolBar_)
+	FrgVisual_Scene<3>::FormToolBar();
+
+	if (theToolBar_)
 	{
-		theToolBar_ = new QToolBar("Visual");
-		theToolBar_->setAllowedAreas(Qt::ToolBarArea::TopToolBarArea);
-		theToolBar_->setFloatable(false);
-		theToolBar_->setMovable(false);
-		theToolBar_->setContextMenuPolicy(Qt::PreventContextMenu);
-
-		auto* resetView = new QToolButton();
-		resetView->setIcon(QIcon(ICON_FRGVISUAL_SCENE_RESETVIEW));
-		resetView->setShortcut(QKeySequence(Qt::Key_R));
-		resetView->setToolTip("Reset View (R)");
-		connect(resetView, &QToolButton::clicked, [this]() {RenderScene(true); });
-
 		auto* cameraViews = new QToolButton();
 		cameraViews->setIcon(QIcon(":/ForgVisual/Resources/Scene/Camera.png"));
 		cameraViews->setPopupMode(QToolButton::ToolButtonPopupMode::InstantPopup);
@@ -352,10 +342,19 @@ void ForgVisualLib::FrgVisual_Scene3D::FormToolBar()
 
 		cameraViews->setMenu(cameraViewsMenu);
 
-		theToolBar_->addWidget(resetView);
 		theToolBar_->addWidget(cameraViews);
-		this->addToolBar(theToolBar_);
 	}
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::InitInteractorStyle()
+{
+	theInteractorStyle_ = FrgVisual_Scene_InterStyle3D::New();
+
+	auto castedInteractorStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	castedInteractorStyle->SetParentScene(this);
+	castedInteractorStyle->SetCurrentRenderer(theRenderer_);
+	castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
+	theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
 }
 
 void ForgVisualLib::FrgVisual_Scene3D::SetCameraView(const QString& firstDir, const QString& secondDir)

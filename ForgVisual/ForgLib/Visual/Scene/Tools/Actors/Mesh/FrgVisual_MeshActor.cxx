@@ -29,19 +29,18 @@ inline ForgVisualLib::FrgVisual_MeshActor<Dim>::FrgVisual_MeshActor()
 template<int Dim>
 inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 (
-	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts,
-	std::vector<std::shared_ptr<std::tuple<int, int, int>>> connectivity
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+	std::vector<std::tuple<int, int, int>> connectivity
 )
 {
-	thePoints_.clear();
+	/*thePoints_.clear();
 	theConnectivity_.clear();
-
 	thePoints_ = pts;
-	theConnectivity_ = connectivity;
+	theConnectivity_ = connectivity;*/
 
-	vtkNew<vtkPolyData> Hull;
-	vtkNew<vtkPoints> points;
-	vtkNew<vtkCellArray> polys;
+	auto Hull = vtkSmartPointer<vtkPolyData>::New();
+	auto points = vtkSmartPointer<vtkPoints>::New();
+	auto polys = vtkSmartPointer<vtkCellArray>::New();
 
 	int nbNodes = pts.size();
 	int nbElements = connectivity.size();
@@ -49,17 +48,17 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 	for (auto i = 0ul; i < nbNodes; ++i)
 	{
 		if constexpr (Dim == 2)
-			points->InsertPoint(i, thePoints_[i]->X(), thePoints_[i]->Y(), 0.0);
+			points->InsertPoint(i, pts[i].X(), pts[i].Y(), 0.0);
 		else if constexpr (Dim == 3)
-			points->InsertPoint(i, thePoints_[i]->X(), thePoints_[i]->Y(), thePoints_[i]->Z());
+			points->InsertPoint(i, pts[i].X(), pts[i].Y(), pts[i].Z());
 	}
 
 	for (int i = 0; i < nbElements; i++)
 	{
 		int I1, I2, I3;
-		I1 = std::get<0>(*theConnectivity_[i]);
-		I2 = std::get<1>(*theConnectivity_[i]);
-		I3 = std::get<2>(*theConnectivity_[i]);
+		I1 = std::get<0>(connectivity[i]);
+		I2 = std::get<1>(connectivity[i]);
+		I3 = std::get<2>(connectivity[i]);
 
 		std::array<std::array<vtkIdType, 3>, 1> order = { { {I1 - 1,I2 - 1,I3 - 1 } } };
 		polys->InsertNextCell(vtkIdType(3), order[0].data());
@@ -68,11 +67,7 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 	Hull->SetPolys(polys);
 
 	// Now we'll look at it.
-	vtkSmartPointer<vtkPolyDataMapper> HullMapper;
-	if (this->GetMapper())
-		HullMapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	else
-		HullMapper = vtkPolyDataMapper::New();
+	auto HullMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 
 	HullMapper->SetInputData(Hull);
 
@@ -103,12 +98,31 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 }
 
 template<int Dim>
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_MeshActor<Dim>::GetActorTypes() const
+{
+	std::vector<ActorType> types;
+
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Mesh);
+
+	return types;
+}
+
+template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisual_MeshActor<Dim>::GetActorDimension() const
+{
+	if constexpr (Dim == 2)
+		return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::TwoDim;
+	if constexpr (Dim == 3)
+		return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::ThreeDim;
+}
+
+template<int Dim>
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	ar & thePoints_;
-	ar & theConnectivity_;
+	/*ar & thePoints_;
+	ar & theConnectivity_;*/
 }
 
 template<int Dim>
@@ -116,10 +130,13 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	ar & thePoints_;
-	ar & theConnectivity_;
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
+	std::vector<std::tuple<int, int, int>> connectivity;
 
-	SetDataTriangulation(thePoints_, theConnectivity_);
+	/*ar & thePoints_;
+	ar & theConnectivity_;*/
+
+	SetDataTriangulation(pts, connectivity);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_MeshActor<2>)

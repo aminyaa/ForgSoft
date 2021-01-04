@@ -2,8 +2,8 @@
 
 #include <vtkObjectFactory.h>
 
-template<int Dim>
-vtkStandardNewMacro(ForgVisualLib::FrgVisual_ConicActor<Dim>);
+//template<int Dim>
+//vtkStandardNewMacro(ForgVisualLib::FrgVisual_ConicActor<Dim>);
 
 template<int Dim>
 inline ForgVisualLib::FrgVisual_ConicActor<Dim>::FrgVisual_ConicActor()

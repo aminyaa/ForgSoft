@@ -164,6 +164,20 @@ void ForgVisualLib::FrgVisual_GridActor::VisibilityOff()
 	FrgVisual_CurveActor<2>::VisibilityOff();
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_GridActor::GetActorTypes() const
+{
+	std::vector<ActorType> types;
+
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Grid);
+
+	return std::move(types);
+}
+
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisual_GridActor::GetActorDimension() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::TwoDim;
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_GridActor)
 {
 	ar& boost::serialization::base_object<FrgVisual_CurveActor<2>>(*this);

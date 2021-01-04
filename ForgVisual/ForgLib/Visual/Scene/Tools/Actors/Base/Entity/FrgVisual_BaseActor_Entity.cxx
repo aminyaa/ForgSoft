@@ -5,15 +5,13 @@
 
 #include <vtkTransform.h>
 
-vtkStandardNewMacro(ForgVisualLib::FrgVisual_BaseActor_Entity);
+//vtkStandardNewMacro(ForgVisualLib::FrgVisual_BaseActor_Entity);
 
 ForgVisualLib::FrgVisual_BaseActor_Entity::FrgVisual_BaseActor_Entity()
 {
 	theIsSelectable_ = true;
 	theIsSelected_ = false;
-
 	theIsIndependent_ = true;
-
 	theProperty_ = GetProperty();
 }
 
@@ -132,6 +130,111 @@ void ForgVisualLib::FrgVisual_BaseActor_Entity::VisibilityOn()
 void ForgVisualLib::FrgVisual_BaseActor_Entity::VisibilityOff()
 {
 	vtkOpenGLActor::VisibilityOff();
+}
+
+#define IsThatType(Type) \
+auto types = GetActorTypes(); \
+for (const auto& type : types) \
+{ \
+	if (type == FrgVisual_BaseActor_Entity::ActorType::Type) \
+		return true; \
+} \
+return false;
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsPoint() const
+{
+	IsThatType(Point);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsCtrlPoint() const
+{
+	IsThatType(CtrlPoint);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsPickingPoint() const
+{
+	IsThatType(PickingPoint);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsLine() const
+{
+	IsThatType(Line);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsPolyLine() const
+{
+	IsThatType(PolyLine);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsBSPLine() const
+{
+	IsThatType(BSPLine);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsCurve() const
+{
+	IsThatType(Curve);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsSolid() const
+{
+	IsThatType(Solid);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsConic() const
+{
+	IsThatType(Conic);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsCircle() const
+{
+	IsThatType(Circle);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsRectangle() const
+{
+	IsThatType(Rectangle);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsBox() const
+{
+	IsThatType(Box);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsMesh() const
+{
+	IsThatType(Mesh);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsGrid() const
+{
+	IsThatType(Grid);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsText() const
+{
+	IsThatType(Text);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsSurface() const
+{
+	IsThatType(Surface);
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsTwoDimension() const
+{
+	if (GetActorDimension() == ActorDimension::TwoDim)
+		return true;
+
+	return false;
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsThreeDimension() const
+{
+	if (GetActorDimension() == ActorDimension::ThreeDim)
+		return true;
+
+	return false;
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BaseActor_Entity)

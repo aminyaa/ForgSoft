@@ -1,4 +1,5 @@
 #include <FrgVisual_RectangleActor.hxx>
+#include <FrgVisual_PolylineActor.hxx>
 
 #include <FrgBase_Pnt.hxx>
 
@@ -8,6 +9,7 @@
 #include <vtkPolyData.h>
 #include <vtkProperty.h>
 #include <vtkPolyDataMapper.h>
+#include <vtkRenderer.h>
 
 vtkStandardNewMacro(ForgVisualLib::FrgVisual_RectangleActor);
 
@@ -16,93 +18,116 @@ ForgVisualLib::FrgVisual_RectangleActor::FrgVisual_RectangleActor()
 
 }
 
-void ForgVisualLib::FrgVisual_RectangleActor::SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P0, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> P1)
+void ForgVisualLib::FrgVisual_RectangleActor::SetData(ForgBaseLib::FrgBase_Pnt<2> P0, ForgBaseLib::FrgBase_Pnt<2> P1)
 {
-	if (P0 == nullptr || P1 == nullptr)
-		return;
+	SetData(P0.X(), P0.Y(), P1.X(), P1.Y());
+}
 
-	theP0_ = P0;
-	theP1_ = P1;
+void ForgVisualLib::FrgVisual_RectangleActor::SetData(double P0_X, double P0_Y, double P1_X, double P1_Y)
+{
+	auto p0 = ForgBaseLib::FrgBase_Pnt<2>(P0_X, P0_Y);
+	auto p1 = ForgBaseLib::FrgBase_Pnt<2>(P1_X, P0_Y);
+	auto p2 = ForgBaseLib::FrgBase_Pnt<2>(P1_X, P1_Y);
+	auto p3 = ForgBaseLib::FrgBase_Pnt<2>(P0_X, P1_Y);
+	auto p4 = ForgBaseLib::FrgBase_Pnt<2>(P0_X, P0_Y);
 
-	vtkSmartPointer<vtkPoints> points =
-		vtkSmartPointer<vtkPoints>::New();
+	FrgVisual_PolylineActor::SetData({ p0, p1, p2, p3, p4 });
+}
 
-	points->InsertNextPoint(theP0_->X(), theP0_->Y(), 0.0);
-	points->InsertNextPoint(theP1_->X(), theP0_->Y(), 0.0);
-	points->InsertNextPoint(theP1_->X(), theP1_->Y(), 0.0);
-	points->InsertNextPoint(theP0_->X(), theP1_->Y(), 0.0);
-	points->InsertNextPoint(theP0_->X(), theP0_->Y(), 0.0);
+void ForgVisualLib::FrgVisual_RectangleActor::SetP0(ForgBaseLib::FrgBase_Pnt<2> p0)
+{
+	SetP0(p0.X(), p0.Y());
+}
 
-	vtkSmartPointer<vtkPolyLine> polyLine =
-		vtkSmartPointer<vtkPolyLine>::New();
-	polyLine->GetPointIds()->SetNumberOfIds(5);
-	for (unsigned int i = 0; i < polyLine->GetPointIds()->GetNumberOfIds(); i++)
-		polyLine->GetPointIds()->SetId(i, i);
+void ForgVisualLib::FrgVisual_RectangleActor::SetP0(double x, double y)
+{
+	const auto& p1 = GetPoint(2);
+	SetPoint(0, x, y);
+	SetPoint(1, p1.X(), y);
+	SetPoint(3, x, p1.Y());
+	SetPoint(4, x, y);
+}
 
-	// Create a cell array to store the lines in and add the lines to it
-	vtkSmartPointer<vtkCellArray> cells =
-		vtkSmartPointer<vtkCellArray>::New();
-	cells->InsertNextCell(polyLine);
+void ForgVisualLib::FrgVisual_RectangleActor::SetP1(ForgBaseLib::FrgBase_Pnt<2> p1)
+{
+	SetP1(p1.X(), p1.Y());
+}
 
-	// Create a polydata to store everything in
-	vtkSmartPointer<vtkPolyData> polyData =
-		vtkSmartPointer<vtkPolyData>::New();
-
-	// Add the points to the dataset
-	polyData->SetPoints(points);
-
-	// Add the lines to the dataset
-	polyData->SetLines(cells);
-
-	// Setup actor and mapper
-	vtkSmartPointer<vtkPolyDataMapper> mapper =
-		vtkSmartPointer<vtkPolyDataMapper>::New();
-	mapper->SetInputData(polyData);
-
-	this->SetMapper(mapper);
+void ForgVisualLib::FrgVisual_RectangleActor::SetP1(double x, double y)
+{
+	const auto& p0 = GetPoint(0);
+	SetPoint(1, x, p0.Y());
+	SetPoint(2, x, y);
+	SetPoint(3, p0.X(), y);
 }
 
 void ForgVisualLib::FrgVisual_RectangleActor::SetRepresentationToPoints()
 {
-	this->GetProperty()->SetRepresentationToPoints();
+	GetProperty()->SetRepresentationToPoints();
 }
 
 void ForgVisualLib::FrgVisual_RectangleActor::SetRepresentationToSurface()
 {
-	this->GetProperty()->SetRepresentationToSurface();
+	GetProperty()->SetRepresentationToSurface();
 }
 
 void ForgVisualLib::FrgVisual_RectangleActor::SetRepresentationToWireframe()
 {
-	this->GetProperty()->SetRepresentationToWireframe();
-	this->GetProperty()->EdgeVisibilityOn();
+	GetProperty()->SetRepresentationToWireframe();
+	GetProperty()->EdgeVisibilityOn();
 }
 
 void ForgVisualLib::FrgVisual_RectangleActor::SetEdgeColor(double red, double green, double blue)
 {
-	this->GetProperty()->SetInterpolationToFlat();
-	this->GetProperty()->SetEdgeColor(red, green, blue);
-	this->GetProperty()->SetLineWidth(2.0f);
-	this->GetProperty()->SetAmbient(0.0);
-	this->GetProperty()->SetSpecular(0.0);
+	GetProperty()->SetInterpolationToFlat();
+	GetProperty()->SetEdgeColor(red, green, blue);
+	GetProperty()->SetLineWidth(2.0f);
+	GetProperty()->SetAmbient(0.0);
+	GetProperty()->SetSpecular(0.0);
+}
+
+void ForgVisualLib::FrgVisual_RectangleActor::SetColor(double red, double green, double blue)
+{
+	FrgVisual_PolylineActor::SetColor(red, green, blue);
+}
+
+void ForgVisualLib::FrgVisual_RectangleActor::RemoveActors(vtkRenderer* renderer)
+{
+	
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_RectangleActor::GetActorTypes() const
+{
+	std::vector<ActorType> types;
+
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Rectangle);
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Conic);
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Curve);
+
+	return types;
+}
+
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisual_RectangleActor::GetActorDimension() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::TwoDim;
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_RectangleActor)
 {
-	ar& boost::serialization::base_object<FrgVisual_ConicActor<2>>(*this);
+	ar& boost::serialization::base_object<FrgVisual_PolylineActor<2>>(*this);
 
-	ar& theP0_;
-	ar& theP1_;
+	/*ar& theP0_;
+	ar& theP1_;*/
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_RectangleActor)
 {
-	ar& boost::serialization::base_object<FrgVisual_ConicActor<2>>(*this);
+	ar& boost::serialization::base_object<FrgVisual_PolylineActor<2>>(*this);
 
-	ar& theP0_;
-	ar& theP1_;
+	/*ar& theP0_;
+	ar& theP1_;*/
 
-	SetData(theP0_, theP1_);
+	//SetData(theP0_, theP1_);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_RectangleActor)

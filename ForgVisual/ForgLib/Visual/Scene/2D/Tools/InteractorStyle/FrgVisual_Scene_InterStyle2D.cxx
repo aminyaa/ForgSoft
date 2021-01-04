@@ -206,13 +206,13 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::OnLeftButtonUp()
 
 		vtkActor* pickedActor = nullptr;
 		// Pick from this location.
-		vtkNew<vtkPointPicker> myPointPicker;
+		auto myPointPicker = vtkSmartPointer<vtkPointPicker>::New();
 		myPointPicker->SetTolerance(0.003);
 		myPointPicker->Pick(clickPos[0], clickPos[1], 0.0, this->CurrentRenderer);
 		pickedActor = myPointPicker->GetActor();
 		if (!pickedActor)
 		{
-			vtkNew<vtkCellPicker> myPicker;
+			auto myPicker = vtkSmartPointer<vtkCellPicker>::New();
 			myPicker->SetTolerance(0.003);
 			myPicker->Pick(clickPos[0], clickPos[1], 0.0, this->CurrentRenderer);
 			pickedActor = myPicker->GetActor();

@@ -90,7 +90,17 @@ void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::ShowTabWidget()
 {
 	auto myMainWindow = dynamic_cast<ForgBaseLib::FrgBase_MainWindow*>(GetParentMainWindow());
 	if (myMainWindow)
-		myMainWindow->ShowTabWidget(theScene_, dynamic_cast<QTreeWidgetItem*>(this)->parent()->text(0) + " - " + this->text(0));
+	{
+		QString prefix = "";
+		const auto& myParent = dynamic_cast<QTreeWidgetItem*>(this)->parent();
+		if (myParent)
+			prefix = myParent->text(0);
+
+		if(prefix.isEmpty())
+			myMainWindow->ShowTabWidget(theScene_, this->text(0));
+		else
+			myMainWindow->ShowTabWidget(theScene_, dynamic_cast<QTreeWidgetItem*>(this)->parent()->text(0) + " - " + this->text(0));
+	}
 }
 
 template<int Dim>

@@ -2,8 +2,8 @@
 
 #include <vtkObjectFactory.h>
 
-template<int Dim>
-vtkStandardNewMacro(ForgVisualLib::FrgVisual_SolidActor<Dim>);
+//template<int Dim>
+//vtkStandardNewMacro(ForgVisualLib::FrgVisual_SolidActor<Dim>);
 
 template<int Dim>
 inline ForgVisualLib::FrgVisual_SolidActor<Dim>::FrgVisual_SolidActor()

@@ -25,11 +25,38 @@ public:
 
 	typedef vtkOpenGLActor SuperClass;
 
+	enum class ActorType
+	{
+		Point,
+		CtrlPoint,
+		PickingPoint,
+		Line,
+		PolyLine,
+		BSPLine,
+		Curve,
+		Solid,
+		Conic,
+		Circle,
+		Rectangle,
+		Box,
+		Mesh,
+		Grid,
+		Text,
+		Surface
+	};
+
+
+	enum class ActorDimension
+	{
+		TwoDim,
+		ThreeDim
+	};
+
 public:
 
 	FrgVisual_BaseActor_Entity();
 
-	static FrgVisual_BaseActor_Entity* New();
+	//static FrgVisual_BaseActor_Entity* New();
 	vtkTypeMacro(FrgVisual_BaseActor_Entity, vtkOpenGLActor);
 
 	~FrgVisual_BaseActor_Entity();
@@ -65,6 +92,29 @@ public:
 
 	const bool& IsIndependent() const { return theIsIndependent_; }
 	void SetIndependent(bool condition) { theIsIndependent_ = condition; }
+
+	virtual std::vector<ActorType> GetActorTypes() const = 0;
+	virtual ActorDimension GetActorDimension() const = 0;
+
+	bool IsPoint() const;
+	bool IsCtrlPoint() const;
+	bool IsPickingPoint() const;
+	bool IsLine() const;
+	bool IsPolyLine() const;
+	bool IsBSPLine() const;
+	bool IsCurve() const;
+	bool IsSolid() const;
+	bool IsConic() const;
+	bool IsCircle() const;
+	bool IsRectangle() const;
+	bool IsBox() const;
+	bool IsMesh() const;
+	bool IsGrid() const;
+	bool IsText() const;
+	bool IsSurface() const;
+
+	bool IsTwoDimension() const;
+	bool IsThreeDimension() const;
 
 private:
 

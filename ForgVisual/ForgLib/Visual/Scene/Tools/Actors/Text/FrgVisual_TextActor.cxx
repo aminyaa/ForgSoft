@@ -190,6 +190,25 @@ void ForgVisualLib::FrgVisual_TextActor<Dim>::SetVerticalJustificationToTop()
 }
 
 template<int Dim>
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_TextActor<Dim>::GetActorTypes() const
+{
+	std::vector<ActorType> types;
+
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Text);
+
+	return types;
+}
+
+template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisual_TextActor<Dim>::GetActorDimension() const
+{
+	if constexpr (Dim == 2)
+		return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::TwoDim;
+	if constexpr (Dim == 3)
+		return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::ThreeDim;
+}
+
+template<int Dim>
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_TextActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
