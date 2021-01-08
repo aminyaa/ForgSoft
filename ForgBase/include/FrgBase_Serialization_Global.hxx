@@ -2,6 +2,8 @@
 #ifndef _FrgBase_Serialization_Global_Header
 #define _FrgBase_Serialization_Global_Header
 
+#define BOOST_ALL_DYN_LINK
+#include <boost/serialization/config.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/split_member.hpp>

@@ -33,12 +33,14 @@
     <TargetName>$(ProjectName)D</TargetName>
     <LibraryPath>$(BOOST_INCLUDELIB);$(LibraryPath)</LibraryPath>
     <IncludePath>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <IncludePath>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(BOOST_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
+    <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -84,8 +86,8 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(VTK_LIBDIR);$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Debug;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\lib\Deb;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Deb;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>QCodeEditor.lib;parser.lib;stdlib.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5WinExtrasd.lib;QtPropertyBrowserd.lib;QtilitiesCored-1.5.lib;QtilitiesCoreGuid-1.5.lib;QtilitiesExtensionSystemd-1.5.lib;QtilitiesLoggingd-1.5.lib;QtilitiesProjectManagementd-1.5.lib;QtilitiesTestingd-1.5.lib;boost_serialization-vc142-mt-gd-x64-1_73.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Debug;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\lib\Deb;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Deb;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>QCodeEditor.lib;parser.lib;stdlib.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5WinExtrasd.lib;QtPropertyBrowserd.lib;QtilitiesCored-1.5.lib;QtilitiesCoreGuid-1.5.lib;QtilitiesExtensionSystemd-1.5.lib;QtilitiesLoggingd-1.5.lib;QtilitiesProjectManagementd-1.5.lib;QtilitiesTestingd-1.5.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
@@ -123,8 +125,8 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(VTK_LIBDIR);$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Rel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>QCodeEditor.lib;parser.lib;stdlib.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5WinExtras.lib;QtPropertyBrowser.lib;QtilitiesCore-1.5.lib;QtilitiesCoreGui-1.5.lib;QtilitiesExtensionSystem-1.5.lib;QtilitiesLogging-1.5.lib;QtilitiesProjectManagement-1.5.lib;QtilitiesTesting-1.5.lib;%(AdditionalDependencies);boost_serialization-vc142-mt-x64-1_73.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Rel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>QCodeEditor.lib;parser.lib;stdlib.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5WinExtras.lib;QtPropertyBrowser.lib;QtilitiesCore-1.5.lib;QtilitiesCoreGui-1.5.lib;QtilitiesExtensionSystem-1.5.lib;QtilitiesLogging-1.5.lib;QtilitiesProjectManagement-1.5.lib;QtilitiesTesting-1.5.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
