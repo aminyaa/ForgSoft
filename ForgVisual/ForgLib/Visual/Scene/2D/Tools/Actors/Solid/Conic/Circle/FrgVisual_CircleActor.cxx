@@ -89,9 +89,32 @@ void ForgVisualLib::FrgVisual_CircleActor::ShowPoints(bool condition)
 	theCenterPoint_->SetData(centerP.X(), centerP.Y());
 }
 
+double ForgVisualLib::FrgVisual_CircleActor::GetRadius() const
+{
+	auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+	if (!circle)
+		return -1;
+
+	return circle->Radius();
+}
+
+ForgBaseLib::FrgBase_Pnt<2> ForgVisualLib::FrgVisual_CircleActor::GetCenterPoint() const
+{
+	ForgBaseLib::FrgBase_Pnt<2> pt;
+
+	auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+	if (!circle)
+		return pt;
+
+	pt.X() = circle->Circ2d().Location().X();
+	pt.Y() = circle->Circ2d().Location().Y();
+
+	return std::move(pt);
+}
+
 void ForgVisualLib::FrgVisual_CircleActor::RemoveActors(vtkRenderer* renderer)
 {
-	if (renderer)
+	if (renderer && theCenterPoint_)
 	{
 		renderer->RemoveActor(theCenterPoint_);
 		theCenterPoint_->Delete();

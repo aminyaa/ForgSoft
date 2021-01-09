@@ -5,6 +5,7 @@
 #include <FrgVisual_Scene_CameraManip.hxx>
 #include <FrgVisual_Scene.hxx>
 #include <FrgVisual_PointActor.hxx>
+#include <FrgVisual_PickingPointActor.hxx>
 #include <FrgVisual_LineActor.hxx>
 #include <FrgVisual_PolylineActor.hxx>
 #include <FrgVisual_BSPLineActor.hxx>
@@ -134,7 +135,8 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::OnMouseMove()
 
 		if (!theTempPointActor_)
 		{
-			theTempPointActor_ = theParentScene_->AddPoint(world[0], world[1], false);
+			theTempPointActor_ = theParentScene_->AddPickingPoint(ForgBaseLib::FrgBase_Pnt<2>(world[0], world[1]), false);
+			//theTempPointActor_ = theParentScene_->AddPoint(world[0], world[1], false);
 			theTempPointActor_->SetRenderPointsAsSpheres(true);
 			theTempPointActor_->SetSize(8);
 		}
@@ -399,7 +401,9 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CompleteCommand()
 		{
 			actor->RemoveLastPoint();
 			actor->ShowPoints(false);
-			theTempActor_ = nullptr;
+
+			if(actor->GetNumberOfPoints() >= 2)
+				theTempActor_ = nullptr;
 		}
 	}
 	else if (theOperationType_ == AddingBSPLine)
@@ -409,7 +413,9 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CompleteCommand()
 		{
 			actor->RemoveLastPoint();
 			actor->ShowPoints(false);
-			theTempActor_ = nullptr;
+
+			if (actor->GetNumberOfPoints() >= 2)
+				theTempActor_ = nullptr;
 		}
 	}
 	else if (theOperationType_ == AddingBSPLineThroughPoints)
@@ -419,9 +425,10 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CompleteCommand()
 		{
 			thePts_.pop_back();
 			actor->SetDataInterpolate(thePts_, 2);
-			theTempActor_ = nullptr;
-
 			thePts_.clear();
+
+			if (actor->GetNumberOfPoints() >= 2)
+				theTempActor_ = nullptr;
 		}
 	}
 	else if (theOperationType_ == AddingRectangle)
@@ -429,8 +436,11 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CompleteCommand()
 		auto actor = ForgVisualLib::FrgVisual_RectangleActor::SafeDownCast(theTempActor_);
 		if (actor)
 		{
-			actor->SetP1(theLastClickedPosition_[0], theLastClickedPosition_[1]);
-			theTempActor_ = nullptr;
+			ForgBaseLib::FrgBase_Pnt<2> pt(theLastClickedPosition_[0], theLastClickedPosition_[1]);
+			actor->SetP1(pt);
+
+			if(actor->GetP0() != actor->GetP1())
+				theTempActor_ = nullptr;
 		}
 	}
 	else if (theOperationType_ == AddingCircle)
@@ -438,9 +448,12 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CompleteCommand()
 		auto actor = ForgVisualLib::FrgVisual_CircleActor::SafeDownCast(theTempActor_);
 		if (actor)
 		{
-			actor->SetPointOnCurve(ForgBaseLib::FrgBase_Pnt<2>(theLastClickedPosition_[0], theLastClickedPosition_[1]));
+			ForgBaseLib::FrgBase_Pnt<2> pt(theLastClickedPosition_[0], theLastClickedPosition_[1]);
+			actor->SetPointOnCurve(pt);
 			actor->ShowPoints(false);
-			theTempActor_ = nullptr;
+
+			if(actor->GetCenterPoint() != pt)
+				theTempActor_ = nullptr;
 		}
 	}
 	else

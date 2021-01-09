@@ -2,6 +2,7 @@
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Menu.hxx>
 #include <FrgVisual_Scene_InterStyle.hxx>
+#include <FrgVisual_SceneRegistry.hxx>
 
 #include <FrgBase_SerialSpec_QString.hxx>
 #include <FrgBase_SerialSpec_QColor.hxx>
@@ -175,7 +176,13 @@ template<int Dim>
 ForgVisualLib::FrgVisual_Scene<Dim>::FrgVisual_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
 	: FrgVisual_Scene_Entity(parentMainWindow)
 {
+	theRegistry_ = new FrgVisual_SceneRegistry<Dim>(this);
+}
 
+template<int Dim>
+ForgVisualLib::FrgVisual_Scene<Dim>::~FrgVisual_Scene()
+{
+	FreePointer(theRegistry_);
 }
 
 template<int Dim>
@@ -335,7 +342,7 @@ ForgVisualLib::FrgVisual_PointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::A
 	actor->SetColor(1.0, 0.0, 0.0);
 	actor->SetSize(5);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -381,7 +388,7 @@ ForgVisualLib::FrgVisual_PickingPointActor<Dim>* ForgVisualLib::FrgVisual_Scene<
 
 	actor->SetData(pt);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -411,7 +418,7 @@ ForgVisualLib::FrgVisual_LineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 	actor->SetLineWidth(1);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -470,7 +477,7 @@ ForgVisualLib::FrgVisual_PolylineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>
 	actor->SetData(pts);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -508,7 +515,7 @@ ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 	actor->SetData(P0_X, P0_Y, P1_X, P1_Y);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -532,7 +539,7 @@ ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCi
 	actor->SetData(center, radius);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -556,7 +563,7 @@ ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCi
 	actor->SetDataCenterAndPointOnCurve(center, pointOnCurve);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -594,7 +601,7 @@ ForgVisualLib::FrgVisual_MeshActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 
 	actor->SetDataTriangulation(pts, connectivity);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -622,7 +629,7 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 		actor->SetData(ctrlPts, degree);
 		actor->SetColor(1.0, 0.0, 0.0);
 
-		theRenderer_->AddActor(actor);
+		AddActorToScene(actor);
 		//theRenderer_->AddActor(actor->GetCtrlPtsPolyLine());
 
 		if (render)
@@ -654,7 +661,7 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 	actor->SetDataInterpolate(pts, degree);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 	//theRenderer_->AddActor(actor->GetCtrlPtsPolyLine());
 
 	if (render)
@@ -695,7 +702,7 @@ ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
 	actor->SetData(P0_X, P0_Y, P0_Z, P1_X, P1_Y, P1_Z);
 	actor->SetColor(1.0, 0.0, 0.0);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -719,7 +726,7 @@ ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddTex
 
 	actor->SetData(value, posx, posy);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -744,7 +751,7 @@ ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddTex
 
 	actor->SetData(value, posx, posy, posz);
 
-	theRenderer_->AddActor(actor);
+	AddActorToScene(actor);
 
 	if (render)
 		RenderScene(false);
@@ -787,10 +794,10 @@ std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene<
 	auto myXLine = theMajorGridActor_->GetXLine();
 	auto myYLine = theMajorGridActor_->GetYLine();
 
-	theRenderer_->AddActor(theMajorGridActor_);
-	theRenderer_->AddActor(theMinorGridActor_);
-	theRenderer_->AddActor(myXLine);
-	theRenderer_->AddActor(myYLine);
+	AddActorToScene(theMajorGridActor_);
+	AddActorToScene(theMinorGridActor_);
+	AddActorToScene(myXLine);
+	AddActorToScene(myYLine);
 
 	if (render)
 		RenderScene(false);
@@ -835,6 +842,19 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::ClearAllPolylines()
 }
 
 template<int Dim>
+int ForgVisualLib::FrgVisual_Scene<Dim>::AddActorToScene(FrgVisual_BaseActor_Entity* actor)
+{
+	int index = theRegistry_->AddActor(actor);
+	if (index >= 0 || index == -2)
+	{
+		if (theRenderer_)
+			theRenderer_->AddActor(actor);
+	}
+
+	return index;
+}
+
+template<int Dim>
 void ForgVisualLib::FrgVisual_Scene<Dim>::RemoveActor(FrgVisual_BaseActor_Entity* actor)
 {
 	if (!actor)
@@ -845,6 +865,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::RemoveActor(FrgVisual_BaseActor_Entity
 		actor->RemoveActors(theRenderer_);
 
 		theRenderer_->RemoveActor(actor);
+		theRegistry_->RemoveActor(actor);
 	}
 }
 

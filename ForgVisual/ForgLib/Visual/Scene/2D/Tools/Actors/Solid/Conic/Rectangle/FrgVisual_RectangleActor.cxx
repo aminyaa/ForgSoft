@@ -61,6 +61,16 @@ void ForgVisualLib::FrgVisual_RectangleActor::SetP1(double x, double y)
 	SetPoint(3, p0.X(), y);
 }
 
+ForgBaseLib::FrgBase_Pnt<2> ForgVisualLib::FrgVisual_RectangleActor::GetP0()
+{
+	return GetPoint(0);
+}
+
+ForgBaseLib::FrgBase_Pnt<2> ForgVisualLib::FrgVisual_RectangleActor::GetP1()
+{
+	return GetPoint(2);
+}
+
 void ForgVisualLib::FrgVisual_RectangleActor::SetRepresentationToPoints()
 {
 	GetProperty()->SetRepresentationToPoints();

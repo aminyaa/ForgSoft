@@ -138,6 +138,9 @@ class FrgVisual_CircleActor;
 class FrgVisual_GridActor;
 class FrgVisual_BoxActor;
 
+template <int Dim>
+class FrgVisual_SceneRegistry;
+
 template<int Dim>
 class FORGVISUAL_EXPORT FrgVisual_Scene
 	: public FrgVisual_Scene_Entity
@@ -146,6 +149,8 @@ class FORGVISUAL_EXPORT FrgVisual_Scene
 public:
 
 	FrgVisual_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow = nullptr);
+
+	~FrgVisual_Scene();
 
 	void Init() override;
 
@@ -360,6 +365,8 @@ public:
 	void ClearAllLines();
 	void ClearAllPolylines();
 
+	// return actor index in registry, return -2 if actor is PickingPoint, return -1 if registration of actor was not successful
+	int AddActorToScene(FrgVisual_BaseActor_Entity* actor);
 	void RemoveActor(FrgVisual_BaseActor_Entity* actor);
 
 	std::vector<FrgVisual_GridActor*> DrawGrid
@@ -401,6 +408,8 @@ protected:
 
 	QColor theMajorGridColor_;
 	QColor theMinorGridColor_;
+
+	FrgVisual_SceneRegistry<Dim>* theRegistry_ = nullptr;
 };
 
 EndForgVisualLib

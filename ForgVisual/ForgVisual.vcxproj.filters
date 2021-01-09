@@ -254,6 +254,9 @@
     <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint">
       <UniqueIdentifier>{23a9acd7-757c-4783-ade8-e507429eff99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Registry">
+      <UniqueIdentifier>{959b1680-3d32-42d8-b227-e0178183152c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -412,6 +415,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint\FrgVisual_PickingPointActor.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Registry\FrgVisual_SceneRegistry.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Registry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -562,6 +568,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint\FrgVisual_PickingPointActor.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Point\PickingPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Registry\FrgVisual_SceneRegistry.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Registry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

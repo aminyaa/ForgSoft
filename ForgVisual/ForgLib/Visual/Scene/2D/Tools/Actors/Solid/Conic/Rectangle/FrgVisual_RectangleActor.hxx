@@ -45,6 +45,9 @@ public:
 	void SetP1(ForgBaseLib::FrgBase_Pnt<2> p1);
 	void SetP1(double x, double y);
 
+	ForgBaseLib::FrgBase_Pnt<2> GetP0();
+	ForgBaseLib::FrgBase_Pnt<2> GetP1();
+
 	void RemoveActors(vtkRenderer* renderer) override;
 
 	std::vector<ActorType> GetActorTypes() const override;

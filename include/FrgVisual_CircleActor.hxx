@@ -36,8 +36,10 @@ public:
 	void SetData(ForgBaseLib::FrgBase_Pnt<2> center, double radius);
 	void SetDataCenterAndPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> P0, ForgBaseLib::FrgBase_Pnt<2> pointOnCurve);
 	void SetPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> p);
-
 	void ShowPoints(bool condition = true) override;
+
+	double GetRadius() const;
+	ForgBaseLib::FrgBase_Pnt<2> GetCenterPoint() const;
 
 	void RemoveActors(vtkRenderer* renderer) override;
 
