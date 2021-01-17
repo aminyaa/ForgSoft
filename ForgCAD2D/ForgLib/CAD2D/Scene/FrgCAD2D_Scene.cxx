@@ -59,7 +59,7 @@ void ForgCAD2DLib::FrgCAD2D_Scene::FormToolBar()
 		cancelOperations->setIcon(QIcon(":/ForgCAD2D/Resources/Icons/Scene/Cursor.png"));
 		cancelOperations->setShortcut(QKeySequence(Qt::Key_Escape));
 		cancelOperations->setToolTip("Cancel (Esc)");
-		connect(cancelOperations, &QToolButton::clicked, [this]() {FrgCAD2D_Scene_InteractorStyle::SafeDownCast((FrgCAD2D_Scene_InteractorStyle::SuperClass*)(theInteractorStyle_))->CancelCommand(); });
+		connect(cancelOperations, &QToolButton::clicked, [this]() {FrgCAD2D_Scene_InteractorStyle::SafeDownCast((FrgCAD2D_Scene_InteractorStyle::SuperClass*)(theInteractorStyle_))->CancelCommand(true); });
 
 		auto* addPoint = new QToolButton();
 		addPoint->setIcon(QIcon(":/ForgCAD2D/Resources/Icons/Scene/Circle.png"));

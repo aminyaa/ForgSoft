@@ -72,7 +72,7 @@ public:
 	void AddCircle();
 
 	void CompleteCommand();
-	void CancelCommand();
+	void CancelCommand(bool unselectAllActors = false);
 	void UndoCommand();
 
 	void DeleteSelectedActors();

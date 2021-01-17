@@ -464,7 +464,7 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CompleteCommand()
 	CancelCommand();
 }
 
-void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CancelCommand()
+void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CancelCommand(bool unselectAllActors)
 {
 	if (theTempActor_)
 	{
@@ -480,7 +480,9 @@ void ForgCAD2DLib::FrgCAD2D_Scene_InteractorStyle::CancelCommand()
 	theIsInOperation_ = false;
 	theOperationType_ = Default;
 
-	UnSelectAllActors(false);
+	if(unselectAllActors)
+		UnSelectAllActors(false);
+
 	OnMouseMove();
 }
 
