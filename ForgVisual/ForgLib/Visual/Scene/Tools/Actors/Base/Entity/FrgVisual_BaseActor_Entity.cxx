@@ -237,6 +237,61 @@ bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsThreeDimension() const
 	return false;
 }
 
+std::vector<QString> ForgVisualLib::FrgVisual_BaseActor_Entity::GetActorTypesAsString() const
+{
+	std::vector<QString> names;
+	auto types = GetActorTypes();
+	for (const auto& type : types)
+		names.push_back(GetActorTypeAsString(type));
+
+	return names;
+}
+
+QString ForgVisualLib::FrgVisual_BaseActor_Entity::GetActorTypeAsString(ActorType actorType) const
+{
+	if (actorType == ActorType::Point)
+		return "Point";
+	else if (actorType == ActorType::CtrlPoint)
+		return "CtrlPoint";
+	else if (actorType == ActorType::PickingPoint)
+		return "PickingPoint";
+	else if (actorType == ActorType::Line)
+		return "Line";
+	else if (actorType == ActorType::PolyLine)
+		return "PolyLine";
+	else if (actorType == ActorType::BSPLine)
+		return "BSPLine";
+	else if (actorType == ActorType::Curve)
+		return "Curve";
+	else if (actorType == ActorType::Solid)
+		return "Solid";
+	else if (actorType == ActorType::Circle)
+		return "Circle";
+	else if (actorType == ActorType::Conic)
+		return "Conic";
+	else if (actorType == ActorType::Rectangle)
+		return "Rectangle";
+	else if (actorType == ActorType::Box)
+		return "Box";
+	else if (actorType == ActorType::Mesh)
+		return "Mesh";
+	else if (actorType == ActorType::Grid)
+		return "Grid";
+	else if (actorType == ActorType::Text)
+		return "Text";
+	else if (actorType == ActorType::Surface)
+		return "Surface";
+	else if (actorType == ActorType::Other)
+		return "Other";
+
+	return "";
+}
+
+QString ForgVisualLib::FrgVisual_BaseActor_Entity::GetActorTypeAsString() const
+{
+	return GetActorTypeAsString(GetActorType());
+}
+
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BaseActor_Entity)
 {
 	ar& theIsSelectable_;

@@ -63,6 +63,7 @@ public:
 	void SetVerticalJustificationToCentered();
 	void SetVerticalJustificationToTop();
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

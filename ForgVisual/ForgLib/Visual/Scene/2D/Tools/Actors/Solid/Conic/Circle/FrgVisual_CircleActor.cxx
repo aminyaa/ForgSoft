@@ -122,6 +122,11 @@ void ForgVisualLib::FrgVisual_CircleActor::RemoveActors(vtkRenderer* renderer)
 	}
 }
 
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_CircleActor::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Circle;
+}
+
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_CircleActor::GetActorTypes() const
 {
 	std::vector<ActorType> types;

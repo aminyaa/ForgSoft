@@ -34,6 +34,7 @@ public:
 		std::vector<std::tuple<int, int, int>> connectivity
 	);
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

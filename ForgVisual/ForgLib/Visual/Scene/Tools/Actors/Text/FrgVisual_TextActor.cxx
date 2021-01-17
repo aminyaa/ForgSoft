@@ -190,6 +190,12 @@ void ForgVisualLib::FrgVisual_TextActor<Dim>::SetVerticalJustificationToTop()
 }
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_TextActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Text;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_TextActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

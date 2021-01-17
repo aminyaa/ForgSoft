@@ -164,6 +164,11 @@ void ForgVisualLib::FrgVisual_GridActor::VisibilityOff()
 	FrgVisual_CurveActor<2>::VisibilityOff();
 }
 
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_GridActor::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Grid;
+}
+
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_GridActor::GetActorTypes() const
 {
 	std::vector<ActorType> types;

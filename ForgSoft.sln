@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgMarine", "ForgMarine\Fo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgCAD2D", "ForgCAD2D\ForgCAD2D.vcxproj", "{D0EF73C1-5618-4C45-B89D-11752F807BB4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForgCAD", "ForgCAD\ForgCAD.vcxproj", "{577D5DF2-772D-40A6-B217-B18F206A3F8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,12 @@ Global
 		{D0EF73C1-5618-4C45-B89D-11752F807BB4}.Release|x64.ActiveCfg = Release|x64
 		{D0EF73C1-5618-4C45-B89D-11752F807BB4}.Release|x64.Build.0 = Release|x64
 		{D0EF73C1-5618-4C45-B89D-11752F807BB4}.Release|x86.ActiveCfg = Release|x64
+		{577D5DF2-772D-40A6-B217-B18F206A3F8A}.Debug|x64.ActiveCfg = Debug|x64
+		{577D5DF2-772D-40A6-B217-B18F206A3F8A}.Debug|x64.Build.0 = Debug|x64
+		{577D5DF2-772D-40A6-B217-B18F206A3F8A}.Debug|x86.ActiveCfg = Debug|x64
+		{577D5DF2-772D-40A6-B217-B18F206A3F8A}.Release|x64.ActiveCfg = Release|x64
+		{577D5DF2-772D-40A6-B217-B18F206A3F8A}.Release|x64.Build.0 = Release|x64
+		{577D5DF2-772D-40A6-B217-B18F206A3F8A}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

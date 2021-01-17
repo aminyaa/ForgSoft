@@ -23,6 +23,7 @@ class FrgVisual_Scene2D;
 class FORGVISUAL_EXPORT FrgVisual_Scene_InterStyle2D
 	: public FrgVisual_Scene_InterStyle<2, vtkInteractorStyleTrackballCamera>
 {
+
 	Q_OBJECT
 
 public:
@@ -178,7 +179,7 @@ protected:
 	double theLastPickedPosition_[3];
 	bool theLeftButtonPressed_;
 
-public slots:
+public:
 
 	void HideActionIsCalledSlot() override;
 	void UnHideActionIsCalledSlot() override;

@@ -4,6 +4,7 @@
 
 #include <FrgVisual_Global.hxx>
 #include <QVTKOpenGLNativeWidget.h>
+#include <FrgBase_Object.hxx>
 
 class vtkContextView;
 class vtkTable;
@@ -34,6 +35,7 @@ enum LEGEND_POSITION_ENUM
 
 class FORGVISUAL_EXPORT FrgVisual_Plot
 	: public QVTKOpenGLNativeWidget
+	, public ForgBaseLib::FrgBase_Object
 {
 
 	Q_OBJECT

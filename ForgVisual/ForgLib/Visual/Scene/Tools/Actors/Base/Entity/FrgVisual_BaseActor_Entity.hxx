@@ -3,6 +3,7 @@
 #define _FrgVisual_BaseActor_Entity_Header
 
 #include <FrgVisual_Global.hxx>
+#include <FrgBase_Object.hxx>
 #include <vtkOpenGLActor.h>
 
 #include <FrgVisual_Serialization_Global.hxx>
@@ -17,6 +18,7 @@ BeginForgVisualLib
 class FORGVISUAL_EXPORT FrgVisual_BaseActor_Entity
 	: public QObject
 	, public vtkOpenGLActor
+	, public ForgBaseLib::FrgBase_Object
 {
 
 	Q_OBJECT
@@ -42,7 +44,8 @@ public:
 		Mesh,
 		Grid,
 		Text,
-		Surface
+		Surface,
+		Other
 	};
 
 
@@ -93,8 +96,13 @@ public:
 	const bool& IsIndependent() const { return theIsIndependent_; }
 	void SetIndependent(bool condition) { theIsIndependent_ = condition; }
 
+	virtual ActorType GetActorType() const = 0;
 	virtual std::vector<ActorType> GetActorTypes() const = 0;
 	virtual ActorDimension GetActorDimension() const = 0;
+
+	std::vector<QString> GetActorTypesAsString() const;
+	QString GetActorTypeAsString(ActorType actorType) const;
+	QString GetActorTypeAsString() const;
 
 	bool IsPoint() const;
 	bool IsCtrlPoint() const;

@@ -106,6 +106,11 @@ void ForgVisualLib::FrgVisual_RectangleActor::RemoveActors(vtkRenderer* renderer
 	
 }
 
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_RectangleActor::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Rectangle;
+}
+
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_RectangleActor::GetActorTypes() const
 {
 	std::vector<ActorType> types;

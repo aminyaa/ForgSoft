@@ -97,6 +97,7 @@ public:
 	void SetSelectable(bool selectable = true) override;
 	void RemoveActors(vtkRenderer* renderer) override;
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

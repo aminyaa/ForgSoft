@@ -53,6 +53,7 @@ public:
 	template <typename = std::enable_if_t<Dim == 3>>
 	void SetData(double x, double y, double z);
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

@@ -98,6 +98,12 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 }
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_MeshActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Mesh;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_MeshActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

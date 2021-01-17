@@ -3,20 +3,24 @@
 #define _FrgVisual_SceneRegistry_Header
 
 #include <FrgVisual_Global.hxx>
+#include <FrgBase_Object.hxx>
 #include <FrgVisual_Serialization_Global.hxx>
+#include <FrgVisual_BaseActor_Entity.hxx>
 
 BeginForgVisualLib
 
 template <int Dim>
 class FrgVisual_Scene;
 
-class FrgVisual_BaseActor_Entity;
-
 template <int Dim>
 class FORGVISUAL_EXPORT FrgVisual_SceneRegistry
+	: public ForgBaseLib::FrgBase_Object
 {
 
 public:
+
+	static const size_t nbEntities = (size_t)FrgVisual_BaseActor_Entity::ActorType::Other;
+	typedef std::map<unsigned int, FrgVisual_BaseActor_Entity*> mapOfActors;
 
 	FrgVisual_SceneRegistry(FrgVisual_Scene<Dim>* parentScene = nullptr);
 
@@ -37,7 +41,8 @@ protected:
 
 	FrgVisual_Scene<Dim>* theParentScene_ = nullptr;
 
-	std::map<unsigned int, FrgVisual_BaseActor_Entity*> theActors_;
+	mapOfActors theActors_;
+	mapOfActors theTypeMap_[nbEntities];
 	std::vector<int> theReservedIndexes_;
 
 private:

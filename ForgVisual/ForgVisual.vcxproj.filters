@@ -622,9 +622,6 @@
     <QtMoc Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.hxx">
       <Filter>ForgLib\Visual\Scene\3D\Tools\InteractorStyle</Filter>
     </QtMoc>
-    <QtMoc Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx">
-      <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
-    </QtMoc>
     <QtMoc Include="ForgLib\Visual\Scene\3D\TreeItem\FrgVisual_Scene3D_TItem.hxx">
       <Filter>ForgLib\Visual\Scene\3D\TreeItem</Filter>
     </QtMoc>
@@ -657,6 +654,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx">
       <Filter>ForgLib\Visual\Plot\2D</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Visual\Scene\2D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle2D.hxx">
+      <Filter>ForgLib\Visual\Scene\2D\Tools\InteractorStyle</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

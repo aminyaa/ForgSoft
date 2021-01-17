@@ -661,6 +661,12 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::RemoveActors(vtkRenderer* rend
 }
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::PolyLine;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

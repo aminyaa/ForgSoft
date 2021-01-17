@@ -1,11 +1,10 @@
 #pragma once
-#ifndef _FrgCAD2D_Scene_InteractorStyle_Header
-#define _FrgCAD2D_Scene_InteractorStyle_Header
+#ifndef _FrgCAD_Scene_InteractorStyle_Header
+#define _FrgCAD_Scene_InteractorStyle_Header
 
-#include <FrgCAD2D_Global.hxx>
+#include <FrgCAD_Global.hxx>
 #include <FrgVisual_Scene_InterStyle2D.hxx>
 
-class QHBoxLayout;
 class QLabel;
 
 namespace ForgBaseLib
@@ -16,21 +15,20 @@ namespace ForgBaseLib
 
 namespace ForgVisualLib
 {
-	class FrgVisual_BaseActor_Entity;
-
 	template <int Dim>
 	class FrgVisual_PointActor;
 }
 
-BeginForgCAD2DLib
+BeginForgCADLib
 
-class FORGCAD2D_EXPORT FrgCAD2D_Scene_InteractorStyle
+class FrgCAD_DlgEntity;
+
+class FORGCAD_EXPORT FrgCAD_Scene_InteractorStyle
 	: public ForgVisualLib::FrgVisual_Scene_InterStyle2D
 {
+public:
 
-	Q_OBJECT;
-
-	enum OperationType
+	enum class OperationType
 	{
 		Default,
 		AddingPoint,
@@ -41,13 +39,11 @@ class FORGCAD2D_EXPORT FrgCAD2D_Scene_InteractorStyle
 		AddingCircle
 	};
 
-public:
-
 	typedef ForgVisualLib::FrgVisual_Scene_InterStyle2D SuperClass;
 
 public:
-	static FrgCAD2D_Scene_InteractorStyle* New();
-	vtkTypeMacro(FrgCAD2D_Scene_InteractorStyle, SuperClass);
+	static FrgCAD_Scene_InteractorStyle* New();
+	vtkTypeMacro(FrgCAD_Scene_InteractorStyle, SuperClass);
 
 	//@{
 	/**
@@ -59,10 +55,12 @@ public:
 	void OnRightButtonDown() override;
 
 	bool IsInOperation() const { return theIsInOperation_; }
-	void SetInOperation(bool inOperation) { theIsInOperation_ = inOperation; }
+	void SetInOperation(bool inOperation);
 
 	OperationType GetOperationType() const { return theOperationType_; }
 	void SetOperationType(OperationType operationType) { theOperationType_ = operationType; }
+
+	void AddCommand(const QString& command);
 
 	void AddPoint();
 	void AddPolyLine();
@@ -79,15 +77,18 @@ public:
 
 protected:
 
-	FrgCAD2D_Scene_InteractorStyle();
-	~FrgCAD2D_Scene_InteractorStyle() override;
+	FrgCAD_Scene_InteractorStyle();
+	~FrgCAD_Scene_InteractorStyle() override;
 
 	void FormInterStyle() override;
 
-	FrgCAD2D_Scene_InteractorStyle(const FrgCAD2D_Scene_InteractorStyle&) = delete;
-	void operator=(const FrgCAD2D_Scene_InteractorStyle&) = delete;
+	FrgCAD_Scene_InteractorStyle(const FrgCAD_Scene_InteractorStyle&) = delete;
+	void operator=(const FrgCAD_Scene_InteractorStyle&) = delete;
 
-	void Update(double x, double y);
+	void Update(double x, double y, bool render = false);
+	void CustomOnMouseMove(int x, int y);
+
+	void AddPointDialog();
 
 protected:
 
@@ -107,12 +108,14 @@ protected:
 	ForgVisualLib::FrgVisual_BaseActor_Entity* theTempActor_ = nullptr;
 	ForgVisualLib::FrgVisual_PointActor<2>* theTempPointActor_ = nullptr;
 
+	FrgCAD_DlgEntity* theDlg_ = nullptr;
+
 	double theLastClickedPosition_[2];
 	double theCurrentPosition_[2];
 
 	std::vector<ForgBaseLib::FrgBase_Pnt<2>> thePts_;
 };
 
-EndForgCAD2DLib
+EndForgCADLib
 
-#endif // !_FrgCAD2D_Scene_InteractorStyle_Header
+#endif // !_FrgCAD_Scene_InteractorStyle_Header

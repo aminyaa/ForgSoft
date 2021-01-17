@@ -3,6 +3,7 @@
 #define _FrgVisual_Scene_Header
 
 #include <FrgVisual_Global.hxx>
+#include <FrgBase_Object.hxx>
 #include <QtWidgets/QMainWindow>
 
 #include <FrgVisual_Serialization_Global.hxx>
@@ -37,6 +38,7 @@ class FrgVisual_Scene_InterStyle_Base;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene_Entity
 	: public QMainWindow
+	, public ForgBaseLib::FrgBase_Object
 {
 
 	Q_OBJECT

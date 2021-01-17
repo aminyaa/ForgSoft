@@ -33,6 +33,7 @@ public:
 
 	//void SetParentPolylineActor(FrgVisual_PolylineActor<Dim>* parentPolyLineActor) override;
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

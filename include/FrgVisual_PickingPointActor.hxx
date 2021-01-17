@@ -28,6 +28,7 @@ public:
 
 	~FrgVisual_PickingPointActor();
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

@@ -3,6 +3,7 @@
 #define _FrgVisual_Scene_InterStyle_Header
 
 #include <FrgVisual_Global.hxx>
+#include <FrgBase_Object.hxx>
 
 #include <QtCore/QObject>
 
@@ -21,6 +22,7 @@ class FrgVisual_Scene;
 
 class FrgVisual_Scene_InterStyle_Base
 	: public QObject
+	, public ForgBaseLib::FrgBase_Object
 {
 	Q_OBJECT
 

@@ -37,6 +37,7 @@ public:
 	template <typename = std::enable_if_t<Dim == 3>>
 	void SetData(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z);
 
+	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 

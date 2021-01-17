@@ -71,6 +71,12 @@ ForgVisualLib::FrgVisual_CtrlPointActor<Dim>::~FrgVisual_CtrlPointActor()
 //}
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_CtrlPointActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::CtrlPoint;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_CtrlPointActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

@@ -244,6 +244,12 @@ inline void ForgVisualLib::FrgVisual_PointActor<3>::SetData(double x, double y, 
 //}
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_PointActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Point;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_PointActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

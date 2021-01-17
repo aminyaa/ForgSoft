@@ -864,8 +864,8 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::RemoveActor(FrgVisual_BaseActor_Entity
 	{
 		actor->RemoveActors(theRenderer_);
 
-		theRenderer_->RemoveActor(actor);
 		theRegistry_->RemoveActor(actor);
+		theRenderer_->RemoveActor(actor);
 	}
 }
 
@@ -1018,6 +1018,8 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 
 	ar& theMajorGridColor_;
 	ar& theMinorGridColor_;
+
+	ar& theRegistry_;
 }
 
 template<int Dim>
@@ -1074,6 +1076,8 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 
 	ar& theMajorGridColor_;
 	ar& theMinorGridColor_;
+
+	ar& theRegistry_;
 
 	this->RenderScene(true);
 }

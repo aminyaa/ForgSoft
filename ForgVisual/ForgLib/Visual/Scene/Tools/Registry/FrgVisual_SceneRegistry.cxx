@@ -28,12 +28,8 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::AddActor(FrgVisual_BaseActor_En
 	if (actor->IsPickingPoint())
 		return -2;
 
-	if (!theActors_.empty())
-	{
-		auto index = FindActor(actor);
-		if (index >= 0)
-			return index;
-	}
+	if (actor->GetIndex() != -1)
+		return actor->GetIndex();
 
 	// the item can be added
 	int index;
@@ -49,7 +45,24 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::AddActor(FrgVisual_BaseActor_En
 
 	theActors_[index] = actor;
 
-	std::cout << "index added = " << index << std::endl;
+	const auto& actorTypes = actor->GetActorTypes();
+	for (const auto& actorType : actorTypes)
+	{
+		theTypeMap_[(size_t)actorType][index] = actor;
+	}
+
+	actor->SetIndex(index);
+
+	/*for (const auto& actorType : actorTypes)
+	{
+		std::cout << "type " << actor->GetActorTypeAsString(actorType).toStdString() << " :\n";
+		for(const auto& ind : theTypeMap_[(size_t)actorType])
+			std::cout << ind.first << std::endl;
+	}*/
+
+	//std::cout << "index added = " << index << std::endl;
+
+	std::cout << actor->GetActorTypeAsString().toStdString() << " was added with index " << index << std::endl;
 
 	return index;
 }
@@ -57,12 +70,27 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::AddActor(FrgVisual_BaseActor_En
 template<int Dim>
 void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::RemoveActor(int index)
 {
+	if (index < 1)
+		return;
+
+	auto actor = theActors_.at(index);
+	if (!actor)
+		return;
+
 	auto i = theActors_.erase(index);
-	if (i == 1)
+	if (i == 1 && index != theActors_.size() + 1)
 	{
 		theReservedIndexes_.push_back(index);
 		heapSort(theReservedIndexes_, theReservedIndexes_.size());
 	}
+
+	auto actorTypes = actor->GetActorTypes();
+	for (auto actorType : actorTypes)
+	{
+		theTypeMap_[(size_t)actorType].erase(index);
+	}
+
+	actor->SetIndex(-1);
 }
 
 template<int Dim>
@@ -76,9 +104,15 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(FrgVisual_BaseActor_E
 {
 	if (!theActors_.empty() && actor != nullptr)
 	{
-		for (const auto& item : theActors_)
-			if(item.second == actor)
-				return item.first;
+		auto actorTypes = actor->GetActorTypes();
+		if (!actorTypes.empty())
+		{
+			for (const auto& item : theTypeMap_[(size_t)actorTypes[0]])
+			{
+				if (item.second == actor)
+					return item.first;
+			}
+		}
 	}
 
 	return -1;
@@ -87,7 +121,7 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(FrgVisual_BaseActor_E
 template<int Dim>
 ForgVisualLib::FrgVisual_BaseActor_Entity* ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(int index) const
 {
-	if (!theActors_.empty())
+	if (!theActors_.empty() && index > 0 && index < theActors_.size() + 1)
 	{
 		auto iter = theActors_.find(index);
 		if (iter != theActors_.end())
@@ -151,6 +185,8 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_SceneRegistry<Dim>)
 {
 	ar& theParentScene_;
 	ar& theActors_;
+	ar& theReservedIndexes_;
+	ar& theTypeMap_;
 }
 
 template <int Dim>
@@ -158,6 +194,8 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_SceneRegistry<Dim>)
 {
 	ar& theParentScene_;
 	ar& theActors_;
+	ar& theReservedIndexes_;
+	ar& theTypeMap_;
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_SceneRegistry<2>);

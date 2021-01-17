@@ -896,6 +896,12 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::RemoveActors(vtkRenderer* rende
 }
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_BSPLineActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::BSPLine;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

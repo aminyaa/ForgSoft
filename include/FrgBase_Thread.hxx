@@ -3,6 +3,7 @@
 #define _FrgBase_Thread_Header
 
 #include <FrgBase_Global.hxx>
+#include <FrgBase_Object.hxx>
 
 #include <QtCore/QThread>
 #include <QtCore/QMutex>
@@ -11,7 +12,9 @@ BeginForgBaseLib
 
 class FrgBase_MainWindow;
 
-class FORGBASE_EXPORT FrgBase_Thread : public QThread
+class FORGBASE_EXPORT FrgBase_Thread
+	: public QThread
+	, public ForgBaseLib::FrgBase_Object
 {
 
 	Q_OBJECT

@@ -21,6 +21,12 @@ ForgVisualLib::FrgVisual_PickingPointActor<Dim>::~FrgVisual_PickingPointActor()
 }
 
 template<int Dim>
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_PickingPointActor<Dim>::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::PickingPoint;
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_PickingPointActor<Dim>::GetActorTypes() const
 {
 	std::vector<ActorType> types;

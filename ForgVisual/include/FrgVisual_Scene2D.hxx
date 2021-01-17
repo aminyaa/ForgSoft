@@ -50,7 +50,7 @@ private:
 
 EndForgVisualLib
 
-BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Scene2D, FORGVISUAL_EXPORT)
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_Scene2D)
 
 #include <FrgVisual_Scene2DI.hxx>
 

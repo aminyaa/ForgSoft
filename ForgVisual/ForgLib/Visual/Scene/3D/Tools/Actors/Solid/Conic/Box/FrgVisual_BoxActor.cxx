@@ -58,6 +58,11 @@ void ForgVisualLib::FrgVisual_BoxActor::SetEdgeColor(double red, double green, d
 	this->GetProperty()->SetSpecular(0.0);
 }
 
+ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_BoxActor::GetActorType() const
+{
+	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Box;
+}
+
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib::FrgVisual_BoxActor::GetActorTypes() const
 {
 	std::vector<ActorType> types;
