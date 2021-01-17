@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/ForgCAD">
+        <file>Resources/Icons/Scene/Aim.png</file>
+        <file>Resources/Icons/Scene/Circle.png</file>
+        <file>Resources/Icons/Scene/Cursor.png</file>
+        <file>Resources/Icons/Scene/Polyline.png</file>
+        <file>Resources/Icons/Scene/Polyline2.png</file>
+        <file>Resources/Commands/Commands</file>
+    </qresource>
+</RCC>

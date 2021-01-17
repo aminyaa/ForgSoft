@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="ForgLib">
+      <UniqueIdentifier>{102bc93b-6b3d-4522-8696-4d6a03272bbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD">
+      <UniqueIdentifier>{5455c35d-4f4f-4c0b-9e4f-f6e1b3d1dd56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Global">
+      <UniqueIdentifier>{18e156f6-c4f4-4dab-98a8-4ae5a47c9534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene">
+      <UniqueIdentifier>{0b9a37cc-9c67-4a1d-95eb-92081e35ae78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\TreeItem">
+      <UniqueIdentifier>{ec1134c2-fd43-4244-9b3a-0070351f410e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools">
+      <UniqueIdentifier>{155ad6d1-ff03-4ab9-bd5a-024533d279b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\InteractorStyle">
+      <UniqueIdentifier>{40f6aa14-e8bb-4ab1-bbb1-fa694c83c7c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Commands">
+      <UniqueIdentifier>{424919cd-c597-4202-b723-f51bc8877926}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Commands\Curve">
+      <UniqueIdentifier>{d2e3d88b-c5ce-4f7a-8a85-6b548fd9d8d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Commands\Curve\Point">
+      <UniqueIdentifier>{64b33ec8-bab2-4147-baad-3daeb7e2a2ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Dialogs">
+      <UniqueIdentifier>{76d15b75-a8fb-400a-b61f-0e7f79657714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Dialogs\Point">
+      <UniqueIdentifier>{91585905-6719-4642-b788-56cbc8c993ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Dialogs\Entity">
+      <UniqueIdentifier>{98b75c2e-f111-4574-95f7-785c930789e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\Dialogs\OneValue">
+      <UniqueIdentifier>{7ee3553a-e4cb-47e9-b3e5-82faa1b821cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\CommandLine">
+      <UniqueIdentifier>{89bfe962-6d37-482d-bf28-c233790e79b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\CommandLine\LineEdit">
+      <UniqueIdentifier>{cfd62322-b572-49e5-8f07-c361aff81cc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\CAD\Scene\Tools\CommandLine\Completer">
+      <UniqueIdentifier>{08725911-7ae5-4431-bc3a-7d8a3f597d2f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="ForgCAD.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtUic Include="ForgCAD.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ForgLib\CAD\Scene\FrgCAD_Scene.cxx">
+      <Filter>ForgLib\CAD\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\Tools\InteractorStyle\FrgCAD_Scene_InteractorStyle.cxx">
+      <Filter>ForgLib\CAD\Scene\Tools\InteractorStyle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\TreeItem\FrgCAD_Scene_TItem.cxx">
+      <Filter>ForgLib\CAD\Scene\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\Tools\Dialogs\Entity\FrgCAD_DlgEntity.cxx">
+      <Filter>ForgLib\CAD\Scene\Tools\Dialogs\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\Tools\Dialogs\Entity\FrgCAD_DlgPoint.cxx">
+      <Filter>ForgLib\CAD\Scene\Tools\Dialogs\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\Tools\Dialogs\OneValue\FrgCAD_DlgOneValue.cxx">
+      <Filter>ForgLib\CAD\Scene\Tools\Dialogs\OneValue</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\Tools\CommandLine\Completer\FrgCAD_CmdLnCompleter.cxx">
+      <Filter>ForgLib\CAD\Scene\Tools\CommandLine\Completer</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\CAD\Scene\Tools\CommandLine\LineEdit\FrgCAD_CmdLineEdit.cxx">
+      <Filter>ForgLib\CAD\Scene\Tools\CommandLine\LineEdit</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ForgLib\CAD\Global\FrgCAD_Global.hxx">
+      <Filter>ForgLib\CAD\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\CAD\Global\FrgCAD_Global_Build.hxx">
+      <Filter>ForgLib\CAD\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\CAD\Scene\FrgCAD_Scene.hxx">
+      <Filter>ForgLib\CAD\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\CAD\Scene\Tools\InteractorStyle\FrgCAD_Scene_InteractorStyle.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\InteractorStyle</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="ForgLib\CAD\Scene\TreeItem\FrgCAD_Scene_TItem.hxx">
+      <Filter>ForgLib\CAD\Scene\TreeItem</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\Dialogs\Entity\FrgCAD_DlgEntity.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\Dialogs\Entity</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\Dialogs\Point\FrgCAD_DlgPoint.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\Dialogs\Point</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\Dialogs\OneValue\FrgCAD_DlgOneValue.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\Dialogs\OneValue</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\CommandLine\Completer\FrgCAD_CmdLnCompleter.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\CommandLine\Completer</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\CommandLine\LineEdit\FrgCAD_CmdLineEdit.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\CommandLine\LineEdit</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>
