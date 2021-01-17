@@ -3,6 +3,7 @@
 #define _FrgBase_PrptsWdgOneValue_Header
 
 #include <FrgBase_Global.hxx>
+#include <FrgBase_Object.hxx>
 #include <FrgBase_PrptsVrntOneValue.hxx>
 
 #include <QtWidgets/QWidget>
@@ -15,6 +16,7 @@ class FrgBase_TreeItem;
 template <typename Type, bool IsBounded = true>
 class FrgBase_PrptsWdgOneValue
 	: public QWidget
+	, public FrgBase_Object
 {
 
 public:

@@ -8,14 +8,12 @@
 BeginForgBaseLib
 
 class FORGBASE_EXPORT FrgBase_Object
-	//: public QObject
 {
 
-	//Q_OBJECT
+protected:
 
-private:
-
-	//FrgBool theIsObjectModified_ = FrgFalse;
+	unsigned int theIndex_;
+	QString theName_;
 
 public:
 
@@ -23,19 +21,12 @@ public:
 
 	virtual ~FrgBase_Object();
 
-//public slots:
+	unsigned int GetIndex() const { return theIndex_; }
+	void SetIndex(unsigned int index) { theIndex_ = index; }
 
-	//void UpdateObject_Slot();
+	const QString& GetName() const { return theName_; }
+	void SetName(const QString& name) { theName_ = name; }
 
-//signals:
-
-
-
-public:
-
-	//virtual void UpdateObject() {}
-	//inline FrgBool IsObjectModified() { return theIsObjectModified_; }
-	//inline void SetObjectModified(FrgBool condition) { theIsObjectModified_ = condition; }
 };
 
 EndForgBaseLib

@@ -3,6 +3,7 @@
 #define _FrgBase_PropertiesPanel_Header
 
 #include <FrgBase_Global.hxx>
+#include <FrgBase_Object.hxx>
 #include <QtWidgets/QTableWidget>
 
 #include <FrgBase_PrptsVrnt_Include.hxx>
@@ -14,6 +15,7 @@ class FrgBase_PrptsVrnt;
 
 class FORGBASE_EXPORT FrgBase_PropertiesPanel
 	: public QTableWidget
+	, public FrgBase_Object
 {
 	Q_OBJECT
 

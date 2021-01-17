@@ -3,6 +3,7 @@
 #define _FrgBase_Pnt_Header
 
 #include <FrgBase_Global.hxx>
+#include <FrgBase_Object.hxx>
 
 #include <FrgBase_Serialization_Global.hxx>
 
@@ -10,6 +11,7 @@ BeginForgBaseLib
 
 template <int Dim>
 class FrgBase_Pnt
+	: public ForgBaseLib::FrgBase_Object
 {
 
 public:
