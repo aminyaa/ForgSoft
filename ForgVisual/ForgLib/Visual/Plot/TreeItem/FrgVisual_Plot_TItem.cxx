@@ -68,6 +68,8 @@ bool ForgVisualLib::FrgVisual_Plot_TItem::RemovePlot(vtkPlot * plot)
 	{
 		return thePlot_->RemovePlot(plot);
 	}
+
+	return true;
 }
 
 void ForgVisualLib::FrgVisual_Plot_TItem::SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow * parentMainWindow)

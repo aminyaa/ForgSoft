@@ -62,7 +62,7 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::AddActor(FrgVisual_BaseActor_En
 
 	//std::cout << "index added = " << index << std::endl;
 
-	std::cout << actor->GetActorTypeAsString().toStdString() << " was added with index " << index << std::endl;
+	//std::cout << actor->GetActorTypeAsString().toStdString() << " was added with index " << index << std::endl;
 
 	return index;
 }

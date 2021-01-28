@@ -74,7 +74,7 @@ void ForgCADLib::FrgCAD_Scene::FormToolBar()
 		connect(cancelOperations, &QToolButton::clicked, [this]() {theCastedInterStyle_->CancelCommand(true); theCmdLineEdit_->CancelCommand(); });
 
 		auto* addPoint = new QToolButton();
-		addPoint->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Circle.png"));
+		addPoint->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Point.png"));
 		addPoint->setToolTip("Point");
 		connect(addPoint, &QToolButton::clicked, [this]() {theCastedInterStyle_->AddPoint(); });
 		row1->AddWidget(cancelOperations);
@@ -90,7 +90,7 @@ void ForgCADLib::FrgCAD_Scene::FormToolBar()
 		row2->AddWidget(addPolyline);
 
 		auto* addBSPLine = new QToolButton();
-		addBSPLine->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Polyline.png"));
+		addBSPLine->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/BSPLine.png"));
 		addBSPLine->setToolTip("BSPLine");
 		connect(addBSPLine, &QToolButton::clicked, [this]() {theCastedInterStyle_->AddBSPLine(); });
 		row2->AddWidget(addBSPLine);
@@ -99,13 +99,13 @@ void ForgCADLib::FrgCAD_Scene::FormToolBar()
 		/* Beginning of Row 3*/
 		QToolButtonContainer* row3 = new QToolButtonContainer;
 		auto* addRectangle = new QToolButton();
-		addRectangle->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Polyline.png"));
+		addRectangle->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Rectangle.png"));
 		addRectangle->setToolTip("Rectangle");
 		connect(addRectangle, &QToolButton::clicked, [this]() {theCastedInterStyle_->AddRectangle(); });
 		row3->AddWidget(addRectangle);
 
 		auto* addCircle = new QToolButton();
-		addCircle->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Polyline.png"));
+		addCircle->setIcon(QIcon(":/ForgCAD/Resources/Icons/Scene/Circle.png"));
 		addCircle->setToolTip("Circle");
 		connect(addCircle, &QToolButton::clicked, [this]() {theCastedInterStyle_->AddCircle(); });
 		row3->AddWidget(addCircle);

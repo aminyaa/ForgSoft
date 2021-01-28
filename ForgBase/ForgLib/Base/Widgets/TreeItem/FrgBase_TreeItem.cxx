@@ -29,6 +29,8 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 
 	theTItemIsSortable_ = false;
 	theTItemIsDeletable_ = true;
+	theTItemIsDraggable_ = false;
+	theTItemIsDroppable_ = false;
 }
 
 ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()

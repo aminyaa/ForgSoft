@@ -189,6 +189,8 @@ bool ForgVisualLib::FrgVisual_Plot2D_TItem::GetBottomAxisVisible() const
 
 	if (plot2D)
 		return plot2D->GetBottomAxisVisible();
+
+	return true;
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftAxisVisible(bool condition)
@@ -205,6 +207,8 @@ bool ForgVisualLib::FrgVisual_Plot2D_TItem::GetLeftAxisVisible() const
 
 	if (plot2D)
 		return plot2D->GetLeftAxisVisible();
+
+	return true;
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomAxisLogarithmic(bool condition)
@@ -221,6 +225,8 @@ bool ForgVisualLib::FrgVisual_Plot2D_TItem::GetBottomAxisLogarithmic() const
 
 	if (plot2D)
 		return plot2D->GetBottomAxisLogarithmic();
+
+	return false;
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_TItem::SetLeftAxisLogarithmic(bool condition)
@@ -237,6 +243,8 @@ bool ForgVisualLib::FrgVisual_Plot2D_TItem::GetLeftAxisLogarithmic() const
 
 	if (plot2D)
 		return plot2D->GetLeftAxisLogarithmic();
+
+	return false;
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_TItem::SetBottomAxisTitleRotation(int degree)
@@ -289,6 +297,8 @@ ForgVisualLib::LEGEND_POSITION_ENUM ForgVisualLib::FrgVisual_Plot2D_TItem::GetLe
 
 	if (plot2D)
 		return plot2D->GetLegendPosition();
+
+	return LEGEND_POSITION_ENUM::CUSTOM;
 }
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlot(std::vector<double> x, std::vector<double> y, const char* title)

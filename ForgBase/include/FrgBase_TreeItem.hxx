@@ -39,6 +39,8 @@ protected:
 	bool theTItemIsClickable_ = true;
 	bool theTItemIsSortable_;
 	bool theTItemIsDeletable_;
+	bool theTItemIsDraggable_;
+	bool theTItemIsDroppable_;
 
 	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
 
@@ -104,9 +106,17 @@ public:
 	virtual bool IsDeletable() const { return theTItemIsDeletable_; }
 	void SetDeletable(bool deletable) { theTItemIsDeletable_ = deletable; }
 
+	bool IsDraggable() const { return theTItemIsDraggable_; }
+	void SetDraggable(bool drggable) { theTItemIsDraggable_ = drggable; }
+
+	bool IsDroppable() const { return theTItemIsDroppable_; }
+	void SetDroppable(bool droppable) { theTItemIsDroppable_ = droppable; }
+
+	virtual bool CanDropTo(FrgBase_TreeItem* draggedTItem) { return true; }
+
 private:
 
-	DECLARE_SAVE_LOAD_HEADER( )
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
 private:
 

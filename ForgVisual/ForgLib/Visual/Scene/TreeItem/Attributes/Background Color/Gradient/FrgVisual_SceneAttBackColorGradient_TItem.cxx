@@ -41,7 +41,7 @@ const QString& ForgVisualLib::FrgVisual_SceneAttBackColorGradient_TItem::GetMode
 	if(theMode_)
 		return theMode_->GetValue();
 
-	return "";
+	return std::move(QString());
 }
 
 const QColor& ForgVisualLib::FrgVisual_SceneAttBackColorGradient_TItem::GetColor1() const
@@ -49,7 +49,7 @@ const QColor& ForgVisualLib::FrgVisual_SceneAttBackColorGradient_TItem::GetColor
 	if (theColor1_)
 		return theColor1_->GetValue();
 
-	return QColor(255, 255, 255);
+	return std::move(QColor(255, 255, 255));
 }
 
 const QColor& ForgVisualLib::FrgVisual_SceneAttBackColorGradient_TItem::GetColor2() const
@@ -57,7 +57,7 @@ const QColor& ForgVisualLib::FrgVisual_SceneAttBackColorGradient_TItem::GetColor
 	if (theColor2_)
 		return theColor2_->GetValue();
 
-	return QColor(255, 255, 255);
+	return std::move(QColor(255, 255, 255));
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_SceneAttBackColorGradient_TItem)

@@ -6,5 +6,8 @@
         <file>Resources/Icons/Scene/Polyline.png</file>
         <file>Resources/Icons/Scene/Polyline2.png</file>
         <file>Resources/Commands/Commands</file>
+        <file>Resources/Icons/Scene/Point.png</file>
+        <file>Resources/Icons/Scene/Rectangle.png</file>
+        <file>Resources/Icons/Scene/BSPLine.png</file>
     </qresource>
 </RCC>

@@ -1,6 +1,6 @@
 Point
 PolyLine
-SPLine
-SPLineThroughPoints
+BSPLine
+BSPLineThroughPoints
 Circle
 Rectangle

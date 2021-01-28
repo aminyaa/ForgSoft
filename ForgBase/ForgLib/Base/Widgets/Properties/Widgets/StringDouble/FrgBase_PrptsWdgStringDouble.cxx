@@ -455,6 +455,13 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 		else
 			return false;
 	}
+	if (event->type() == QEvent::FocusOut)
+	{
+		if (watched == theLineEdit_)
+			emit EditingFinishedSignal();
+
+		return false;
+	}
 	if (event->type() == QEvent::KeyPress)
 	{
 		QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
@@ -564,6 +571,8 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 									theLineEdit_->setFocus();
 									QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 								}
+
+								event->accept();
 
 								return true;
 							}

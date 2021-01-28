@@ -56,7 +56,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER( )
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 // 	friend class boost::serialization::access;
 // 	template<class Archive>
 // 	void save(Archive & ar, const unsigned int version) const;
