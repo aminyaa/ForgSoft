@@ -2,6 +2,7 @@
 #include <FrgBase_PrptsVrntFieldScalar.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_ToolsParameters_TItem.hxx>
+#include <FrgBase_Tree.hxx>
 
 #include <exprtk.hpp>
 
@@ -143,3 +144,29 @@ void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::AddVariableToSymbolTable(c
 
 	theVariableName_ = newName;
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
+{
+	ar& boost::serialization::base_object<FrgBase_ToolsParameter_TItem>(*this);
+
+	ar& theValue_;
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
+{
+	ar& boost::serialization::base_object<FrgBase_ToolsParameter_TItem>(*this);
+
+	ar& theValue_;
+}
+
+DECLARE_SAVE_IMP_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
+{
+	SAVE_CONSTRUCT_DATA_TITEM(ar, ForgBaseLib::FrgBase_ToolsParameterScalar_TItem);
+}
+
+DECLARE_LOAD_IMP_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
+{
+	LOAD_CONSTRUCT_DATA_TITEM(ar, ForgBaseLib::FrgBase_ToolsParameterScalar_TItem);
+}
+
+BOOST_CLASS_EXPORT_CXX_AND_CXX_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)

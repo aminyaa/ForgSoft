@@ -62,6 +62,8 @@ protected:
 	QLabel* theSuffixLabel_ = nullptr;
 
 	QDoubleValidator* theDoubleValidator_ = nullptr;
+
+	bool theInClearFocus_ = false;
 };
 
 EndForgBaseLib

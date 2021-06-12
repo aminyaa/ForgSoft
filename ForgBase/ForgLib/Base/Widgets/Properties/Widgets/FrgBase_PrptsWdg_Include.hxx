@@ -14,6 +14,7 @@
 #include <FrgBase_PrptsWdgPnt3d.hxx>
 #include <FrgBase_PrptsWdgSelectPath.hxx>
 #include <FrgBase_PrptsWdgSelectTItem.hxx>
+#include <FrgBase_PrptsWdgSelectTItemFromTItem.hxx>
 #include <FrgBase_PrptsWdgStringDouble.hxx>
 #include <FrgBase_PrptsWdgFieldScalar.hxx>
 #include <FrgBase_PrptsWdgFieldVector.hxx>

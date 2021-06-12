@@ -37,6 +37,11 @@ void ForgVisualLib::FrgVisual_BaseActor_Entity::SetColor(double a[3])
 	GetProperty()->SetColor(a);
 }
 
+void ForgVisualLib::FrgVisual_BaseActor_Entity::SetColor(const QColor& color)
+{
+	SetColor(color.redF(), color.greenF(), color.blueF());
+}
+
 double* ForgVisualLib::FrgVisual_BaseActor_Entity::GetColor()
 {
 	return GetProperty()->GetColor();
@@ -132,6 +137,16 @@ void ForgVisualLib::FrgVisual_BaseActor_Entity::VisibilityOff()
 	vtkOpenGLActor::VisibilityOff();
 }
 
+double ForgVisualLib::FrgVisual_BaseActor_Entity::GetOpacity()
+{
+	return GetProperty()->GetOpacity();
+}
+
+void ForgVisualLib::FrgVisual_BaseActor_Entity::SetOpacity(double opacity)
+{
+	GetProperty()->SetOpacity(opacity);
+}
+
 #define IsThatType(Type) \
 auto types = GetActorTypes(); \
 for (const auto& type : types) \
@@ -221,6 +236,11 @@ bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsSurface() const
 	IsThatType(Surface);
 }
 
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsPlane() const
+{
+	IsThatType(Plane);
+}
+
 bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsTwoDimension() const
 {
 	if (GetActorDimension() == ActorDimension::TwoDim)
@@ -281,6 +301,8 @@ QString ForgVisualLib::FrgVisual_BaseActor_Entity::GetActorTypeAsString(ActorTyp
 		return "Text";
 	else if (actorType == ActorType::Surface)
 		return "Surface";
+	else if (actorType == ActorType::Plane)
+		return "Plane";
 	else if (actorType == ActorType::Other)
 		return "Other";
 

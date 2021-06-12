@@ -5,6 +5,8 @@
 #include <FrgBase_Global.hxx>
 #include <QtWidgets/QTabWidget>
 
+class SectionContent;
+
 BeginForgBaseLib
 
 class FrgBase_MainWindow;
@@ -26,6 +28,9 @@ public:
 
 	void ShowTabWidget(QWidget* widget, const QString& title);
 
+	const QSharedPointer<SectionContent>& GetSectionContent() const { return theSectionContent_; }
+	void SetSectionContent(const QSharedPointer<SectionContent>& sc) { theSectionContent_ = sc; }
+
 protected:
 
 	void keyPressEvent(QKeyEvent*) override;
@@ -33,6 +38,7 @@ protected:
 private:
 
 	FrgBase_TabBar* theTabBar_ = NullPtr;
+	QSharedPointer<SectionContent> theSectionContent_;
 
 private slots:
 

@@ -11,6 +11,11 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderer.h>
 
+#include <GCE2d_MakeSegment.hxx>
+#include <GC_MakeSegment.hxx>
+#include <gp_Pnt2d.hxx>
+#include <gp_Pnt.hxx>
+
 #include <vtkObjectFactory.h>
 
 template<int Dim>
@@ -684,6 +689,30 @@ ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisu
 		return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::TwoDim;
 	if constexpr (Dim == 3)
 		return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::ThreeDim;
+}
+
+template<int Dim>
+std::vector<opencascade::handle<Standard_Transient>> ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetCurves()
+{
+	std::vector<opencascade::handle<Standard_Transient>> curves;
+	auto pts = GetPoints();
+	for (int i = 0; i < pts.size() - 1; i++)
+	{
+		if constexpr (Dim == 2)
+		{
+			GCE2d_MakeSegment maker(gp_Pnt2d(pts[i].X(), pts[i].Y()), gp_Pnt2d(pts[i + 1].X(), pts[i + 1].Y()));
+			if (maker.IsDone())
+				curves.push_back(maker.Value());
+		}
+		else if constexpr (Dim == 3)
+		{
+			GC_MakeSegment maker(gp_Pnt(pts[i].X(), pts[i].Y(), pts[i].Z()), gp_Pnt(pts[i + 1].X(), pts[i + 1].Y(), pts[i + 1].Z()));
+			if (maker.IsDone())
+				curves.push_back(maker.Value());
+		}
+	}
+
+	return std::move(curves);
 }
 
 template<int Dim>

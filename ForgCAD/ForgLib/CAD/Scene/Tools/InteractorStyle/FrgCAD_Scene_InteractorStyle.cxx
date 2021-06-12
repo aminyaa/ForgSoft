@@ -70,6 +70,13 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::FormInterStyle()
 	theParentScene_->statusBar()->addWidget(theYLabel_->theTitle_);
 	theParentScene_->statusBar()->addWidget(theYLabel_->theValue_);
 	theParentScene_->statusBar()->addWidget(new VLine);
+
+	auto scene = dynamic_cast<FrgCAD_Scene*>(theParentScene_);
+	if (scene)
+	{
+		connect(this, &FrgCAD_Scene_InteractorStyle::ActorAddedToCADSignal, scene, &FrgCAD_Scene::ActorAddedToCADSignal);
+		connect(this, &FrgCAD_Scene_InteractorStyle::ActorIsGoingToBeDeletedFromCADSignal, scene, &FrgCAD_Scene::ActorIsGoingToBeDeletedFromCADSignal);
+	}
 }
 
 #include <vtkPropPicker.h>
@@ -456,10 +463,12 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::CompleteCommand()
 
 	if (theOperationType_ == OperationType::Default)
 	{
-
+		emit ActorAddedToCADSignal(theTempActor_);
 	}
 	else if (theOperationType_ == OperationType::AddingPoint)
 	{
+		emit ActorAddedToCADSignal(theTempActor_);
+
 		theTempActor_ = nullptr;
 	}
 	else if (theOperationType_ == OperationType::AddingPolyLine)
@@ -469,6 +478,8 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::CompleteCommand()
 		{
 			actor->RemoveLastPoint();
 			actor->ShowPoints(false);
+
+			emit ActorAddedToCADSignal(theTempActor_);
 
 			if (actor->GetNumberOfPoints() >= 2)
 				theTempActor_ = nullptr;
@@ -481,6 +492,8 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::CompleteCommand()
 		{
 			actor->RemoveLastPoint();
 			actor->ShowPoints(false);
+
+			emit ActorAddedToCADSignal(theTempActor_);
 
 			if (actor->GetNumberOfPoints() >= 2)
 				theTempActor_ = nullptr;
@@ -495,6 +508,8 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::CompleteCommand()
 			actor->SetDataInterpolate(thePts_, 2);
 			thePts_.clear();
 
+			emit ActorAddedToCADSignal(theTempActor_);
+
 			if (actor->GetNumberOfPoints() >= 2)
 				theTempActor_ = nullptr;
 		}
@@ -506,6 +521,8 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::CompleteCommand()
 		{
 			ForgBaseLib::FrgBase_Pnt<2> pt(theLastClickedPosition_[0], theLastClickedPosition_[1]);
 			actor->SetP1(pt);
+
+			emit ActorAddedToCADSignal(theTempActor_);
 
 			if (actor->GetP0() != actor->GetP1())
 				theTempActor_ = nullptr;
@@ -519,6 +536,8 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::CompleteCommand()
 			ForgBaseLib::FrgBase_Pnt<2> pt(theLastClickedPosition_[0], theLastClickedPosition_[1]);
 			actor->SetPointOnCurve(pt);
 			actor->ShowPoints(false);
+
+			emit ActorAddedToCADSignal(theTempActor_);
 
 			if (actor->GetCenterPoint() != pt)
 				theTempActor_ = nullptr;
@@ -591,6 +610,8 @@ void ForgCADLib::FrgCAD_Scene_InteractorStyle::DeleteSelectedActors()
 {
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
+		emit ActorIsGoingToBeDeletedFromCADSignal(theSelectedActors_[i]);
+
 		theParentScene_->RemoveActor(theSelectedActors_[i]);
 	}
 	theSelectedActors_.clear();

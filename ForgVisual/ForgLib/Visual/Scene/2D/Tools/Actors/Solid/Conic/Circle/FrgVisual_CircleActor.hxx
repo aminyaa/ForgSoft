@@ -13,6 +13,8 @@ namespace ForgBaseLib
 	class FrgBase_Pnt;
 }
 
+class Geom2d_TrimmedCurve;
+
 BeginForgVisualLib
 
 template<int Dim>
@@ -46,6 +48,8 @@ public:
 	ActorType GetActorType() const override;
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
+
+	opencascade::handle<Geom2d_TrimmedCurve> GetTrimmedCurve() const;
 
 protected:
 

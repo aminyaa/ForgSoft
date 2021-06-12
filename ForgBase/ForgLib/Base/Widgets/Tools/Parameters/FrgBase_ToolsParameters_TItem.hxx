@@ -43,6 +43,10 @@ public:
 
 	FrgBase_ToolsParameter_TItem* GetParamaterTItem(const QString& variableName);
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
 Q_SIGNALS:
 
 	void UpdateAllParametersCalledSignal();
@@ -53,5 +57,9 @@ protected:
 };
 
 EndForgBaseLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameters_TItem, FORGBASE_EXPORT)
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_ToolsParameters_TItem)
 
 #endif // !_FrgBase_ToolsParameters_TItem_Header

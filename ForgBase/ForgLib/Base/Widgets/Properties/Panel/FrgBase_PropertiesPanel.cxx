@@ -159,6 +159,26 @@ void ForgBaseLib::FrgBase_PropertiesPanel::SetTableData(int row, int role, const
 	}
 }
 
+void ForgBaseLib::FrgBase_PropertiesPanel::DisplayNameChangedSlot(const QString& name)
+{
+	auto frgVariant = dynamic_cast<FrgBase_PrptsVrnt*>(sender());
+	if (frgVariant)
+	{
+		auto w = GetWidgetFromVariant(frgVariant);
+		if (w)
+		{
+			for (int i = 0; i < this->rowCount(); i++)
+			{
+				if (w == cellWidget(i, 1))
+				{
+					this->item(i, 0)->setText(name);
+					break;
+				}
+			}
+		}
+	}
+}
+
 //bool ForgBaseLib::FrgBase_PropertiesPanel::eventFilter(QObject * obj, QEvent * event)
 //{
 //	if (event->type() == QEvent::MouseButtonRelease)

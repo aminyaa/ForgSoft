@@ -19,6 +19,7 @@
 #include <FrgVisual_GridActor.hxx>
 #include <FrgVisual_BoxActor.hxx>
 #include <FrgVisual_TextActor.hxx>
+#include <FrgVisual_PlaneActor.hxx>
 #include <FrgVisual_Scene_InterStyle2D.hxx>
 #include <FrgVisual_Scene_InterStyle3D.hxx>
 #include <FrgBase_Menu.hxx>
@@ -78,7 +79,7 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 
 	if(theParentMainWindow_)
 	{
-		connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
+		//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 	}
 
 	theInitiated_ = false;
@@ -120,13 +121,33 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetParentMainWindow(ForgBaseLib::Frg
 	this->setParent(parentMainWindow);
 	theParentMainWindow_ = parentMainWindow;
 
-	connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
+	//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::ComputeVisiblePropBounds(double bounds[6]) const
 {
 	if (theRenderer_)
 		theRenderer_->ComputeVisiblePropBounds(bounds);
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::SetMajorGridColor(const QColor& color)
+{
+	theMajorGridColor_ = color;
+	if (theMajorGridActor_)
+	{
+		theMajorGridActor_->SetColor(color.redF(), color.greenF(), color.blueF());
+		RenderScene(false, false);
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::SetMinorGridColor(const QColor& color)
+{
+	theMinorGridColor_ = color;
+	if (theMinorGridActor_)
+	{
+		theMinorGridActor_->SetColor(color.redF(), color.greenF(), color.blueF());
+		RenderScene(false, false);
+	}
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::FormToolBar()
@@ -168,8 +189,8 @@ void ForgVisualLib::FrgVisual_Scene_Entity::UnHideActionIsCalledSlot()
 
 void ForgVisualLib::FrgVisual_Scene_Entity::CurrentTabChangedSlot(int index)
 {
-	if (theParentMainWindow_->GetTabWidget()->widget(index) == this)
-		RenderScene(false);
+	/*if (theParentMainWindow_->GetTabWidget()->widget(index) == this)
+		RenderScene(false);*/
 }
 
 template<int Dim>
@@ -209,8 +230,10 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 		{
 			if (theParentMainWindow_->IsThemeDark())
 			{
-				theRenderer_->SetBackground(30.0 / 255.0, 94.0 / 255.0, 144.0 / 255.0);
-				theRenderer_->SetBackground2(0.0, 0.0, 0.0);
+				//theRenderer_->SetBackground(30.0 / 255.0, 94.0 / 255.0, 144.0 / 255.0);
+				//theRenderer_->SetBackground2(0.0, 0.0, 0.0);
+				theRenderer_->SetBackground(1.0, 1.0, 1.0);
+				theRenderer_->SetBackground2(0.7, 0.7, 0.7);
 				theRenderer_->SetGradientBackground(true);
 			}
 			else
@@ -760,6 +783,51 @@ ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddTex
 }
 
 template<int Dim>
+ForgVisualLib::FrgVisual_PlaneActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPlane
+(
+	const ForgBaseLib::FrgBase_Pnt<Dim>& center,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& normal,
+	bool render
+)
+{
+	// Actor
+	vtkNew<FrgVisual_PlaneActor<Dim>> actor;
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetData(center, normal);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
+template<int Dim>
+ForgVisualLib::FrgVisual_PlaneActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPlane
+(
+	const ForgBaseLib::FrgBase_Pnt<Dim>& origin,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& P1,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& P2,
+	bool render
+)
+{
+	// Actor
+	vtkNew<FrgVisual_PlaneActor<Dim>> actor;
+	actor->SetRenderer(theRenderer_);
+
+	actor->SetData(origin, P1, P2);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
+template<int Dim>
 std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene<Dim>::DrawGrid
 (
 	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
@@ -851,6 +919,8 @@ int ForgVisualLib::FrgVisual_Scene<Dim>::AddActorToScene(FrgVisual_BaseActor_Ent
 			theRenderer_->AddActor(actor);
 	}
 
+	emit ActorAddedSignal(actor);
+
 	return index;
 }
 
@@ -862,6 +932,8 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::RemoveActor(FrgVisual_BaseActor_Entity
 
 	if (theRenderer_)
 	{
+		emit ActorIsGoingToBeDeletedSignal(actor);
+
 		actor->RemoveActors(theRenderer_);
 
 		theRegistry_->RemoveActor(actor);

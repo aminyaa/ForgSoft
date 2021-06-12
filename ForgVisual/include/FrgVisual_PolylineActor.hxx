@@ -15,6 +15,12 @@ namespace ForgBaseLib
 	class FrgBase_Pnt;
 }
 
+namespace opencascade
+{
+	template <class T>
+	class handle;
+}
+
 BeginForgVisualLib
 
 template<int Dim>
@@ -76,7 +82,7 @@ public:
 	//void TranslateActor(double dx, double dy) override;
 	//void TranslateActor(double dx, double dy, double dz) override;
 
-	//void UpdateActor() override;
+	void UpdateActor() override;
 
 	void SetRenderer(vtkRenderer* renderer) override;
 
@@ -91,7 +97,11 @@ public:
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 
-	void UpdateActor() override;
+	std::vector<opencascade::handle<Standard_Transient>> GetCurves();
+
+	//void UpdateActor() override;
+
+	//const auto& GetCurve() const { return theCurve_; }
 
 private:
 
@@ -105,7 +115,7 @@ protected:
 protected:
 
 	std::vector<FrgVisual_PointActor<Dim>*> thePts_;
-	Standard_Transient* theCurve_ = nullptr;
+	//opencascade::handle<Standard_Transient> theCurve_ = nullptr;
 
 	//FrgVisual_BSPLineActor<Dim>* theParentBSPLineActor_ = nullptr;
 

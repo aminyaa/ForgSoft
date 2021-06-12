@@ -73,7 +73,13 @@ public:
 	QList<FrgBase_TreeItem*> GetChildren() const;
 	FrgBase_TreeItem* GetChild(const QString& name);
 
+	template <class T>
+	std::vector<T*> GetChildrenByType() const;
+
 	std::vector<FrgBase_TreeItem*> GetAllChildrenToTheRoot() const;
+
+	template <class T>
+	std::vector<T*> GetAllChildrenToTheRootByType() const;
 
 	bool IsSameNameTItem(const QString& name);
 	bool IsTItemClickable() const { return theTItemIsClickable_; }
@@ -114,6 +120,8 @@ public:
 
 	virtual bool CanDropTo(FrgBase_TreeItem* draggedTItem) { return true; }
 
+	virtual bool IsMyParent(FrgBase_TreeItem* p, bool recursive = true) const;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
@@ -139,5 +147,7 @@ EndForgBaseLib
 DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem, FORGBASE_EXPORT)
 
 BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_TreeItem)
+
+#include <FrgBase_TreeItemI.hxx>
 
 #endif // !_FrgBase_TreeItem_header

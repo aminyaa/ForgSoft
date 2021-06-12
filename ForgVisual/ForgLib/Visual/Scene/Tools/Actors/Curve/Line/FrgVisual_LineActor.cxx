@@ -9,6 +9,11 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
 
+#include <GCE2d_MakeSegment.hxx>
+#include <GC_MakeSegment.hxx>
+#include <gp_Pnt2d.hxx>
+#include <gp_Pnt.hxx>
+
 #include <vtkObjectFactory.h>
 
 template<int Dim>
@@ -93,6 +98,24 @@ template<int Dim>
 void ForgVisualLib::FrgVisual_LineActor<Dim>::SetData(ForgBaseLib::FrgBase_Pnt<Dim> P0, ForgBaseLib::FrgBase_Pnt<Dim> P1)
 {
 	FrgVisual_PolylineActor::SetData({ P0, P1 });
+
+	if constexpr (Dim == 2)
+	{
+		GCE2d_MakeSegment maker(gp_Pnt2d(P0.X(), P0.Y()), gp_Pnt2d(P1.X(), P1.Y()));
+		if (maker.IsDone())
+			theCurve_ = maker.Value();
+		else
+			theCurve_ = nullptr;
+	}
+	else if constexpr (Dim == 3)
+	{
+		GC_MakeSegment maker(gp_Pnt(P0.X(), P0.Y(), P0.Z()), gp_Pnt(P1.X(), P1.Y(), P1.Z()));
+		if (maker.IsDone())
+			theCurve_ = maker.Value();
+		else
+			theCurve_ = nullptr;
+	}
+
 	/*vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
 	if (mapper)
 	{
@@ -170,7 +193,9 @@ inline void ForgVisualLib::FrgVisual_LineActor<2>::SetData
 	double P1_Y
 )
 {
-	FrgVisual_PolylineActor::SetData({ ForgBaseLib::FrgBase_Pnt<2>(P0_X, P0_Y), ForgBaseLib::FrgBase_Pnt<2>(P1_X, P1_Y) });
+	SetData(ForgBaseLib::FrgBase_Pnt<2>(P0_X, P0_Y), ForgBaseLib::FrgBase_Pnt<2>(P1_X, P1_Y));
+
+	//FrgVisual_PolylineActor::SetData({ ForgBaseLib::FrgBase_Pnt<2>(P0_X, P0_Y), ForgBaseLib::FrgBase_Pnt<2>(P1_X, P1_Y) });
 }
 
 template<>
@@ -185,7 +210,9 @@ inline void ForgVisualLib::FrgVisual_LineActor<3>::SetData
 	double P1_Z
 )
 {
-	FrgVisual_PolylineActor::SetData({ ForgBaseLib::FrgBase_Pnt<3>(P0_X, P0_Y, P0_Z), ForgBaseLib::FrgBase_Pnt<3>(P1_X, P1_Y, P1_Z) });
+	SetData(ForgBaseLib::FrgBase_Pnt<3>(P0_X, P0_Y, P0_Z), ForgBaseLib::FrgBase_Pnt<3>(P1_X, P1_Y, P1_Z));
+
+	//FrgVisual_PolylineActor::SetData({ ForgBaseLib::FrgBase_Pnt<3>(P0_X, P0_Y, P0_Z), ForgBaseLib::FrgBase_Pnt<3>(P1_X, P1_Y, P1_Z) });
 }
 
 //template <int Dim>

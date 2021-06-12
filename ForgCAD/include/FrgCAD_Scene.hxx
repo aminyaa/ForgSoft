@@ -16,6 +16,8 @@ class FORGCAD_EXPORT FrgCAD_Scene
 	: public ForgVisualLib::FrgVisual_Scene2D
 {
 
+	Q_OBJECT
+
 public:
 
 	FrgCAD_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow = nullptr);
@@ -34,6 +36,11 @@ protected:
 	FrgCAD_CmdLineEdit* theCmdLineEdit_ = nullptr;
 
 	FrgCAD_Scene_InteractorStyle* theCastedInterStyle_ = nullptr;
+
+Q_SIGNALS:
+
+	void ActorAddedToCADSignal(ForgVisualLib::FrgVisual_BaseActor_Entity*);
+	void ActorIsGoingToBeDeletedFromCADSignal(ForgVisualLib::FrgVisual_BaseActor_Entity*);
 
 private:
 

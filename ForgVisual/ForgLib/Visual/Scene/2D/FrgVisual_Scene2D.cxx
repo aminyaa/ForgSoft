@@ -103,8 +103,8 @@ void ForgVisualLib::FrgVisual_Scene2D::RenderSceneSlot(bool resetCamera, bool re
 		theCamera_->SetParallelProjection(true);
 	}
 
-	if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
-		return;
+	/*if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
+		return;*/
 	
 	if (resetCamera)
 	{

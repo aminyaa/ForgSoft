@@ -45,15 +45,15 @@ inline void ForgVisualLib::FrgVisual_BaseActor<Dim>::TranslateActor(double dx, d
 }
 
 template<int Dim>
-std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BaseActor<Dim>::DiscreteCurve(Standard_Transient* curve, const double degree)
+std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BaseActor<Dim>::DiscreteCurve(opencascade::handle<Standard_Transient> curve, const double degree)
 {
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
 
 	if (!curve)
 		return pts;
 
-	auto my2dCurve = dynamic_cast<Geom2d_Curve*>(curve);
-	auto my3dCurve = dynamic_cast<Geom_Curve*>(curve);
+	auto my2dCurve = opencascade::handle<Geom2d_Curve>::DownCast(curve);
+	auto my3dCurve = opencascade::handle<Geom_Curve>::DownCast(curve);
 
 	bool hasDer1 = my2dCurve ? my2dCurve->IsCN(1) : my3dCurve->IsCN(1);
 	if (!hasDer1)

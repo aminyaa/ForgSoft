@@ -21,7 +21,8 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 	, theParentMainWindow_(parentMainWindow)
 {
 	this->setColumnCount(1);
-	this->setHeaderLabel(tr("Simulation"));
+	//this->setHeaderLabel(tr("Simulation"));
+	this->setHeaderLabel(tr(""));
 	this->header()->setSectionResizeMode(0, QHeaderView::Interactive);
 	this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
@@ -34,6 +35,8 @@ ForgBaseLib::FrgBase_Tree::FrgBase_Tree
 	connect(this,
 		SIGNAL(customContextMenuRequested(const QPoint&)),
 		SLOT(onCustomContextMenuRequested(const QPoint&)));
+
+	this->setExpandsOnDoubleClick(false);
 }
 
 ForgBaseLib::FrgBase_Tree::~FrgBase_Tree()

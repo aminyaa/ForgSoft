@@ -176,9 +176,9 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::ValueChangedSlot(const double& v
 			theLineEdit_->setText(output);
 		}
 
-		auto parentParameterTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(GetParentTItem());
+		/*auto parentParameterTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(GetParentTItem());
 		if (parentParameterTItem)
-			parentParameterTItem->RemoveAllDependentParameters();
+			parentParameterTItem->RemoveAllDependentParameters();*/
 	}
 }
 
@@ -219,7 +219,9 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::WdgValueChangedSlot()
 					theLineEdit_->setText(QString::number(value, 'G'));
 
 					theLineEdit_->blockSignals(true);
+					theInClearFocus_ = true;
 					theLineEdit_->clearFocus();
+					theInClearFocus_ = false;
 					theLineEdit_->blockSignals(false);
 
 					return;
@@ -268,7 +270,9 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::WdgValueChangedSlot()
 
 		theLineEdit_->blockSignals(true);
 		theLineEdit_->setText(QString::number(theLineEdit_->text().toDouble(), 'G'));
+		theInClearFocus_ = true;
 		theLineEdit_->clearFocus();
+		theInClearFocus_ = false;
 		theLineEdit_->blockSignals(false);
 
 	}
@@ -369,7 +373,9 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::WdgValueChangedSlot()
 
 		theLineEdit_->blockSignals(true);
 		theLineEdit_->setText(output);
+		theInClearFocus_ = true;
 		theLineEdit_->clearFocus();
+		theInClearFocus_ = false;
 		theLineEdit_->blockSignals(false);
 	}
 }
@@ -448,17 +454,35 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::MaximumValueChangedSlot(const do
 
 bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QEvent* event)
 {
+	if (watched != theLineEdit_)
+	{
+		theInClearFocus_ = true;
+		theLineEdit_->clearFocus();
+		theInClearFocus_ = false;
+		return false;
+	}
+
 	if (event->type() == QEvent::FocusIn)
 	{
-		if (watched == theLineEdit_)
-			QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
-		else
-			return false;
+		QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
+		return false;
 	}
 	if (event->type() == QEvent::FocusOut)
 	{
-		if (watched == theLineEdit_)
+		if (!theInClearFocus_)
+		{
+			bool changed = true;
+
+			double lastValue = this->GetValue();
+
 			emit EditingFinishedSignal();
+
+			if (theLineEdit_->text().toDouble() == lastValue)
+				changed = false;
+
+			event->accept();
+			return changed;
+		}
 
 		return false;
 	}
@@ -470,112 +494,107 @@ bool ForgBaseLib::FrgBase_PrptsWdgStringDouble::eventFilter(QObject* watched, QE
 		{
 			if (keyEvent->key() == Qt::Key_Escape)
 			{
-				if (watched == theLineEdit_)
-				{
-					auto myVariant = dynamic_cast<FrgBase_PrptsWdgStringDouble*>(theVariant_);
-					if (myVariant)
-						theLineEdit_->setText(QString::number(myVariant->GetValue(), 'G'));
+				auto myVariant = dynamic_cast<FrgBase_PrptsWdgStringDouble*>(this);
+				if (myVariant)
+					theLineEdit_->setText(QString::number(myVariant->GetValue(), 'G'));
 
-					auto myFieldWidget = dynamic_cast<FrgBase_PrptsWdgField*>(this);
-					if (myFieldWidget)
-						theLineEdit_->setText(myFieldWidget->GetValueString());
+				auto myFieldWidget = dynamic_cast<FrgBase_PrptsWdgField*>(this);
+				if (myFieldWidget)
+					theLineEdit_->setText(myFieldWidget->GetValueString());
 
-					emit EditingFinishedSignal();
-					//theLineEdit_->clearFocus();
-					return false;
-				}
+				emit EditingFinishedSignal();
+				//theLineEdit_->clearFocus();
+				event->accept();
+				return false;
 			}
 			if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab)
 			{
-				if (watched == theLineEdit_)
-				{
-					emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+				bool changed = true;
 
-					return true;
-				}
+				double lastValue = this->GetValue();
+
+				emit EditingFinishedSignal();
+
+				if (theLineEdit_->text().toDouble() == lastValue)
+					changed = false;
+
+				event->accept();
+				return changed;
 			}
 			if (keyEvent->key() == Qt::Key_Up)
 			{
-				if (watched == theLineEdit_)
+				auto myVariant = dynamic_cast<FrgBase_PrptsVrntStringDouble*>(theVariant_);
+				if (myVariant)
 				{
-					auto myVariant = dynamic_cast<FrgBase_PrptsVrntStringDouble*>(theVariant_);
-					if (myVariant)
+					if (myVariant->IsStepped())
 					{
-						if (myVariant->IsStepped())
-						{
-							double value = myVariant->GetValue() + myVariant->GetStepValue();
+						double value = myVariant->GetValue() + myVariant->GetStepValue();
 
-							theLineEdit_->setText(QString::number(value, 'G'));
-							emit EditingFinishedSignal();//theLineEdit_->editingFinished();
-							theLineEdit_->setFocus();
-							QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
-						}
-
-						return true;
+						theLineEdit_->setText(QString::number(value, 'G'));
+						emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+						theLineEdit_->setFocus();
+						QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 					}
+
+					event->accept();
+					return true;
 				}
 			}
 			if (keyEvent->key() == Qt::Key_Down)
 			{
-				if (watched == theLineEdit_)
+				auto myVariant = dynamic_cast<FrgBase_PrptsVrntStringDouble*>(theVariant_);
+				if (myVariant)
 				{
-					auto myVariant = dynamic_cast<FrgBase_PrptsVrntStringDouble*>(theVariant_);
-					if (myVariant)
+					if (myVariant->IsStepped())
 					{
-						if (myVariant->IsStepped())
-						{
-							double value = myVariant->GetValue() - myVariant->GetStepValue();
+						double value = myVariant->GetValue() - myVariant->GetStepValue();
 
-							theLineEdit_->setText(QString::number(value, 'G'));
+						theLineEdit_->setText(QString::number(value, 'G'));
 
-							emit EditingFinishedSignal();//theLineEdit_->editingFinished();
-							theLineEdit_->setFocus();
-							QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
-						}
-
-						return true;
+						emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+						theLineEdit_->setFocus();
+						QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 					}
+
+					event->accept();
+					return true;
 				}
 			}
 		}
 	}
 	if (event->type() == QEvent::Wheel)
 	{
-		if (watched == theLineEdit_)
+		auto myVariant = dynamic_cast<FrgBase_PrptsVrntStringDouble*>(theVariant_);
+		if (myVariant)
 		{
-			auto myVariant = dynamic_cast<FrgBase_PrptsVrntStringDouble*>(theVariant_);
-			if (myVariant)
+			if (myVariant->IsStepped())
 			{
-				if (myVariant->IsStepped())
+				QWheelEvent* wheelEvent = static_cast<QWheelEvent*>(event);
+
+				if (wheelEvent)
 				{
-					QWheelEvent* wheelEvent = static_cast<QWheelEvent*>(event);
-
-					if (wheelEvent)
+					if (watched == theLineEdit_)
 					{
-						if (watched == theLineEdit_)
+						if (theLineEdit_->hasFocus())
 						{
-							if (theLineEdit_->hasFocus())
+							if (myVariant->IsStepped())
 							{
-								if (myVariant->IsStepped())
-								{
-									double value;
+								double value;
 
-									if (wheelEvent->delta() >= 0.0)
-										value = myVariant->GetValue() + myVariant->GetStepValue();
-									else
-										value = myVariant->GetValue() - myVariant->GetStepValue();
+								if (wheelEvent->delta() >= 0.0)
+									value = myVariant->GetValue() + myVariant->GetStepValue();
+								else
+									value = myVariant->GetValue() - myVariant->GetStepValue();
 
-									theLineEdit_->setText(QString::number(value, 'G'));
+								theLineEdit_->setText(QString::number(value, 'G'));
 
-									emit EditingFinishedSignal();//theLineEdit_->editingFinished();
-									theLineEdit_->setFocus();
-									QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
-								}
-
-								event->accept();
-
-								return true;
+								emit EditingFinishedSignal();//theLineEdit_->editingFinished();
+								theLineEdit_->setFocus();
+								QTimer::singleShot(0, theLineEdit_, &QLineEdit::selectAll);
 							}
+
+							event->accept();
+							return true;
 						}
 					}
 				}

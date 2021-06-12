@@ -21,11 +21,11 @@ public:
 
 	virtual ~FrgBase_PrptsVrnt() {}
 
-	virtual const QString& GetDisplayName() const { return std::move(QString("")); }
-	virtual const QString& GetPrefix() const { return std::move(QString("")); }
-	virtual void SetPrefix(const QString& prefix) {}
-	virtual const QString& GetSuffix() const { return std::move(QString("")); }
-	virtual void SetSuffix(const QString& suffix) {}
+	virtual const QString& GetDisplayName() const = 0;
+	virtual const QString& GetPrefix() const = 0;
+	virtual void SetPrefix(const QString& prefix) = 0;
+	virtual const QString& GetSuffix() const = 0;
+	virtual void SetSuffix(const QString& suffix) = 0;
 };
 
 template <typename Type, bool IsBounded = true>

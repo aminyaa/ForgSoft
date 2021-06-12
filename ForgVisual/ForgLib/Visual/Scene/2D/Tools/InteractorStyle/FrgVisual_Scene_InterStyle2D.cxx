@@ -651,7 +651,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::UnSelectAllActors(bool render)
 
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
-		theSelectedActors_[i]->UnSelectActor();
+		if(theSelectedActors_[i])
+			theSelectedActors_[i]->UnSelectActor();
 	}
 	theSelectedActors_.clear();
 

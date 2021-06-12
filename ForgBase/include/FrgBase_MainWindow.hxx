@@ -9,6 +9,8 @@
 
 class QDockWidget;
 class QLabel;
+class ContainerWidget;
+class SectionWidget;
 
 namespace chaiscript
 {
@@ -36,27 +38,34 @@ protected:
 
 	struct MainWindowMenus_Struct
 	{
-		FrgBase_Menu* theFileMenu_ = NullPtr;
-		FrgBase_Menu* theEditMenu_ = NullPtr;
-		FrgBase_Menu* theToolsMenu_ = NullPtr;
-		FrgBase_Menu* theWindowMenu_ = NullPtr;
-		FrgBase_Menu* theHelpMenu_ = NullPtr;
+		FrgBase_Menu* theFileMenu_ = nullptr;
+		FrgBase_Menu* theEditMenu_ = nullptr;
+		FrgBase_Menu* theToolsMenu_ = nullptr;
+		FrgBase_Menu* theWindowMenu_ = nullptr;
+		FrgBase_Menu* theHelpMenu_ = nullptr;
 
 		~MainWindowMenus_Struct();
 	};
 
-	MainWindowMenus_Struct* theMainWindowMenus_ = NullPtr;
-	FrgBase_Tree* theTree_ = NullPtr;
+	MainWindowMenus_Struct* theMainWindowMenus_ = nullptr;
+	FrgBase_Tree* theTree_ = nullptr;
 	FrgBase_ProgressBar* theProgressBar_ = nullptr;
-	FrgBase_PropertiesPanel* thePropertiesPanel_ = NullPtr;
+	FrgBase_PropertiesPanel* thePropertiesPanel_ = nullptr;
+
+	QTabWidget* theTabWidgetForTrees_ = nullptr;
 
 	QDockWidget* theTreeDockWidget_ = nullptr;
 	QDockWidget* thePropertiesPanelDockWidget_ = nullptr;
 	QDockWidget* theConsoleOutputDockWidget_ = nullptr;
 
+	ContainerWidget* theCentralContainer_ = nullptr;
+	mutable SectionWidget* theCentralSectionWidget_ = nullptr;
+
+	std::map<QWidget*, FrgBase_TabWidget*> theMapWidgetToTabWidget_;
+
 	FrgString theConsoleEngineName_;
 
-	FrgBase_TabWidget* theTabWidget_ = NullPtr;
+	//FrgBase_TabWidget* theTabWidget_ = NullPtr;
 
 	QString theWindowTitle_;
 	bool theProgramIsModified_ = false;
@@ -88,7 +97,7 @@ protected:
 
 public:
 
-	FrgBase_MainWindow(QWidget* parent = NullPtr);
+	FrgBase_MainWindow(QWidget* parent = nullptr);
 
 	~FrgBase_MainWindow();
 
@@ -97,14 +106,20 @@ public:
 	FrgBase_PropertiesPanel* GetPropertiesPanel() const { return thePropertiesPanel_; }
 	void SetPropertiesPanel(FrgBase_PropertiesPanel* propertiesPanel);
 
-	FrgBase_TabWidget* GetTabWidget() const { return theTabWidget_; }
+	//FrgBase_TabWidget* GetTabWidget() const { return theTabWidget_; }
 
 	bool IsThemeDark() const { return theIsThemeDark_; }
 
-	void ShowTabWidget(QWidget* widget, const QString& title) const;
+	void ShowTabWidget(QWidget* widget, const QString& title);
+	void RemoveTabWidget(QWidget* widget);
 	void SetTabText(QWidget* widget, const QString& title);
 	void SetTabText(int index, const QString& title) const;
 	FrgBase_Tree* GetTree() const { return theTree_; }
+
+	// Add tree to list of trees (if tree = nullptr) a new tree will be created and returned
+	QWidget* AddTree(QWidget* tree, const QString& title);
+	void RemoveTree(QWidget* tree);
+	QTabWidget* GetTabWidgetForTrees() const { return theTabWidgetForTrees_; }
 
 	void SetWindowTitle(QString title);
 	QString GetWindowTitle() const;
@@ -131,6 +146,8 @@ Q_SIGNALS:
 	void PrintErrorToConsole(const QString& info);
 
 	void ThemeModeChangedSignal(bool darkMode);
+
+	void TabWidgetClosedSignal(QWidget*);
 
 protected slots:
 

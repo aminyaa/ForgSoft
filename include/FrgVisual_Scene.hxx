@@ -34,7 +34,9 @@ namespace ForgBaseLib
 
 BeginForgVisualLib
 
+class FrgVisual_BaseActor_Entity;
 class FrgVisual_Scene_InterStyle_Base;
+class FrgVisual_GridActor;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene_Entity
 	: public QMainWindow
@@ -66,9 +68,23 @@ public:
 
 	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
 
+	const QColor& GetMajorGridColor() const { return theMajorGridColor_; }
+	const QColor& GetMinorGridColor() const { return theMinorGridColor_; }
+
+	FrgVisual_GridActor* GetMajorGridActor() const { return theMajorGridActor_; }
+	FrgVisual_GridActor* GetMinorGridActor() const { return theMinorGridActor_; }
+
+	void SetMajorGridColor(const QColor& color);
+	void SetMinorGridColor(const QColor& color);
+
+	vtkSmartPointer<vtkCamera> GetCamera() const { return theCamera_; }
+	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
+
 Q_SIGNALS:
 
 	void RenderScene(bool resetCamera = true, bool resetView = false);
+	void ActorAddedSignal(FrgVisual_BaseActor_Entity*);
+	void ActorIsGoingToBeDeletedSignal(FrgVisual_BaseActor_Entity*);
 
 protected:
 
@@ -95,6 +111,12 @@ protected:
 
 	bool theInitiated_;
 
+	FrgVisual_GridActor* theMajorGridActor_ = nullptr;
+	FrgVisual_GridActor* theMinorGridActor_ = nullptr;
+
+	QColor theMajorGridColor_;
+	QColor theMinorGridColor_;
+
 protected:
 
 	virtual void Init() {}
@@ -118,8 +140,6 @@ protected slots:
 
 };
 
-class FrgVisual_BaseActor_Entity;
-
 template<int Dim>
 class FrgVisual_PointActor;
 template<int Dim>
@@ -134,10 +154,11 @@ template<int Dim>
 class FrgVisual_BSPLineActor;
 template<int Dim>
 class FrgVisual_TextActor;
+template<int Dim>
+class FrgVisual_PlaneActor;
 
 class FrgVisual_RectangleActor;
 class FrgVisual_CircleActor;
-class FrgVisual_GridActor;
 class FrgVisual_BoxActor;
 
 template <int Dim>
@@ -360,6 +381,25 @@ public:
 		bool render = true
 	);
 
+	// ==================================================================================
+	// Add Plane
+	// ==================================================================================
+
+	FrgVisual_PlaneActor<Dim>* AddPlane
+	(
+		const ForgBaseLib::FrgBase_Pnt<Dim>& center,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& normal,
+		bool render = true
+	);
+
+	FrgVisual_PlaneActor<Dim>* AddPlane
+	(
+		const ForgBaseLib::FrgBase_Pnt<Dim>& origin,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& P1,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& P2,
+		bool render = true
+	);
+
 	template <typename T>
 	void ClearAllDataType();
 
@@ -396,20 +436,13 @@ public:
 
 	public:
 
-		FrgVisual_GridActor* GetMajorGridActor() const { return theMajorGridActor_; }
-		FrgVisual_GridActor* GetMinorGridActor() const { return theMinorGridActor_; }
+		FrgVisual_SceneRegistry<Dim>* GetRegistry() const { return theRegistry_; }
 
 private:
 
 	DECLARE_SAVE_LOAD_HEADER()
 
 protected:
-
-	FrgVisual_GridActor* theMajorGridActor_ = nullptr;
-	FrgVisual_GridActor* theMinorGridActor_ = nullptr;
-
-	QColor theMajorGridColor_;
-	QColor theMinorGridColor_;
 
 	FrgVisual_SceneRegistry<Dim>* theRegistry_ = nullptr;
 };

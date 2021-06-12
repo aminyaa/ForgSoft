@@ -32,6 +32,8 @@ public:
 	void RemoveActor(int index);
 	void RemoveActor(FrgVisual_BaseActor_Entity* actor);
 
+	mapOfActors GetActorsByType(FrgVisual_BaseActor_Entity::ActorType actorType) const;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )

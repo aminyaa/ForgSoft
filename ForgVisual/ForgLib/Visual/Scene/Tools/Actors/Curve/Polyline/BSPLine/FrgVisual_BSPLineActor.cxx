@@ -506,7 +506,11 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CreateBSPLineCurve
 	bool isPerodic
 )
 {
-	FreePointer(theCurve_);
+	/*if (theCurve_)
+	{
+		theCurve_->Delete();
+		theCurve_ = nullptr;
+	}*/
 
 	TColStd_Array1OfReal knots;
 	TColStd_Array1OfInteger mult;
@@ -526,7 +530,7 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CreateBSPLineCurve
 		for (int i = 0; i < ctrlPts.size(); i++)
 			Pts.SetValue(i + 1, gp_Pnt2d(ctrlPts[i].X(), ctrlPts[i].Y()));
 
-		theCurve_ = new Geom2d_BSplineCurve(Pts, knots, mult, degree, isPerodic);
+		theCurve_ = opencascade::handle<Geom2d_BSplineCurve>(new Geom2d_BSplineCurve(Pts, knots, mult, degree, isPerodic));
 	}
 	else if constexpr (Dim == 3)
 	{
@@ -534,7 +538,7 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CreateBSPLineCurve
 		for (int i = 0; i < ctrlPts.size(); i++)
 			Pts.SetValue(i + 1, gp_Pnt(ctrlPts[i].X(), ctrlPts[i].Y(), ctrlPts[i].Z()));
 
-		theCurve_ = new Geom_BSplineCurve(Pts, knots, mult, degree, isPerodic);
+		theCurve_ = opencascade::handle<Geom_BSplineCurve>(new Geom_BSplineCurve(Pts, knots, mult, degree, isPerodic));
 	}
 }
 
@@ -835,13 +839,13 @@ std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BSPLineActor
 	{
 		if constexpr (Dim == 2)
 		{
-			auto curvePoles = dynamic_cast<Geom2d_BSplineCurve*>(theCurve_)->Poles();
+			auto curvePoles = opencascade::handle<Geom2d_BSplineCurve>::DownCast(theCurve_)->Poles();
 			for (int i = 0; i < curvePoles.Size(); i++)
 				ctrlPts.push_back(ForgBaseLib::FrgBase_Pnt<Dim>(curvePoles(i + 1).X(), curvePoles(i + 1).Y()));
 		}
 		else if constexpr (Dim == 3)
 		{
-			auto curvePoles = dynamic_cast<Geom_BSplineCurve*>(theCurve_)->Poles();
+			auto curvePoles = opencascade::handle<Geom_BSplineCurve>::DownCast(theCurve_)->Poles();
 			for (int i = 0; i < curvePoles.Size(); i++)
 				ctrlPts.push_back(ForgBaseLib::FrgBase_Pnt<Dim>(curvePoles(i + 1).X(), curvePoles(i + 1).Y(), curvePoles(i + 1).Z()));
 		}

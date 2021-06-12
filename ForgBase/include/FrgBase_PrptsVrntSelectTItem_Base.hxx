@@ -27,6 +27,10 @@ public:
 		const QString& suffix = ""
 	);
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
 protected:
 
 	void DisplayNameChanged() override;
@@ -43,5 +47,7 @@ Q_SIGNALS:
 };
 
 EndForgBaseLib
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_PrptsVrntSelectTItem_Base)
 
 #endif // !_FrgBase_PrptsVrntSelectTItem_Base_Header

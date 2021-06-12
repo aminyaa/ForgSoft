@@ -7,6 +7,8 @@
 
 #include <FrgVisual_Serialization_Global.hxx>
 
+#include <Standard_Handle.hxx>
+
 BeginForgVisualLib
 
 template<int Dim>
@@ -34,9 +36,15 @@ public:
 	const bool& IsStippled() const { return theIsStippled_; }
 	const int& GetLineStipplePattern() const { return theLineStipplePattern_; }
 
+	virtual const opencascade::handle<Standard_Transient>& GetCurve() const { return theCurve_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
+
+	protected:
+
+		opencascade::handle<Standard_Transient> theCurve_ = nullptr;
 
 protected:
 

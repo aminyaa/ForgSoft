@@ -14,12 +14,14 @@
 #include <FrgBase_PrptsVrntPnt3d.hxx>
 #include <FrgBase_PrptsVrntSelectPath.hxx>
 #include <FrgBase_PrptsVrntSelectTItem.hxx>
+#include <FrgBase_PrptsVrntSelectTItemFromTItem.hxx>
 #include <FrgBase_PrptsVrntStringDouble.hxx>
 #include <FrgBase_PrptsVrntFieldScalar.hxx>
 #include <FrgBase_PrptsVrntFieldVector.hxx>
 
 namespace ForgBaseLib
 {
+	class FrgBase_PrptsWdg;
 	class FrgBase_PrptsWdgBool;
 	class FrgBase_PrptsWdgDouble;
 	class FrgBase_PrptsWdgInt;
@@ -32,6 +34,8 @@ namespace ForgBaseLib
 	class FrgBase_PrptsWdgSelectPath;
 	template<typename Type>
 	class FrgBase_PrptsWdgSelectTItem;
+	template<typename Type>
+	class FrgBase_PrptsWdgSelectTItemFromTItem;
 	class FrgBase_PrptsVWdgStringDouble;
 	class FrgBase_PrptsWdgFieldScalar;
 	class FrgBase_PrptsWdgFieldVector;
@@ -41,6 +45,12 @@ template<typename T>
 struct get_widget_type_from_variant
 {
 	
+};
+
+template<>
+struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrnt>
+{
+	typedef ForgBaseLib::FrgBase_PrptsWdg type;
 };
 
 template<>
@@ -107,6 +117,12 @@ template <typename Type>
 struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntSelectTItem<Type>>
 {
 	typedef ForgBaseLib::FrgBase_PrptsWdgSelectTItem<Type> type;
+};
+
+template <typename Type>
+struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntSelectTItemFromTItem<Type>>
+{
+	typedef ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem<Type> type;
 };
 
 template<>

@@ -7,8 +7,7 @@ inline ForgBaseLib::FrgBase_PrptsWdgOneValue<Type, IsBounded>::FrgBase_PrptsWdgO
 	QWidget * parent,
 	ForgBaseLib::FrgBase_PrptsVrnt* variant
 )
-	: QWidget(parent)
-	, theVariant_(variant)
+	: FrgBase_PrptsWdg(parent, variant)
 {
 
 }

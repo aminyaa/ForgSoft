@@ -45,6 +45,7 @@ public:
 		Grid,
 		Text,
 		Surface,
+		Plane,
 		Other
 	};
 
@@ -71,6 +72,7 @@ public:
 
 	virtual void SetColor(double red, double green, double blue);
 	virtual void SetColor(double a[3]);
+	virtual void SetColor(const QColor& color);
 
 	virtual double* GetColor();
 	virtual void GetColor(double rgb[3]);
@@ -85,6 +87,9 @@ public:
 	void SetVisibility(vtkTypeBool _arg) override;
 	void VisibilityOn() override;
 	void VisibilityOff() override;
+
+	virtual double GetOpacity();
+	virtual void SetOpacity(double opacity);
 
 	virtual void UpdateActor() {}
 
@@ -120,6 +125,7 @@ public:
 	bool IsGrid() const;
 	bool IsText() const;
 	bool IsSurface() const;
+	bool IsPlane() const;
 
 	bool IsTwoDimension() const;
 	bool IsThreeDimension() const;

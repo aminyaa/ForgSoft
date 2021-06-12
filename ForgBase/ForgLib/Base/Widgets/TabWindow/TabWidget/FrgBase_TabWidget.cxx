@@ -32,6 +32,8 @@ ForgBaseLib::FrgBase_TabWidget::FrgBase_TabWidget
 	theTabBar_ = FrgNew FrgBase_TabBar(parentMainWindow);
 	this->setTabBar(theTabBar_);
 
+	theTabBar_->hide();
+
 	connect(this, SIGNAL(tabCloseRequested(int)), this, SLOT(CloseMyTabSlot(int)));
 
 	connect(theTabBar_, SIGNAL(closeAllActionClickedSignal()), this, SLOT(closeAllActionClickedSlot()));
@@ -56,10 +58,10 @@ void ForgBaseLib::FrgBase_TabWidget::ShowTabWidget(QWidget * widget, const QStri
 
 void ForgBaseLib::FrgBase_TabWidget::keyPressEvent(QKeyEvent* event)
 {
-	if (event->modifiers() == Qt::KeyboardModifier::ControlModifier && event->key() == Qt::Key::Key_W)
+	/*if (event->modifiers() == Qt::KeyboardModifier::ControlModifier && event->key() == Qt::Key::Key_W)
 	{
 		emit this->tabCloseRequested(this->currentIndex());
-	}
+	}*/
 }
 
 void ForgBaseLib::FrgBase_TabWidget::CloseMyTabSlot(int index)

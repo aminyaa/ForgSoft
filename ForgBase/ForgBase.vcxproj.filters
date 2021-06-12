@@ -367,6 +367,39 @@
     <Filter Include="ForgLib\Base\Core\Solvers\FullMtx">
       <UniqueIdentifier>{7b3622a4-560e-487d-bf35-61799703dfe8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem">
+      <UniqueIdentifier>{fbfed4bd-b11d-4752-832e-83287cc86272}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\Base">
+      <UniqueIdentifier>{3cc0e011-2c8c-4eb1-857c-4c62c01023df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem">
+      <UniqueIdentifier>{1be60122-7f9d-4f6f-b3d3-befe583d819d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Base">
+      <UniqueIdentifier>{eb7c0340-c8eb-4f65-acea-090388260013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog">
+      <UniqueIdentifier>{f4de8afc-ac1a-4e30-a244-751a06982952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Tree">
+      <UniqueIdentifier>{03715b7a-b843-4acc-a16e-2b45e16818a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\Base">
+      <UniqueIdentifier>{1dfdbf9b-13db-471f-aebd-bccd1d2e9754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\TreeItem\Tools">
+      <UniqueIdentifier>{53dce951-0d3d-4930-adae-8ff3718ab3d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParties">
+      <UniqueIdentifier>{a1a28dc3-f331-4ca6-b6f1-22d8886425e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParties\AdvancedDockingSystem">
+      <UniqueIdentifier>{27aa1ce2-4240-4837-ac1a-37cca1386b13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParties\AdvancedDockingSystem\ads">
+      <UniqueIdentifier>{1e4e7ca2-b54b-4fa9-9494-596a2d0232e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -630,6 +663,54 @@
     <ClCompile Include="ForgLib\Base\Widgets\Styles\MainStyle\FrgBase_MainStyle.cxx">
       <Filter>ForgLib\Base\Widgets\Styles\MainStyle</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\Base\FrgBase_PrptsVrntSelectTItemFromTItem_Base.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Base\FrgBase_PrptsWdgSelectTItemFromTItem_Base.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\Base\FrgBase_PrptsWdgSelectTItemFromTItem_Dlg_Base.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Tree\FrgBase_PrptsWdgSelectTItemFromTItem_Tree.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\TreeItem\Tools\FrgBase_TreeItemTools.cxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\API.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\ContainerWidget.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\DropOverlay.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\FloatingWidget.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\icontitlewidget.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\Internal.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\SectionContent.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\SectionContentWidget.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\SectionTitleWidget.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\SectionWidget.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\AdvancedDockingSystem\Serialization.cpp">
+      <Filter>ThirdParties\AdvancedDockingSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
@@ -685,9 +766,6 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\OneValue\FrgBase_PrptsVrntOneValueI.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Variants\OneValue</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValue.hxx">
-      <Filter>ForgLib\Base\Widgets\Properties\Widgets\OneValue</Filter>
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValueI.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\OneValue</Filter>
@@ -796,6 +874,42 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Solvers\FullMtx\FrgBase_Vcr.hxx">
       <Filter>ForgLib\Base\Core\Solvers\FullMtx</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItemI.hxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\FrgBase_PrptsVrntSelectTItemFromTItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\FrgBase_PrptsVrntSelectTItemFromTItemI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\FrgBase_PrptsWdgSelectTItemFromTItem.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\FrgBase_PrptsWdgSelectTItemFromTItem_Dlg.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\FrgBase_PrptsWdgSelectTItemFromTItem_DlgI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\FrgBase_PrptsWdgSelectTItemFromTItemI.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\TreeItem\Tools\FrgBase_TreeItemTools.hxx">
+      <Filter>ForgLib\Base\Widgets\TreeItem\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\API.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\Internal.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\SectionContent.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\Serialization.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -981,6 +1095,42 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Styles\MainStyle\FrgBase_MainStyle.hxx">
       <Filter>ForgLib\Base\Widgets\Styles\MainStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\OneValue\FrgBase_PrptsWdgOneValue.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\OneValue</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\Base\FrgBase_PrptsVrntSelectTItemFromTItem_Base.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\SelectTItemFromTItem\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Base\FrgBase_PrptsWdgSelectTItemFromTItem_Base.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\Base\FrgBase_PrptsWdgSelectTItemFromTItem_Dlg_Base.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Dialog\Base</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Tree\FrgBase_PrptsWdgSelectTItemFromTItem_Tree.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\SelectTItemFromTItem\Tree</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\ContainerWidget.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\DropOverlay.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\FloatingWidget.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\icontitlewidget.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionContentWidget.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionTitleWidget.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionWidget.h">
+      <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

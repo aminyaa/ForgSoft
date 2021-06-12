@@ -38,11 +38,19 @@ public:
 
 	void AddVariableToSymbolTable(const QString& s) override;
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
 protected:
 
 	FrgBase_PrptsVrntFieldScalar* theValue_ = nullptr;
 };
 
 EndForgBaseLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem, FORGBASE_EXPORT)
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
 
 #endif // !_FrgBase_ToolsParameterScalar_TItem_Header

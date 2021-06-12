@@ -23,6 +23,11 @@
 
 #include <chaiscript.hpp>
 
+#include "ads/API.h"
+#include "ads/ContainerWidget.h"
+#include "ads/SectionContent.h"
+#include "ads/iconTitleWidget.h"
+
 using namespace QtilitiesLogging;
 using namespace Qtilities::CoreGui;
 
@@ -34,8 +39,8 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 {
 	this->window()->setWindowIcon(QIcon(ICONLogo));
 
-	theTabWidget_ = new FrgBase_TabWidget(this);
-	this->setCentralWidget(theTabWidget_);
+	//theTabWidget_ = new FrgBase_TabWidget(this);
+	//this->setCentralWidget(theTabWidget_);
 
 	SetWindowTitle("Forg Soft");
 
@@ -67,7 +72,12 @@ ForgBaseLib::FrgBase_MainWindow::~FrgBase_MainWindow()
 	FreePointer(theTreeDockWidget_);
 	thePropertiesPanel_ = nullptr;
 	FreePointer(thePropertiesPanelDockWidget_);
-	FreePointer(theTabWidget_);
+	//FreePointer(theTabWidget_);
+
+	for (auto m : theMapWidgetToTabWidget_)
+	{
+		m.second->setParent(nullptr);
+	}
 }
 
 ForgBaseLib::FrgBase_MainWindow::MainWindowMenus_Struct::~MainWindowMenus_Struct()
@@ -83,19 +93,44 @@ void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
 {
 	FormMenus();
 
-	InitTree();
-
 	thePropertiesPanel_ = new FrgBase_PropertiesPanel(this, nullptr);
 
-	theTreeDockWidget_ = new QDockWidget("Tree", this);
-	theTreeDockWidget_->setWidget(theTree_);
-	theTreeDockWidget_->setTitleBarWidget(new QWidget);
-	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, theTreeDockWidget_);
+	theCentralContainer_= new ADS_NS::ContainerWidget();
+	theCentralContainer_->layout()->setContentsMargins(0, 0, 0, 0);
+	setCentralWidget(theCentralContainer_);
+
+	QObject::connect(theCentralContainer_, &ContainerWidget::SectionContentClosed, [this](const SectionContent::RefPtr& sc)
+		{
+			for (auto m : theMapWidgetToTabWidget_)
+			{
+				if (m.second->GetSectionContent() == sc)
+				{
+					RemoveTabWidget(m.first);
+					emit TabWidgetClosedSignal(m.first);
+				}
+			}
+		}
+	);
 
 	thePropertiesPanelDockWidget_ = new QDockWidget("Properties", this);
 	thePropertiesPanelDockWidget_->setWidget(thePropertiesPanel_);
 	thePropertiesPanelDockWidget_->setTitleBarWidget(new QWidget);
+
+	theTabWidgetForTrees_ = new QTabWidget();
+	theTabWidgetForTrees_->setTabPosition(QTabWidget::South);
+	theTabWidgetForTrees_->setTabsClosable(false);
+	theTabWidgetForTrees_->tabBar()->hide();
+
+	theTreeDockWidget_ = new QDockWidget("Trees", this);
+	theTreeDockWidget_->setWidget(theTabWidgetForTrees_);
+	theTreeDockWidget_->setTitleBarWidget(new QWidget);
+
+	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, theTreeDockWidget_);
 	this->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, thePropertiesPanelDockWidget_);
+
+	InitTree();
+
+	theTabWidgetForTrees_->addTab(theTree_, "Main Tree");
 
 	InitProgressBar();
 
@@ -308,21 +343,77 @@ void ForgBaseLib::FrgBase_MainWindow::SetPropertiesPanel(FrgBase_PropertiesPanel
 	thePropertiesPanelDockWidget_->setWidget(thePropertiesPanel_);
 }
 
-void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget* widget, const QString& title) const
+void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget* widget, const QString& title)
 {
-	theTabWidget_->ShowTabWidget(widget, title);
+	auto myContents = theCentralContainer_->contents();
+
+	auto iter = theMapWidgetToTabWidget_.find(widget);
+	if (iter != theMapWidgetToTabWidget_.end())
+	{
+		for (auto myContent : myContents)
+		{
+			if (myContent.data()->contentWidget() == theMapWidgetToTabWidget_.at(widget))
+			{
+				if (theCentralContainer_->isSectionContentVisible(myContent))
+					theCentralContainer_->raiseSectionContent(myContent);
+				else
+					theCentralContainer_->showSectionContent(myContent);
+
+				return;
+			}
+		}
+	}
+
+	auto tabWidget = new FrgBase_TabWidget(this);
+	theMapWidgetToTabWidget_[widget] = tabWidget;
+	tabWidget->ShowTabWidget(widget, title);
+
+	auto _sc1 = ADS_NS::SectionContent::newSectionContent(title + " " + QString::number(myContents.size()), theCentralContainer_, new IconTitleWidget(QIcon(), title, tabWidget), tabWidget);
+	tabWidget->SetSectionContent(_sc1);
+
+	theCentralSectionWidget_ = theCentralContainer_->addSectionContent(_sc1, theCentralSectionWidget_, ADS_NS::CenterDropArea);
+	theCentralContainer_->raiseSectionContent(_sc1);
+
+	//_sc1->setFlags(SectionContent::Flag::None);
+
+	//theTabWidget_->ShowTabWidget(widget, title);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::RemoveTabWidget(QWidget* widget)
+{
+	auto iter = theMapWidgetToTabWidget_.find(widget);
+	if (iter != theMapWidgetToTabWidget_.end())
+	{
+		auto myContents = theCentralContainer_->contents();
+		for (auto myContent : myContents)
+		{
+			if (myContent.data()->contentWidget() == theMapWidgetToTabWidget_.at(widget))
+			{
+				theCentralContainer_->hideSectionContent(myContent);
+			}
+		}
+	}
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetTabText(QWidget* widget, const QString& title)
 {
-	int index = theTabWidget_->indexOf(widget);
+	auto myContents = theCentralContainer_->contents();
+	for (auto myContent : myContents)
+	{
+		if (myContent.data()->contentWidget() == widget)
+		{
+			myContent.data()->setTitle(title);
+			return;
+		}
+	}
+	/*int index = theTabWidget_->indexOf(widget);
 
-	SetTabText(index, title);
+	SetTabText(index, title);*/
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetTabText(int index, const QString& title) const
 {
-	theTabWidget_->setTabText(index, title);
+	//theTabWidget_->setTabText(index, title);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
@@ -499,4 +590,30 @@ void ForgBaseLib::FrgBase_MainWindow::UpdateRAMUsageSlot()
 		isGB = true;
 	}
 	theRAMUsageLabel_->setText("RAM Usage: " + QString::number(physMemUsedByMe, 'f', 2) + (isGB ? " GB" : " MB"));
+}
+
+QWidget* ForgBaseLib::FrgBase_MainWindow::AddTree(QWidget* tree, const QString& title)
+{
+	QWidget* myTree = tree;
+	if (!myTree)
+	{
+		myTree = new FrgBase_Tree(this);
+		dynamic_cast<FrgBase_Tree*>(myTree)->FormTree();
+	}
+
+	int index = theTabWidgetForTrees_->addTab(myTree, "Tree " + title);
+	theTabWidgetForTrees_->setCurrentIndex(index);
+
+	return myTree;
+}
+
+void ForgBaseLib::FrgBase_MainWindow::RemoveTree(QWidget* tree)
+{
+	if (!tree)
+		return;
+
+	if (tree == theTree_)
+		return;
+
+	theTabWidgetForTrees_->removeTab(theTabWidgetForTrees_->indexOf(tree));
 }

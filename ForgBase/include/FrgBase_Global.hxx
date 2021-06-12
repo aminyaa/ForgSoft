@@ -41,7 +41,7 @@ using StdSharedPtr = std::shared_ptr<T>;
 #define EndForgBaseLib }
 
 template<class T>
-QString CorrectName(T* parentItem, const QString& name)
+QString CorrectName(T* parentItem, const QString& name, bool addOne = false)
 {
 	QString correctedName;
 	bool canBeAdded = false;
@@ -50,7 +50,12 @@ QString CorrectName(T* parentItem, const QString& name)
 	while (!canBeAdded)
 	{
 		if (numberAdded == 1)
-			correctedName = name.simplified();
+		{
+			if(addOne)
+				correctedName = name.simplified() + " " + QString::number(numberAdded);
+			else
+				correctedName = name.simplified();
+		}
 		else
 			correctedName = name.simplified() + " " + QString::number(numberAdded);
 
@@ -69,6 +74,9 @@ QString CorrectName(T* parentItem, const QString& name)
 
 		canBeAdded = true;
 	}
+
+	if(correctedName == name.simplified() && addOne)
+		correctedName = name.simplified() + " " + QString::number(numberAdded);
 
 	return correctedName;
 }

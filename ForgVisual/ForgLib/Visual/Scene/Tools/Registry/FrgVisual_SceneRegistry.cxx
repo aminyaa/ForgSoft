@@ -100,6 +100,12 @@ void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::RemoveActor(FrgVisual_BaseActo
 }
 
 template<int Dim>
+typename ForgVisualLib::FrgVisual_SceneRegistry<Dim>::mapOfActors ForgVisualLib::FrgVisual_SceneRegistry<Dim>::GetActorsByType(FrgVisual_BaseActor_Entity::ActorType actorType) const
+{
+	return theTypeMap_[(size_t)actorType];
+}
+
+template<int Dim>
 int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(FrgVisual_BaseActor_Entity* actor) const
 {
 	if (!theActors_.empty() && actor != nullptr)

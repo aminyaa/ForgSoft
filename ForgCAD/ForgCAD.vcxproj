@@ -13,8 +13,8 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{577D5DF2-772D-40A6-B217-B18F206A3F8A}</ProjectGuid>
     <Keyword>QtVS_v303</Keyword>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
-    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0.18362.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0.18362.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -43,12 +43,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <IncludePath>$(BOOST_INCLUDEDIR);$(SolutionDir)include;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(BOOST_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Deb;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(SolutionDir)include;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Deb;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <IncludePath>$(BOOST_INCLUDEDIR);$(SolutionDir)include;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(BOOST_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Rel;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(SolutionDir)include;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Rel;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -57,6 +58,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>vtkCommonCore-8.2.lib;vtkRenderingCore-8.2.lib;vtkInteractionStyle-8.2.lib;$(Qt_LIBS_);%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
@@ -134,13 +136,13 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
   <ItemGroup>
     <ClInclude Include="ForgLib\CAD\Global\FrgCAD_Global.hxx" />
     <ClInclude Include="ForgLib\CAD\Global\FrgCAD_Global_Build.hxx" />
-    <ClInclude Include="ForgLib\CAD\Scene\FrgCAD_Scene.hxx" />
+    <QtMoc Include="ForgLib\CAD\Scene\FrgCAD_Scene.hxx" />
     <QtMoc Include="ForgLib\CAD\Scene\Tools\Dialogs\Entity\FrgCAD_DlgEntity.hxx" />
     <QtMoc Include="ForgLib\CAD\Scene\Tools\Dialogs\Point\FrgCAD_DlgPoint.hxx" />
     <QtMoc Include="ForgLib\CAD\Scene\Tools\Dialogs\OneValue\FrgCAD_DlgOneValue.hxx" />
     <QtMoc Include="ForgLib\CAD\Scene\Tools\CommandLine\Completer\FrgCAD_CmdLnCompleter.hxx" />
     <QtMoc Include="ForgLib\CAD\Scene\Tools\CommandLine\LineEdit\FrgCAD_CmdLineEdit.hxx" />
-    <ClInclude Include="ForgLib\CAD\Scene\Tools\InteractorStyle\FrgCAD_Scene_InteractorStyle.hxx" />
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\InteractorStyle\FrgCAD_Scene_InteractorStyle.hxx" />
     <QtMoc Include="ForgLib\CAD\Scene\TreeItem\FrgCAD_Scene_TItem.hxx" />
   </ItemGroup>
   <ItemGroup>

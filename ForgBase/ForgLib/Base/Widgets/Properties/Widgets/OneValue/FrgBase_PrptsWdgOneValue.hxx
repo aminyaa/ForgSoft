@@ -13,14 +13,43 @@ BeginForgBaseLib
 class FrgBase_PrptsVrnt;
 class FrgBase_TreeItem;
 
-template <typename Type, bool IsBounded = true>
-class FrgBase_PrptsWdgOneValue
+class FrgBase_PrptsWdg
 	: public QWidget
 	, public FrgBase_Object
 {
 
+	Q_OBJECT
+
 public:
-	
+
+	FrgBase_PrptsWdg
+	(
+		QWidget* parent = nullptr,
+		FrgBase_PrptsVrnt* variant = nullptr
+	) 
+		: QWidget(parent)
+		, theVariant_(variant) {}
+
+	FrgBase_PrptsVrnt* GetVariantBasePtr() const { return theVariant_; }
+
+	virtual void FormWidget() {}
+
+	FrgBase_TreeItem* GetParentTItem() const { return theParentTItem_; }
+	void SetParentTItem(FrgBase_TreeItem* parentTItem) { theParentTItem_ = parentTItem; }
+
+protected:
+
+	FrgBase_PrptsVrnt* theVariant_ = nullptr;
+	FrgBase_TreeItem* theParentTItem_ = nullptr;
+};
+
+template <typename Type, bool IsBounded = true>
+class FrgBase_PrptsWdgOneValue
+	: public FrgBase_PrptsWdg
+{
+
+public:
+
 	FrgBase_PrptsWdgOneValue
 	(
 		QWidget* parent = nullptr,
@@ -37,20 +66,8 @@ public:
 	virtual const QString& GetSuffix() const;
 	virtual void SetSuffix(const QString& suffix);
 
-	FrgBase_PrptsVrnt* GetVariantBasePtr() const { return theVariant_; }
-
 	virtual const FrgBase_PrptsVrntOneValue<Type, IsBounded>& GetVariant() const;
 	virtual void SetVariant(const FrgBase_PrptsVrntOneValue<Type, IsBounded>& variant);
-
-	virtual void FormWidget() {}
-
-	FrgBase_TreeItem* GetParentTItem() const { return theParentTItem_; }
-	void SetParentTItem(FrgBase_TreeItem* parentTItem) { theParentTItem_ = parentTItem; }
-
-protected:
-
-	FrgBase_PrptsVrnt* theVariant_ = nullptr;
-	FrgBase_TreeItem* theParentTItem_ = nullptr;
 };
 
 EndForgBaseLib

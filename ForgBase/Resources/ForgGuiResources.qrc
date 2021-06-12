@@ -85,5 +85,8 @@
         <file>styles/Default/Default.qss</file>
         <file>Icons/TreeStyle/User-Interface-Minus-icon_Black.png</file>
         <file>Icons/TreeStyle/User-Interface-Plus-icon_Black.png</file>
+        <file>styles/ADS/default-windows.css</file>
+        <file>styles/ADS/modern-windows.css</file>
+        <file>styles/ADS/vendor-partsolutions.css</file>
     </qresource>
 </RCC>

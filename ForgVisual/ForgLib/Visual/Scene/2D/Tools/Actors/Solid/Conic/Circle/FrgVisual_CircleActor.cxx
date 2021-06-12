@@ -4,7 +4,10 @@
 #include <FrgVisual_PolylineActor.hxx>
 #include <FrgVisual_PointActor.hxx>
 
+#include <Standard_Handle.hxx>
+#include <GCE2d_MakeCircle.hxx>
 #include <Geom2d_Circle.hxx>
+#include <Geom2d_TrimmedCurve.hxx>
 #include <gp_Circ2d.hxx>
 
 #include <vtkRenderer.h>
@@ -34,11 +37,17 @@ void ForgVisualLib::FrgVisual_CircleActor::SetDataCenterAndPointOnCurve(ForgBase
 
 	if (!theCurve_)
 	{
-		theCurve_ = new Geom2d_Circle(axis, radius, true);
+		GCE2d_MakeCircle maker(axis, radius, true);
+		if (maker.IsDone())
+		{
+			theCurve_ = maker.Value();
+		}
+		else
+			theCurve_ = nullptr;
 	}
 	else
 	{
-		auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+		auto circle = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
 		if (circle)
 		{
 			circle->Circ2d().SetLocation(gp_Pnt2d(center.X(), center.Y()));
@@ -52,7 +61,7 @@ void ForgVisualLib::FrgVisual_CircleActor::SetDataCenterAndPointOnCurve(ForgBase
 
 void ForgVisualLib::FrgVisual_CircleActor::SetPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> p)
 {
-	auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+	auto circle = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
 	if (circle)
 	{
 		auto centerP = circle->Circ2d().Location();
@@ -69,7 +78,7 @@ void ForgVisualLib::FrgVisual_CircleActor::ShowPoints(bool condition)
 		return;
 	}
 
-	auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+	auto circle = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
 	if (!circle)
 		return;
 
@@ -91,7 +100,7 @@ void ForgVisualLib::FrgVisual_CircleActor::ShowPoints(bool condition)
 
 double ForgVisualLib::FrgVisual_CircleActor::GetRadius() const
 {
-	auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+	auto circle = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
 	if (!circle)
 		return -1;
 
@@ -102,7 +111,7 @@ ForgBaseLib::FrgBase_Pnt<2> ForgVisualLib::FrgVisual_CircleActor::GetCenterPoint
 {
 	ForgBaseLib::FrgBase_Pnt<2> pt;
 
-	auto circle = dynamic_cast<Geom2d_Circle*>(theCurve_);
+	auto circle = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
 	if (!circle)
 		return pt;
 
@@ -141,6 +150,13 @@ std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib:
 ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisual_CircleActor::GetActorDimension() const
 {
 	return ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension::TwoDim;
+}
+
+opencascade::handle<Geom2d_TrimmedCurve> ForgVisualLib::FrgVisual_CircleActor::GetTrimmedCurve() const
+{
+	const auto& curve = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
+	Handle(Geom2d_TrimmedCurve) t = new Geom2d_TrimmedCurve(curve, curve->FirstParameter(), curve->LastParameter());
+	return std::move(t);
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_CircleActor)

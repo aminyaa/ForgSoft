@@ -124,8 +124,8 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool re
 		theCamera_->Elevation(25);
 	}
 	
-	if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
-		return;
+	/*if (theParentMainWindow_->GetTabWidget()->currentWidget() != this)
+		return;*/
 
 	if (resetCamera)
 	{

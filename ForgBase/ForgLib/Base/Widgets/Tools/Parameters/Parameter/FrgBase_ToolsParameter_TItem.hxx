@@ -61,6 +61,10 @@ public:
 
 	bool IsDeletable() const override;
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
 public:
 
 	QString GetCorrectedVariableName(const QString& s) const;
@@ -76,5 +80,9 @@ protected:
 };
 
 EndForgBaseLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameter_TItem, FORGBASE_EXPORT)
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_ToolsParameter_TItem)
 
 #endif // !_FrgBase_ToolsParameter_TItem_Header

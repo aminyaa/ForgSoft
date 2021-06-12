@@ -40,9 +40,17 @@ public:
 
 private:
 
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
+private:
+
 	FrgBase_PrptsVrntFieldVector* theValues_ = nullptr;
 };
 
 EndForgBaseLib
+
+DECLARE_SAVE_LOAD_HEADER_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterVector_TItem, FORGBASE_EXPORT)
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_ToolsParameterVector_TItem)
 
 #endif // !_FrgBase_ToolsParameterVector_TItem_Header

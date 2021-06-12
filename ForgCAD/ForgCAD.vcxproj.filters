@@ -103,12 +103,6 @@
     <ClInclude Include="ForgLib\CAD\Global\FrgCAD_Global_Build.hxx">
       <Filter>ForgLib\CAD\Global</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\CAD\Scene\FrgCAD_Scene.hxx">
-      <Filter>ForgLib\CAD\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ForgLib\CAD\Scene\Tools\InteractorStyle\FrgCAD_Scene_InteractorStyle.hxx">
-      <Filter>ForgLib\CAD\Scene\Tools\InteractorStyle</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\CAD\Scene\TreeItem\FrgCAD_Scene_TItem.hxx">
@@ -128,6 +122,12 @@
     </QtMoc>
     <QtMoc Include="ForgLib\CAD\Scene\Tools\CommandLine\LineEdit\FrgCAD_CmdLineEdit.hxx">
       <Filter>ForgLib\CAD\Scene\Tools\CommandLine\LineEdit</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\Tools\InteractorStyle\FrgCAD_Scene_InteractorStyle.hxx">
+      <Filter>ForgLib\CAD\Scene\Tools\InteractorStyle</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\CAD\Scene\FrgCAD_Scene.hxx">
+      <Filter>ForgLib\CAD\Scene</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

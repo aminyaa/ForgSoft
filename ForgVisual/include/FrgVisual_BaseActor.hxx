@@ -13,6 +13,12 @@ namespace ForgBaseLib
 	class FrgBase_Pnt;
 }
 
+namespace opencascade
+{
+	template <class T>
+	class handle;
+}
+
 BeginForgVisualLib
 
 template<int Dim>
@@ -34,7 +40,7 @@ public:
 	virtual void TranslateActor(double dx, double dy);
 	virtual void TranslateActor(double dx, double dy, double dz);
 
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> DiscreteCurve(Standard_Transient* curve, const double degree = 3.0);
+	static std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> DiscreteCurve(opencascade::handle<Standard_Transient> curve, const double degree = 3.0);
 
 private:
 

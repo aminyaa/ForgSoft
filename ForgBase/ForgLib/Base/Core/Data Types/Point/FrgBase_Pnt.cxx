@@ -353,12 +353,16 @@ void ForgBaseLib::FrgBase_Pnt<Dim>::Translate(double dx, double dy, double dz)
 template<int Dim>
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_Pnt<Dim>)
 {
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
+
 	ar& theCoords_;
 }
 
 template<int Dim>
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_Pnt<Dim>)
 {
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
+
 	ar& theCoords_;
 }
 

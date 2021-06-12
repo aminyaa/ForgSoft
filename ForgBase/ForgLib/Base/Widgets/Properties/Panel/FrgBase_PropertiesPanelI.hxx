@@ -3,9 +3,11 @@
 #define _FrgBase_PropertiesPanelI_Header
 
 #include <FrgBase_TreeItem.hxx>
+#include <FrgBase_MainWindow.hxx>
 
 #include <QtCore/QMetaObject>
 #include <QtCore/QMetaProperty>
+#include <QtCore/QObject>
 #include <QtWidgets/QTableWidgetItem>
 #include <QtWidgets/QHeaderView>
 
@@ -48,6 +50,15 @@ inline auto ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 	this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	this->horizontalHeader()->setStretchLastSection(true);
 
+	QObject::connect(frgVairant, SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
+
+	auto parentMainWindow = dynamic_cast<FrgBase_MainWindow*>(this->GetParentWidget());
+	if (parentMainWindow)
+	{
+		if(parentMainWindow->GetPropertiesPanel() == this)
+			parentMainWindow->SetPropertiesPanel(this);
+	}
+
 	return myWidget;
 }
 
@@ -68,9 +79,19 @@ inline void ForgBaseLib::FrgBase_PropertiesPanel::RemoveRow(T* frgVariant)
 		auto myCastedWidget = dynamic_cast<get_widget_type_from_variant<T>::type*>(this->cellWidget(i, 1));
 		if (myCastedWidget)
 		{
-			if (this->item(i, 0)->data(0).toString() == frgVariant->GetDisplayName())
+			if (myCastedWidget->GetVariantBasePtr() == frgVariant)
+			{
 				this->removeRow(i);
+				break;
+			}
 		}
+	}
+
+	auto parentMainWindow = dynamic_cast<FrgBase_MainWindow*>(this->GetParentWidget());
+	if (parentMainWindow)
+	{
+		if (parentMainWindow->GetPropertiesPanel() == this)
+			parentMainWindow->SetPropertiesPanel(this);
 	}
 }
 
@@ -82,7 +103,7 @@ inline auto ForgBaseLib::FrgBase_PropertiesPanel::GetWidgetFromVariant(T* frgVar
 		auto myCastedWidget = dynamic_cast<get_widget_type_from_variant<T>::type*>(this->cellWidget(i, 1));
 		if (myCastedWidget)
 		{
-			if(this->item(i, 0)->data(0).toString() == frgVariant->GetDisplayName())
+			if (myCastedWidget->GetVariantBasePtr() == frgVariant)
 				return myCastedWidget;
 		}
 	}

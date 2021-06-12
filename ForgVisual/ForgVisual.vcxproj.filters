@@ -257,6 +257,9 @@
     <Filter Include="ForgLib\Visual\Scene\Tools\Registry">
       <UniqueIdentifier>{959b1680-3d32-42d8-b227-e0178183152c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Surface\Plane">
+      <UniqueIdentifier>{b23f314e-3102-4c06-b5d9-a42bedb85a47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -418,6 +421,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Registry\FrgVisual_SceneRegistry.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\Registry</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Surface\Plane\FrgVisual_PlaneActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Surface\Plane</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -571,6 +577,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Registry\FrgVisual_SceneRegistry.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Surface\Plane\FrgVisual_PlaneActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Surface\Plane</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

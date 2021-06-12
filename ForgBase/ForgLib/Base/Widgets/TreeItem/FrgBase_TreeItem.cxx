@@ -97,6 +97,31 @@ void ForgBaseLib::FrgBase_TreeItem::FormTItem()
 	}
 }
 
+bool ForgBaseLib::FrgBase_TreeItem::IsMyParent(FrgBase_TreeItem* p, bool recursive) const
+{
+	FrgBase_TreeItem* par = dynamic_cast<FrgBase_TreeItem*>(QTreeWidgetItem::parent());
+	if (par)
+	{
+		if (recursive)
+		{
+			while (par)
+			{
+				if (par == p)
+					return true;
+
+				par = dynamic_cast<FrgBase_TreeItem*>(par->QTreeWidgetItem::parent());
+			}
+		}
+		else
+		{
+			if (par == p)
+				return true;
+		}
+	}
+
+	return false;
+}
+
 void ForgBaseLib::FrgBase_TreeItem::SortTItem(Qt::SortOrder sortOrder_)
 {
 	if (theTItemIsSortable_)
@@ -306,12 +331,24 @@ void ForgBaseLib::FrgBase_TreeItem::FormPropertiesPanel()
 
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_TreeItem)
 {
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
 
+	ar& theTItemIsClickable_;
+	ar& theTItemIsSortable_;
+	ar& theTItemIsDeletable_;
+	ar& theTItemIsDraggable_;
+	ar& theTItemIsDroppable_;
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_TreeItem)
 {
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
 
+	ar& theTItemIsClickable_;
+	ar& theTItemIsSortable_;
+	ar& theTItemIsDeletable_;
+	ar& theTItemIsDraggable_;
+	ar& theTItemIsDroppable_;
 }
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgBaseLib::FrgBase_TreeItem)

@@ -35,11 +35,15 @@ void ForgBaseLib::FrgBase_PrptsVrntFieldVector::SuffixChanged()
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_PrptsVrntFieldVector)
 {
 	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<std::vector<double>, false>>(*this);
+
+	ar& theShowNonParentalParameters_;
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_PrptsVrntFieldVector)
 {
 	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_PrptsVrntOneValue<std::vector<double>, false>>(*this);
+
+	ar& theShowNonParentalParameters_;
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_PrptsVrntFieldVector)

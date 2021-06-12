@@ -47,6 +47,10 @@ signals:
 
 	void valueChanged(const QString&);
 
+protected slots:
+
+	void DisplayNameChangedSlot(const QString& name);
+
 private:
 
 	QWidget* theParentWidget_ = nullptr;

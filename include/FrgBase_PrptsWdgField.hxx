@@ -44,8 +44,6 @@ public:
 
 	void SetButtonHidden(bool condition = true);
 
-private:
-
 	void SetLineEditValueForPreview();
 	void UpdateAllParameters() const;
 

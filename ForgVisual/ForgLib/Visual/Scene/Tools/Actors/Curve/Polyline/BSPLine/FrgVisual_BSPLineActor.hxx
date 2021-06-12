@@ -101,6 +101,9 @@ public:
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetCtrlPts();
+	int GetDegree() const { return theDegree_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
@@ -122,7 +125,6 @@ private:
 	//std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> CalculatePointsOnCurve(double epsilon);
 
 	//std::vector<ForgVisualLib::FrgVisual_PointActor<Dim>*> GetCtrlPts() const;
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetCtrlPts();
 
 	std::vector<double> CalcBasisFunctionVector(std::vector<double> knots, int i, int p, double u) const;
 	double CalcBasisFunction(std::vector<double> knots, int i, int p, double u) const;

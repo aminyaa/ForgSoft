@@ -17,6 +17,8 @@ namespace ForgVisualLib
 {
 	template <int Dim>
 	class FrgVisual_PointActor;
+
+	class FrgVisual_BaseActor_Entity;
 }
 
 BeginForgCADLib
@@ -26,6 +28,9 @@ class FrgCAD_DlgEntity;
 class FORGCAD_EXPORT FrgCAD_Scene_InteractorStyle
 	: public ForgVisualLib::FrgVisual_Scene_InterStyle2D
 {
+
+	Q_OBJECT
+
 public:
 
 	enum class OperationType
@@ -74,6 +79,11 @@ public:
 	void UndoCommand();
 
 	void DeleteSelectedActors();
+
+Q_SIGNALS:
+
+	void ActorAddedToCADSignal(ForgVisualLib::FrgVisual_BaseActor_Entity*);
+	void ActorIsGoingToBeDeletedFromCADSignal(ForgVisualLib::FrgVisual_BaseActor_Entity*);
 
 protected:
 
