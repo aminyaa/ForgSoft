@@ -61,6 +61,8 @@ public:
 
 	bool eventFilter(QObject* watched, QEvent* event) override;
 
+	static QString RemoveVariablesDecorations(const QString& str);
+
 protected slots:
 	
 	void CodeEditorTextChangedSlot();
@@ -90,6 +92,8 @@ private:
 	symbol_table_t* theSymbolTableT_ = nullptr;
 
 	QExprtkCompleter* theCompleter_ = nullptr;
+
+	QString theLableColor_;
 
 	std::vector<double> theValues_;
 };

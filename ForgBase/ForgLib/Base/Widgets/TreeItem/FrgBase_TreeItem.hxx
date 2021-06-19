@@ -63,7 +63,7 @@ public:
 
 	virtual ~FrgBase_TreeItem();
 
-	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow) { theParentMainWindow_ = parentMainWindow; }
+	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
 	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);

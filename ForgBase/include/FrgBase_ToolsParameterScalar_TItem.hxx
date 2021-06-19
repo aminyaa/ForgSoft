@@ -36,7 +36,7 @@ public:
 	double GetValue() const;
 	double& GetValueRef();
 
-	void AddVariableToSymbolTable(const QString& s) override;
+	void AddVariableToSymbolTable(const QString& s, bool isConstructing = false) override;
 
 private:
 

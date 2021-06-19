@@ -68,7 +68,7 @@ private:
 public:
 
 	QString GetCorrectedVariableName(const QString& s) const;
-	virtual void AddVariableToSymbolTable(const QString& s) {}
+	virtual void AddVariableToSymbolTable(const QString& s, bool isConstructing = false) {}
 
 protected:
 

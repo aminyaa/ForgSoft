@@ -43,6 +43,14 @@ ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()
 	FreePointer(theTItemName_);
 }
 
+void ForgBaseLib::FrgBase_TreeItem::SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
+{
+	theParentMainWindow_ = parentMainWindow;
+
+	thePropertiesPanel_->SetParentWidget(parentMainWindow);
+	thePropertiesPanel_->SetParentObject(this);
+}
+
 void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 (
 	const FrgString & itemTitle,

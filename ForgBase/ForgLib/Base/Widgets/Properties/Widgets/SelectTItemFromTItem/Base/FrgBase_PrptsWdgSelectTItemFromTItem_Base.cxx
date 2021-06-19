@@ -26,10 +26,14 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::FormWidget()
 		return;
 	}
 
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItemFromTItem_Base*>(theVariant_), SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItemFromTItem_Base*>(theVariant_), SIGNAL(ValueChangedSignal(FrgBase_TreeItem*)), this, SLOT(ValueChangedSlot(FrgBase_TreeItem*)));
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItemFromTItem_Base*>(theVariant_), SIGNAL(PrefixChangedSignal(const QString&)), this, SLOT(PrefixChangedSlot(const QString&)));
-	connect(dynamic_cast<FrgBase_PrptsVrntSelectTItemFromTItem_Base*>(theVariant_), SIGNAL(SuffixChangedSignal(const QString&)), this, SLOT(SuffixChangedSlot(const QString&)));
+	const auto& myVariant = dynamic_cast<FrgBase_PrptsVrntSelectTItemFromTItem_Base*>(theVariant_);
+	if (myVariant)
+	{
+		connect(myVariant, SIGNAL(DisplayNameChangedSignal(const QString&)), this, SLOT(DisplayNameChangedSlot(const QString&)));
+		connect(myVariant, SIGNAL(ValueChangedSignal(FrgBase_TreeItem*)), this, SLOT(ValueChangedSlot(FrgBase_TreeItem*)));
+		connect(myVariant, SIGNAL(PrefixChangedSignal(const QString&)), this, SLOT(PrefixChangedSlot(const QString&)));
+		connect(myVariant, SIGNAL(SuffixChangedSignal(const QString&)), this, SLOT(SuffixChangedSlot(const QString&)));
+	}
 
 	QHBoxLayout* myLayout = new QHBoxLayout;
 	myLayout->setMargin(0);
@@ -44,6 +48,14 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::FormWidget()
 
 	theSelectedTItemLabel_ = new QLabel("");
 	myLayout->addWidget(theSelectedTItemLabel_);
+
+	if (myVariant)
+	{
+		if (myVariant->GetValue())
+		{
+			theSelectedTItemLabel_->setText(myVariant->GetValue()->text(0));
+		}
+	}
 
 	theButton_ = new QToolButton;
 	theButton_->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred));

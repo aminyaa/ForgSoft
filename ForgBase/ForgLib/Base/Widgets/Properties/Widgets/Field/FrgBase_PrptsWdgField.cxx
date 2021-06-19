@@ -171,6 +171,11 @@ void ForgBaseLib::FrgBase_PrptsWdgField::UpdateAllParameters() const
 	}
 }
 
+bool ForgBaseLib::FrgBase_PrptsWdgField::IsButtonHidden() const
+{
+	return theButton_->isHidden();
+}
+
 bool ForgBaseLib::FrgBase_PrptsWdgField::eventFilter(QObject* watched, QEvent* event)
 {
 	bool result = FrgBase_PrptsWdgStringDouble::eventFilter(watched, event);

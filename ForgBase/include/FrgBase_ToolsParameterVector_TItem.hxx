@@ -36,7 +36,7 @@ public:
 	const std::vector<double>& GetValues() const;
 	std::vector<double>& GetValuesRef();
 
-	void AddVariableToSymbolTable(const QString& s) override;
+	void AddVariableToSymbolTable(const QString& s, bool isConstructing = false) override;
 
 private:
 
