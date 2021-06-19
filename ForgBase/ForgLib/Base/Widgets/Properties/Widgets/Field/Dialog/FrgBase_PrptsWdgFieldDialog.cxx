@@ -7,6 +7,7 @@
 #include <FrgBase_ToolsParameter_TItem.hxx>
 #include <FrgBase_ToolsParameters_TItem.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgBase_PropertiesPanel.hxx>
 
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QTreeWidgetItem>
@@ -37,7 +38,16 @@ ForgBaseLib::FrgBase_PrptsWdgFieldDialog::FrgBase_PrptsWdgFieldDialog
 )
 	: QDialog(parent, f)
 {
+	theLableColor_ = "black";
 
+	const auto& wdgField = dynamic_cast<FrgBase_PrptsWdgField*>(parent);
+	if (wdgField)
+	{
+		if (wdgField->GetParentTItem()->GetParentMainWindow()->IsThemeDark())
+			theLableColor_ = "white";
+		else
+			theLableColor_ = "black";
+	}
 }
 
 ForgBaseLib::FrgBase_PrptsWdgFieldDialog::~FrgBase_PrptsWdgFieldDialog()
@@ -60,7 +70,7 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::FormWidget()
 	theFunctionsTree_ = new QTreeWidget(nullptr);
 	theParametersTable_ = new QTableWidget();
 	thePreviewLabel_ = new QLabel("");
-	thePreviewLabel_->setStyleSheet("QLabel { border: 5px solid black; }");
+	thePreviewLabel_->setStyleSheet("QLabel { border: 5px solid " + theLableColor_ + "; }");
 
 	QHBoxLayout* buttonsLayout = new QHBoxLayout;
 	theRealTimeCompilation_ = new QCheckBox("Real time compilation");
@@ -119,12 +129,14 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::FormWidget()
 	connect(theFunctionsTree_, &QTreeWidget::itemDoubleClicked, [this](QTreeWidgetItem* item, int column)
 		{
 			theCodeEditor_->InsertCompletedCommand(item->text(0));
+			theCodeEditor_->setFocus();
 		});
 	connect(theParametersTable_, &QTableWidget::itemDoubleClicked, [this](QTableWidgetItem* item)
 		{
 			int row = theParametersTable_->row(item);
 			QString name = theParametersTable_->item(row, 0)->data(0).toString();
-			theCodeEditor_->InsertCompletedCommand(name);
+			theCodeEditor_->InsertCompletedCommand("${" + name + "}");
+			theCodeEditor_->setFocus();
 		});
 
 	emit theCodeEditor_->textChanged();
@@ -170,72 +182,72 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::CodeEditorTextChangedSlot()
 {
 	thePreviewLabel_->setText("");
 
-	if (theRealTimeCompilation_->isChecked())
-	{
-		QString str = theCodeEditor_->toPlainText();
+	QString str = RemoveVariablesDecorations(theCodeEditor_->toPlainText());
 
-		/*auto myPrptsWdg = dynamic_cast<FrgBase_PrptsWdgField*>(this->parentWidget());
+	/*auto myPrptsWdg = dynamic_cast<FrgBase_PrptsWdgField*>(this->parentWidget());
+	if (myPrptsWdg)
+	{
+		auto myParentTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(myPrptsWdg->GetParentTItem());
+		if (myParentTItem)
+		{
+			QString strForTest = QString::fromStdString(str);
+			if (strForTest.contains(myParentTItem->GetVariableName()))
+			{
+				thePreviewLabel_->setText("Cannot evaluate \"" + myParentTItem->GetVariableName() + "\" here.");
+				thePreviewLabel_->setStyleSheet("QLabel {color : red;}");
+
+				theOKButton_->setEnabled(false);
+				return;
+			}
+		}
+	}*/
+
+	expression_t myExpression;
+	myExpression.register_symbol_table(*theSymbolTableT_);
+
+	QString strForTest = str;
+	if (strForTest.size() > 2 && strForTest.at(0) == '[' && strForTest.at(strForTest.size() - 1) == ']')
+	{
+		thePreviewLabel_->setText(strForTest);
+		str = "return " + str;
+	}
+
+	parser_t myParser;
+	//myParser.settings().disable_all_assignment_ops();
+	std::vector<std::string> variable_list;
+
+	if (exprtk::collect_variables(str.toStdString(), variable_list))
+	{
+		const auto& myPrptsWdg = dynamic_cast<FrgBase_PrptsWdgField*>(this->parentWidget());
 		if (myPrptsWdg)
 		{
-			auto myParentTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(myPrptsWdg->GetParentTItem());
+			const auto& myParentTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(myPrptsWdg->GetParentTItem());
 			if (myParentTItem)
 			{
-				QString strForTest = QString::fromStdString(str);
-				if (strForTest.contains(myParentTItem->GetVariableName()))
-				{
-					thePreviewLabel_->setText("Cannot evaluate \"" + myParentTItem->GetVariableName() + "\" here.");
-					thePreviewLabel_->setStyleSheet("QLabel {color : red;}");
+				for (const auto& var : variable_list)
+					if (var == myParentTItem->GetVariableName().toStdString())
+					{
+						thePreviewLabel_->setText("Cannot use \"" + QString::fromStdString(var) + "\" here.");
+						thePreviewLabel_->setStyleSheet("QLabel {color : red;}");
 
-					theOKButton_->setEnabled(false);
-					return;
-				}
-			}
-		}*/
-
-		expression_t myExpression;
-		myExpression.register_symbol_table(*theSymbolTableT_);
-
-		QString strForTest = str;
-		if (strForTest.size() > 2 && strForTest.at(0) == '[' && strForTest.at(strForTest.size() - 1) == ']')
-		{
-			thePreviewLabel_->setText(strForTest);
-			str = "return " + str;
-		}
-
-		parser_t myParser;
-		//myParser.settings().disable_all_assignment_ops();
-		std::vector<std::string> variable_list;
-
-		if (exprtk::collect_variables(str.toStdString(), variable_list))
-		{
-			const auto& myPrptsWdg = dynamic_cast<FrgBase_PrptsWdgField*>(this->parentWidget());
-			if (myPrptsWdg)
-			{
-				const auto& myParentTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(myPrptsWdg->GetParentTItem());
-				if (myParentTItem)
-				{
-					for (const auto& var : variable_list)
-						if (var == myParentTItem->GetVariableName().toStdString())
-						{
-							thePreviewLabel_->setText("Cannot use \"" + QString::fromStdString(var) + "\" here.");
-							thePreviewLabel_->setStyleSheet("QLabel {color : red;}");
-
-							theOKButton_->setEnabled(false);
-						}
-				}
+						theOKButton_->setEnabled(false);
+					}
 			}
 		}
-		bool compiled = myParser.compile(str.toStdString(), myExpression);
-		if (!compiled)
-		{
-			thePreviewLabel_->setText(QString::fromStdString(myParser.error()));
-			thePreviewLabel_->setStyleSheet("QLabel {color : red;}");
+	}
+	bool compiled = myParser.compile(str.toStdString(), myExpression);
+	if (!compiled)
+	{
+		thePreviewLabel_->setText(QString::fromStdString(myParser.error()));
+		thePreviewLabel_->setStyleSheet("QLabel {color : red;}");
 
-			theOKButton_->setEnabled(false);
-		}
-		else
+		theOKButton_->setEnabled(false);
+	}
+
+	if (theRealTimeCompilation_->isChecked())
+	{
 		{
-			thePreviewLabel_->setStyleSheet("QLabel {color : black;}");
+			thePreviewLabel_->setStyleSheet("QLabel {color : " + theLableColor_ + ";}");
 			double result = myExpression.value();
 
 			bool areValuesAcceptable = true;
@@ -344,7 +356,7 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::CodeEditorTextChangedSlot()
 	}
 	else
 	{
-		theOKButton_->setEnabled(false);
+		//theOKButton_->setEnabled(false);
 	}
 }
 
@@ -353,7 +365,7 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::onOK()
 	auto scalarWidget = dynamic_cast<FrgBase_PrptsWdgFieldScalar*>(this->parentWidget());
 	if (scalarWidget)
 	{
-		scalarWidget->SetValueString(theCodeEditor_->toPlainText());
+		scalarWidget->SetValueString(theCodeEditor_->toPlainText().replace(QRegularExpression("\\s+"), QString()));
 		scalarWidget->SetValue(theValues_[0]);
 
 		if (theSymbolTableT_)
@@ -375,7 +387,7 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::onOK()
 	auto vectorWidget = dynamic_cast<FrgBase_PrptsWdgFieldVector*>(this->parentWidget());
 	if (vectorWidget)
 	{
-		vectorWidget->SetValueString(theCodeEditor_->toPlainText());
+		vectorWidget->SetValueString(theCodeEditor_->toPlainText().replace(QRegularExpression("\\s+"), QString()));
 
 		auto vectorVariant = dynamic_cast<FrgBase_PrptsVrntFieldVector*>(vectorWidget->GetVariantBasePtr());
 		if (vectorVariant)
@@ -1114,6 +1126,36 @@ void ForgBaseLib::FrgBase_PrptsWdgFieldDialog::FormFunctionsTree()
 	for (int iColumn = 0; iColumn < theFunctionsTree_->columnCount(); iColumn++)
 		theFunctionsTree_->resizeColumnToContents(iColumn);
 	theFunctionsTree_->collapseAll();
+}
+
+QString ForgBaseLib::FrgBase_PrptsWdgFieldDialog::RemoveVariablesDecorations(const QString& str)
+{
+	QString result = str;
+	bool started = false;
+	int i = 0;
+	for (const auto& c : result)
+	{
+		if (c == "$")
+		{
+			result.remove(i, 1);
+			started = true;
+		}
+
+		if (started)
+		{
+			if (c == "{")
+				result.remove(i, 1);
+			else if (c == "}")
+			{
+				result.remove(i, 1);
+				started = false;
+			}
+		}
+
+		i++;
+	}
+
+	return std::move(result);
 }
 
 bool ForgBaseLib::FrgBase_PrptsWdgFieldDialog::eventFilter(QObject* watched, QEvent* event)

@@ -4,6 +4,8 @@
 #include <FrgBase_Tree.hxx>
 #include <FrgBase_SerialSpec_Tuple.hxx>
 
+#include <boost/serialization/map.hpp>
+
 #include <exprtk.hpp>
 
 ForgBaseLib::FrgBase_ToolsParameters_TItem::FrgBase_ToolsParameters_TItem
@@ -80,14 +82,11 @@ DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_ToolsParameters_TItem)
 
 	auto children = GetAllChildrenToTheRoot();
 	std::vector<std::pair<std::string, double>> varsList;
-	std::vector<std::tuple<std::string, double>> vars;
 
 	theSymbolTableT_->get_variable_list(varsList);
-	for (const auto& var : varsList)
-		vars.push_back(std::make_tuple(var.first, var.second));
 
 	ar& children;
-	ar& vars;
+	ar& varsList;
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_ToolsParameters_TItem)
@@ -95,13 +94,12 @@ DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_ToolsParameters_TItem)
 	ar& boost::serialization::base_object<ForgBaseLib::FrgBase_TreeItem>(*this);
 	std::vector<FrgBase_TreeItem*> children;
 	std::vector<std::pair<std::string, double>> varsList;
-	std::vector<std::tuple<std::string, double>> vars;
 
 	ar& children;
-	ar& vars;
+	ar& varsList;
 
-	for (auto& var : vars)
-		theSymbolTableT_->add_variable(std::get<0>(var), std::get<1>(var));
+	for (auto& var : varsList)
+		theSymbolTableT_->add_variable(var.first, var.second);
 }
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameters_TItem)

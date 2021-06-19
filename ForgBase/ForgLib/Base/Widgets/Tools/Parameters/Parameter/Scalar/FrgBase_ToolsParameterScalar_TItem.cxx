@@ -3,6 +3,7 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_ToolsParameters_TItem.hxx>
 #include <FrgBase_Tree.hxx>
+#include <FrgBase_PrptsWdgFieldDialog.hxx>
 
 #include <exprtk.hpp>
 
@@ -59,7 +60,7 @@ void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::FormTItem()
 		}
 	);*/
 
-	AddVariableToSymbolTable(this->text(0));
+	AddVariableToSymbolTable(this->text(0), true);
 }
 
 void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::Update()
@@ -69,7 +70,7 @@ void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::Update()
 	auto myWidget = thePropertiesPanel_->GetWidgetFromVariant(theValue_);
 	if (myWidget)
 	{
-		QString command = myWidget->GetValueString();
+		QString command = FrgBase_PrptsWdgFieldDialog::RemoveVariablesDecorations(myWidget->GetValueString());
 		if (command.size() > 2 && command.at(0) == '[' && command.at(command.size() - 1) == ']')
 			command = "return " + command;
 
@@ -105,7 +106,7 @@ double& ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::GetValueRef()
 	return theValue_->GetValueRef();
 }
 
-void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::AddVariableToSymbolTable(const QString& s)
+void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::AddVariableToSymbolTable(const QString& s, bool isConstructing)
 {
 	if (!theSymbolTableT_)
 		return;
@@ -122,7 +123,7 @@ void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::AddVariableToSymbolTable(c
 		i++;
 	}
 
-	if (theParentToolsParametersTItem_)
+	if (theParentToolsParametersTItem_ && !isConstructing)
 	{
 		auto parameters = theParentToolsParametersTItem_->GetAllChildrenToTheRoot();
 		for (const auto& x : parameters)
@@ -135,7 +136,7 @@ void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::AddVariableToSymbolTable(c
 				if (scalarWidget)
 				{
 					QString code = scalarWidget->GetValueString();
-					code.replace(theVariableName_, newName);
+					code.replace("{" + theVariableName_ + "}", "{" + newName + "}");
 					scalarWidget->SetValueString(code);
 				}
 			}
@@ -149,14 +150,31 @@ DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
 {
 	ar& boost::serialization::base_object<FrgBase_ToolsParameter_TItem>(*this);
 
+	auto w = thePropertiesPanel_->GetWidgetFromVariant(theValue_);
+	QString vs = w->GetValueString();
+	bool ish = w->IsButtonHidden();
+
 	ar& theValue_;
+	ar& vs;
+	ar& ish;
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)
 {
 	ar& boost::serialization::base_object<FrgBase_ToolsParameter_TItem>(*this);
 
+	QString vs;
+	bool ish;
+
 	ar& theValue_;
+	ar& vs;
+	ar& ish;
+
+	auto w = thePropertiesPanel_->AddRow(theValue_);
+	w->SetValueString(vs);
+	w->SetButtonHidden(ish);
+
+	AddVariableToSymbolTable(this->text(0));
 }
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterScalar_TItem)

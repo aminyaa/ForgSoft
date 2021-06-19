@@ -3,6 +3,7 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_ToolsParameters_TItem.hxx>
 #include <FrgBase_Tree.hxx>
+#include <FrgBase_PrptsWdgFieldDialog.hxx>
 
 #include <exprtk.hpp>
 
@@ -47,8 +48,10 @@ void ForgBaseLib::FrgBase_ToolsParameterVector_TItem::FormTItem()
 	theValues_ = new FrgBase_PrptsVrntFieldVector("Value", values);
 	thePropertiesPanel_->AddRow(theValues_);
 
-	if (theSymbolTableT_)
-		theSymbolTableT_->add_vector(this->text(0).replace(' ', '_').toStdString(), theValues_->GetValueRef());
+	AddVariableToSymbolTable(this->text(0), true);
+
+	/*if (theSymbolTableT_)
+		theSymbolTableT_->add_vector(this->text(0).replace(' ', '_').toStdString(), theValues_->GetValueRef());*/
 }
 
 void ForgBaseLib::FrgBase_ToolsParameterVector_TItem::Update()
@@ -58,7 +61,7 @@ void ForgBaseLib::FrgBase_ToolsParameterVector_TItem::Update()
 	auto myWidget = thePropertiesPanel_->GetWidgetFromVariant(theValues_);
 	if (myWidget)
 	{
-		QString command = myWidget->GetValueString();
+		QString command = FrgBase_PrptsWdgFieldDialog::RemoveVariablesDecorations(myWidget->GetValueString());
 		if (command.size() > 2 && command.at(0) == '[' && command.at(command.size() - 1) == ']')
 			command = "return " + command;
 
@@ -106,7 +109,7 @@ std::vector<double>& ForgBaseLib::FrgBase_ToolsParameterVector_TItem::GetValuesR
 	return theValues_->GetValueRef();
 }
 
-void ForgBaseLib::FrgBase_ToolsParameterVector_TItem::AddVariableToSymbolTable(const QString& s)
+void ForgBaseLib::FrgBase_ToolsParameterVector_TItem::AddVariableToSymbolTable(const QString& s,bool isConstructing)
 {
 	if (!theSymbolTableT_)
 		return;
@@ -123,7 +126,7 @@ void ForgBaseLib::FrgBase_ToolsParameterVector_TItem::AddVariableToSymbolTable(c
 		i++;
 	}
 
-	if (theParentToolsParametersTItem_)
+	if (theParentToolsParametersTItem_ && !isConstructing)
 	{
 		auto parameters = theParentToolsParametersTItem_->GetAllChildrenToTheRoot();
 		for (const auto& x : parameters)
@@ -150,14 +153,32 @@ DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_ToolsParameterVector_TItem)
 {
 	ar& boost::serialization::base_object<FrgBase_ToolsParameter_TItem>(*this);
 
+	auto w = thePropertiesPanel_->GetWidgetFromVariant(theValues_);
+	QString vs = w->GetValueString();
+	bool ish = w->IsButtonHidden();
+
 	ar& theValues_;
+	ar& vs;
+	ar& ish;
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_ToolsParameterVector_TItem)
 {
 	ar& boost::serialization::base_object<FrgBase_ToolsParameter_TItem>(*this);
 
+	QString vs;
+	bool ish;
+
 	ar& theValues_;
+	ar& vs;
+	ar& ish;
+
+	auto w = thePropertiesPanel_->AddRow(theValues_);
+	w->SetValueString(vs);
+	w->SetButtonHidden(ish);
+
+	if (theSymbolTableT_)
+		theSymbolTableT_->add_vector(this->text(0).replace(' ', '_').toStdString(), theValues_->GetValueRef());
 }
 
 DECLARE_SAVE_IMP_CONSTRUCT(ForgBaseLib::FrgBase_ToolsParameterVector_TItem)

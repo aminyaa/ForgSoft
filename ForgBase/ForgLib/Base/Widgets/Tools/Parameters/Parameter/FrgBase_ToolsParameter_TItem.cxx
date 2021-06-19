@@ -92,7 +92,7 @@ QString ForgBaseLib::FrgBase_ToolsParameter_TItem::GetCorrectedVariableName(cons
 {
 	QString newName = s.simplified();
 	QString editedName = newName;
-	QString prefix("P_");
+	QString prefix("");
 
 	int i = 0;
 	for (auto c : newName)
