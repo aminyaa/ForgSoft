@@ -32,13 +32,13 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)D</TargetName>
     <LibraryPath>$(BOOST_INCLUDELIB);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\CodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <IncludePath>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(Qt_INCLUDEPATH_);$(BOOST_INCLUDEDIR);$(QTDIR)/include/QtWidgets;$(QTDIR)/include/QtPrintSupport;$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\CodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>$(BOOST_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
@@ -86,8 +86,8 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName)D.dll</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Debug;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\lib\Deb;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Deb;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>QCodeEditor.lib;parser.lib;stdlib.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5WinExtrasd.lib;QtPropertyBrowserd.lib;QtilitiesCored-1.5.lib;QtilitiesCoreGuid-1.5.lib;QtilitiesExtensionSystemd-1.5.lib;QtilitiesLoggingd-1.5.lib;QtilitiesProjectManagementd-1.5.lib;QtilitiesTestingd-1.5.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Debug;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Deb;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>parser.lib;stdlib.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5WinExtrasd.lib;QtPropertyBrowserd.lib;QtilitiesCored-1.5.lib;QtilitiesCoreGuid-1.5.lib;QtilitiesExtensionSystemd-1.5.lib;QtilitiesLoggingd-1.5.lib;QtilitiesProjectManagementd-1.5.lib;QtilitiesTestingd-1.5.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
@@ -125,8 +125,8 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\QCodeEditor\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Rel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>QCodeEditor.lib;parser.lib;stdlib.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5WinExtras.lib;QtPropertyBrowser.lib;QtilitiesCore-1.5.lib;QtilitiesCoreGui-1.5.lib;QtilitiesExtensionSystem-1.5.lib;QtilitiesLogging-1.5.lib;QtilitiesProjectManagement-1.5.lib;QtilitiesTesting-1.5.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;$(MSBuildProjectDirectory)\ThirdParties\QtPropertyBrowser\lib;$(MSBuildProjectDirectory)\ThirdParties\Qtilities\lib;$(MSBuildProjectDirectory)\ThirdParties\AutMarine\lib\Rel;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\lib\Rel;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>parser.lib;stdlib.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5WinExtras.lib;QtPropertyBrowser.lib;QtilitiesCore-1.5.lib;QtilitiesCoreGui-1.5.lib;QtilitiesExtensionSystem-1.5.lib;QtilitiesLogging-1.5.lib;QtilitiesProjectManagement-1.5.lib;QtilitiesTesting-1.5.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
@@ -247,6 +247,22 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClCompile Include="ThirdParties\AdvancedDockingSystem\SectionTitleWidget.cpp" />
     <ClCompile Include="ThirdParties\AdvancedDockingSystem\SectionWidget.cpp" />
     <ClCompile Include="ThirdParties\AdvancedDockingSystem\Serialization.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QCodeEditor.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QCXXHighlighter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QExprtkCompleter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QFramedTextAttribute.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QGLSLCompleter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QGLSLHighlighter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QJSONHighlighter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLanguage.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLineNumberArea.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLuaCompleter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLuaHighlighter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QPythonCompleter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QPythonHighlighter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QStyleSyntaxHighlighter.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QSyntaxStyle.cpp" />
+    <ClCompile Include="ThirdParties\CodeEditor\src\QXMLHighlighter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Core\Application\ApplicationCore\FrgBase_ApplicationCore.hxx" />
@@ -263,6 +279,24 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\Internal.h" />
     <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\SectionContent.h" />
     <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\Serialization.h" />
+    <ClInclude Include="ThirdParties\CodeEditor\include\internal\QHighlightBlockRule.hpp" />
+    <ClInclude Include="ThirdParties\CodeEditor\include\internal\QHighlightRule.hpp" />
+    <ClInclude Include="ThirdParties\CodeEditor\include\internal\QStyleSyntaxHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QXMLHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QSyntaxStyle.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QPythonHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QPythonCompleter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLuaHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLuaCompleter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLineNumberArea.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLanguage.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QJSONHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QGLSLHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QGLSLCompleter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QFramedTextAttribute.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QExprtkCompleter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QCXXHighlighter.hpp" />
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QCodeEditor.hpp" />
     <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionWidget.h" />
     <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionTitleWidget.h" />
     <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionContentWidget.h" />
@@ -391,6 +425,26 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Resources\ForgGuiResources.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ThirdParties\CodeEditor\include\QCodeEditor" />
+    <None Include="ThirdParties\CodeEditor\include\QCXXHighlighter" />
+    <None Include="ThirdParties\CodeEditor\include\QExprtkCompleter" />
+    <None Include="ThirdParties\CodeEditor\include\QFramedTextAttribute" />
+    <None Include="ThirdParties\CodeEditor\include\QGLSLCompleter" />
+    <None Include="ThirdParties\CodeEditor\include\QGLSLHighlighter" />
+    <None Include="ThirdParties\CodeEditor\include\QHighlightBlockRule" />
+    <None Include="ThirdParties\CodeEditor\include\QHighlightRule" />
+    <None Include="ThirdParties\CodeEditor\include\QJSONHighlighter" />
+    <None Include="ThirdParties\CodeEditor\include\QLanguage" />
+    <None Include="ThirdParties\CodeEditor\include\QLineNumberArea" />
+    <None Include="ThirdParties\CodeEditor\include\QLuaCompleter" />
+    <None Include="ThirdParties\CodeEditor\include\QLuaHighlighter" />
+    <None Include="ThirdParties\CodeEditor\include\QPythonCompleter" />
+    <None Include="ThirdParties\CodeEditor\include\QPythonHighlighter" />
+    <None Include="ThirdParties\CodeEditor\include\QStyleSyntaxHighlighter" />
+    <None Include="ThirdParties\CodeEditor\include\QSyntaxStyle" />
+    <None Include="ThirdParties\CodeEditor\include\QXMLHighlighter" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

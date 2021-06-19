@@ -400,6 +400,18 @@
     <Filter Include="ThirdParties\AdvancedDockingSystem\ads">
       <UniqueIdentifier>{1e4e7ca2-b54b-4fa9-9494-596a2d0232e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParties\CodeEditor">
+      <UniqueIdentifier>{11cbee22-fc4b-4b70-8f64-83bded930a5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParties\CodeEditor\include">
+      <UniqueIdentifier>{b3e33b11-d677-422c-9417-a935513d6ceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParties\CodeEditor\src">
+      <UniqueIdentifier>{0b4506a5-a88e-47ea-931e-844cc00beac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParties\CodeEditor\include\internal">
+      <UniqueIdentifier>{6794ef1a-9ea8-4082-a6d7-e4afe3232ceb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -711,6 +723,54 @@
     <ClCompile Include="ThirdParties\AdvancedDockingSystem\Serialization.cpp">
       <Filter>ThirdParties\AdvancedDockingSystem</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QCodeEditor.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QCXXHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QExprtkCompleter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QFramedTextAttribute.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QGLSLCompleter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QGLSLHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QJSONHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLanguage.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLineNumberArea.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLuaCompleter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QLuaHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QPythonCompleter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QPythonHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QStyleSyntaxHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QSyntaxStyle.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParties\CodeEditor\src\QXMLHighlighter.cpp">
+      <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
@@ -910,6 +970,15 @@
     </ClInclude>
     <ClInclude Include="ThirdParties\AdvancedDockingSystem\ads\Serialization.h">
       <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\CodeEditor\include\internal\QHighlightBlockRule.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\CodeEditor\include\internal\QHighlightRule.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParties\CodeEditor\include\internal\QStyleSyntaxHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1132,10 +1201,111 @@
     <QtMoc Include="ThirdParties\AdvancedDockingSystem\ads\SectionWidget.h">
       <Filter>ThirdParties\AdvancedDockingSystem\ads</Filter>
     </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QCodeEditor.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QCXXHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QExprtkCompleter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QFramedTextAttribute.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QGLSLCompleter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QGLSLHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QJSONHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLanguage.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLineNumberArea.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLuaCompleter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QLuaHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QPythonCompleter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QPythonHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QSyntaxStyle.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ThirdParties\CodeEditor\include\internal\QXMLHighlighter.hpp">
+      <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="Resources\ForgGuiResources.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ThirdParties\CodeEditor\include\QCodeEditor">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QCXXHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QExprtkCompleter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QFramedTextAttribute">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QGLSLCompleter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QGLSLHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QHighlightBlockRule">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QHighlightRule">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QJSONHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QLanguage">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QLineNumberArea">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QLuaCompleter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QLuaHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QPythonCompleter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QPythonHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QStyleSyntaxHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QSyntaxStyle">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
+    <None Include="ThirdParties\CodeEditor\include\QXMLHighlighter">
+      <Filter>ThirdParties\CodeEditor\include</Filter>
+    </None>
   </ItemGroup>
 </Project>
