@@ -77,8 +77,7 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>::~FrgVisual_BSPLineActor()
 template<int Dim>
 void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree)
 {
-	if (theDegree_ == -1)
-		theDegree_ = degree;
+	theDegree_ = degree;
 
 	if (ctrlPts.empty())
 		return;
@@ -830,7 +829,7 @@ std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BSPLineActor
 //}
 
 template<int Dim>
-std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::GetCtrlPts()
+std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::GetCtrlPts() const
 {
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts;
 	if (!theCurve_)
@@ -1176,6 +1175,13 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BSPLineActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_PolylineActor<Dim>>(*this);
 
+	auto pts = GetCtrlPts();
+
+	ar& theDegree_;
+	ar& theCtrlPts_;
+	ar& theCtrlPtsPolyLine_;
+	ar& pts;
+
 	/*ar& theDegree_;
 	ar& theNumberOfDiscretization_;
 	ar& theKnots_;
@@ -1217,6 +1223,15 @@ template<int Dim>
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BSPLineActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_PolylineActor<Dim>>(*this);
+
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
+
+	ar& theDegree_;
+	ar& theCtrlPts_;
+	ar& theCtrlPtsPolyLine_;
+	ar& pts;
+
+	SetData(pts, theDegree_);
 
 	/*ar& theDegree_;
 	ar& theNumberOfDiscretization_;

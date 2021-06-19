@@ -34,6 +34,8 @@ public:
 
 	mapOfActors GetActorsByType(FrgVisual_BaseActor_Entity::ActorType actorType) const;
 
+	mapOfActors GetAllActors() const { return theActors_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )

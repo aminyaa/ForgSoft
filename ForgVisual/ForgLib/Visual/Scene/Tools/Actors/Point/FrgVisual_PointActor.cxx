@@ -1,7 +1,5 @@
 #include <FrgVisual_PointActor.hxx>
 
-#include <FrgBase_Pnt.hxx>
-
 #include <vtkProperty.h>
 #include <vtkPoints.h>
 #include <vtkCellArray.h>
@@ -121,6 +119,8 @@ bool ForgVisualLib::FrgVisual_PointActor<Dim>::SelectActor(const QColor& color)
 template<int Dim>
 void ForgVisualLib::FrgVisual_PointActor<Dim>::SetData(ForgBaseLib::FrgBase_Pnt<Dim> pt)
 {
+	theP_ = pt;
+
 	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
 	if (mapper)
 	{
@@ -171,29 +171,29 @@ void ForgVisualLib::FrgVisual_PointActor<Dim>::SetData(ForgBaseLib::FrgBase_Pnt<
 	}
 }
 
-template<int Dim>
-ForgBaseLib::FrgBase_Pnt<Dim> ForgVisualLib::FrgVisual_PointActor<Dim>::GetData()
-{
-	ForgBaseLib::FrgBase_Pnt<Dim> pt;
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
-	{
-		auto polyData = mapper->GetInput();
-		if (polyData)
-		{
-			auto points = polyData->GetPoints();
-			if (points)
-			{
-				pt.X() = points->GetPoint(0)[0];
-				pt.Y() = points->GetPoint(0)[1];
-
-				if constexpr(Dim == 3)
-					pt.Z() = points->GetPoint(0)[2];
-			}
-		}
-	}
-	return std::move(pt);
-}
+//template<int Dim>
+//ForgBaseLib::FrgBase_Pnt<Dim> ForgVisualLib::FrgVisual_PointActor<Dim>::GetData()
+//{
+//	ForgBaseLib::FrgBase_Pnt<Dim> pt;
+//	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+//	if (mapper)
+//	{
+//		auto polyData = mapper->GetInput();
+//		if (polyData)
+//		{
+//			auto points = polyData->GetPoints();
+//			if (points)
+//			{
+//				pt.X() = points->GetPoint(0)[0];
+//				pt.Y() = points->GetPoint(0)[1];
+//
+//				if constexpr(Dim == 3)
+//					pt.Z() = points->GetPoint(0)[2];
+//			}
+//		}
+//	}
+//	return std::move(pt);
+//}
 
 template<>
 template<>
@@ -273,7 +273,9 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_PointActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	//ar& theP_;
+	const auto& pt = GetData();
+
+	ar& pt;
 }
 
 template<int Dim>

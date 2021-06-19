@@ -7,6 +7,9 @@
 
 #include <FrgVisual_Serialization_Global.hxx>
 
+#include <vtkSmartPointer.h>
+
+class vtkPolyDataMapper;
 class vtkPolyData;
 
 namespace ForgBaseLib
@@ -60,7 +63,7 @@ public:
 	virtual void RemoveLastPoint();
 
 	long long GetNumberOfPoints();
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetPoints();
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetPoints() const;
 
 	ForgBaseLib::FrgBase_Pnt<Dim> GetPoint(long long i);
 	void SetPoint(long long i, ForgBaseLib::FrgBase_Pnt<Dim> pt);
@@ -115,6 +118,8 @@ protected:
 protected:
 
 	std::vector<FrgVisual_PointActor<Dim>*> thePts_;
+
+	mutable vtkSmartPointer<vtkPolyDataMapper> theMapper_ = nullptr;
 	//opencascade::handle<Standard_Transient> theCurve_ = nullptr;
 
 	//FrgVisual_BSPLineActor<Dim>* theParentBSPLineActor_ = nullptr;

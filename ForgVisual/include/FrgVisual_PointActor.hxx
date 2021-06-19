@@ -4,6 +4,7 @@
 
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_BaseActor.hxx>
+#include <FrgBase_Pnt.hxx>
 
 #include <FrgVisual_Serialization_Global.hxx>
 
@@ -44,7 +45,7 @@ public:
 	bool SelectActor(const QColor& color) override;
 
 	void SetData(ForgBaseLib::FrgBase_Pnt<Dim> pt);
-	ForgBaseLib::FrgBase_Pnt<Dim> GetData();
+	const auto& GetData() const { return theP_; }
 
 	//void UpdateActor();
 
@@ -66,9 +67,7 @@ private:
 
 protected:
 
-	//std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> theP_;
-
-	//FrgVisual_PolylineActor<Dim>* theParentPolyLineActor_ = nullptr;
+	ForgBaseLib::FrgBase_Pnt<Dim> theP_;
 };
 
 EndForgVisualLib

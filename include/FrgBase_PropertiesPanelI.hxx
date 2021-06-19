@@ -111,4 +111,20 @@ inline auto ForgBaseLib::FrgBase_PropertiesPanel::GetWidgetFromVariant(T* frgVar
 	return (get_widget_type_from_variant<T>::type*)(nullptr);
 }
 
+template<typename T>
+inline int ForgBaseLib::FrgBase_PropertiesPanel::GetRowFromVariant(T* frgVariant) const
+{
+	for (int i = 0; i < this->rowCount(); i++)
+	{
+		const auto& myCastedWidget = dynamic_cast<get_widget_type_from_variant<T>::type*>(this->cellWidget(i, 1));
+		if (myCastedWidget)
+		{
+			if (myCastedWidget->GetVariantBasePtr() == frgVariant)
+				return i;
+		}
+	}
+
+	return -1;
+}
+
 #endif // !_FrgBase_PropertiesPanel_Header

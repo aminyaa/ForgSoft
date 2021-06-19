@@ -4,6 +4,7 @@
 
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_ConicActor.hxx>
+#include <FrgBase_Pnt.hxx>
 
 #include <FrgVisual_Serialization_Global.hxx>
 
@@ -40,14 +41,17 @@ public:
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 
+	const auto& GetP0() const;
+	const auto& GetP1() const;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
 
-private:
+protected:
 
-	/*std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> theP0_;
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<3>> theP1_;*/
+	ForgBaseLib::FrgBase_Pnt<3> theP0_;
+	ForgBaseLib::FrgBase_Pnt<3> theP1_;
 };
 
 EndForgVisualLib

@@ -1,7 +1,5 @@
 #include <FrgVisual_BoxActor.hxx>
 
-#include <FrgBase_Pnt.hxx>
-
 #include <vtkObjectFactory.h>
 #include <vtkProperty.h>
 #include <vtkCubeSource.h>
@@ -21,6 +19,14 @@ void ForgVisualLib::FrgVisual_BoxActor::SetData(ForgBaseLib::FrgBase_Pnt<3> P0, 
 
 void ForgVisualLib::FrgVisual_BoxActor::SetData(double P0_x, double P0_y, double P0_z, double P1_x, double P1_y, double P1_z)
 {
+	theP0_.X() = P0_x;
+	theP0_.Y() = P0_y;
+	theP0_.Z() = P0_z;
+
+	theP1_.X() = P1_x;
+	theP1_.Y() = P1_y;
+	theP1_.Z() = P1_z;
+
 	// Create a cube.
 	auto cube = vtkSmartPointer<vtkCubeSource>::New();
 	cube->SetBounds(P0_x, P1_x, P0_y, P1_y, P0_z, P1_z);
@@ -82,21 +88,18 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BoxActor)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_ConicActor<3>>(*this);
 
-	/*ar & theP0_;
-	ar & theP1_;*/
+	ar & theP0_;
+	ar & theP1_;
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BoxActor)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_ConicActor<3>>(*this);
 
-	/*ar & theP0_;
-	ar & theP1_;*/
+	ar & theP0_;
+	ar & theP1_;
 
-	ForgBaseLib::FrgBase_Pnt<3> p0;
-	ForgBaseLib::FrgBase_Pnt<3> p1;
-
-	SetData(p0, p1);
+	SetData(theP0_, theP0_);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_BoxActor)

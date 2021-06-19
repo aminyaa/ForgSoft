@@ -162,11 +162,15 @@ opencascade::handle<Geom2d_TrimmedCurve> ForgVisualLib::FrgVisual_CircleActor::G
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_CircleActor)
 {
 	ar& boost::serialization::base_object<FrgVisual_PolylineActor<2>>(*this);
+
+	ar& theCenterPoint_;
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_CircleActor)
 {
 	ar& boost::serialization::base_object<FrgVisual_PolylineActor<2>>(*this);
+
+	ar& theCenterPoint_;
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_CircleActor)

@@ -101,7 +101,7 @@ public:
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetCtrlPts();
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetCtrlPts() const;
 	int GetDegree() const { return theDegree_; }
 
 private:

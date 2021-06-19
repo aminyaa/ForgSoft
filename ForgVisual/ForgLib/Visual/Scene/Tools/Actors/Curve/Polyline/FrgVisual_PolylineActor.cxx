@@ -48,10 +48,10 @@ ForgVisualLib::FrgVisual_PolylineActor<Dim>::FrgVisual_PolylineActor()
 template<int Dim>
 void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -78,7 +78,7 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetData(std::vector<ForgBaseLi
 				UpdateIdListUsingPoints(polyData);
 			}
 		}
-		mapper->Update();
+		theMapper_->Update();
 	}
 	else
 	{
@@ -115,11 +115,11 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetData(std::vector<ForgBaseLi
 		polyData->SetLines(cells);
 
 		// Setup actor and mapper
-		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+		theMapper_ = vtkSmartPointer<vtkPolyDataMapper>::New();
 
-		mapper->SetInputData(polyData);
+		theMapper_->SetInputData(polyData);
 
-		this->SetMapper(mapper);
+		this->SetMapper(theMapper_);
 	}
 }
 
@@ -145,10 +145,10 @@ template<>
 template<>
 void ForgVisualLib::FrgVisual_PolylineActor<2>::AddNextPoint(double x, double y)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -169,10 +169,10 @@ template<>
 template<>
 void ForgVisualLib::FrgVisual_PolylineActor<2>::SetLastPoint(double x, double y)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -192,10 +192,10 @@ template<>
 template<>
 void ForgVisualLib::FrgVisual_PolylineActor<3>::AddNextPoint(double x, double y, double z)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -216,10 +216,10 @@ template<>
 template<>
 void ForgVisualLib::FrgVisual_PolylineActor<3>::SetLastPoint(double x, double y, double z)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -238,10 +238,10 @@ void ForgVisualLib::FrgVisual_PolylineActor<3>::SetLastPoint(double x, double y,
 template<int Dim>
 void ForgVisualLib::FrgVisual_PolylineActor<Dim>::RemoveLastPoint()
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -263,10 +263,10 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::RemoveLastPoint()
 template<int Dim>
 long long ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetNumberOfPoints()
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -281,14 +281,14 @@ long long ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetNumberOfPoints()
 }
 
 template<int Dim>
-std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetPoints()
+std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetPoints() const
 {
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
 
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//const vtkSmartPointer<vtkPolyDataMapper>& mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -314,10 +314,10 @@ template<int Dim>
 ForgBaseLib::FrgBase_Pnt<Dim> ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetPoint(long long i)
 {
 	ForgBaseLib::FrgBase_Pnt<Dim> pt;
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -348,10 +348,10 @@ template<>
 template<>
 void ForgVisualLib::FrgVisual_PolylineActor<2>::SetPoint(long long i, double x, double y)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -371,10 +371,10 @@ template<>
 template<>
 void ForgVisualLib::FrgVisual_PolylineActor<3>::SetPoint(long long i, double x, double y, double z)
 {
-	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-	if (mapper)
+	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (theMapper_)
 	{
-		auto polyData = mapper->GetInput();
+		auto polyData = theMapper_->GetInput();
 		if (polyData)
 		{
 			auto points = polyData->GetPoints();
@@ -420,10 +420,10 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::ShowPoints(bool condition)
 
 	if (condition)
 	{
-		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
-		if (mapper)
+		//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+		if (theMapper_)
 		{
-			auto polyData = mapper->GetInput();
+			auto polyData = theMapper_->GetInput();
 			if (polyData)
 			{
 				auto points = polyData->GetPoints();
@@ -453,7 +453,7 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::ShowPoints(bool condition)
 						else if constexpr (Dim == 3)
 							actor->SetData(pt[0], pt[1], pt[2]);
 
-						if(theRenderer_)
+						if (theRenderer_)
 							theRenderer_->AddActor(actor);
 					}
 				}
@@ -738,7 +738,7 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::AddNextIdIntoCell(vtkPolyData*
 		{
 			auto nb = cells->GetData()->GetNumberOfValues();
 			cells->GetData()->SetNumberOfValues(nb + 1);
-			
+
 			cells->GetData()->SetValue(0, nb);
 			cells->GetData()->SetValue(nb, nb - 1);
 
@@ -778,7 +778,14 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_PolylineActor<Dim>)
 {
 	ar& boost::serialization::base_object<FrgVisual_CurveActor<Dim>>(*this);
 
-	//ar& thePts_;
+	bool isbsp = IsBSPLine();
+	ar& isbsp;
+
+	if (!isbsp)
+	{
+		const auto& pts = GetPoints();
+		ar& pts;
+	}
 }
 
 template<int Dim>
@@ -786,11 +793,17 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_PolylineActor<Dim>)
 {
 	ar& boost::serialization::base_object<FrgVisual_CurveActor<Dim>>(*this);
 
-	//std::vector<FrgVisual_PointActor<Dim>*> pts;
+	bool isbsp;
+	ar& isbsp;
 
-	//ar& pts;
+	if (!isbsp)
+	{
+		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> points;
 
-	//SetData(pts);
+		ar& points;
+
+		SetData(points);
+	}
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_PolylineActor<2>)

@@ -192,26 +192,11 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_GridActor)
 	ar& theXLine_;
 	ar& theYLine_;
 
-	/*QString IS_XLINE_NULL;
-	QString IS_YLINE_NULL;
+	ar& theL1_;
+	ar& theL2_;
 
-	if (theXLine_)
-		IS_XLINE_NULL = "XLINE_IS_NOT_NULL";
-	else
-		IS_XLINE_NULL = "XLINE_IS_NULL";
-
-	if (theYLine_)
-		IS_YLINE_NULL = "YLINE_IS_NOT_NULL";
-	else
-		IS_YLINE_NULL = "YLINE_IS_NULL";
-
-	ar& IS_XLINE_NULL;
-	if (theXLine_)
-		ar& theXLine_;
-
-	ar& IS_YLINE_NULL;
-	if (theYLine_)
-		ar& theYLine_;*/
+	ar& theNumberOfDivisions1_;
+	ar& theNumberOfDivisions2_;
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_GridActor)
@@ -223,16 +208,11 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_GridActor)
 	ar& theXLine_;
 	ar& theYLine_;
 
-	/*QString IS_XLINE_NULL;
-	QString IS_YLINE_NULL;
+	ar& theL1_;
+	ar& theL2_;
 
-	ar& IS_XLINE_NULL;
-	if (IS_XLINE_NULL == "XLINE_IS_NOT_NULL")
-		ar& theXLine_;
-
-	ar& IS_YLINE_NULL;
-	if (IS_YLINE_NULL == "YLINE_IS_NOT_NULL")
-		ar& theYLine_;*/
+	ar& theNumberOfDivisions1_;
+	ar& theNumberOfDivisions2_;
 
 	SetData(theCenter_, theL1_, theL2_, theNumberOfDivisions1_, theNumberOfDivisions2_, false);
 }

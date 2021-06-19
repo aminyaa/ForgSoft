@@ -47,6 +47,10 @@ public:
 	void SetLineEditValueForPreview();
 	void UpdateAllParameters() const;
 
+	QToolButton* GetButton() const { return theButton_; }
+
+	bool IsButtonHidden() const;
+
 protected slots:
 	
 	virtual void ButtonClickedSlot();

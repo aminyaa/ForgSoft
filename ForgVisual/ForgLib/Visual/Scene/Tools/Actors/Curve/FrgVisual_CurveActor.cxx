@@ -8,6 +8,14 @@
 #include <vtkPointData.h>
 #include <vtkMapper.h>
 
+#include <GeomTools.hxx>
+#include <Geom2d_Curve.hxx>
+#include <Geom_Curve.hxx>
+
+#include <istream>
+#include <fstream>
+#include <sstream>
+
 #include <vtkObjectFactory.h>
 
 //template<int Dim>
@@ -133,6 +141,10 @@ inline bool ForgVisualLib::FrgVisual_CurveActor<Dim>::UnSelectActor()
 	return true;
 }
 
+#define CurveType2D "CurveActor_2D"
+#define CurveType3D "CurveActor_3D"
+#define CurveTypeNone "CurveActor_None"
+
 template<int Dim>
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_CurveActor<Dim>)
 {
@@ -140,6 +152,39 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_CurveActor<Dim>)
 
 	ar& theIsStippled_;
 	ar& theLineStipplePattern_;
+
+	std::string curveType;
+
+	auto my2dCurve = opencascade::handle<Geom2d_Curve>::DownCast(theCurve_);
+	auto my3dCurve = opencascade::handle<Geom_Curve>::DownCast(theCurve_);
+
+	if (my2dCurve)
+		curveType = CurveType2D;
+	else if (my3dCurve)
+		curveType = CurveType3D;
+	else
+		curveType = CurveTypeNone;
+
+	ar& curveType;
+
+	if (my2dCurve)
+	{
+		std::ostringstream st;
+		st.precision(16);
+		GeomTools::Write(my2dCurve, st);
+
+		std::string s = st.str();
+		ar & s;
+	}
+	else if (my3dCurve)
+	{
+		std::ostringstream st;
+		st.precision(16);
+		GeomTools::Write(my3dCurve, st);
+
+		std::string s = st.str();
+		ar & s;
+	}
 }
 
 template<int Dim>
@@ -149,6 +194,37 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_CurveActor<Dim>)
 
 	ar& theIsStippled_;
 	ar& theLineStipplePattern_;
+
+	std::string curveType;
+
+	ar& curveType;
+
+	if (curveType == CurveType2D)
+	{
+		std::string s;
+		ar& s;
+
+		std::stringstream st;
+		st << s;
+		
+		Handle(Geom2d_Curve) curve;
+		GeomTools::Read(curve, st);
+
+		theCurve_ = curve;
+	}
+	else if (curveType == CurveType3D)
+	{
+		std::string s;
+		ar& s;
+
+		std::stringstream st;
+		st << s;
+
+		Handle(Geom_Curve) curve;
+		GeomTools::Read(curve, st);
+
+		theCurve_ = curve;
+	}
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_CurveActor<2>)

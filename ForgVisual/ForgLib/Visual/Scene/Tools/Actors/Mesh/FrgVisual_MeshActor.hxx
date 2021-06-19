@@ -4,6 +4,7 @@
 
 #include <FrgVisual_Global.hxx>
 #include <FrgVisual_BaseActor.hxx>
+#include <FrgBase_Pnt.hxx>
 
 #include <FrgVisual_Serialization_Global.hxx>
 
@@ -38,14 +39,17 @@ public:
 	std::vector<ActorType> GetActorTypes() const override;
 	ActorDimension GetActorDimension() const override;
 
+	const auto& GetPoints() const { return thePoints_; }
+	const auto& GetConnectivity() const { return theConnectivity_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
 
 protected:
 
-	//std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> thePoints_;
-	//std::vector<std::shared_ptr<std::tuple<int, int, int>>> theConnectivity_;
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> thePoints_;
+	std::vector<std::tuple<int, int, int>> theConnectivity_;
 };
 
 EndForgVisualLib

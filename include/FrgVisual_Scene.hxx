@@ -80,6 +80,8 @@ public:
 	vtkSmartPointer<vtkCamera> GetCamera() const { return theCamera_; }
 	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
 
+	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theContextMenuInScene_; }
+
 Q_SIGNALS:
 
 	void RenderScene(bool resetCamera = true, bool resetView = false);

@@ -359,7 +359,7 @@ ForgVisualLib::FrgVisual_PointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::A
 
 	vtkSmartPointer<FrgVisual_PointActor<Dim>> actor =
 		vtkSmartPointer<FrgVisual_PointActor<Dim>>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(pt);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -407,7 +407,7 @@ ForgVisualLib::FrgVisual_PickingPointActor<Dim>* ForgVisualLib::FrgVisual_Scene<
 {
 	auto actor =
 		vtkSmartPointer<FrgVisual_PickingPointActor<Dim>>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(pt);
 
@@ -435,7 +435,7 @@ ForgVisualLib::FrgVisual_LineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 
 	vtkSmartPointer<FrgVisual_LineActor<Dim>> actor =
 		vtkSmartPointer<FrgVisual_LineActor<Dim>>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(P0, P1);
 	actor->SetLineWidth(1);
@@ -495,7 +495,7 @@ ForgVisualLib::FrgVisual_PolylineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>
 
 	vtkSmartPointer<FrgVisual_PolylineActor<Dim>> actor =
 		vtkSmartPointer<FrgVisual_PolylineActor<Dim>>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(pts);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -533,7 +533,7 @@ ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 {
 	// Actor
 	auto actor = vtkSmartPointer<FrgVisual_RectangleActor>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(P0_X, P0_Y, P1_X, P1_Y);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -557,7 +557,7 @@ ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCi
 {
 	// Actor
 	auto actor = vtkSmartPointer<FrgVisual_CircleActor>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(center, radius);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -581,7 +581,7 @@ ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCi
 {
 	// Actor
 	auto actor = vtkSmartPointer<FrgVisual_CircleActor>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetDataCenterAndPointOnCurve(center, pointOnCurve);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -620,7 +620,7 @@ ForgVisualLib::FrgVisual_MeshActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 
 	vtkSmartPointer<FrgVisual_MeshActor<Dim>> actor =
 		vtkSmartPointer<FrgVisual_MeshActor<Dim>>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetDataTriangulation(pts, connectivity);
 
@@ -647,7 +647,7 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 	{
 		actor = vtkSmartPointer<FrgVisual_BSPLineActor<Dim>>::New();
 
-		actor->SetRenderer(theRenderer_);
+		//actor->SetRenderer(theRenderer_);
 
 		actor->SetData(ctrlPts, degree);
 		actor->SetColor(1.0, 0.0, 0.0);
@@ -679,7 +679,7 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 {
 	auto actor = vtkSmartPointer<FrgVisual_BSPLineActor<Dim>>::New();
 
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetDataInterpolate(pts, degree);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -720,7 +720,7 @@ ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
 {
 	// Actor
 	auto actor = vtkSmartPointer<FrgVisual_BoxActor>::New();
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(P0_X, P0_Y, P0_Z, P1_X, P1_Y, P1_Z);
 	actor->SetColor(1.0, 0.0, 0.0);
@@ -745,7 +745,7 @@ ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddTex
 {
 	// Actor
 	vtkNew<FrgVisual_TextActor<2>> actor;
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(value, posx, posy);
 
@@ -770,7 +770,7 @@ ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddTex
 {
 	// Actor
 	vtkNew<FrgVisual_TextActor<3>> actor;
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(value, posx, posy, posz);
 
@@ -792,7 +792,7 @@ ForgVisualLib::FrgVisual_PlaneActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::A
 {
 	// Actor
 	vtkNew<FrgVisual_PlaneActor<Dim>> actor;
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(center, normal);
 
@@ -815,7 +815,7 @@ ForgVisualLib::FrgVisual_PlaneActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::A
 {
 	// Actor
 	vtkNew<FrgVisual_PlaneActor<Dim>> actor;
-	actor->SetRenderer(theRenderer_);
+	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(origin, P1, P2);
 
@@ -916,7 +916,10 @@ int ForgVisualLib::FrgVisual_Scene<Dim>::AddActorToScene(FrgVisual_BaseActor_Ent
 	if (index >= 0 || index == -2)
 	{
 		if (theRenderer_)
+		{
+			actor->SetRenderer(theRenderer_);
 			theRenderer_->AddActor(actor);
+		}
 	}
 
 	emit ActorAddedSignal(actor);
@@ -1054,7 +1057,9 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 
 	ar& mouseWheelMotionFactor;
 
-	vtkActorCollection* ac;
+	ar& theRegistry_;
+
+	/*vtkActorCollection* ac;
 	vtkActor* anActor;
 	FrgVisual_BaseActor_Entity* aPart;
 
@@ -1086,12 +1091,10 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 
 			ar& isFrgVisualActor;
 		}
-	}
+	}*/
 
 	ar& theMajorGridColor_;
 	ar& theMinorGridColor_;
-
-	ar& theRegistry_;
 }
 
 template<int Dim>
@@ -1107,51 +1110,56 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 	else if constexpr (Dim == 3)
 		FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_))->SetMouseWheelMotionFactor(mouseWheelMotionFactor);
 
-	int numberOfItems;
-	ar& numberOfItems;
+	ar& theRegistry_;
 
-	for (int i = 0; i < numberOfItems; i++)
-	{
-		QString isFrgVisualActor;
+	//int numberOfItems;
+	//ar& numberOfItems;
 
-		ar& isFrgVisualActor;
+	//for (int i = 0; i < numberOfItems; i++)
+	//{
+	//	QString isFrgVisualActor;
 
-		if (isFrgVisualActor == IS_FRGVISUAL_ACTOR)
-		{
-			bool isIndependent;
-			ar& isIndependent;
+	//	ar& isFrgVisualActor;
 
-			if (isIndependent)
-			{
-				FrgVisual_BaseActor_Entity* aPart;
-				ar& aPart;
+	//	if (isFrgVisualActor == IS_FRGVISUAL_ACTOR)
+	//	{
+	//		bool isIndependent;
+	//		ar& isIndependent;
 
-				aPart->SetRenderer(theRenderer_);
+	//		if (isIndependent)
+	//		{
+	//			FrgVisual_BaseActor_Entity* aPart;
+	//			ar& aPart;
 
-				theRenderer_->AddActor(aPart);
-			}
+	//			aPart->SetRenderer(theRenderer_);
 
-			/*auto myGrid = dynamic_cast<FrgVisual_GridActor*>(aPart);
-			if (myGrid)
-			{
-				if (myGrid->GetXLine())
-					theMajorGridActor_ = myGrid;
-				else
-					theMinorGridActor_ = myGrid;
-			}*/
-		}
-		else if (isFrgVisualActor == IS_NOT_FRGVISUAL_ACTOR)
-		{
+	//			theRenderer_->AddActor(aPart);
+	//		}
 
-		}
-	}
+	//		/*auto myGrid = dynamic_cast<FrgVisual_GridActor*>(aPart);
+	//		if (myGrid)
+	//		{
+	//			if (myGrid->GetXLine())
+	//				theMajorGridActor_ = myGrid;
+	//			else
+	//				theMinorGridActor_ = myGrid;
+	//		}*/
+	//	}
+	//	else if (isFrgVisualActor == IS_NOT_FRGVISUAL_ACTOR)
+	//	{
+
+	//	}
+	//}
 
 	ar& theMajorGridColor_;
 	ar& theMinorGridColor_;
 
-	ar& theRegistry_;
+	for (const auto& actor : theRegistry_->GetAllActors())
+	{
+		AddActorToScene(actor.second);
+	}
 
-	this->RenderScene(true);
+	this->RenderScene(false, false);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Scene_Entity)

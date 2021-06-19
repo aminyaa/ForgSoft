@@ -25,7 +25,7 @@ public:
 	FrgVisual_TextActor();
 
 	virtual void SetSize(int size);
-	virtual int GetSize();
+	virtual int GetSize() const;
 
 	void RemoveActors(vtkRenderer* renderer) override;
 
@@ -46,21 +46,49 @@ public:
 	template <typename = std::enable_if_t<Dim == 3>>
 	void SetData(const QString& value, double x, double y, double z);
 
+	void SetRenderer(vtkRenderer* renderer) override;
+
 	/* Properties */
 
+	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetPosition() const { return thePosition_; }
+
+	QString GetText() const { return theValue_; }
 	void SetText(const QString& value);
+
+	std::tuple<int, int> GetDisplayOffset() const;
 	void SetDisplayOffset(int offsetX, int offsetY);
 
+	QColor GetColor() const;
+	void SetColor(const QColor& color);
+
+	void GetColor(double* color) const;
 	void SetColor(double red, double green, double blue) override;
+
+	bool IsBold() const;
 	void SetBold(bool condition);
+
+	bool IsItalic() const;
 	void SetItalic(bool condition);
+
+	double GetOrientation() const;
 	void SetOrientation(double degree);
 
+	bool IsJustificationToCentered() const;
 	void SetJustificationToCentered();
+
+	bool IsJustificationToLeft() const;
 	void SetJustificationToLeft();
+
+	bool IsJustificationToRight() const;
 	void SetJustificationToRight();
+
+	bool IsVerticalJustificationToBottom() const;
 	void SetVerticalJustificationToBottom();
+
+	bool IsVerticalJustificationToCentered() const;
 	void SetVerticalJustificationToCentered();
+
+	bool IsVerticalJustificationToTop() const;
 	void SetVerticalJustificationToTop();
 
 	ActorType GetActorType() const override;
@@ -74,7 +102,9 @@ private:
 protected:
 
 	QString theValue_;
-	vtkSmartPointer<vtkBillboardTextActor3D> theTextActor_ = nullptr;
+	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> thePosition_;
+
+	mutable vtkSmartPointer<vtkBillboardTextActor3D> theTextActor_ = nullptr;
 };
 
 EndForgVisualLib

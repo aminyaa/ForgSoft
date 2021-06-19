@@ -3,8 +3,6 @@
 #include <FrgBase_Pnt.hxx>
 #include <FrgBase_SerialSpec_Tuple.hxx>
 
-#include <FrgBase_Pnt.hxx>
-
 #include <vtkObjectFactory.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
@@ -33,10 +31,11 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 	std::vector<std::tuple<int, int, int>> connectivity
 )
 {
-	/*thePoints_.clear();
+	thePoints_.clear();
 	theConnectivity_.clear();
+
 	thePoints_ = pts;
-	theConnectivity_ = connectivity;*/
+	theConnectivity_ = connectivity;
 
 	auto Hull = vtkSmartPointer<vtkPolyData>::New();
 	auto points = vtkSmartPointer<vtkPoints>::New();
@@ -127,8 +126,8 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	/*ar & thePoints_;
-	ar & theConnectivity_;*/
+	ar & thePoints_;
+	ar & theConnectivity_;
 }
 
 template<int Dim>
@@ -136,13 +135,10 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
 	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
-	std::vector<std::tuple<int, int, int>> connectivity;
+	ar & thePoints_;
+	ar & theConnectivity_;
 
-	/*ar & thePoints_;
-	ar & theConnectivity_;*/
-
-	SetDataTriangulation(pts, connectivity);
+	SetDataTriangulation(thePoints_, theConnectivity_);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_MeshActor<2>)

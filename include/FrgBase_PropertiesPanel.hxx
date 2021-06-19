@@ -32,16 +32,23 @@ public:
 	QWidget* GetParentWidget() const { return theParentWidget_; }
 	QObject* GetParentObject() const { return theParentObject_; }
 
-	template<typename T>
+	void SetParentWidget(QWidget* parentWidget) { theParentWidget_ = parentWidget; }
+	void SetParentObject(QObject* parentObject) { theParentObject_ = parentObject; }
+
+	template <typename T>
 	auto AddRow(T* frgVairant, int row);
-	template<typename T>
+	template <typename T>
 	auto AddRow(T* frgVairant);
 
-	template<typename T>
+	template <typename T>
 	void RemoveRow(T* frgVariant);
 
-	template<typename T>
+	template <typename T>
 	auto GetWidgetFromVariant(T* frgVariant);
+
+	// returns -1 if the variant was not found
+	template <typename T>
+	int GetRowFromVariant(T* frgVariant) const;
 
 signals:
 
@@ -51,7 +58,7 @@ protected slots:
 
 	void DisplayNameChangedSlot(const QString& name);
 
-private:
+protected:
 
 	QWidget* theParentWidget_ = nullptr;
 	QObject* theParentObject_ = nullptr;
