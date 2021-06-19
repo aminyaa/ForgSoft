@@ -88,5 +88,10 @@
         <file>styles/ADS/default-windows.css</file>
         <file>styles/ADS/modern-windows.css</file>
         <file>styles/ADS/vendor-partsolutions.css</file>
+        <file>styles/QCodeEditor/languages/cpp.xml</file>
+        <file>styles/QCodeEditor/languages/exprtk.xml</file>
+        <file>styles/QCodeEditor/languages/glsl.xml</file>
+        <file>styles/QCodeEditor/languages/lua.xml</file>
+        <file>styles/QCodeEditor/languages/python.xml</file>
     </qresource>
 </RCC>
