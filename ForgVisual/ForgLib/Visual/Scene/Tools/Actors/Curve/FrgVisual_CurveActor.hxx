@@ -24,8 +24,13 @@ public:
 	//static FrgVisual_CurveActor* New();
 	vtkTypeMacro(FrgVisual_CurveActor, FrgVisual_BaseActor<Dim>);
 
+	virtual float GetLineWidth() const;
 	virtual void SetLineWidth(float width);
-	virtual float GetLineWidth();
+
+	virtual float GetSelectionLineWidth() const;
+	virtual void SetSelectionLineWidth(float width);
+
+	virtual bool IsRenderLinesAsTubes() const;
 	virtual void SetRenderLinesAsTubes(bool condition);
 
 	void SetStippledLine(int lineStipplePattern, bool condition = true);
@@ -40,16 +45,19 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER( )
+	DECLARE_SAVE_LOAD_HEADER()
 
-	protected:
+protected:
 
-		opencascade::handle<Standard_Transient> theCurve_ = nullptr;
+	opencascade::handle<Standard_Transient> theCurve_ = nullptr;
 
 protected:
 
 	bool theIsStippled_;
 	int theLineStipplePattern_;
+	float theLineWidth_ = 1.0f;
+	float theSelectionLineWidth_ = 1.5f;
+	bool theRenderLinesAsTubes_ = false;
 };
 
 EndForgVisualLib

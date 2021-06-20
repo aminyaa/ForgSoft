@@ -21,18 +21,32 @@ template<int Dim>
 void ForgVisualLib::FrgVisual_PointActor<Dim>::SetSize(float size)
 {
 	GetProperty()->SetPointSize(size);
+	theSize_ = size;
 }
 
 template<int Dim>
-float ForgVisualLib::FrgVisual_PointActor<Dim>::GetSize()
+float ForgVisualLib::FrgVisual_PointActor<Dim>::GetSelectionSize() const
 {
-	return GetProperty()->GetPointSize();
+	return theSelectionSize_;
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_PointActor<Dim>::SetSelectionSize(float size)
+{
+	theSelectionSize_ = size;
+}
+
+template<int Dim>
+float ForgVisualLib::FrgVisual_PointActor<Dim>::GetSize() const
+{
+	return theSize_;
 }
 
 template<int Dim>
 void ForgVisualLib::FrgVisual_PointActor<Dim>::SetRenderPointsAsSpheres(bool condition)
 {
 	GetProperty()->SetRenderPointsAsSpheres(condition);
+	theRenderPointsAsSpheres_ = condition;
 }
 
 //template<int Dim>
@@ -59,7 +73,16 @@ bool ForgVisualLib::FrgVisual_PointActor<Dim>::SelectActor(const QColor& color)
 	if (!FrgVisual_BaseActor<Dim>::SelectActor(color))
 		return false;
 
-	SetSize(GetSize() * 2);
+	GetProperty()->SetPointSize(theSelectionSize_);
+
+	return true;
+}
+
+template<int Dim>
+bool ForgVisualLib::FrgVisual_PointActor<Dim>::UnSelectActor()
+{
+	if (!FrgVisual_BaseActor<Dim>::UnSelectActor())
+		return false;
 
 	return true;
 }
@@ -169,6 +192,8 @@ void ForgVisualLib::FrgVisual_PointActor<Dim>::SetData(ForgBaseLib::FrgBase_Pnt<
 		mapper->SetInputData(point);
 		SetMapper(mapper);
 	}
+
+	//theSize_ = GetProperty()->GetPointSize();
 }
 
 //template<int Dim>
@@ -272,10 +297,12 @@ template<int Dim>
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_PointActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
-
 	const auto& pt = GetData();
 
 	ar& pt;
+	ar& theSize_;
+	ar& theSelectionSize_;
+	ar& theRenderPointsAsSpheres_;
 }
 
 template<int Dim>
@@ -287,6 +314,13 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_PointActor<Dim>)
 	ar& pt;
 
 	SetData(pt);
+
+	ar& theSize_;
+	ar& theSelectionSize_;
+	ar& theRenderPointsAsSpheres_;
+
+	SetSize(theSize_);
+	SetRenderPointsAsSpheres(theRenderPointsAsSpheres_);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_PointActor<2>)

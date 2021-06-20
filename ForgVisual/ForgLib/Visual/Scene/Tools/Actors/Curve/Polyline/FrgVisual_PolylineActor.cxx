@@ -804,6 +804,8 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_PolylineActor<Dim>)
 
 		SetData(points);
 	}
+
+	SetStippledLine(theLineStipplePattern_, theIsStippled_);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_PolylineActor<2>)

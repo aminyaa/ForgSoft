@@ -141,7 +141,7 @@ Q_SIGNALS:
 
 protected:
 
-	vtkProperty* theCopyProperty_ = nullptr;
+	mutable vtkProperty* theCopyProperty_ = nullptr;
 	mutable vtkProperty* theProperty_ = nullptr;
 
 	vtkRenderer* theRenderer_ = nullptr;

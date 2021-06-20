@@ -29,9 +29,13 @@ public:
 
 	FrgVisual_PointActor();
 
+	virtual float GetSize() const;
 	virtual void SetSize(float size);
-	virtual float GetSize();
 
+	virtual float GetSelectionSize() const;
+	virtual void SetSelectionSize(float size);
+
+	virtual bool IsRenderPointsAsSpheres() const { return theRenderPointsAsSpheres_; }
 	virtual void SetRenderPointsAsSpheres(bool condition);
 
 	static FrgVisual_PointActor* New();
@@ -43,6 +47,7 @@ public:
 	//void TranslateActor(double dx, double dy, double dz) override;
 
 	bool SelectActor(const QColor& color) override;
+	bool UnSelectActor() override;
 
 	void SetData(ForgBaseLib::FrgBase_Pnt<Dim> pt);
 	const auto& GetData() const { return theP_; }
@@ -68,6 +73,10 @@ private:
 protected:
 
 	ForgBaseLib::FrgBase_Pnt<Dim> theP_;
+
+	float theSize_ = 1.0f;
+	float theSelectionSize_ = 2.0f;
+	bool theRenderPointsAsSpheres_ = false;
 };
 
 EndForgVisualLib

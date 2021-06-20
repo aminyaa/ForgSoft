@@ -33,19 +33,38 @@ inline
 void ForgVisualLib::FrgVisual_CurveActor<Dim>::SetLineWidth(float width)
 {
 	GetProperty()->SetLineWidth(width);
+	theLineWidth_ = width;
 }
 
 template<int Dim>
-float ForgVisualLib::FrgVisual_CurveActor<Dim>::GetLineWidth()
+float ForgVisualLib::FrgVisual_CurveActor<Dim>::GetSelectionLineWidth() const
 {
-	return GetProperty()->GetLineWidth();
+	return theSelectionLineWidth_;
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_CurveActor<Dim>::SetSelectionLineWidth(float width)
+{
+	theSelectionLineWidth_ = width;
+}
+
+template<int Dim>
+float ForgVisualLib::FrgVisual_CurveActor<Dim>::GetLineWidth() const
+{
+	return theLineWidth_;
+}
+
+template<int Dim>
+bool ForgVisualLib::FrgVisual_CurveActor<Dim>::IsRenderLinesAsTubes() const
+{
+	return theRenderLinesAsTubes_;
 }
 
 template<int Dim>
 inline
 void ForgVisualLib::FrgVisual_CurveActor<Dim>::SetRenderLinesAsTubes(bool condition)
 {
-	GetProperty()->SetRenderLinesAsTubes(condition);
+	theRenderLinesAsTubes_ = condition;
 }
 
 template<int Dim>
@@ -123,7 +142,7 @@ bool ForgVisualLib::FrgVisual_CurveActor<Dim>::SelectActor(const QColor& color)
 	if (!FrgVisual_BaseActor<Dim>::SelectActor(color))
 		return false;
 
-	SetLineWidth(3.0 * theCopyProperty_->GetLineWidth());
+	GetProperty()->SetLineWidth(theSelectionLineWidth_);
 
 	/*GetProperty()->SetLineWidth(2.0 * GetProperty()->GetLineWidth());*/
 
@@ -152,6 +171,9 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_CurveActor<Dim>)
 
 	ar& theIsStippled_;
 	ar& theLineStipplePattern_;
+	ar& theLineWidth_;
+	ar& theSelectionLineWidth_;
+	ar& theRenderLinesAsTubes_;
 
 	std::string curveType;
 
@@ -194,6 +216,9 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_CurveActor<Dim>)
 
 	ar& theIsStippled_;
 	ar& theLineStipplePattern_;
+	ar& theLineWidth_;
+	ar& theSelectionLineWidth_;
+	ar& theRenderLinesAsTubes_;
 
 	std::string curveType;
 
@@ -225,6 +250,10 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_CurveActor<Dim>)
 
 		theCurve_ = curve;
 	}
+
+	//SetStippledLine(theLineStipplePattern_, theIsStippled_);
+	SetLineWidth(theLineWidth_);
+	SetRenderLinesAsTubes(theRenderLinesAsTubes_);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_CurveActor<2>)
