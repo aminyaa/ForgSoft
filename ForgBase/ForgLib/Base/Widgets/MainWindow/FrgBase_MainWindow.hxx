@@ -68,7 +68,7 @@ protected:
 	//FrgBase_TabWidget* theTabWidget_ = NullPtr;
 
 	QString theWindowTitle_;
-	bool theProgramIsModified_ = false;
+	//bool theProgramIsModified_ = false;
 
 	QString theProjectExtension_;
 
@@ -171,7 +171,7 @@ protected slots:
 
 public slots:
 
-	void ProgramModifiedSlot(bool condition);
+	//void ProgramModifiedSlot(bool condition);
 };
 
 EndForgBaseLib

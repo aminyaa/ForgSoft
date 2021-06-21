@@ -205,7 +205,7 @@ void ForgBaseLib::FrgBase_MainWindow::FormMenus()
 
 	auto saveAction = theMainWindowMenus_->theFileMenu_->GetItem("&Save");
 	const auto loadAction = theMainWindowMenus_->theFileMenu_->GetItem("&Load");
-	saveAction->setEnabled(true);
+	//saveAction->setEnabled(true);
 
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(FileSaveActionSlot()));
 	connect(loadAction, SIGNAL(triggered()), this, SLOT(FileLoadActionSlot()));
@@ -418,7 +418,7 @@ void ForgBaseLib::FrgBase_MainWindow::SetTabText(int index, const QString& title
 
 void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 {
-	if (theProgramIsModified_)
+	//if (theProgramIsModified_)
 	{
 		const auto myMessageOutput = QMessageBox::information(this, "Save project?", "This project is not saved. Do you want to save your project?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
 
@@ -462,15 +462,15 @@ void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 
 	theTreeDockWidget_->setWidget(theTree_);
 
-	ProgramModifiedSlot(false);
+	//ProgramModifiedSlot(false);
 
 	PrintInfoToConsole("The project was successfully loaded from \"" + fileName + "\".");
 }
 
 void ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
 {
-	if (!theProgramIsModified_)
-		return;
+	/*if (!theProgramIsModified_)
+		return;*/
 
 	QString* ext;
 	const QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", theProjectExtension_);
@@ -485,25 +485,25 @@ void ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
 
 	myFile.close();
 
-	ProgramModifiedSlot(false);
+	//ProgramModifiedSlot(false);
 
 	PrintInfoToConsole("The project was successfully saved in \"" + fileName + "\".");
 }
 
-void ForgBaseLib::FrgBase_MainWindow::ProgramModifiedSlot(bool condition)
-{
-	if (theProgramIsModified_ == condition)
-		return;
-
-	theProgramIsModified_ = condition;
-
-	theMainWindowMenus_->theFileMenu_->GetItem("&Save")->setEnabled(condition);
-
-	if (theProgramIsModified_)
-		this->setWindowTitle(theWindowTitle_ + " *");
-	else
-		this->setWindowTitle(theWindowTitle_);
-}
+//void ForgBaseLib::FrgBase_MainWindow::ProgramModifiedSlot(bool condition)
+//{
+//	if (theProgramIsModified_ == condition)
+//		return;
+//
+//	theProgramIsModified_ = condition;
+//
+//	theMainWindowMenus_->theFileMenu_->GetItem("&Save")->setEnabled(condition);
+//
+//	if (theProgramIsModified_)
+//		this->setWindowTitle(theWindowTitle_ + " *");
+//	else
+//		this->setWindowTitle(theWindowTitle_);
+//}
 
 void ForgBaseLib::FrgBase_MainWindow::SetWindowTitle(QString title)
 {
