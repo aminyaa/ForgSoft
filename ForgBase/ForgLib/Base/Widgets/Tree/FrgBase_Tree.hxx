@@ -54,6 +54,8 @@ public:
 
 	FrgBase_TreeItem* FindTItemByObjectName(const QString& objectName);
 
+	std::vector<FrgBase_TreeItem*> GetItemsUsingLevel(int level) const;
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)

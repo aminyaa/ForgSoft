@@ -15,17 +15,17 @@
 
 ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 (
-	const FrgString & itemTitle,
-	FrgBase_TreeItem * parentItem,
-	FrgBase_Tree * parentTree
+	const FrgString& itemTitle,
+	FrgBase_TreeItem* parentItem,
+	FrgBase_Tree* parentTree
 )
 	: QTreeWidgetItem(parentItem)
 {
 	ConstructTItem(itemTitle, parentItem, parentTree);
 
-	if (parentTree)
+	/*if (parentTree)
 		if (parentTree->GetParentMainWindow())
-			parentTree->GetParentMainWindow()->ProgramModifiedSlot(true);
+			parentTree->GetParentMainWindow()->ProgramModifiedSlot(true);*/
 
 	theTItemIsSortable_ = false;
 	theTItemIsDeletable_ = true;
@@ -51,11 +51,46 @@ void ForgBaseLib::FrgBase_TreeItem::SetParentMainWindow(ForgBaseLib::FrgBase_Mai
 	thePropertiesPanel_->SetParentObject(this);
 }
 
+void ForgBaseLib::FrgBase_TreeItem::SetParentTree(FrgBase_Tree* parentTree)
+{
+	theParentTree_ = parentTree;
+}
+
+void ForgBaseLib::FrgBase_TreeItem::SetParentTItem(FrgBase_TreeItem* parentTItem, bool renameTItem)
+{
+	if (!parentTItem)
+		return;
+
+	const auto& myParentTItem = GetParentTItem();
+	if (myParentTItem)
+		myParentTItem->removeChild(this);
+
+	this->SetParentMainWindow(parentTItem->GetParentMainWindow());
+	parentTItem->addChild(this);
+	SetParentTree(parentTItem->GetParentTree());
+	this->setParent(parentTItem);
+	this->SetLevelInTree(parentTItem->GetLevelInTree() + 1);
+
+	if (renameTItem)
+	{
+		QString n = text(0);
+		this->RenameTItemSlot("___tmp" + n + "tmp___");
+		this->RenameTItemSlot(n);
+	}
+
+	parentTItem->SortTItem();
+}
+
+ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_TreeItem::GetParentTItem() const
+{
+	return dynamic_cast<FrgBase_TreeItem*>(this->QTreeWidgetItem::parent());
+}
+
 void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 (
-	const FrgString & itemTitle,
-	FrgBase_TreeItem * parentItem,
-	FrgBase_Tree * parentTree
+	const FrgString& itemTitle,
+	FrgBase_TreeItem* parentItem,
+	FrgBase_Tree* parentTree
 )
 {
 	theParentTree_ = parentTree;
@@ -78,6 +113,8 @@ void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 		parentItem->addChild(this);
 
 		this->setObjectName(parentItem->objectName() + "_" + itemTitle);
+
+		theLevelInTree_ = parentItem->GetLevelInTree() + 1;
 	}
 	else
 		if (!parentTree)
@@ -89,6 +126,8 @@ void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 		{
 			parentTree->addTopLevelItem(this);
 			this->setObjectName(itemTitle);
+
+			theLevelInTree_ = 0;
 		}
 
 	FormPropertiesPanel();
@@ -241,7 +280,7 @@ std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_TreeItem::GetAl
 			continue;
 		}
 
-		if(!founded)
+		if (!founded)
 			break;
 
 		auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
@@ -255,7 +294,7 @@ std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_TreeItem::GetAl
 	return results;
 }
 
-bool ForgBaseLib::FrgBase_TreeItem::IsSameNameTItem(const QString & name)
+bool ForgBaseLib::FrgBase_TreeItem::IsSameNameTItem(const QString& name)
 {
 	if (dynamic_cast<FrgBase_TreeItem*>(QTreeWidgetItem::parent())->GetChild(name))
 		return true;
@@ -273,7 +312,7 @@ void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(bool sortParentTItem)
 	}
 }
 
-void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString & name, bool sortParentTItem)
+void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString& name, bool sortParentTItem)
 {
 	if (sender() == theTItemName_)
 		theTItemName_->blockSignals(true);
@@ -293,7 +332,7 @@ void ForgBaseLib::FrgBase_TreeItem::AddRenameOptionInContextMenu()
 void ForgBaseLib::FrgBase_TreeItem::RemoveRenameOptionInContextMenu()
 {
 	auto action = theContextMenu_->GetItem("Rename");
-	
+
 	if (!action)
 	{
 		std::cout << "cannot remove Rename option in ForgBaseLib::FrgBase_TreeItem::RemoveRenameOptionInContextMenu()\n";

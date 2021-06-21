@@ -281,6 +281,25 @@ ForgBaseLib::FrgBase_TreeItem * ForgBaseLib::FrgBase_Tree::FindTItemByObjectName
 	return nullptr;
 }
 
+std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_Tree::GetItemsUsingLevel(int level) const
+{
+	std::vector<FrgBase_TreeItem*> result;
+	QTreeWidgetItemIterator it(const_cast<FrgBase_Tree*>(this));
+	while (*it)
+	{
+		const auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
+
+		if (myTItem && myTItem->GetLevelInTree() == level)
+		{
+			result.push_back(myTItem);
+		}
+
+		++it;
+	}
+
+	return std::move(result);
+}
+
 void ForgBaseLib::FrgBase_Tree::SetParentMainWindow(FrgBase_MainWindow* parentMainWindow)
 {
 	if (parentMainWindow == theParentMainWindow_)

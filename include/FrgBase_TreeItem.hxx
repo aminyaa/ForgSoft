@@ -42,6 +42,8 @@ protected:
 	bool theTItemIsDraggable_;
 	bool theTItemIsDroppable_;
 
+	int theLevelInTree_ = -1;
+
 	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
 
 	virtual void FormPropertiesPanel();
@@ -63,12 +65,20 @@ public:
 
 	virtual ~FrgBase_TreeItem();
 
-	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
+	virtual void SetParentMainWindow(FrgBase_MainWindow* parentMainWindow);
+	virtual void SetParentTree(FrgBase_Tree* parentTree);
+	virtual void SetParentTItem(FrgBase_TreeItem* parentTItem, bool renameTItem = true);
+
+	virtual int GetLevelInTree() const { return theLevelInTree_; }
+	// setting level in tree is not recommended manually
+	virtual void SetLevelInTree(int level) { theLevelInTree_ = level; }
 
 	FrgGetMacro(FrgBase_Tree*, ParentTree, theParentTree_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 	FrgGetMacro(FrgBase_PropertiesPanel*, PropertiesPanel, thePropertiesPanel_);
 	FrgGetMacro(FrgBase_Menu*, ContextMenu, theContextMenu_);
+
+	virtual FrgBase_TreeItem* GetParentTItem() const;
 
 	QList<FrgBase_TreeItem*> GetChildren() const;
 	FrgBase_TreeItem* GetChild(const QString& name);
