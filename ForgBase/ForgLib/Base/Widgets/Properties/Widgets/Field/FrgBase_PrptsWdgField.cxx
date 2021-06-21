@@ -139,7 +139,7 @@ void ForgBaseLib::FrgBase_PrptsWdgField::UpdateAllParameters() const
 		if (toolsParametersTItem)
 		{
 			parentTItem->RemoveAllDependentParameters();
-			QString strForTest = theValueString_;
+			QString strForTest = FrgBase_PrptsWdgFieldDialog::RemoveVariablesDecorations(theValueString_);
 			if (strForTest.size() > 2 && strForTest.at(0) == '[' && strForTest.at(strForTest.size() - 1) == ']')
 			{
 				strForTest = "return " + strForTest;
