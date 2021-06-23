@@ -94,7 +94,8 @@ void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 )
 {
 	theParentTree_ = parentTree;
-	theParentMainWindow_ = parentTree->GetParentMainWindow();
+	if(parentTree)
+		theParentMainWindow_ = parentTree->GetParentMainWindow();
 
 	this->setIcon(0, QIcon(ICON_Menu_File_Load));
 

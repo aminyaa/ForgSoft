@@ -18,5 +18,6 @@
 #include <FrgBase_PrptsWdgStringDouble.hxx>
 #include <FrgBase_PrptsWdgFieldScalar.hxx>
 #include <FrgBase_PrptsWdgFieldVector.hxx>
+#include <FrgBase_PrptsWdgTextEdit.hxx>
 
 #endif // !_FrgBase_PrptsWdg_Include_Header

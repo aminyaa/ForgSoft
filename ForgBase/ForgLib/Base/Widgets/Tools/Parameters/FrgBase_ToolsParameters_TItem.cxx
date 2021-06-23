@@ -21,7 +21,7 @@ ForgBaseLib::FrgBase_ToolsParameters_TItem::FrgBase_ToolsParameters_TItem
 
 ForgBaseLib::FrgBase_ToolsParameters_TItem::~FrgBase_ToolsParameters_TItem()
 {
-	FreePointer(theSymbolTableT_);
+	//FreePointer(theSymbolTableT_);
 }
 
 void ForgBaseLib::FrgBase_ToolsParameters_TItem::FormTItem()

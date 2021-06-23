@@ -18,6 +18,7 @@
 #include <FrgBase_PrptsVrntStringDouble.hxx>
 #include <FrgBase_PrptsVrntFieldScalar.hxx>
 #include <FrgBase_PrptsVrntFieldVector.hxx>
+#include <FrgBase_PrptsVrntTextEdit.hxx>
 
 namespace ForgBaseLib
 {
@@ -39,6 +40,7 @@ namespace ForgBaseLib
 	class FrgBase_PrptsVWdgStringDouble;
 	class FrgBase_PrptsWdgFieldScalar;
 	class FrgBase_PrptsWdgFieldVector;
+	class FrgBase_PrptsWdgTextEdit;
 }
 
 template<typename T>
@@ -141,6 +143,12 @@ template<>
 struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntFieldVector>
 {
 	typedef ForgBaseLib::FrgBase_PrptsWdgFieldVector type;
+};
+
+template<>
+struct get_widget_type_from_variant<ForgBaseLib::FrgBase_PrptsVrntTextEdit>
+{
+	typedef ForgBaseLib::FrgBase_PrptsWdgTextEdit type;
 };
 
 #endif // !_FrgBase_PrptsVrnt_Include_header

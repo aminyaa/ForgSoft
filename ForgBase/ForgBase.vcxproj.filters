@@ -412,6 +412,12 @@
     <Filter Include="ThirdParties\CodeEditor\include\internal">
       <UniqueIdentifier>{6794ef1a-9ea8-4082-a6d7-e4afe3232ceb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Variants\TextEdit">
+      <UniqueIdentifier>{c4ccf54b-cfdd-400a-90c8-64641c9adfbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\TextEdit">
+      <UniqueIdentifier>{419ba47a-0492-4457-8996-c6a2392124cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -770,6 +776,12 @@
     </ClCompile>
     <ClCompile Include="ThirdParties\CodeEditor\src\QXMLHighlighter.cpp">
       <Filter>ThirdParties\CodeEditor\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Variants\TextEdit\FrgBase_PrptsVrntTextEdit.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\TextEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\TextEdit\FrgBase_PrptsWdgTextEdit.cxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\TextEdit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1245,6 +1257,12 @@
     </QtMoc>
     <QtMoc Include="ThirdParties\CodeEditor\include\internal\QXMLHighlighter.hpp">
       <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Variants\TextEdit\FrgBase_PrptsVrntTextEdit.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Variants\TextEdit</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\TextEdit\FrgBase_PrptsWdgTextEdit.hxx">
+      <Filter>ForgLib\Base\Widgets\Properties\Widgets\TextEdit</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
