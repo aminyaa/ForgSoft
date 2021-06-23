@@ -451,8 +451,18 @@ void QCodeEditor::InsertCompletedCommand(const QString& s, bool isFromCompleter)
 		tc.setPosition(tc.position() - 5);
 		setTextCursor(tc);
 	}
-	else
-		setTextCursor(tc);
+    else
+    {
+        if (isFromCompleter)
+        {
+            tc.insertText("}");
+            tc.setPosition(tc.position() - s.size() - 1);
+            tc.insertText("${");
+            tc.setPosition(tc.position() + s.size() + 1);
+
+        }
+        setTextCursor(tc);
+    }
 }
 
 int QCodeEditor::getFirstVisibleBlock()
