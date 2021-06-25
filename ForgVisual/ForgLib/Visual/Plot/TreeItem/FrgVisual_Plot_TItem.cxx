@@ -21,6 +21,9 @@ ForgVisualLib::FrgVisual_Plot_TItem::FrgVisual_Plot_TItem
 
 ForgVisualLib::FrgVisual_Plot_TItem::~FrgVisual_Plot_TItem()
 {
+	if (GetParentMainWindow())
+		GetParentMainWindow()->RemoveTabWidget(thePlot_);
+
 	FreePointer(thePlot_);
 }
 

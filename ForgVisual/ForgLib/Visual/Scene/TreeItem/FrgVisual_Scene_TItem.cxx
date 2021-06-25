@@ -52,6 +52,9 @@ ForgVisualLib::FrgVisual_Scene_TItem<Dim>::FrgVisual_Scene_TItem
 template<int Dim>
 ForgVisualLib::FrgVisual_Scene_TItem<Dim>::~FrgVisual_Scene_TItem()
 {
+	if (GetParentMainWindow())
+		GetParentMainWindow()->RemoveTabWidget(theScene_);
+
 	FreePointer(theScene_);
 }
 
