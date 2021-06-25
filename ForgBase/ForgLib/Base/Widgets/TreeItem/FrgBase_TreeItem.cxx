@@ -79,6 +79,10 @@ void ForgBaseLib::FrgBase_TreeItem::SetParentTItem(FrgBase_TreeItem* parentTItem
 	}
 
 	parentTItem->SortTItem();
+
+	const auto& childrenItems = GetAllChildrenToTheRoot();
+	for (const auto& childItem : childrenItems)
+		childItem->SetParentMainWindow(theParentMainWindow_);
 }
 
 ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_TreeItem::GetParentTItem() const

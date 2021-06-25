@@ -205,7 +205,7 @@ void ForgBaseLib::FrgBase_MainWindow::FormMenus()
 
 	auto saveAction = theMainWindowMenus_->theFileMenu_->GetItem("&Save");
 	const auto loadAction = theMainWindowMenus_->theFileMenu_->GetItem("&Load");
-	//saveAction->setEnabled(true);
+	saveAction->setEnabled(true);
 
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(FileSaveActionSlot()));
 	connect(loadAction, SIGNAL(triggered()), this, SLOT(FileLoadActionSlot()));
