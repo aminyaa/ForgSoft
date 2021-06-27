@@ -34,11 +34,6 @@ public:
 
 protected:
 
-	// to catch structured exceptions you should call this function while overriding notify(QObject* receiver, QEvent* event)
-	virtual void CallTranslator() const;
-
-protected:
-
 	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;
 };
 

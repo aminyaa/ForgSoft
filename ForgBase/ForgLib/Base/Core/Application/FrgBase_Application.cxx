@@ -81,7 +81,8 @@ public:
 
 void translator(InfoFromSE::exception_code_t code, struct _EXCEPTION_POINTERS* ep)
 {
-	throw std::exception(InfoFromSE::information(ep, true, code).c_str());
+	std::string str = InfoFromSE::information(ep, true, code);
+	throw str;
 }
 
 ForgBaseLib::FrgBase_Application::FrgBase_Application
@@ -92,13 +93,11 @@ ForgBaseLib::FrgBase_Application::FrgBase_Application
 )
 	: QApplication(argc, argv, af)
 {
-
+	_set_se_translator(translator);
 }
 
 bool ForgBaseLib::FrgBase_Application::notify(QObject* receiver, QEvent* event)
 {
-	CallTranslator();
-
 	bool done = true;
 	try
 	{
@@ -109,6 +108,16 @@ bool ForgBaseLib::FrgBase_Application::notify(QObject* receiver, QEvent* event)
 		if (theParentMainWindow_)
 			theParentMainWindow_->PrintErrorToConsole(QString::fromStdString(ex.what()));
 	}
+	catch (const std::string& str)
+	{
+		if (theParentMainWindow_)
+			theParentMainWindow_->PrintErrorToConsole(QString::fromStdString(str));
+	}
+	catch (int i)
+	{
+		if (theParentMainWindow_)
+			theParentMainWindow_->PrintErrorToConsole("Code " + QString::number(i) + " was detected.");
+	}
 	catch (...)
 	{
 		if (theParentMainWindow_)
@@ -116,9 +125,4 @@ bool ForgBaseLib::FrgBase_Application::notify(QObject* receiver, QEvent* event)
 	}
 
 	return done;
-}
-
-void ForgBaseLib::FrgBase_Application::CallTranslator() const
-{
-	_set_se_translator(translator);
 }
