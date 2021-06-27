@@ -17,8 +17,8 @@ class FrgBase_MainWindow;
 
 struct FrgBase_TreeCache
 {
-	FrgBase_TreeItem* theLastLeftClickedTItem_ = NullPtr;
-	FrgBase_TreeItem* theLastRightClickedTItem_ = NullPtr;
+	FrgBase_TreeItem* theLastLeftClickedTItem_ = nullptr;
+	FrgBase_TreeItem* theLastRightClickedTItem_ = nullptr;
 };
 
 class FORGBASE_EXPORT FrgBase_Tree
@@ -31,9 +31,9 @@ class FORGBASE_EXPORT FrgBase_Tree
 
 protected:
 
-	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
+	FrgBase_MainWindow* theParentMainWindow_ = nullptr;
 
-	void keyPressEvent(QKeyEvent* event);
+	std::vector<ForgBaseLib::FrgBase_TreeItem*> theDraggedTItems_;
 
 public:
 
@@ -59,12 +59,14 @@ public:
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
-// 	friend class boost::serialization::access;
-// 	template<class Archive>
-// 	void save(Archive & ar, const unsigned int version) const;
-// 	template<class Archive>
-// 	void load(Archive & ar, const unsigned int version);
-// 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+protected:
+
+	void keyPressEvent(QKeyEvent* event) override;
+
+	void dropEvent(QDropEvent* event) override;
+	void dragEnterEvent(QDragEnterEvent* event) override;
+	void dragMoveEvent(QDragMoveEvent* event) override;
 
 protected Q_SLOTS:
 

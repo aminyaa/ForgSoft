@@ -300,6 +300,95 @@ std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_Tree::GetItemsU
 	return std::move(result);
 }
 
+void ForgBaseLib::FrgBase_Tree::dropEvent(QDropEvent* event)
+{
+	QModelIndex droppedIndex = indexAt(event->pos());
+
+	if (!droppedIndex.isValid() || theDraggedTItems_.empty())
+		return;
+
+	auto droppedItem = dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(itemFromIndex(droppedIndex));
+	if (droppedItem)
+	{
+		for (auto theDraggedTItem_ : theDraggedTItems_)
+		{
+			if (theDraggedTItem_->QTreeWidgetItem::parent() == droppedItem)
+				continue;
+
+			if (!droppedItem->IsDroppable() || !droppedItem->CanDropTo(theDraggedTItem_))
+			{
+				theDraggedTItem_ = nullptr;
+				continue;
+			}
+
+			auto chlds = droppedItem->GetAllChildrenToTheRoot();
+			for (auto ch : chlds)
+			{
+				if (ch->GetTItemName()->GetValue() == theDraggedTItem_->GetTItemName()->GetValue())
+				{
+					theDraggedTItem_->RenameTItemSlot(CorrectName(droppedItem, theDraggedTItem_->GetTItemName()->GetValue()));
+					break;
+				}
+			}
+
+			theDraggedTItem_->QTreeWidgetItem::parent()->removeChild(theDraggedTItem_);
+			droppedItem->insertChild(0, theDraggedTItem_);
+
+			theDraggedTItem_->SetLevelInTree(theDraggedTItem_->GetParentTItem()->GetLevelInTree() + 1);
+		}
+
+		droppedItem->setExpanded(true);
+
+		if (droppedItem->IsTItemSortable())
+			droppedItem->SortTItem();
+
+		ScrollToItem(theDraggedTItems_[0]);
+	}
+
+	//QTreeWidget::dropEvent(event);
+}
+
+void ForgBaseLib::FrgBase_Tree::dragEnterEvent(QDragEnterEvent* event)
+{
+	theDraggedTItems_.clear();
+
+	auto sls = this->selectedItems();
+	for (auto sl : sls)
+		theDraggedTItems_.push_back(dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(sl));
+
+	if (!theDraggedTItems_.empty())
+	{
+		for (auto theDraggedTItem_ : theDraggedTItems_)
+		{
+			if (theDraggedTItem_)
+			{
+				if (!theDraggedTItem_->IsDraggable())
+				{
+					theDraggedTItem_ = nullptr;
+					return;
+				}
+			}
+			else
+				return;
+		}
+	}
+
+	QTreeWidget::dragEnterEvent(event);
+}
+
+void ForgBaseLib::FrgBase_Tree::dragMoveEvent(QDragMoveEvent* event)
+{
+	this->setDropIndicatorShown(true);
+	QTreeWidget::dragMoveEvent(event);
+
+	if (this->dropIndicatorPosition() == QAbstractItemView::OnItem)
+		this->setDropIndicatorShown(true);
+	else
+		this->setDropIndicatorShown(false);
+
+	this->viewport()->update();
+}
+
 void ForgBaseLib::FrgBase_Tree::SetParentMainWindow(FrgBase_MainWindow* parentMainWindow)
 {
 	if (parentMainWindow == theParentMainWindow_)

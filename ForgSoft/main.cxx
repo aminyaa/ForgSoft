@@ -1,5 +1,5 @@
-#include <QtWidgets/QApplication>
 #include <QVTKOpenGLNativeWidget.h>
+#include <FrgBase_Application.hxx>
 #include <MainWindow.hxx>
 
 void SetSurfaceFormat();
@@ -10,9 +10,10 @@ int main(int argc, char** argv)
 
 	vtkObject::GlobalWarningDisplayOff();
 
-	QApplication app(argc, argv);
+	ForgBaseLib::FrgBase_Application app(argc, argv);
 
 	std::shared_ptr<MainWindow> mainWindow = std::make_shared<MainWindow>();
+	app.SetParentMainWindow(mainWindow.get());
 
 	mainWindow->SetQApplication(&app);
 	mainWindow->Show(true);

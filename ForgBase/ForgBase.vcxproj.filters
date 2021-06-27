@@ -830,9 +830,6 @@
     <ClInclude Include="ForgLib\Base\Core\Object\FrgBase_Object.hxx">
       <Filter>ForgLib\Base\Core\Object</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Core\Application\FrgBase_Application.hxx">
-      <Filter>ForgLib\Base\Core\Application</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Application\ApplicationCore\FrgBase_ApplicationCore.hxx">
       <Filter>ForgLib\Base\Core\Application\ApplicationCore</Filter>
     </ClInclude>
@@ -1263,6 +1260,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\TextEdit\FrgBase_PrptsWdgTextEdit.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\TextEdit</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Core\Application\FrgBase_Application.hxx">
+      <Filter>ForgLib\Base\Core\Application</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

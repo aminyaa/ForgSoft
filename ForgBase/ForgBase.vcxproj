@@ -268,7 +268,7 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Core\Application\ApplicationCore\FrgBase_ApplicationCore.hxx" />
-    <ClInclude Include="ForgLib\Base\Core\Application\FrgBase_Application.hxx" />
+    <QtMoc Include="ForgLib\Base\Core\Application\FrgBase_Application.hxx" />
     <ClInclude Include="ForgLib\Base\Core\Data Types\Point\FrgBase_Pnt.hxx" />
     <ClInclude Include="ForgLib\Base\Core\Data Types\Point\FrgBase_PntI.hxx" />
     <ClInclude Include="ForgLib\Base\Core\Data Types\Point\Pnt2d\FrgBase_Pnt2d.hxx" />
