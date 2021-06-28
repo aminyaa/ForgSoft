@@ -7,6 +7,18 @@
 #include <string>
 #include <sstream>
 
+namespace ForgBaseLib
+{
+	class FrgBase_ExceptionString
+		: public std::string
+	{
+
+	public:
+
+		FrgBase_ExceptionString(std::string str) : std::string(str) {}
+	};
+}
+
 class InfoFromSE
 {
 public:
@@ -49,7 +61,7 @@ public:
 		}
 	}
 
-	static std::string information(struct _EXCEPTION_POINTERS* ep, bool has_exception_code = false, exception_code_t code = 0)
+	static ForgBaseLib::FrgBase_ExceptionString information(struct _EXCEPTION_POINTERS* ep, bool has_exception_code = false, exception_code_t code = 0)
 	{
 		HMODULE hm;
 		::GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, static_cast<LPCTSTR>(ep->ExceptionRecord->ExceptionAddress), &hm);
@@ -72,7 +84,8 @@ public:
 			oss << "Underlying NTSTATUS code that resulted in the exception " << ep->ExceptionRecord->ExceptionInformation[2] << "\n";
 		}
 
-		return oss.str();
+		ForgBaseLib::FrgBase_ExceptionString result(oss.str());
+		return result;
 	}
 };
 
@@ -81,7 +94,7 @@ public:
 
 void translator(InfoFromSE::exception_code_t code, struct _EXCEPTION_POINTERS* ep)
 {
-	std::string str = InfoFromSE::information(ep, true, code);
+	ForgBaseLib::FrgBase_ExceptionString str = InfoFromSE::information(ep, true, code);
 	throw str;
 }
 
@@ -103,25 +116,10 @@ bool ForgBaseLib::FrgBase_Application::notify(QObject* receiver, QEvent* event)
 	{
 		done = QApplication::notify(receiver, event);
 	}
-	catch (const std::exception& ex)
-	{
-		if (theParentMainWindow_)
-			theParentMainWindow_->PrintErrorToConsole(QString::fromStdString(ex.what()));
-	}
-	catch (const std::string& str)
+	catch (const ForgBaseLib::FrgBase_ExceptionString& str)
 	{
 		if (theParentMainWindow_)
 			theParentMainWindow_->PrintErrorToConsole(QString::fromStdString(str));
-	}
-	catch (int i)
-	{
-		if (theParentMainWindow_)
-			theParentMainWindow_->PrintErrorToConsole("Code " + QString::number(i) + " was detected.");
-	}
-	catch (...)
-	{
-		if (theParentMainWindow_)
-			theParentMainWindow_->PrintErrorToConsole("An Error Has Been Occurred.");
 	}
 
 	return done;
