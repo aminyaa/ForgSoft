@@ -212,7 +212,7 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 					GetParentMainWindow()->PrintErrorToConsole(QString(myException.what()));
 			}
 
-			ScrollToItem(parentItem);
+			//ScrollToItem(parentItem);
 		}
 	}
 }

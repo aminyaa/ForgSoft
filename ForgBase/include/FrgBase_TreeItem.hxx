@@ -136,7 +136,7 @@ private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
 
-private:
+protected:
 
 	void SetTItemName(const QString& name, bool sortParentTItem = true);
 

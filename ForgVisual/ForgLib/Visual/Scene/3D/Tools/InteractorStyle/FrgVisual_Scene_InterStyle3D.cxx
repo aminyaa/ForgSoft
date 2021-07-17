@@ -1371,6 +1371,16 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::TranslateCamera(
 		motionVector[0] + viewPoint[0], motionVector[1] + viewPoint[1], motionVector[2] + viewPoint[2]);
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle3D::GetSelectedActors() const
+{
+	return theSelectedActors_.toVector().toStdVector();
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle3D::GetHiddenActors() const
+{
+	return theHiddenActors_.toVector().toStdVector();
+}
+
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::PrintSelf(ostream& os, vtkIndent indent)
 {
@@ -1379,7 +1389,6 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::PrintSelf(ostream& os, vtkInde
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render)
 {
-
 	if (!actor && !isControlKeyPressed)
 		UnSelectAllActors(true);
 	else if (actor)
@@ -1400,8 +1409,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectActor(FrgVisual_BaseActo
 			if (!isControlKeyPressed)
 				UnSelectAllActors(false);
 
-			actor->SelectActor(theSelectedColor_);
+			actor->SelectActor(/*theSelectedColor_*/);
 			theSelectedActors_.push_back(actor);
+			theParentScene_->ActorSelectedSignal(actor);
 
 			if (render)
 				this->Interactor->Render();
@@ -1416,6 +1426,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseAc
 	if (index >= 0)
 	{
 		theSelectedActors_[index]->UnSelectActor();
+		theParentScene_->ActorUnSelectedSignal(theSelectedActors_[index]);
 		theSelectedActors_.removeAt(index);
 	}
 
@@ -1425,6 +1436,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseAc
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectAllActors(bool render)
 {
+	UnSelectAllActors();
+
 	auto myAllActors = GetAllActors();
 	for (int i = 0; i < myAllActors.size(); i++)
 	{
@@ -1443,6 +1456,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectAllActors(bool render)
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
 		theSelectedActors_[i]->UnSelectActor();
+		theParentScene_->ActorUnSelectedSignal(theSelectedActors_[i]);
 	}
 	theSelectedActors_.clear();
 
@@ -1489,6 +1503,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
 		theSelectedActors_[i]->HideActor();
+		theParentScene_->ActorHideSignal(theSelectedActors_[i]);
 		theHiddenActors_.push_back(theSelectedActors_[i]);
 	}
 
@@ -1517,6 +1532,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnHideHiddenActors(bool render
 	for (int i = 0; i < theHiddenActors_.size(); i++)
 	{
 		theHiddenActors_[i]->UnHideActor();
+		theParentScene_->ActorUnHideSignal(theHiddenActors_[i]);
 
 #ifdef EliminateUnSelectedActors
 

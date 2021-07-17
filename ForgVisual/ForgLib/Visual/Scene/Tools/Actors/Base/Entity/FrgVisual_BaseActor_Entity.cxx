@@ -1,4 +1,5 @@
 #include <FrgVisual_BaseActor_Entity.hxx>
+#include <FrgBase_SerialSpec_QColor.hxx>
 
 #include <vtkObjectFactory.h>
 #include <vtkProperty.h>
@@ -12,6 +13,16 @@ ForgVisualLib::FrgVisual_BaseActor_Entity::FrgVisual_BaseActor_Entity()
 	theIsSelectable_ = true;
 	theIsSelected_ = false;
 	theIsIndependent_ = true;
+
+	GetProperty()->SetAmbient(0.1);
+	GetProperty()->SetDiffuse(0.95);
+	GetProperty()->SetSpecular(1.0);
+	GetProperty()->SetSpecularPower(128.0);
+
+	theSelectingColor_.setRed(255);
+	theSelectingColor_.setGreen(0);
+	theSelectingColor_.setBlue(255);
+
 	theProperty_ = GetProperty();
 }
 
@@ -77,6 +88,11 @@ bool ForgVisualLib::FrgVisual_BaseActor_Entity::SelectActor(const QColor& color)
 	emit SelectionHasChangedSignal();
 
 	return true;
+}
+
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::SelectActor()
+{
+	return SelectActor(theSelectingColor_);
 }
 
 bool ForgVisualLib::FrgVisual_BaseActor_Entity::UnSelectActor()
@@ -421,6 +437,7 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_BaseActor_Entity)
 	ar& Shading;
 
 	ar& theIsIndependent_;
+	ar& theSelectingColor_;
 
 	/*myProperty->RemoveAllTextures();
 	auto iter = myProperty->Textures.begin();
@@ -496,6 +513,7 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BaseActor_Entity)
 	ar& Shading;
 
 	ar& theIsIndependent_;
+	ar& theSelectingColor_;
 
 	vtkProperty* myProperty = this->GetProperty();
 

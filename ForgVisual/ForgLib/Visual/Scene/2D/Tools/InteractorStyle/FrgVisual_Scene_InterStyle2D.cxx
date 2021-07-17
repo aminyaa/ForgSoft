@@ -119,14 +119,14 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::OnRightButtonDown()
 
 	//cam->SetFocalPoint(newPoint);
 
-	/*int pickPosition[2];
+	int pickPosition[2];
 	this->GetInteractor()->GetEventPosition(pickPosition);
 
 	this->PreviousPosition[0] = pickPosition[0];
 	this->PreviousPosition[1] = pickPosition[1];
 
-	SuperClass::OnLeftButtonDown();
-	return;*/
+	//SuperClass::OnLeftButtonDown();
+	return;
 
 	//this->OnButtonDown(3, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
 }
@@ -244,7 +244,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::OnMiddleButtonUp()
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle2D::OnRightButtonUp()
 {
-	/*int pickPosition[2];
+	int pickPosition[2];
 	this->GetInteractor()->GetEventPosition(pickPosition);
 
 	int xdist = pickPosition[0] - this->PreviousPosition[0];
@@ -257,7 +257,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::OnRightButtonUp()
 	}
 
 	SuperClass::OnLeftButtonUp();
-	return;*/
+	return;
 
 	//this->OnButtonUp(3);
 }
@@ -570,6 +570,16 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::TranslateCamera(
 		motionVector[0] + viewPoint[0], motionVector[1] + viewPoint[1], motionVector[2] + viewPoint[2]);
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle2D::GetSelectedActors() const
+{
+	return theSelectedActors_.toVector().toStdVector();
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle2D::GetHiddenActors() const
+{
+	return theHiddenActors_.toVector().toStdVector();
+}
+
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle2D::PrintSelf(ostream& os, vtkIndent indent)
 {
@@ -608,8 +618,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::SelectActor(FrgVisual_BaseActo
 
 			if (actor->IsSelectable())
 			{
-				actor->SelectActor(theSelectedColor_);
+				actor->SelectActor(/*theSelectedColor_*/);
 				theSelectedActors_.push_back(actor);
+				theParentScene_->ActorSelectedSignal(actor);
 			}
 
 			if (render)
@@ -625,6 +636,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::UnSelectActor(FrgVisual_BaseAc
 	if (index >= 0)
 	{
 		theSelectedActors_[index]->UnSelectActor();
+		theParentScene_->ActorUnSelectedSignal(theSelectedActors_[index]);
 		theSelectedActors_.removeAt(index);
 	}
 
@@ -634,6 +646,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::UnSelectActor(FrgVisual_BaseAc
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle2D::SelectAllActors(bool render)
 {
+	UnSelectAllActors();
+
 	auto myAllActors = GetAllActors();
 	for (int i = 0; i < myAllActors.size(); i++)
 	{
@@ -651,8 +665,11 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::UnSelectAllActors(bool render)
 
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
-		if(theSelectedActors_[i])
+		if (theSelectedActors_[i])
+		{
 			theSelectedActors_[i]->UnSelectActor();
+			theParentScene_->ActorUnSelectedSignal(theSelectedActors_[i]);
+		}
 	}
 	theSelectedActors_.clear();
 
@@ -699,6 +716,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::HideSelectedActors(bool render
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
 		theSelectedActors_[i]->HideActor();
+		theParentScene_->ActorHideSignal(theSelectedActors_[i]);
 		theHiddenActors_.push_back(theSelectedActors_[i]);
 	}
 
@@ -726,6 +744,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle2D::UnHideHiddenActors(bool render
 	for (int i = 0; i < theHiddenActors_.size(); i++)
 	{
 		theHiddenActors_[i]->UnHideActor();
+		theParentScene_->ActorUnHideSignal(theHiddenActors_[i]);
 
 #ifdef EliminateUnSelectedActors
 

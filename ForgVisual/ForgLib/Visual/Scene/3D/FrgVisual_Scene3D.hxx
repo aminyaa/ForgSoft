@@ -31,6 +31,15 @@ public:
 	void SetCameraView(const QString& firstDir, const QString& secondDir);
 	void MoveCameraFromTo(vtkCamera* from, vtkCamera* to, double time = 0.5, int fps = 30);
 
+	std::vector<FrgVisual_BaseActor_Entity*> GetSelectedActors() const override;
+	std::vector<FrgVisual_BaseActor_Entity*> GetHiddenActors() const override;
+
+	void SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render = true) override;
+	void SelectActor(std::vector<FrgVisual_BaseActor_Entity*> actors, int isControlKeyPressed, bool render = true) override;
+	void UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render = true) override;
+	void SelectAllActors(bool render = true) override;
+	void UnSelectAllActors(bool render = true) override;
+
 protected:
 
 	void FormToolBar() override;

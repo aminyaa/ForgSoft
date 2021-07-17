@@ -5,22 +5,19 @@
 
 #include <boost/serialization/map.hpp>
 
-template <int Dim>
-ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FrgVisual_SceneRegistry(ForgVisualLib::FrgVisual_Scene<Dim>* parentScene)
+ForgVisualLib::FrgVisual_SceneRegistry::FrgVisual_SceneRegistry(ForgVisualLib::FrgVisual_Scene_Entity* parentScene)
 	: theParentScene_(parentScene)
 {
 
 }
 
-template<int Dim>
-ForgVisualLib::FrgVisual_SceneRegistry<Dim>::~FrgVisual_SceneRegistry()
+ForgVisualLib::FrgVisual_SceneRegistry::~FrgVisual_SceneRegistry()
 {
 	theActors_.clear();
 	theReservedIndexes_.clear();
 }
 
-template<int Dim>
-int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::AddActor(FrgVisual_BaseActor_Entity* actor)
+int ForgVisualLib::FrgVisual_SceneRegistry::AddActor(FrgVisual_BaseActor_Entity* actor)
 {
 	if (!actor)
 		return -1;
@@ -67,8 +64,7 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::AddActor(FrgVisual_BaseActor_En
 	return index;
 }
 
-template<int Dim>
-void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::RemoveActor(int index)
+void ForgVisualLib::FrgVisual_SceneRegistry::RemoveActor(int index)
 {
 	if (index < 1)
 		return;
@@ -93,20 +89,17 @@ void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::RemoveActor(int index)
 	actor->SetIndex(-1);
 }
 
-template<int Dim>
-void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::RemoveActor(FrgVisual_BaseActor_Entity* actor)
+void ForgVisualLib::FrgVisual_SceneRegistry::RemoveActor(FrgVisual_BaseActor_Entity* actor)
 {
 	RemoveActor(FindActor(actor));
 }
 
-template<int Dim>
-typename ForgVisualLib::FrgVisual_SceneRegistry<Dim>::mapOfActors ForgVisualLib::FrgVisual_SceneRegistry<Dim>::GetActorsByType(FrgVisual_BaseActor_Entity::ActorType actorType) const
+typename ForgVisualLib::FrgVisual_SceneRegistry::mapOfActors ForgVisualLib::FrgVisual_SceneRegistry::GetActorsByType(FrgVisual_BaseActor_Entity::ActorType actorType) const
 {
 	return theTypeMap_[(size_t)actorType];
 }
 
-template<int Dim>
-int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(FrgVisual_BaseActor_Entity* actor) const
+int ForgVisualLib::FrgVisual_SceneRegistry::FindActor(FrgVisual_BaseActor_Entity* actor) const
 {
 	if (!theActors_.empty() && actor != nullptr)
 	{
@@ -124,8 +117,7 @@ int ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(FrgVisual_BaseActor_E
 	return -1;
 }
 
-template<int Dim>
-ForgVisualLib::FrgVisual_BaseActor_Entity* ForgVisualLib::FrgVisual_SceneRegistry<Dim>::FindActor(int index) const
+ForgVisualLib::FrgVisual_BaseActor_Entity* ForgVisualLib::FrgVisual_SceneRegistry::FindActor(int index) const
 {
 	if (!theActors_.empty() && index > 0 && index < theActors_.size() + 1)
 	{
@@ -137,8 +129,7 @@ ForgVisualLib::FrgVisual_BaseActor_Entity* ForgVisualLib::FrgVisual_SceneRegistr
 	return nullptr;
 }
 
-template <int Dim>
-void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::heapify(std::vector<int>& arr, int n, int i)
+void ForgVisualLib::FrgVisual_SceneRegistry::heapify(std::vector<int>& arr, int n, int i)
 {
 	int largest = i; // Initialize largest as root
 	int l = 2 * i + 1; // left = 2*i + 1
@@ -165,8 +156,7 @@ void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::heapify(std::vector<int>& arr,
 	}
 }
 
-template<int Dim>
-void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::heapSort(std::vector<int>& arr, int n)
+void ForgVisualLib::FrgVisual_SceneRegistry::heapSort(std::vector<int>& arr, int n)
 {
 	// Build heap (rearrange array)
 	for (int i = n / 2 - 1; i >= 0; i--)
@@ -186,8 +176,7 @@ void ForgVisualLib::FrgVisual_SceneRegistry<Dim>::heapSort(std::vector<int>& arr
 	}
 }
 
-template <int Dim>
-DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_SceneRegistry<Dim>)
+DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_SceneRegistry)
 {
 	ar& theParentScene_;
 	ar& theActors_;
@@ -195,8 +184,7 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_SceneRegistry<Dim>)
 	ar& theTypeMap_;
 }
 
-template <int Dim>
-DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_SceneRegistry<Dim>)
+DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_SceneRegistry)
 {
 	ar& theParentScene_;
 	ar& theActors_;
@@ -204,8 +192,6 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_SceneRegistry<Dim>)
 	ar& theTypeMap_;
 }
 
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_SceneRegistry<2>);
-BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_SceneRegistry<3>);
+BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_SceneRegistry);
 
-template class FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_SceneRegistry<2>;
-template class FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_SceneRegistry<3>;
+//template class FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_SceneRegistry;

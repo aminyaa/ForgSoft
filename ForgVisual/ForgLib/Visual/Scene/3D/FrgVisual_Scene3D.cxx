@@ -448,6 +448,67 @@ void ForgVisualLib::FrgVisual_Scene3D::MoveCameraFromTo(vtkCamera* from, vtkCame
 	delete mutex;
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene3D::GetSelectedActors() const
+{
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+		return my3DStyle->GetSelectedActors();
+
+	return std::vector<FrgVisual_BaseActor_Entity*>();
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene3D::GetHiddenActors() const
+{
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+		return my3DStyle->GetHiddenActors();
+
+	return std::vector<FrgVisual_BaseActor_Entity*>();
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render)
+{
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+		my3DStyle->SelectActor(actor, isControlKeyPressed, render);
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::SelectActor(std::vector<FrgVisual_BaseActor_Entity*> actors, int isControlKeyPressed, bool render)
+{
+	if (!isControlKeyPressed)
+		UnSelectAllActors();
+
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+	{
+		for (const auto& actor : actors)
+		{
+			my3DStyle->SelectActor(actor, true, render);
+		}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render)
+{
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+		my3DStyle->UnSelectActor(actor, render);
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::SelectAllActors(bool render)
+{
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+		my3DStyle->SelectAllActors(render);
+}
+
+void ForgVisualLib::FrgVisual_Scene3D::UnSelectAllActors(bool render)
+{
+	const auto& my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+	if (my3DStyle)
+		my3DStyle->UnSelectAllActors(render);
+}
+
 void ForgVisualLib::FrgVisual_Scene3D::SetProjectionModeSlot(QAction* action)
 {
 	if (!action || !theCamera_)
