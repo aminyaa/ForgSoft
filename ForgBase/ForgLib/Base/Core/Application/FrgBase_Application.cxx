@@ -6,7 +6,6 @@
 #include <Psapi.h>
 #include <string>
 #include <sstream>
-
 namespace ForgBaseLib
 {
 	class FrgBase_ExceptionString
