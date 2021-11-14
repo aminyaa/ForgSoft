@@ -1446,6 +1446,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseAc
 	if (index >= 0)
 	{
 		theSelectedActors_[index]->UnSelectActor();
+		theParentScene_->ActorUnSelectedSignal(theSelectedActors_[index]);
 		theSelectedActors_.removeAt(index);
 
 		theParentScene_->ActorUnSelectedSignal(actor);
@@ -1530,6 +1531,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
 		theSelectedActors_[i]->HideActor();
+		theParentScene_->ActorHideSignal(theSelectedActors_[i]);
 		theHiddenActors_.push_back(theSelectedActors_[i]);
 
 		theParentScene_->ActorHideSignal(theSelectedActors_[i]);

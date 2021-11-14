@@ -160,6 +160,73 @@ public:
 
 	FrgVisual_SceneRegistry* GetRegistry() const { return theRegistry_; }
 
+	virtual void SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render = true) {}
+	virtual void SelectActor(std::vector<FrgVisual_BaseActor_Entity*> actors, int isControlKeyPressed, bool render = true) {}
+	virtual void UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render = true) {}
+	virtual void SelectAllActors(bool render = true) {}
+	virtual void UnSelectAllActors(bool render = true) {}
+
+	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theCopyContextMenuInScene_ ? theCopyContextMenuInScene_ : theContextMenuInScene_; }
+	ForgBaseLib::FrgBase_Menu*& GetContextMenuInSceneRef() { return theCopyContextMenuInScene_; }
+	void SetContextMenuInScene(ForgBaseLib::FrgBase_Menu* menu);
+	void RestoreContextMenuInScene() { theCopyContextMenuInScene_ = nullptr; }
+
+	bool IsContextMenuExecutable() const { return theIsContextMenuExecutable_; }
+	void SetContextMenuExecutable(bool condition) { theIsContextMenuExecutable_ = condition; }
+
+	const auto& GetContextMenuPosition() const { return theContextMenuPosition_; }
+	void SetContextMenuPosition(const QPoint& pos) { theContextMenuPosition_ = pos; }
+
+	// return actor index in registry, return -2 if actor is PickingPoint, return -1 if registration of actor was not successful
+	int AddActorToScene(FrgVisual_BaseActor_Entity* actor);
+	void RemoveActor(FrgVisual_BaseActor_Entity* actor);
+
+	std::vector<FrgVisual_GridActor*> DrawGrid
+	(
+		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
+		double L1,
+		double L2,
+		int numberOfDivisions1,
+		int numberOfDivisions2,
+		bool render = true
+	);
+
+	std::vector<FrgVisual_GridActor*> DrawGrid
+	(
+		double xCenter,
+		double yCenter,
+		double L1,
+		double L2,
+		int numberOfDivisions1,
+		int numberOfDivisions2,
+		bool render = true
+	);
+
+	void ClearGrid();
+
+	// ==================================================================================
+	// Add Text
+	// ==================================================================================
+
+	FrgVisual_TextActor<2>* AddText
+	(
+		const QString& value,
+		double posx,
+		double posy,
+		bool render = true
+	);
+
+	FrgVisual_TextActor<3>* AddText
+	(
+		const QString& value,
+		double posx,
+		double posy,
+		double posz,
+		bool render = true
+	);
+
+	FrgVisual_SceneRegistry* GetRegistry() const { return theRegistry_; }
+
 Q_SIGNALS:
 
 	void RenderScene(bool resetCamera = true, bool resetView = false);

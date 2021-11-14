@@ -328,6 +328,167 @@ ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene_Entity::Ad
 	return std::move(actor);
 }
 
+int ForgVisualLib::FrgVisual_Scene_Entity::AddActorToScene(FrgVisual_BaseActor_Entity* actor)
+{
+	int index = theRegistry_->AddActor(actor);
+	if (index >= 0 || index == -2)
+	{
+		if (theRenderer_)
+		{
+			actor->SetRenderer(theRenderer_);
+			theRenderer_->AddActor(actor);
+		}
+	}
+
+	emit ActorAddedSignal(actor);
+
+	return index;
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::RemoveActor(FrgVisual_BaseActor_Entity* actor)
+{
+	if (!actor)
+		return;
+
+	if (theRenderer_)
+	{
+		emit ActorIsGoingToBeDeletedSignal(actor);
+
+		actor->RemoveActors(theRenderer_);
+
+		theRegistry_->RemoveActor(actor);
+		theRenderer_->RemoveActor(actor);
+	}
+}
+
+std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene_Entity::DrawGrid
+(
+	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
+	double L1,
+	double L2,
+	int numberOfDivisions1,
+	int numberOfDivisions2,
+	bool render
+)
+{
+	std::vector<ForgVisualLib::FrgVisual_GridActor*> myGrids;
+
+	if (center == nullptr)
+		return myGrids;
+
+	if (theMajorGridActor_ || theMinorGridActor_)
+		ClearGrid();
+
+	theMajorGridActor_ = FrgVisual_GridActor::New();
+	theMinorGridActor_ = FrgVisual_GridActor::New();
+	theMajorGridActor_->SetRenderer(theRenderer_);
+	theMinorGridActor_->SetRenderer(theRenderer_);
+
+	theMajorGridActor_->SetData(center, L1, L2, numberOfDivisions1, numberOfDivisions2, true);
+	theMajorGridActor_->SetColor(theMajorGridColor_.redF(), theMajorGridColor_.greenF(), theMajorGridColor_.blueF());
+	theMajorGridActor_->SetLineWidth(2.0f);
+
+	theMinorGridActor_->SetData(center, L1, L2, numberOfDivisions1 * 2, numberOfDivisions2 * 2);
+	theMinorGridActor_->SetColor(theMinorGridColor_.redF(), theMinorGridColor_.greenF(), theMinorGridColor_.blueF());
+	theMinorGridActor_->SetLineWidth(1.0f);
+
+	auto myXLine = theMajorGridActor_->GetXLine();
+	auto myYLine = theMajorGridActor_->GetYLine();
+
+	AddActorToScene(theMajorGridActor_);
+	AddActorToScene(theMinorGridActor_);
+	AddActorToScene(myXLine);
+	AddActorToScene(myYLine);
+
+	if (render)
+		RenderScene(false);
+
+	myGrids.push_back(theMajorGridActor_);
+	myGrids.push_back(theMinorGridActor_);
+
+	return myGrids;
+}
+
+std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene_Entity::DrawGrid
+(
+	double xCenter,
+	double yCenter,
+	double L1,
+	double L2,
+	int numberOfDivisions1,
+	int numberOfDivisions2,
+	bool render
+)
+{
+	return DrawGrid(std::make_shared<ForgBaseLib::FrgBase_Pnt<2>>(xCenter, yCenter), L1, L2, numberOfDivisions1, numberOfDivisions2);
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::ClearGrid()
+{
+	if (theMajorGridActor_)
+	{
+		theRenderer_->RemoveActor(theMajorGridActor_->GetXLine());
+		theRenderer_->RemoveActor(theMajorGridActor_->GetYLine());
+		theRenderer_->RemoveActor(theMajorGridActor_);
+
+		FreePointer(theMajorGridActor_);
+	}
+
+	if (theMinorGridActor_)
+	{
+		theRenderer_->RemoveActor(theMinorGridActor_->GetXLine());
+		theRenderer_->RemoveActor(theMinorGridActor_->GetYLine());
+		theRenderer_->RemoveActor(theMinorGridActor_);
+
+		FreePointer(theMinorGridActor_);
+	}
+}
+
+ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene_Entity::AddText
+(
+	const QString& value,
+	double posx,
+	double posy,
+	bool render
+)
+{
+	// Actor
+	vtkNew<FrgVisual_TextActor<2>> actor;
+	//actor->SetRenderer(theRenderer_);
+
+	actor->SetData(value, posx, posy);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
+ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene_Entity::AddText
+(
+	const QString& value,
+	double posx,
+	double posy,
+	double posz,
+	bool render
+)
+{
+	// Actor
+	vtkNew<FrgVisual_TextActor<3>> actor;
+	//actor->SetRenderer(theRenderer_);
+
+	actor->SetData(value, posx, posy, posz);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::FormToolBar()
 {
 	if (!theToolBar_)
@@ -545,6 +706,11 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	const auto& hideAction = theContextMenuInScene_->GetItem("Hide");
 	const auto& unHideAction = theContextMenuInScene_->GetItem("UnHide");
+
+	if (hideAction)
+		connect(hideAction, SIGNAL(triggered()), theInteractorStyle_, SLOT(HideActionIsCalledSlot()));
+	if (unHideAction)
+		connect(unHideAction, SIGNAL(triggered()), theInteractorStyle_, SLOT(UnHideActionIsCalledSlot()));
 
 	if (hideAction)
 		connect(hideAction, SIGNAL(triggered()), theInteractorStyle_, SLOT(HideActionIsCalledSlot()));
