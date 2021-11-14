@@ -56,10 +56,12 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::FormWidget()
 	myHLayout->setSpacing(0);
 	myHLayout->setContentsMargins(0, 2, 0, 2);
 
+	thePrefixLabel_ = new QLabel("");
+	myHLayout->addWidget(thePrefixLabel_);
+
 	if (GetPrefix() != "")
 	{
 		SetPrefix(GetPrefix());
-		myHLayout->addWidget(thePrefixLabel_);
 	}
 
 	theLineEdit_ = new QLineEdit;
@@ -86,10 +88,12 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::FormWidget()
 
 	myHLayout->addWidget(theLineEdit_);
 
+	theSuffixLabel_ = new QLabel("");
+	myHLayout->addWidget(theSuffixLabel_);
+
 	if (GetSuffix() != "")
 	{
 		SetSuffix(GetSuffix());
-		myHLayout->addWidget(theSuffixLabel_);
 	}
 
 	this->setLayout(myHLayout);
@@ -184,18 +188,22 @@ void ForgBaseLib::FrgBase_PrptsWdgStringDouble::ValueChangedSlot(const double& v
 
 void ForgBaseLib::FrgBase_PrptsWdgStringDouble::PrefixChangedSlot(const QString& prefix)
 {
-	if (!thePrefixLabel_)
+	/*if (!thePrefixLabel_)
 		thePrefixLabel_ = new QLabel(prefix + " ");
-	else
-		thePrefixLabel_->setText(prefix);
+	else*/
+
+	thePrefixLabel_->setText(prefix);
+	thePrefixLabel_->setHidden(prefix.isEmpty());
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgStringDouble::SuffixChangedSlot(const QString& suffix)
 {
-	if (!theSuffixLabel_)
+	/*if (!theSuffixLabel_)
 		theSuffixLabel_ = new QLabel(" " + suffix);
-	else
-		theSuffixLabel_->setText(suffix);
+	else*/
+
+	theSuffixLabel_->setText(suffix);
+	theSuffixLabel_->setHidden(suffix.isEmpty());
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgStringDouble::WdgValueChangedSlot()

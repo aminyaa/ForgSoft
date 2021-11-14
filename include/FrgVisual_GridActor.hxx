@@ -34,6 +34,12 @@ public:
 	~FrgVisual_GridActor();
 
 	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> GetCenter() const { return theCenter_; }
+	
+	double GetL1() const { return theL1_; }
+	double GetL2() const { return theL2_; }
+
+	int GetNumberOfDivisions1() const { return theNumberOfDivisions1_; }
+	int GetNumberOfDivisions2() const { return theNumberOfDivisions2_; }
 
 	void SetData(std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center, double L1, double L2, int numberOfDivisions1, int numberOfDivisions2, bool XYLines = false);
 	void SetData(double xCenter, double yCenter, double L1, double L2, int numberOfDivisions1, int numberOfDivisions2, bool XYLines = false);
@@ -53,7 +59,7 @@ private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
 
-private:
+protected:
 
 	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> theCenter_;
 	FrgVisual_LineActor<2>* theXLine_ = nullptr;

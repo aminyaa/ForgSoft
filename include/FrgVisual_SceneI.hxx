@@ -24,7 +24,7 @@ inline void ForgVisualLib::FrgVisual_Scene<Dim>::ClearAllDataType()
 		{
 			aPart = static_cast<T*>(anActor);
 			if (aPart)
-				theRenderer_->RemoveActor(aPart);
+				RemoveActor(aPart);
 		}
 	}
 	else

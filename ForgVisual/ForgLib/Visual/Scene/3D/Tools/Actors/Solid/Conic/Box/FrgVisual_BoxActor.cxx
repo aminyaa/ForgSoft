@@ -60,8 +60,8 @@ void ForgVisualLib::FrgVisual_BoxActor::SetEdgeColor(double red, double green, d
 	this->GetProperty()->SetInterpolationToFlat();
 	this->GetProperty()->SetEdgeColor(red, green, blue);
 	this->GetProperty()->SetLineWidth(2.0f);
-	this->GetProperty()->SetAmbient(0.0);
-	this->GetProperty()->SetSpecular(0.0);
+	/*this->GetProperty()->SetAmbient(0.0);
+	this->GetProperty()->SetSpecular(0.0);*/
 }
 
 ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType ForgVisualLib::FrgVisual_BoxActor::GetActorType() const
@@ -75,6 +75,7 @@ std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType> ForgVisualLib:
 
 	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Box);
 	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Conic);
+	types.push_back(ForgVisualLib::FrgVisual_BaseActor_Entity::ActorType::Solid);
 
 	return types;
 }

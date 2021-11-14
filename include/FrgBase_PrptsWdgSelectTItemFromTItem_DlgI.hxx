@@ -95,7 +95,7 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Dlg<Type>::setupLa
 		}
 	}
 
-	theTree_->expandAll();
+	//theTree_->expandAll();
 
 	theMainLayout_->addWidget(theTree_);
 	theMainLayout_->addLayout(theButtonsLayout_);

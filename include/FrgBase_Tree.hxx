@@ -46,11 +46,11 @@ public:
 
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 
-	void SetParentMainWindow(FrgBase_MainWindow* parentMainWindow);
+	virtual void SetParentMainWindow(FrgBase_MainWindow* parentMainWindow);
 
 	virtual void FormTree();
-	void ScrollToItem(FrgBase_TreeItem* item);
-	void ScrollToItems(QList<FrgBase_TreeItem*> items);
+	virtual void ScrollToItem(FrgBase_TreeItem* item);
+	virtual void ScrollToItems(QList<FrgBase_TreeItem*> items);
 
 	FrgBase_TreeItem* FindTItemByObjectName(const QString& objectName);
 
@@ -68,6 +68,10 @@ protected:
 	void dragEnterEvent(QDragEnterEvent* event) override;
 	void dragMoveEvent(QDragMoveEvent* event) override;
 
+Q_SIGNALS:
+
+	void ChildTItemDeletedSignal(FrgBase_TreeItem* TItem);
+
 protected Q_SLOTS:
 
 	virtual void itemClickedSlot(QTreeWidgetItem* item, int column);
@@ -75,10 +79,10 @@ protected Q_SLOTS:
 
 public Q_SLOTS:
 
-	void onCustomContextMenuRequested(const QPoint& pos);
+	virtual void onCustomContextMenuRequested(const QPoint& pos);
 	virtual void showContextMenu(FrgBase_TreeItem* item, const QPoint& globalPos);
-	void DeleteTreeItemSlot(FrgBase_TreeItem* TItem);
-	void DeleteTreeItemSlot();
+	virtual void DeleteTreeItemSlot(FrgBase_TreeItem* TItem);
+	virtual void DeleteTreeItemSlot();
 };
 
 EndForgBaseLib

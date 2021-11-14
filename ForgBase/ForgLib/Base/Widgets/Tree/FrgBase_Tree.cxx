@@ -197,9 +197,7 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 
 		if (deleteDlg->exec() == QDialog::Accepted)
 		{
-			const auto parentItem = dynamic_cast<FrgBase_TreeItem*>
-				(dynamic_cast<QTreeWidgetItem*>(TItem) ? dynamic_cast<QTreeWidgetItem*>(TItem)->parent() : NullPtr);
-
+			const auto& parentItem = TItem->GetParentTItem();
 			try
 			{
 				emit TItem->TItemIsGoingToBeDeleted();
@@ -210,9 +208,13 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 			{
 				if (GetParentMainWindow())
 					GetParentMainWindow()->PrintErrorToConsole(QString(myException.what()));
+
+				return;
 			}
 
-			ScrollToItem(parentItem);
+			ChildTItemDeletedSignal(parentItem);
+
+			//ScrollToItem(parentItem);
 		}
 	}
 }

@@ -124,6 +124,9 @@ void ForgBaseLib::FrgBase_ToolsParameter_TItem::Update()
 
 void ForgBaseLib::FrgBase_ToolsParameter_TItem::AddDependentParameter(FrgBase_ToolsParameter_TItem* dependentParameter)
 {
+	if (!dependentParameter)
+		return;
+
 	if (!theDependentParameters_.contains(dependentParameter))
 		theDependentParameters_.push_back(dependentParameter);
 }

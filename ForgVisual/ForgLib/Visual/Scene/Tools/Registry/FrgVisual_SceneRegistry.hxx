@@ -9,10 +9,8 @@
 
 BeginForgVisualLib
 
-template <int Dim>
-class FrgVisual_Scene;
+class FrgVisual_Scene_Entity;
 
-template <int Dim>
 class FORGVISUAL_EXPORT FrgVisual_SceneRegistry
 	: public ForgBaseLib::FrgBase_Object
 {
@@ -22,9 +20,11 @@ public:
 	static const size_t nbEntities = (size_t)FrgVisual_BaseActor_Entity::ActorType::Other;
 	typedef std::map<unsigned int, FrgVisual_BaseActor_Entity*> mapOfActors;
 
-	FrgVisual_SceneRegistry(FrgVisual_Scene<Dim>* parentScene = nullptr);
+	FrgVisual_SceneRegistry(FrgVisual_Scene_Entity* parentScene = nullptr);
 
 	~FrgVisual_SceneRegistry();
+
+	unsigned int theIndexOfLastActor_ = 1;
 
 	int AddActor(FrgVisual_BaseActor_Entity* actor);
 	int FindActor(FrgVisual_BaseActor_Entity* actor) const;
@@ -43,7 +43,7 @@ private:
 
 protected:
 
-	FrgVisual_Scene<Dim>* theParentScene_ = nullptr;
+	FrgVisual_Scene_Entity* theParentScene_ = nullptr;
 
 	mapOfActors theActors_;
 	mapOfActors theTypeMap_[nbEntities];
@@ -57,7 +57,6 @@ private:
 
 EndForgVisualLib
 
-BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_SceneRegistry<2>);
-BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_SceneRegistry<3>);
+BOOST_CLASS_EXPORT_KEY(ForgVisualLib::FrgVisual_SceneRegistry);
 
 #endif // !_FrgVisual_SceneRegistry_Header

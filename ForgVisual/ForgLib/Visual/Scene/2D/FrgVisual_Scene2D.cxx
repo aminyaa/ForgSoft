@@ -162,6 +162,67 @@ void ForgVisualLib::FrgVisual_Scene2D::RenderSceneSlot(bool resetCamera, bool re
 		theRenderWindow_->Render();
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene2D::GetSelectedActors() const
+{
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+		return my2DStyle->GetSelectedActors();
+
+	return std::vector<FrgVisual_BaseActor_Entity*>();
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene2D::GetHiddenActors() const
+{
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+		return my2DStyle->GetHiddenActors();
+
+	return std::vector<FrgVisual_BaseActor_Entity*>();
+}
+
+void ForgVisualLib::FrgVisual_Scene2D::SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render)
+{
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+		my2DStyle->SelectActor(actor, isControlKeyPressed, render);
+}
+
+void ForgVisualLib::FrgVisual_Scene2D::SelectActor(std::vector<FrgVisual_BaseActor_Entity*> actors, int isControlKeyPressed, bool render)
+{
+	if (!isControlKeyPressed)
+		UnSelectAllActors();
+
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+	{
+		for (const auto& actor : actors)
+		{
+			my2DStyle->SelectActor(actor, true, render);
+		}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene2D::UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render)
+{
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+		my2DStyle->UnSelectActor(actor, render);
+}
+
+void ForgVisualLib::FrgVisual_Scene2D::SelectAllActors(bool render)
+{
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+		my2DStyle->SelectAllActors(render);
+}
+
+void ForgVisualLib::FrgVisual_Scene2D::UnSelectAllActors(bool render)
+{
+	const auto& my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+	if (my2DStyle)
+		my2DStyle->UnSelectAllActors(render);
+}
+
 void ForgVisualLib::FrgVisual_Scene2D::InitInteractorStyle()
 {
 	theInteractorStyle_ = FrgVisual_Scene_InterStyle2D::New();

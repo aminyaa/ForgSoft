@@ -16,6 +16,7 @@ class vtkCamera;
 class vtkTextActor;
 class vtkAxesActor;
 class vtkCameraInterpolator;
+class vtkLight;
 
 class QPoint;
 class QVTKOpenGLNativeWidget;
@@ -34,9 +35,13 @@ namespace ForgBaseLib
 
 BeginForgVisualLib
 
+class FrgVisual_SceneRegistry;
 class FrgVisual_BaseActor_Entity;
 class FrgVisual_Scene_InterStyle_Base;
 class FrgVisual_GridActor;
+
+template<int Dim>
+class FrgVisual_TextActor;
 
 class FORGVISUAL_EXPORT FrgVisual_Scene_Entity
 	: public QMainWindow
@@ -62,6 +67,11 @@ public:
 	void RemoveAllActors();
 	virtual void SetLogoText(const char* logoText);
 
+	std::vector<vtkSmartPointer<vtkLight>> GetLights() const { return theLights_; }
+	std::vector<vtkSmartPointer<vtkLight>>& GetLightsRef() { return theLights_; }
+
+	vtkSmartPointer<vtkTextActor> GetLogoTextActor() const { return theLogoActor_; }
+
 	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
 	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
@@ -80,13 +90,98 @@ public:
 	vtkSmartPointer<vtkCamera> GetCamera() const { return theCamera_; }
 	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
 
-	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theContextMenuInScene_; }
+	virtual std::vector<FrgVisual_BaseActor_Entity*> GetSelectedActors() const { return std::vector<FrgVisual_BaseActor_Entity*>(); }
+	virtual std::vector<FrgVisual_BaseActor_Entity*> GetHiddenActors() const { return std::vector<FrgVisual_BaseActor_Entity*>(); }
+
+	virtual void SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render = true) {}
+	virtual void SelectActor(std::vector<FrgVisual_BaseActor_Entity*> actors, int isControlKeyPressed, bool render = true) {}
+	virtual void UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render = true) {}
+	virtual void SelectAllActors(bool render = true) {}
+	virtual void UnSelectAllActors(bool render = true) {}
+
+	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theCopyContextMenuInScene_ ? theCopyContextMenuInScene_ : theContextMenuInScene_; }
+	ForgBaseLib::FrgBase_Menu*& GetContextMenuInSceneRef() { return theCopyContextMenuInScene_; }
+	void SetContextMenuInScene(ForgBaseLib::FrgBase_Menu* menu);
+	void RestoreContextMenuInScene() { theCopyContextMenuInScene_ = nullptr; }
+
+	bool IsContextMenuExecutable() const { return theIsContextMenuExecutable_; }
+	void SetContextMenuExecutable(bool condition) { theIsContextMenuExecutable_ = condition; }
+
+	const auto& GetContextMenuPosition() const { return theContextMenuPosition_; }
+	void SetContextMenuPosition(const QPoint& pos) { theContextMenuPosition_ = pos; }
+
+	// return actor index in registry, return -2 if actor is PickingPoint, return -1 if registration of actor was not successful
+	int AddActorToScene(FrgVisual_BaseActor_Entity* actor);
+	void RemoveActor(FrgVisual_BaseActor_Entity* actor);
+
+	std::vector<FrgVisual_GridActor*> DrawGrid
+	(
+		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
+		double L1,
+		double L2,
+		int numberOfDivisions1,
+		int numberOfDivisions2,
+		bool render = true
+	);
+
+	std::vector<FrgVisual_GridActor*> DrawGrid
+	(
+		double xCenter,
+		double yCenter,
+		double L1,
+		double L2,
+		int numberOfDivisions1,
+		int numberOfDivisions2,
+		bool render = true
+	);
+
+	void ClearGrid();
+
+	// ==================================================================================
+	// Add Text
+	// ==================================================================================
+
+	FrgVisual_TextActor<2>* AddText
+	(
+		const QString& value,
+		double posx,
+		double posy,
+		bool render = true
+	);
+
+	FrgVisual_TextActor<3>* AddText
+	(
+		const QString& value,
+		double posx,
+		double posy,
+		double posz,
+		bool render = true
+	);
+
+	FrgVisual_SceneRegistry* GetRegistry() const { return theRegistry_; }
 
 Q_SIGNALS:
 
 	void RenderScene(bool resetCamera = true, bool resetView = false);
 	void ActorAddedSignal(FrgVisual_BaseActor_Entity*);
 	void ActorIsGoingToBeDeletedSignal(FrgVisual_BaseActor_Entity*);
+	void ActorSelectedSignal(FrgVisual_BaseActor_Entity*);
+	void ActorUnSelectedSignal(FrgVisual_BaseActor_Entity*);
+	void ActorHideSignal(FrgVisual_BaseActor_Entity*);
+	void ActorUnHideSignal(FrgVisual_BaseActor_Entity*);
+
+	void ContextMenuAboutToShow(ForgBaseLib::FrgBase_Menu*);
+	void ContextMenuAboutToHide(ForgBaseLib::FrgBase_Menu*);
+
+	void OnMouseMove(FrgVisual_Scene_Entity*);
+	void OnLeftButtonDown(FrgVisual_Scene_Entity*);
+	void OnLeftButtonUp(FrgVisual_Scene_Entity*);
+	void OnMiddleButtonDown(FrgVisual_Scene_Entity*);
+	void OnMiddleButtonUp(FrgVisual_Scene_Entity*);
+	void OnRightButtonDown(FrgVisual_Scene_Entity*);
+	void OnRightButtonUp(FrgVisual_Scene_Entity*);
+	void OnMouseWheelBackward(FrgVisual_Scene_Entity*);
+	void OnMouseWheelForward(FrgVisual_Scene_Entity*);
 
 protected:
 
@@ -99,17 +194,23 @@ private:
 
 protected:
 
+	FrgVisual_SceneRegistry* theRegistry_ = nullptr;
+
 	vtkSmartPointer<vtkRenderer> theRenderer_;
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> theRenderWindow_;
 	vtkSmartPointer<vtkRenderWindowInteractor> theRenderWindowInteractor_;
 	FrgVisual_Scene_InterStyle_Base* theInteractorStyle_;
 	vtkSmartPointer<vtkCamera> theCamera_;
-	vtkSmartPointer<vtkTextActor> theLogoActor_;
+	mutable std::vector<vtkSmartPointer<vtkLight>> theLights_;
+	mutable vtkSmartPointer<vtkTextActor> theLogoActor_;
 	vtkAxesActor* theAxesActor_ = nullptr;
 	vtkCameraInterpolator* theCameraInterpolator_ = nullptr;
 
 	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;
 	ForgBaseLib::FrgBase_Menu* theContextMenuInScene_ = nullptr;
+	ForgBaseLib::FrgBase_Menu* theCopyContextMenuInScene_ = nullptr;
+
+	QPoint theContextMenuPosition_;
 
 	bool theInitiated_;
 
@@ -118,6 +219,8 @@ protected:
 
 	QColor theMajorGridColor_;
 	QColor theMinorGridColor_;
+
+	bool theIsContextMenuExecutable_ = true;
 
 protected:
 
@@ -155,16 +258,12 @@ class FrgVisual_MeshActor;
 template<int Dim>
 class FrgVisual_BSPLineActor;
 template<int Dim>
-class FrgVisual_TextActor;
-template<int Dim>
 class FrgVisual_PlaneActor;
 
 class FrgVisual_RectangleActor;
 class FrgVisual_CircleActor;
 class FrgVisual_BoxActor;
-
-template <int Dim>
-class FrgVisual_SceneRegistry;
+class FrgVisual_CylinderActor;
 
 template<int Dim>
 class FORGVISUAL_EXPORT FrgVisual_Scene
@@ -361,25 +460,28 @@ public:
 	);
 
 	// ==================================================================================
-	// Add Text
+	// Add Cylinder
 	// ==================================================================================
 
-	template <typename = typename std::enable_if_t<Dim == 2>>
-	FrgVisual_TextActor<2>* AddText
+	template <typename = typename std::enable_if_t<Dim == 3>>
+	FrgVisual_CylinderActor* AddCylinder
 	(
-		const QString& value,
-		double posx,
-		double posy,
+		ForgBaseLib::FrgBase_Pnt<3> Start,
+		ForgBaseLib::FrgBase_Pnt<3> End,
+		double radius,
 		bool render = true
 	);
 
 	template <typename = typename std::enable_if_t<Dim == 3>>
-	FrgVisual_TextActor<3>* AddText
+	FrgVisual_CylinderActor* AddCylinder
 	(
-		const QString& value,
-		double posx,
-		double posy,
-		double posz,
+		double Start_X,
+		double Start_Y,
+		double Start_Z,
+		double End_X,
+		double End_Y,
+		double End_Z,
+		double radius,
 		bool render = true
 	);
 
@@ -409,44 +511,9 @@ public:
 	void ClearAllLines();
 	void ClearAllPolylines();
 
-	// return actor index in registry, return -2 if actor is PickingPoint, return -1 if registration of actor was not successful
-	int AddActorToScene(FrgVisual_BaseActor_Entity* actor);
-	void RemoveActor(FrgVisual_BaseActor_Entity* actor);
-
-	std::vector<FrgVisual_GridActor*> DrawGrid
-	(
-		std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
-		double L1,
-		double L2,
-		int numberOfDivisions1,
-		int numberOfDivisions2,
-		bool render = true
-	);
-
-	std::vector<FrgVisual_GridActor*> DrawGrid
-	(
-		double xCenter,
-		double yCenter,
-		double L1,
-		double L2,
-		int numberOfDivisions1,
-		int numberOfDivisions2,
-		bool render = true
-	);
-
-	void ClearGrid();
-
-	public:
-
-		FrgVisual_SceneRegistry<Dim>* GetRegistry() const { return theRegistry_; }
-
 private:
 
 	DECLARE_SAVE_LOAD_HEADER()
-
-protected:
-
-	FrgVisual_SceneRegistry<Dim>* theRegistry_ = nullptr;
 };
 
 EndForgVisualLib

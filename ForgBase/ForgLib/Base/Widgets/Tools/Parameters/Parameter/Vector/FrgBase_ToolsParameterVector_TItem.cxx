@@ -30,7 +30,7 @@ ForgBaseLib::FrgBase_ToolsParameterVector_TItem::FrgBase_ToolsParameterVector_TI
 
 ForgBaseLib::FrgBase_ToolsParameterVector_TItem::~FrgBase_ToolsParameterVector_TItem()
 {
-	FreePointer(theValues_);
+	//FreePointer(theValues_);
 
 	theSymbolTableT_->remove_vector(theVariableName_.toStdString());
 }

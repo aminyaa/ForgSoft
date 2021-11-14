@@ -19,6 +19,8 @@ class FORGBASE_EXPORT FrgBase_Application
 	Q_OBJECT
 
 public:
+	
+	static FrgBase_Application* Instance();
 
 	FrgBase_Application
 	(

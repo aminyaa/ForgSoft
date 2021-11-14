@@ -616,6 +616,7 @@
 //	rwi->Render();
 //}
 
+#define EliminateUnSelectedActors
 
 #include <FrgVisual_Scene_InterStyle3D.hxx>
 #include <FrgVisual_Scene_CameraManip.hxx>
@@ -690,13 +691,16 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonDown()
 
 	this->PreviousPosition[0] = pickPosition[0];
 	this->PreviousPosition[1] = pickPosition[1];
+
+	emit theParentScene_->OnLeftButtonDown(theParentScene_);
 }
 
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonDown()
 {
 	SuperClass::OnMiddleButtonDown();
-	return;
+
+	emit theParentScene_->OnMiddleButtonDown(theParentScene_);
 
 	//this->OnButtonDown(2, this->Interactor->GetShiftKey(), this->Interactor->GetControlKey());
 }
@@ -726,7 +730,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonDown()
 	theRotationPoint_->SetData(theCenterOfRotaion_[0], theCenterOfRotaion_[1], theCenterOfRotaion_[2]);
 	this->CurrentRenderer->AddActor(theRotationPoint_);
 
-	return;
+	emit theParentScene_->OnRightButtonDown(theParentScene_);
 }
 
 //-------------------------------------------------------------------------
@@ -801,6 +805,10 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonUp()
 		myPicker->SetTolerance(0.001);
 		int pick = myPicker->Pick(clickPos[0], clickPos[1], 0, this->CurrentRenderer);
 
+		/*auto myPicker = vtkSmartPointer<vtkPropPicker>::New();
+		int pick = myPicker->PickProp(clickPos[0], clickPos[1], this->CurrentRenderer);*/
+
+
 		SelectActor(FrgVisual_BaseActor_Entity::SafeDownCast(myPicker->GetActor()), this->Interactor->GetControlKey(), true);
 
 #ifdef EliminateUnSelectedActors
@@ -815,12 +823,15 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonUp()
 	return;*/
 
 	//this->OnButtonUp(1);
+
+	emit theParentScene_->OnLeftButtonUp(theParentScene_);
 }
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMiddleButtonUp()
 {
 	SuperClass::OnMiddleButtonUp();
-	return;
+
+	emit theParentScene_->OnMiddleButtonUp(theParentScene_);
 
 	//this->OnButtonUp(2);
 }
@@ -845,7 +856,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonUp()
 	}
 
 	SuperClass::OnLeftButtonUp();
-	return;
+
+	emit theParentScene_->OnRightButtonUp(theParentScene_);
 
 	//this->OnButtonUp(3);
 }
@@ -876,12 +888,13 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 	//this->MouseWheelMotionFactor *= (distance1 / distance0);
 
 	this->Interactor->Render();
+
+	emit theParentScene_->OnMouseWheelBackward(theParentScene_);
 }
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
 {
 	double factor = -(this->MotionFactor * -0.2 * this->MouseWheelMotionFactor);
-
 
 	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
 
@@ -900,6 +913,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
 		this->CurrentRenderer->UpdateLightsGeometryToFollowCamera();
 
 	this->Interactor->Render();
+
+	emit theParentScene_->OnMouseWheelForward(theParentScene_);
 }
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Rotate()
@@ -1039,6 +1054,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseMove()
 	}
 
 	SuperClass::OnMouseMove();
+
+	emit theParentScene_->OnMouseMove(theParentScene_);
 }
 
 //-------------------------------------------------------------------------
@@ -1113,8 +1130,11 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 
 	// Pick from this location.
 	auto myPicker = vtkSmartPointer<vtkCellPicker>::New();
+	//myPicker->SetTolerance(0.00001);
 	myPicker->SetTolerance(0.001);
-	int pick = myPicker->Pick(clickPos[0], clickPos[1], 0, this->CurrentRenderer);
+	int pick = myPicker->Pick(clickPos[0], clickPos[1], 0.0, this->CurrentRenderer);
+	//auto myPicker = vtkSmartPointer<vtkPropPicker>::New();
+	//int pick = myPicker->PickProp(clickPos[0], clickPos[1], this->CurrentRenderer);
 
 	double presentFocalPoint[3];
 	camera->GetFocalPoint(presentFocalPoint);
@@ -1130,7 +1150,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 	else
 	{
 
-		auto myActors = GetAllActors();
+		/*auto myActors = GetAllActors();
 		std::vector<FrgVisual_GridActor*> myGrids;
 		for (auto myActor : myActors)
 		{
@@ -1140,7 +1160,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 				myGrids.push_back(myGrid);
 				myGrid->VisibilityOff();
 			}
-		}
+		}*/
 
 		/*double myBounds[6];
 		this->CurrentRenderer->ComputeVisiblePropBounds(myBounds);
@@ -1158,10 +1178,10 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 		//double distance = camera->GetClippingRange()[1];
 		//double distance = camera->GetClippingRange()[0];
 
-		for (auto myGrid : myGrids)
+		/*for (auto myGrid : myGrids)
 		{
 			myGrid->VisibilityOn();
-		}
+		}*/
 
 		if (1)
 		{
@@ -1371,6 +1391,16 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::TranslateCamera(
 		motionVector[0] + viewPoint[0], motionVector[1] + viewPoint[1], motionVector[2] + viewPoint[2]);
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle3D::GetSelectedActors() const
+{
+	return theSelectedActors_.toVector().toStdVector();
+}
+
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle3D::GetHiddenActors() const
+{
+	return theHiddenActors_.toVector().toStdVector();
+}
+
 //-------------------------------------------------------------------------
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::PrintSelf(ostream& os, vtkIndent indent)
 {
@@ -1379,7 +1409,6 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::PrintSelf(ostream& os, vtkInde
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render)
 {
-
 	if (!actor && !isControlKeyPressed)
 		UnSelectAllActors(true);
 	else if (actor)
@@ -1400,8 +1429,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectActor(FrgVisual_BaseActo
 			if (!isControlKeyPressed)
 				UnSelectAllActors(false);
 
-			actor->SelectActor(theSelectedColor_);
+			actor->SelectActor(/*theSelectedColor_*/);
 			theSelectedActors_.push_back(actor);
+			theParentScene_->ActorSelectedSignal(actor);
 
 			if (render)
 				this->Interactor->Render();
@@ -1417,6 +1447,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseAc
 	{
 		theSelectedActors_[index]->UnSelectActor();
 		theSelectedActors_.removeAt(index);
+
+		theParentScene_->ActorUnSelectedSignal(actor);
 	}
 
 	if (render)
@@ -1425,6 +1457,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseAc
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectAllActors(bool render)
 {
+	UnSelectAllActors();
+
 	auto myAllActors = GetAllActors();
 	for (int i = 0; i < myAllActors.size(); i++)
 	{
@@ -1440,14 +1474,21 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectAllActors(bool render)
 	if (theSelectedActors_.size() == 0)
 		return;
 
+	while (!theSelectedActors_.empty())
+		UnSelectActor(theSelectedActors_[0], render);
+
+	/*FrgVisual_BaseActor_Entity* lastActor = theSelectedActors_[theSelectedActors_.size() - 1];
 	for (int i = 0; i < theSelectedActors_.size(); i++)
 	{
-		theSelectedActors_[i]->UnSelectActor();
+		if (theSelectedActors_[i])
+			theSelectedActors_[i]->UnSelectActor();
 	}
 	theSelectedActors_.clear();
 
+	theParentScene_->ActorUnSelectedSignal(lastActor);
+
 	if (render)
-		this->Interactor->Render();
+		this->Interactor->Render();*/
 }
 
 #ifdef EliminateUnSelectedActors
@@ -1490,6 +1531,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render
 	{
 		theSelectedActors_[i]->HideActor();
 		theHiddenActors_.push_back(theSelectedActors_[i]);
+
+		theParentScene_->ActorHideSignal(theSelectedActors_[i]);
 	}
 
 	UnSelectAllActors(false);
@@ -1517,6 +1560,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnHideHiddenActors(bool render
 	for (int i = 0; i < theHiddenActors_.size(); i++)
 	{
 		theHiddenActors_[i]->UnHideActor();
+		theParentScene_->ActorUnHideSignal(theHiddenActors_[i]);
 
 #ifdef EliminateUnSelectedActors
 

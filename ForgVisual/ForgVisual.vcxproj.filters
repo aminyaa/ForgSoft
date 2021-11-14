@@ -260,6 +260,12 @@
     <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Surface\Plane">
       <UniqueIdentifier>{b23f314e-3102-4c06-b5d9-a42bedb85a47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Cylinder">
+      <UniqueIdentifier>{ed6e65d6-fdf9-494f-b3de-fa9bd1337e88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Tools">
+      <UniqueIdentifier>{42921b6a-5b71-4bd7-8643-7120bfae5d9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -424,6 +430,12 @@
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Surface\Plane\FrgVisual_PlaneActor.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Surface\Plane</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Cylinder\FrgVisual_CylinderActor.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Cylinder</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Tools\FrgVisual_Tools.cxx">
+      <Filter>ForgLib\Visual\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -580,6 +592,12 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Surface\Plane\FrgVisual_PlaneActor.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Actors\Surface\Plane</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Cylinder\FrgVisual_CylinderActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Cylinder</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Tools\FrgVisual_Tools.hxx">
+      <Filter>ForgLib\Visual\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,16 @@ ForgBaseLib::FrgBase_PropertiesPanel::FrgBase_PropertiesPanel(QWidget* parentMai
 
 ForgBaseLib::FrgBase_PropertiesPanel::~FrgBase_PropertiesPanel()
 {
+	for (int i = 0; i < this->rowCount(); i++)
+	{
+		const auto& myWidget = dynamic_cast<FrgBase_PrptsWdg*>(this->cellWidget(i, 1));
+		if (myWidget)
+		{
+			if(myWidget->GetVariantBasePtrRef())
+				delete myWidget->GetVariantBasePtrRef();
+		}
+	}
+
 	theParentWidget_ = NullPtr;
 	theParentObject_ = NullPtr;
 }

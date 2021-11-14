@@ -62,6 +62,9 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()
 	theSpinBox_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	theSpinBox_->setFixedWidth(100);
 	theSpinBox_->setKeyboardTracking(false);
+
+	theSpinBox_->installEventFilter(this);
+
 	myLayout->addWidget(theSpinBox_);
 	myLayout->addStretch(1);
 
@@ -143,6 +146,35 @@ bool ForgBaseLib::FrgBase_PrptsWdgInt::event(QEvent * event)
 
 bool ForgBaseLib::FrgBase_PrptsWdgInt::eventFilter(QObject * obj, QEvent * event)
 {
+	if (event->type() == QEvent::FocusOut)
+	{
+		theSpinBox_->clearFocus();
+		event->accept();
+
+		return false;
+	}
+
+	if (event->type() == QEvent::KeyPress)
+	{
+		QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+
+		if (keyEvent)
+		{
+			if (keyEvent->key() == Qt::Key_Escape)
+			{
+				theSpinBox_->setValue(GetValue());
+				theSpinBox_->clearFocus();
+				event->accept();
+				return false;
+			}
+			if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter)
+			{
+				event->accept();
+				theSpinBox_->clearFocus();
+			}
+		}
+	}
+	
 	/*std::cout << "From WdgInt() " << obj->metaObject()->className() << std::endl;
 
 	if (event->type() == QEvent::KeyPress)
@@ -152,7 +184,9 @@ bool ForgBaseLib::FrgBase_PrptsWdgInt::eventFilter(QObject * obj, QEvent * event
 		std::cout << obj->metaObject()->className() << " ====> " << keyEvent->key() << std::endl;
 	}
 
-	*/return FrgBase_PrptsWdgOneValue<int>::eventFilter(obj, event);
+	*/
+
+	return FrgBase_PrptsWdgOneValue<int>::eventFilter(obj, event);
 }
 
 void ForgBaseLib::FrgBase_PrptsWdgInt::DisplayNameChangedSlot(const QString& displayName)
@@ -202,5 +236,6 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::SuffixChangedSlot(const QString& suffix)
 
 void ForgBaseLib::FrgBase_PrptsWdgInt::WdgValueChangedSlot()
 {
-	SetValue(theSpinBox_->value());
+	if (theSpinBox_->value() != GetValue())
+		SetValue(theSpinBox_->value());
 }

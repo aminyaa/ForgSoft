@@ -46,23 +46,47 @@ void ForgBaseLib::FrgBase_ToolsParameters_TItem::FormTItem()
 
 void ForgBaseLib::FrgBase_ToolsParameters_TItem::UpdateAllParameters()
 {
-	auto items = this->GetAllChildrenToTheRoot();
+	//auto items = this->GetAllChildrenToTheRoot();
+	auto items = GetParametersTItem(theSymbolTableT_);
 	for (auto x : items)
 	{
-		auto parameterTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(x);
+		/*auto parameterTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(x);
 		if (parameterTItem)
 		{
 			parameterTItem->GetVariableName();
 			parameterTItem->Update();
-		}
+		}*/
+
+		x->GetVariableName();
+		x->Update();
 	}
 
 	emit UpdateAllParametersCalledSignal();
 }
 
-ForgBaseLib::FrgBase_ToolsParameter_TItem* ForgBaseLib::FrgBase_ToolsParameters_TItem::GetParamaterTItem(const QString& variableName)
+ForgBaseLib::FrgBase_ToolsParameter_TItem* ForgBaseLib::FrgBase_ToolsParameters_TItem::GetParamaterTItem(symbol_table_t* symTable, const QString& variableName)
 {
-	const auto& myChildren = GetAllChildrenToTheRoot();
+	std::vector<FrgBase_ToolsParameter_TItem*> itemsInTree;
+	QTreeWidgetItemIterator it(const_cast<FrgBase_Tree*>(GetParentTree()));
+	while (*it)
+	{
+		const auto myTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(*it);
+		if(myTItem)
+			itemsInTree.push_back(myTItem);
+
+		++it;
+	}
+
+	for (const auto& itemInTree : itemsInTree)
+	{
+		if (itemInTree->GetSymbolTableT() == symTable)
+		{
+			if (itemInTree->GetVariableName() == variableName)
+				return itemInTree;
+		}
+	}
+
+	/*const auto& myChildren = GetAllChildrenToTheRoot();
 	for (const auto& myChild : myChildren)
 	{
 		const auto& parameterTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(myChild);
@@ -71,9 +95,28 @@ ForgBaseLib::FrgBase_ToolsParameter_TItem* ForgBaseLib::FrgBase_ToolsParameters_
 			if (parameterTItem->GetVariableName() == variableName)
 				return parameterTItem;
 		}
-	}
+	}*/
 
 	return nullptr;
+}
+
+std::vector<ForgBaseLib::FrgBase_ToolsParameter_TItem*> ForgBaseLib::FrgBase_ToolsParameters_TItem::GetParametersTItem(symbol_table_t* symTable)
+{
+	std::vector<FrgBase_ToolsParameter_TItem*> itemsInTree;
+	QTreeWidgetItemIterator it(const_cast<FrgBase_Tree*>(GetParentTree()));
+	while (*it)
+	{
+		const auto myTItem = dynamic_cast<FrgBase_ToolsParameter_TItem*>(*it);
+		if (myTItem)
+		{
+			if(myTItem->GetSymbolTableT() == symTable)
+				itemsInTree.push_back(myTItem);
+		}
+
+		++it;
+	}
+
+	return itemsInTree;
 }
 
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_ToolsParameters_TItem)

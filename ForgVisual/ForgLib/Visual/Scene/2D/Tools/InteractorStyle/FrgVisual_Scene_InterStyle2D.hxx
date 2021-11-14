@@ -129,6 +129,9 @@ public:
 
 	using SuperClass::Dolly;
 
+	std::vector<FrgVisual_BaseActor_Entity*> GetSelectedActors() const;
+	std::vector<FrgVisual_BaseActor_Entity*> GetHiddenActors() const;
+
 	void SelectActor(FrgVisual_BaseActor_Entity* actor, int isControlKeyPressed, bool render = true);
 	void UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render = true);
 	void SelectAllActors(bool render = true);
@@ -170,6 +173,7 @@ protected:
 
 	int PreviousPosition[2];
 	int ResetPixelDistance;
+	bool ResetPixelDistanceBool = true;
 
 	QList<FrgVisual_BaseActor_Entity*> theSelectedActors_;
 	QList<FrgVisual_BaseActor_Entity*> theHiddenActors_;

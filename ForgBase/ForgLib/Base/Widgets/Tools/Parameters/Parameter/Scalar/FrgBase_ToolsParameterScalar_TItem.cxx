@@ -40,7 +40,7 @@ ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::FrgBase_ToolsParameterScalar_TI
 
 ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::~FrgBase_ToolsParameterScalar_TItem()
 {
-	FreePointer(theValue_);
+	//FreePointer(theValue_);
 
 	theSymbolTableT_->remove_variable(theVariableName_.toStdString());
 }

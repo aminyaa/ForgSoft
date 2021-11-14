@@ -148,7 +148,10 @@ void ForgBaseLib::FrgBase_PrptsWdgField::UpdateAllParameters() const
 			if (exprtk::collect_variables(strForTest.toStdString(), variable_list))
 			{
 				for (const auto& var : variable_list)
-					parentTItem->AddDependentParameter(toolsParametersTItem->GetParamaterTItem(QString::fromStdString(var)));
+				{
+					const auto& iiit = toolsParametersTItem->GetParamaterTItem(theSymbolTableT_, QString::fromStdString(var));
+					parentTItem->AddDependentParameter(iiit);
+				}
 			}
 			/*const auto& myChildren = toolsParametersTItem->GetAllChildrenToTheRoot();
 			for (const auto& myChild : myChildren)

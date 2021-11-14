@@ -41,7 +41,8 @@ public:
 
 	void UpdateAllParameters();
 
-	FrgBase_ToolsParameter_TItem* GetParamaterTItem(const QString& variableName);
+	FrgBase_ToolsParameter_TItem* GetParamaterTItem(symbol_table_t* symTable, const QString& variableName);
+	std::vector<FrgBase_ToolsParameter_TItem*> GetParametersTItem(symbol_table_t* symTable);
 
 private:
 

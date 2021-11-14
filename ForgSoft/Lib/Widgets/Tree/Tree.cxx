@@ -10,6 +10,7 @@
 
 #include <FrgBase_ToolsParameters_TItem.hxx>
 #include <FrgBase_ToolsParameterScalar_TItem.hxx>
+#include <FrgBase_ToolsParameterVector_TItem.hxx>
 #include <FrgBase_PrptsVrntTextEdit.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 
@@ -62,6 +63,11 @@ void Tree::FormTree()
 	parameterTItem2->SetSymbolTableT(parameters->GetSymbolTableT());
 	parameterTItem2->SetParentToolsParametersTItem(parameters);
 	parameterTItem2->FormTItem();
+
+	auto v = new ForgBaseLib::FrgBase_ToolsParameterVector_TItem("Vector 1", parameters, this);
+	v->SetSymbolTableT(parameters->GetSymbolTableT());
+	v->SetParentToolsParametersTItem(parameters);
+	v->FormTItem();
 
 	auto tVar = new ForgBaseLib::FrgBase_PrptsVrntTextEdit("Description");
 	const auto& pp = parameterTItem2->GetPropertiesPanel();

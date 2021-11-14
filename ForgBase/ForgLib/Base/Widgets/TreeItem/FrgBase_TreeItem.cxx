@@ -40,7 +40,7 @@ ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()
 
 	theContextMenu_->deleteLater();
 	FreePointer(thePropertiesPanel_);
-	FreePointer(theTItemName_);
+	//FreePointer(theTItemName_);
 }
 
 void ForgBaseLib::FrgBase_TreeItem::SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)

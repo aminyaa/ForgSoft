@@ -92,8 +92,8 @@ void ForgVisualLib::FrgVisual_RectangleActor::SetEdgeColor(double red, double gr
 	GetProperty()->SetInterpolationToFlat();
 	GetProperty()->SetEdgeColor(red, green, blue);
 	GetProperty()->SetLineWidth(2.0f);
-	GetProperty()->SetAmbient(0.0);
-	GetProperty()->SetSpecular(0.0);
+	/*GetProperty()->SetAmbient(0.0);
+	GetProperty()->SetSpecular(0.0);*/
 }
 
 void ForgVisualLib::FrgVisual_RectangleActor::SetColor(double red, double green, double blue)

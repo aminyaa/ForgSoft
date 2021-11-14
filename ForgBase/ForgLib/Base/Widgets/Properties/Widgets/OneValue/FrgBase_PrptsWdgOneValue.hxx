@@ -31,6 +31,7 @@ public:
 		, theVariant_(variant) {}
 
 	FrgBase_PrptsVrnt* GetVariantBasePtr() const { return theVariant_; }
+	FrgBase_PrptsVrnt*& GetVariantBasePtrRef() { return theVariant_; }
 
 	virtual void FormWidget() {}
 

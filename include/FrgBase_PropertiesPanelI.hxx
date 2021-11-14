@@ -25,8 +25,8 @@ inline auto ForgBaseLib::FrgBase_PropertiesPanel::AddRow
 
 	QTableWidgetItem* item = new QTableWidgetItem;
 	get_widget_type_from_variant<T>::type* myWidget = new get_widget_type_from_variant<T>::type(this, frgVairant);
-	myWidget->FormWidget();
 	myWidget->SetParentTItem(dynamic_cast<FrgBase_TreeItem*>(this->GetParentObject()));
+	myWidget->FormWidget();
 	this->setItem(row, 1, item);
 	this->setCellWidget(row, 1, myWidget);
 

@@ -14,7 +14,7 @@ vtkStandardNewMacro(ForgVisualLib::FrgVisual_GridActor);
 
 ForgVisualLib::FrgVisual_GridActor::FrgVisual_GridActor()
 {
-	
+
 }
 
 ForgVisualLib::FrgVisual_GridActor::~FrgVisual_GridActor()
@@ -79,44 +79,47 @@ void ForgVisualLib::FrgVisual_GridActor::SetData
 	double myOpacity = 0.3;
 
 	this->GetProperty()->EdgeVisibilityOn();
-	this->GetProperty()->SetAmbient(0.0);
-	this->GetProperty()->SetSpecular(0.0);
-	this->GetProperty()->SetSpecularPower(20.0);
+	this->GetProperty()->SetAmbient(0.1);
+	this->GetProperty()->SetDiffuse(0.95);
+	this->GetProperty()->SetSpecular(1.0);
+	this->GetProperty()->SetSpecularPower(128.0);
 	this->GetProperty()->SetOpacity(myOpacity);
 	this->GetProperty()->ShadingOn();
 	this->SetSelectable(false);
 
 	if (XYLines)
 	{
-		FreePointer(theXLine_);
-		FreePointer(theYLine_);
-
-		theXLine_ = FrgVisual_LineActor<2>::New();
-		theYLine_ = FrgVisual_LineActor<2>::New();
+		if (!theXLine_)
+		{
+			theXLine_ = FrgVisual_LineActor<2>::New();
+			theXLine_->SetColor(1.0, 0.0, 0.0);
+			theXLine_->GetProperty()->SetLineWidth(3.0f);
+			theXLine_->GetProperty()->SetAmbient(0.1);
+			theXLine_->GetProperty()->SetDiffuse(0.95);
+			theXLine_->GetProperty()->SetSpecular(1.0);
+			theXLine_->GetProperty()->SetSpecularPower(128.0);
+			theXLine_->GetProperty()->SetOpacity(myOpacity);
+			theXLine_->GetProperty()->ShadingOn();
+			theXLine_->SetSelectable(false);
+			theXLine_->SetRenderLinesAsTubes(true);
+		}
+		if (!theYLine_)
+		{
+			theYLine_ = FrgVisual_LineActor<2>::New();
+			theYLine_->SetColor(0.0, 1.0, 0.0);
+			theYLine_->GetProperty()->SetLineWidth(3.0f);
+			theYLine_->GetProperty()->SetAmbient(0.1);
+			theYLine_->GetProperty()->SetDiffuse(0.95);
+			theYLine_->GetProperty()->SetSpecular(1.0);
+			theYLine_->GetProperty()->SetSpecularPower(128.0);
+			theYLine_->GetProperty()->SetOpacity(myOpacity);
+			theYLine_->GetProperty()->ShadingOn();
+			theYLine_->SetSelectable(false);
+			theYLine_->SetRenderLinesAsTubes(true);
+		}
 
 		theXLine_->SetData(theCenter_->X(), theCenter_->Y(), theCenter_->X() + theL1_, theCenter_->Y());
-		theXLine_->SetColor(1.0, 0.0, 0.0);
-
 		theYLine_->SetData(theCenter_->X(), theCenter_->Y(), theCenter_->X(), theCenter_->Y() + theL2_);
-		theYLine_->SetColor(0.0, 1.0, 0.0);
-
-		theXLine_->GetProperty()->SetLineWidth(3.0f);
-		theXLine_->GetProperty()->SetAmbient(0.0);
-		theXLine_->GetProperty()->SetSpecular(0.0);
-		theXLine_->GetProperty()->SetSpecular(20.0);
-		theXLine_->GetProperty()->SetOpacity(myOpacity);
-		theXLine_->GetProperty()->ShadingOn();
-		theXLine_->SetSelectable(false);
-		theXLine_->SetRenderLinesAsTubes(true);
-
-		theYLine_->GetProperty()->SetLineWidth(3.0f);
-		theYLine_->GetProperty()->SetAmbient(0.0);
-		theYLine_->GetProperty()->SetSpecular(0.0);
-		theYLine_->GetProperty()->SetSpecularPower(20.0);
-		theYLine_->GetProperty()->SetOpacity(myOpacity);
-		theYLine_->GetProperty()->ShadingOn();
-		theYLine_->SetSelectable(false);
-		theYLine_->SetRenderLinesAsTubes(true);
 	}
 }
 

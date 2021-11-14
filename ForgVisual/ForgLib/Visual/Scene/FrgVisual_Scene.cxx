@@ -18,6 +18,7 @@
 #include <FrgVisual_CircleActor.hxx>
 #include <FrgVisual_GridActor.hxx>
 #include <FrgVisual_BoxActor.hxx>
+#include <FrgVisual_CylinderActor.hxx>
 #include <FrgVisual_TextActor.hxx>
 #include <FrgVisual_PlaneActor.hxx>
 #include <FrgVisual_Scene_InterStyle2D.hxx>
@@ -33,6 +34,7 @@
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <vtkAxesActor.h>
 #include <vtkOrientationMarkerWidget.h>
+#include <vtkLight.h>
 #include <vtkTextActor.h>
 #include <vtkTextProperty.h>
 #include <vtkCamera.h>
@@ -42,6 +44,7 @@
 #include <vtkAssemblyPath.h>
 #include <vtkCollection.h>
 #include <vtkCameraInterpolator.h>
+#include <vtkFXAAOptions.h>
 
 #include <QToolBar>
 #include <QToolButton>
@@ -64,20 +67,24 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 	: QMainWindow(parentMainWindow)
 	, theParentMainWindow_(parentMainWindow)
 {
+	theRegistry_ = new FrgVisual_SceneRegistry(this);
+
 	theOpenGLWidget_ = new QVTKOpenGLNativeWidget(parentMainWindow);
 	theOpenGLWidget_->setEnableHiDPI(true);
-	
+
 	theContextMenuInScene_ = new ForgBaseLib::FrgBase_Menu("Scene Settings", parentMainWindow, false);
 	theContextMenuInScene_->SetToolBarHidden(true);
 
-	auto hideAction = theContextMenuInScene_->AddItem("Hide", false);
-	auto unHideAction = theContextMenuInScene_->AddItem("UnHide", false);
+	connect(theContextMenuInScene_, &ForgBaseLib::FrgBase_Menu::aboutToHide, [this]() {ContextMenuAboutToHide(theContextMenuInScene_); });
+
+	/*auto hideAction = theContextMenuInScene_->AddItem("Hide", false);
+	auto unHideAction = theContextMenuInScene_->AddItem("UnHide", false);*/
 
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(customContextMenuRequestedSlot(const QPoint&)));
 
 	this->setCentralWidget(theOpenGLWidget_);
 
-	if(theParentMainWindow_)
+	if (theParentMainWindow_)
 	{
 		//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 	}
@@ -85,11 +92,16 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 	theInitiated_ = false;
 
 	connect(this, &FrgVisual_Scene_Entity::RenderScene, this, &FrgVisual_Scene_Entity::RenderSceneSlot, Qt::QueuedConnection);
+
+	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
+	theLogoActor_->SetInput("Forg Soft");
 }
 
 ForgVisualLib::FrgVisual_Scene_Entity::~FrgVisual_Scene_Entity()
 {
 	RemoveAllActors();
+
+	FreePointer(theRegistry_);
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::RemoveAllActors()
@@ -102,7 +114,9 @@ void ForgVisualLib::FrgVisual_Scene_Entity::RemoveAllActors()
 		vtkAssemblyPath* path;
 		for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
 		{
-			theRenderer_->RemoveActor(anActor);
+			const auto& frgActor = dynamic_cast<FrgVisual_BaseActor_Entity*>(anActor);
+			if(frgActor)
+				RemoveActor(frgActor);
 		}
 	}
 }
@@ -150,6 +164,170 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetMinorGridColor(const QColor& colo
 	}
 }
 
+int ForgVisualLib::FrgVisual_Scene_Entity::AddActorToScene(FrgVisual_BaseActor_Entity* actor)
+{
+	int index = theRegistry_->AddActor(actor);
+	if (index >= 0 || index == -2)
+	{
+		if (theRenderer_)
+		{
+			actor->SetRenderer(theRenderer_);
+			actor->AddActors(theRenderer_);
+			theRenderer_->AddActor(actor);
+		}
+	}
+
+	emit ActorAddedSignal(actor);
+
+	return index;
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::RemoveActor(FrgVisual_BaseActor_Entity* actor)
+{
+	if (!actor)
+		return;
+
+	if (theRenderer_)
+	{
+		emit ActorIsGoingToBeDeletedSignal(actor);
+
+		actor->RemoveActors(theRenderer_);
+
+		UnSelectActor(actor, false);
+
+		theRegistry_->RemoveActor(actor);
+		theRenderer_->RemoveActor(actor);
+	}
+}
+
+std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene_Entity::DrawGrid
+(
+	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
+	double L1,
+	double L2,
+	int numberOfDivisions1,
+	int numberOfDivisions2,
+	bool render
+)
+{
+	std::vector<ForgVisualLib::FrgVisual_GridActor*> myGrids;
+
+	if (center == nullptr)
+		return myGrids;
+
+	if (theMajorGridActor_ || theMinorGridActor_)
+		ClearGrid();
+
+	theMajorGridActor_ = FrgVisual_GridActor::New();
+	theMinorGridActor_ = FrgVisual_GridActor::New();
+	theMajorGridActor_->SetRenderer(theRenderer_);
+	theMinorGridActor_->SetRenderer(theRenderer_);
+
+	theMajorGridActor_->SetData(center, L1, L2, numberOfDivisions1, numberOfDivisions2, true);
+	theMajorGridActor_->SetColor(theMajorGridColor_.redF(), theMajorGridColor_.greenF(), theMajorGridColor_.blueF());
+	theMajorGridActor_->SetLineWidth(2.0f);
+
+	theMinorGridActor_->SetData(center, L1, L2, numberOfDivisions1 * 2, numberOfDivisions2 * 2);
+	theMinorGridActor_->SetColor(theMinorGridColor_.redF(), theMinorGridColor_.greenF(), theMinorGridColor_.blueF());
+	theMinorGridActor_->SetLineWidth(1.0f);
+
+	auto myXLine = theMajorGridActor_->GetXLine();
+	auto myYLine = theMajorGridActor_->GetYLine();
+
+	AddActorToScene(theMajorGridActor_);
+	AddActorToScene(theMinorGridActor_);
+	AddActorToScene(myXLine);
+	AddActorToScene(myYLine);
+
+	if (render)
+		RenderScene(false);
+
+	myGrids.push_back(theMajorGridActor_);
+	myGrids.push_back(theMinorGridActor_);
+
+	return myGrids;
+}
+
+std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene_Entity::DrawGrid
+(
+	double xCenter,
+	double yCenter,
+	double L1,
+	double L2,
+	int numberOfDivisions1,
+	int numberOfDivisions2,
+	bool render
+)
+{
+	return DrawGrid(std::make_shared<ForgBaseLib::FrgBase_Pnt<2>>(xCenter, yCenter), L1, L2, numberOfDivisions1, numberOfDivisions2);
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::ClearGrid()
+{
+	if (theMajorGridActor_)
+	{
+		theRenderer_->RemoveActor(theMajorGridActor_->GetXLine());
+		theRenderer_->RemoveActor(theMajorGridActor_->GetYLine());
+		theRenderer_->RemoveActor(theMajorGridActor_);
+
+		FreePointer(theMajorGridActor_);
+	}
+
+	if (theMinorGridActor_)
+	{
+		theRenderer_->RemoveActor(theMinorGridActor_->GetXLine());
+		theRenderer_->RemoveActor(theMinorGridActor_->GetYLine());
+		theRenderer_->RemoveActor(theMinorGridActor_);
+
+		FreePointer(theMinorGridActor_);
+	}
+}
+
+ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene_Entity::AddText
+(
+	const QString& value,
+	double posx,
+	double posy,
+	bool render
+)
+{
+	// Actor
+	vtkNew<FrgVisual_TextActor<2>> actor;
+	//actor->SetRenderer(theRenderer_);
+
+	actor->SetData(value, posx, posy);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
+ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene_Entity::AddText
+(
+	const QString& value,
+	double posx,
+	double posy,
+	double posz,
+	bool render
+)
+{
+	// Actor
+	vtkNew<FrgVisual_TextActor<3>> actor;
+	//actor->SetRenderer(theRenderer_);
+
+	actor->SetData(value, posx, posy, posz);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::FormToolBar()
 {
 	if (!theToolBar_)
@@ -174,7 +352,37 @@ void ForgVisualLib::FrgVisual_Scene_Entity::FormToolBar()
 
 void ForgVisualLib::FrgVisual_Scene_Entity::customContextMenuRequestedSlot(const QPoint& pos)
 {
-	theContextMenuInScene_->exec(this->mapToGlobal(pos));
+	theContextMenuPosition_ = this->mapToGlobal(pos);
+
+	if (theCopyContextMenuInScene_)
+	{
+		emit ContextMenuAboutToShow(theCopyContextMenuInScene_);
+
+		if (theIsContextMenuExecutable_)
+		{
+			if(!theCopyContextMenuInScene_->actions().isEmpty())
+				theCopyContextMenuInScene_->exec(this->mapToGlobal(pos));
+		}
+	}
+	else if (theContextMenuInScene_)
+	{
+		emit ContextMenuAboutToShow(theContextMenuInScene_);
+
+		if (theIsContextMenuExecutable_)
+		{
+			if (!theContextMenuInScene_->actions().isEmpty())
+				theContextMenuInScene_->exec(this->mapToGlobal(pos));
+		}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::SetContextMenuInScene(ForgBaseLib::FrgBase_Menu* menu)
+{
+	theCopyContextMenuInScene_ = menu;
+
+	if (theCopyContextMenuInScene_)
+		connect(theCopyContextMenuInScene_, &ForgBaseLib::FrgBase_Menu::aboutToHide, [this]() {ContextMenuAboutToHide(theCopyContextMenuInScene_); });
+
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::HideActionIsCalledSlot()
@@ -197,13 +405,13 @@ template<int Dim>
 ForgVisualLib::FrgVisual_Scene<Dim>::FrgVisual_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
 	: FrgVisual_Scene_Entity(parentMainWindow)
 {
-	theRegistry_ = new FrgVisual_SceneRegistry<Dim>(this);
+
 }
 
 template<int Dim>
 ForgVisualLib::FrgVisual_Scene<Dim>::~FrgVisual_Scene()
 {
-	FreePointer(theRegistry_);
+
 }
 
 template<int Dim>
@@ -247,10 +455,15 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
+	theRenderWindow_->SetAlphaBitPlanes(1);
+	theRenderWindow_->SetMultiSamples(0);
+
 	theRenderWindow_->AddRenderer(theRenderer_);
 
 	theRenderWindowInteractor_ = vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	theRenderWindowInteractor_->SetRenderWindow(theRenderWindow_);
+
+	theRenderWindowInteractor_->LightFollowCameraOff();
 
 	InitInteractorStyle();
 	theInteractorStyle_->FormInterStyle();
@@ -260,22 +473,22 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	else if constexpr (Dim == 3)
 		theInteractorStyle_ = FrgVisual_Scene_InterStyle3D::New();*/
 
-	/*if constexpr (Dim == 2)
-	{
-		auto castedInteractorStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
-		castedInteractorStyle->SetParentScene(this);
-		castedInteractorStyle->SetCurrentRenderer(theRenderer_);
-		castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
-		theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
-	}
-	else if constexpr (Dim == 3)
-	{
-		auto castedInteractorStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
-		castedInteractorStyle->SetParentScene(this);
-		castedInteractorStyle->SetCurrentRenderer(theRenderer_);
-		castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
-		theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
-	}*/
+		/*if constexpr (Dim == 2)
+		{
+			auto castedInteractorStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
+			castedInteractorStyle->SetParentScene(this);
+			castedInteractorStyle->SetCurrentRenderer(theRenderer_);
+			castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
+			theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
+		}
+		else if constexpr (Dim == 3)
+		{
+			auto castedInteractorStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
+			castedInteractorStyle->SetParentScene(this);
+			castedInteractorStyle->SetCurrentRenderer(theRenderer_);
+			castedInteractorStyle->SetMouseWheelMotionFactor(0.5);
+			theRenderWindowInteractor_->SetInteractorStyle(castedInteractorStyle);
+		}*/
 
 	theAxesActor_ = vtkAxesActor::New();
 
@@ -301,8 +514,8 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	widget->InteractiveOff();
 
 	// Create a TextActor
-	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
-	theLogoActor_->SetInput("Forg Soft");
+	/*theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
+	theLogoActor_->SetInput("Forg Soft");*/
 	vtkTextProperty* tprop = theLogoActor_->GetTextProperty();
 	tprop->SetFontFamilyToArial();
 	tprop->ShadowOff();
@@ -322,10 +535,24 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	theRenderer_->LightFollowCameraOn();
 	theRenderer_->TwoSidedLightingOn();
 
-	connect(theContextMenuInScene_->GetItem("Hide"), SIGNAL(triggered()), theInteractorStyle_, SLOT(HideActionIsCalledSlot()));
-	connect(theContextMenuInScene_->GetItem("UnHide"), SIGNAL(triggered()), theInteractorStyle_, SLOT(UnHideActionIsCalledSlot()));
+	theRenderer_->SetUseDepthPeeling(true);
+	theRenderer_->SetMaximumNumberOfPeels(8);
+	theRenderer_->SetOcclusionRatio(0.0);
+
+	//theRenderer_->SetUseFXAA(true);
+	//theRenderer_->GetFXAAOptions()->SetRelativeContrastThreshold(1.0 / 8.0);
+	//theRenderer_->SetUseShadows(true);
+
+	const auto& hideAction = theContextMenuInScene_->GetItem("Hide");
+	const auto& unHideAction = theContextMenuInScene_->GetItem("UnHide");
+
+	if (hideAction)
+		connect(hideAction, SIGNAL(triggered()), theInteractorStyle_, SLOT(HideActionIsCalledSlot()));
+	if (unHideAction)
+		connect(unHideAction, SIGNAL(triggered()), theInteractorStyle_, SLOT(UnHideActionIsCalledSlot()));
 
 	theRenderWindowInteractor_->Initialize();
+
 	theRenderer_->SetActiveCamera(theCamera_);
 
 	theOpenGLWidget_->SetRenderWindow(theRenderWindow_);
@@ -335,6 +562,46 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	FormToolBar();
 
 	theCameraInterpolator_ = vtkCameraInterpolator::New();
+
+	if (theLights_.empty())
+	{
+		vtkSmartPointer<vtkLight> myLight1 = vtkSmartPointer<vtkLight>::New();
+		vtkSmartPointer<vtkLight> myLight2 = vtkSmartPointer<vtkLight>::New();
+		vtkSmartPointer<vtkLight> myLight3 = vtkSmartPointer<vtkLight>::New();
+		vtkSmartPointer<vtkLight> myLight4 = vtkSmartPointer<vtkLight>::New();
+
+		myLight1->SetLightTypeToCameraLight();
+		myLight1->SetColor(1.0, 1.0, 1.0);
+		myLight1->SetDirectionAngle(45.0, 45.0);
+		myLight1->SetIntensity(0.4);
+		myLight1->SetConeAngle(30.0);
+
+		myLight2->SetLightTypeToCameraLight();
+		myLight2->SetColor(1.0, 1.0, 1.0);
+		myLight2->SetDirectionAngle(60.0, -30.0);
+		myLight2->SetIntensity(0.4);
+		myLight2->SetConeAngle(30.0);
+
+		myLight3->SetLightTypeToCameraLight();
+		myLight3->SetColor(1.0, 1.0, 1.0);
+		myLight3->SetDirectionAngle(-60.0, -30.0);
+		myLight3->SetIntensity(0.4);
+		myLight3->SetConeAngle(30.0);
+
+		myLight4->SetLightTypeToCameraLight();
+		myLight4->SetColor(1.0, 1.0, 1.0);
+		myLight4->SetDirectionAngle(-45.0, 45.0);
+		myLight4->SetIntensity(0.4);
+		myLight4->SetConeAngle(30.0);
+
+		theLights_.push_back(myLight1);
+		theLights_.push_back(myLight2);
+		theLights_.push_back(myLight3);
+		theLights_.push_back(myLight4);
+	}
+
+	for(const auto& light : theLights_)
+		GetRenderer()->AddLight(light);
 
 	theInitiated_ = true;
 }
@@ -723,7 +990,7 @@ ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
 	//actor->SetRenderer(theRenderer_);
 
 	actor->SetData(P0_X, P0_Y, P0_Z, P1_X, P1_Y, P1_Z);
-	actor->SetColor(1.0, 0.0, 0.0);
+	actor->SetColor(1.0, 1.0, 1.0);
 
 	AddActorToScene(actor);
 
@@ -733,21 +1000,34 @@ ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
 	return std::move(actor);
 }
 
-template<>
-template<>
-ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddText
+template<int Dim>
+template<typename>
+ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCylinder
 (
-	const QString& value,
-	double posx,
-	double posy,
+	ForgBaseLib::FrgBase_Pnt<3> Start,
+	ForgBaseLib::FrgBase_Pnt<3> End,
+	double radius,
 	bool render
 )
 {
+	if (radius <= 0.0)
+	{
+		std::exception myException("Radius cannot be smaller than or equal to 0.0");
+		throw myException;
+	}
+
+	if (Start == End)
+	{
+		std::exception myException("The cylinder should have a height");
+		throw myException;
+	}
+
 	// Actor
-	vtkNew<FrgVisual_TextActor<2>> actor;
+	auto actor = vtkSmartPointer<FrgVisual_CylinderActor>::New();
 	//actor->SetRenderer(theRenderer_);
 
-	actor->SetData(value, posx, posy);
+	actor->SetData(Start, End, radius);
+	actor->SetColor(1.0, 1.0, 1.0);
 
 	AddActorToScene(actor);
 
@@ -757,22 +1037,41 @@ ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddTex
 	return std::move(actor);
 }
 
-template<>
-template<>
-ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddText
+template<int Dim>
+template<typename>
+ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCylinder
 (
-	const QString& value,
-	double posx,
-	double posy,
-	double posz,
+	double Start_X,
+	double Start_Y,
+	double Start_Z,
+	double End_X,
+	double End_Y,
+	double End_Z,
+	double radius,
 	bool render
 )
 {
+	if (radius <= 0.0)
+	{
+		std::exception myException("Radius cannot be smaller than or equal to 0.0");
+		throw myException;
+	}
+
+	ForgBaseLib::FrgBase_Pnt<3> Start(Start_X, Start_Y, Start_Z);
+	ForgBaseLib::FrgBase_Pnt<3> End(End_X, End_Y, End_Z);
+
+	if (Start == End)
+	{
+		std::exception myException("The cylinder should have a height");
+		throw myException;
+	}
+
 	// Actor
-	vtkNew<FrgVisual_TextActor<3>> actor;
+	auto actor = vtkSmartPointer<FrgVisual_CylinderActor>::New();
 	//actor->SetRenderer(theRenderer_);
 
-	actor->SetData(value, posx, posy, posz);
+	actor->SetData(Start_X, Start_Y, Start_Z, End_X, End_Y, End_Z, radius);
+	//actor->SetColor(1.0, 1.0, 1.0);
 
 	AddActorToScene(actor);
 
@@ -828,70 +1127,6 @@ ForgVisualLib::FrgVisual_PlaneActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::A
 }
 
 template<int Dim>
-std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene<Dim>::DrawGrid
-(
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
-	double L1,
-	double L2,
-	int numberOfDivisions1,
-	int numberOfDivisions2,
-	bool render
-)
-{
-	std::vector<ForgVisualLib::FrgVisual_GridActor*> myGrids;
-
-	if (center == nullptr)
-		return myGrids;
-
-	if (theMajorGridActor_ || theMinorGridActor_)
-		ClearGrid();
-
-	theMajorGridActor_ = FrgVisual_GridActor::New();
-	theMinorGridActor_ = FrgVisual_GridActor::New();
-	theMajorGridActor_->SetRenderer(theRenderer_);
-	theMinorGridActor_->SetRenderer(theRenderer_);
-
-	theMajorGridActor_->SetData(center, L1, L2, numberOfDivisions1, numberOfDivisions2, true);
-	theMajorGridActor_->SetColor(theMajorGridColor_.redF(), theMajorGridColor_.greenF(), theMajorGridColor_.blueF());
-	theMajorGridActor_->SetLineWidth(2.0f);
-
-	theMinorGridActor_->SetData(center, L1, L2, numberOfDivisions1 * 2, numberOfDivisions2 * 2);
-	theMinorGridActor_->SetColor(theMinorGridColor_.redF(), theMinorGridColor_.greenF(), theMinorGridColor_.blueF());
-	theMinorGridActor_->SetLineWidth(1.0f);
-
-	auto myXLine = theMajorGridActor_->GetXLine();
-	auto myYLine = theMajorGridActor_->GetYLine();
-
-	AddActorToScene(theMajorGridActor_);
-	AddActorToScene(theMinorGridActor_);
-	AddActorToScene(myXLine);
-	AddActorToScene(myYLine);
-
-	if (render)
-		RenderScene(false);
-
-	myGrids.push_back(theMajorGridActor_);
-	myGrids.push_back(theMinorGridActor_);
-
-	return std::move(myGrids);
-}
-
-template<int Dim>
-std::vector<ForgVisualLib::FrgVisual_GridActor*> ForgVisualLib::FrgVisual_Scene<Dim>::DrawGrid
-(
-	double xCenter,
-	double yCenter,
-	double L1,
-	double L2,
-	int numberOfDivisions1,
-	int numberOfDivisions2,
-	bool render
-)
-{
-	return std::move(DrawGrid(std::make_shared<ForgBaseLib::FrgBase_Pnt<2>>(xCenter, yCenter), L1, L2, numberOfDivisions1, numberOfDivisions2));
-}
-
-template<int Dim>
 void ForgVisualLib::FrgVisual_Scene<Dim>::ClearAllPoints()
 {
 	ClearAllDataType<FrgVisual_PointActor<Dim>>();
@@ -907,63 +1142,6 @@ template<int Dim>
 void ForgVisualLib::FrgVisual_Scene<Dim>::ClearAllPolylines()
 {
 	ClearAllDataType<FrgVisual_PolylineActor<Dim>>();
-}
-
-template<int Dim>
-int ForgVisualLib::FrgVisual_Scene<Dim>::AddActorToScene(FrgVisual_BaseActor_Entity* actor)
-{
-	int index = theRegistry_->AddActor(actor);
-	if (index >= 0 || index == -2)
-	{
-		if (theRenderer_)
-		{
-			actor->SetRenderer(theRenderer_);
-			theRenderer_->AddActor(actor);
-		}
-	}
-
-	emit ActorAddedSignal(actor);
-
-	return index;
-}
-
-template<int Dim>
-void ForgVisualLib::FrgVisual_Scene<Dim>::RemoveActor(FrgVisual_BaseActor_Entity* actor)
-{
-	if (!actor)
-		return;
-
-	if (theRenderer_)
-	{
-		emit ActorIsGoingToBeDeletedSignal(actor);
-
-		actor->RemoveActors(theRenderer_);
-
-		theRegistry_->RemoveActor(actor);
-		theRenderer_->RemoveActor(actor);
-	}
-}
-
-template<int Dim>
-void ForgVisualLib::FrgVisual_Scene<Dim>::ClearGrid()
-{
-	if (theMajorGridActor_)
-	{
-		theRenderer_->RemoveActor(theMajorGridActor_->GetXLine());
-		theRenderer_->RemoveActor(theMajorGridActor_->GetYLine());
-		theRenderer_->RemoveActor(theMajorGridActor_);
-
-		FreePointer(theMajorGridActor_);
-	}
-
-	if (theMinorGridActor_)
-	{
-		theRenderer_->RemoveActor(theMinorGridActor_->GetXLine());
-		theRenderer_->RemoveActor(theMinorGridActor_->GetYLine());
-		theRenderer_->RemoveActor(theMinorGridActor_);
-
-		FreePointer(theMinorGridActor_);
-	}
 }
 
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene_Entity)
@@ -1003,6 +1181,57 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene_Entity)
 	ar& xViewUp;
 	ar& yViewUp;
 	ar& zViewUp;
+
+	ar& theIsContextMenuExecutable_;
+
+	ar& theMajorGridActor_;
+	ar& theMinorGridActor_;
+	ar& theMajorGridColor_;
+	ar& theMinorGridColor_;
+
+	if (theLogoActor_)
+	{
+		QString logo = QString::fromStdString(theLogoActor_->GetInput());
+		ar& logo;
+	}
+
+	int sizeOfLights = theLights_.size();
+	ar& sizeOfLights;
+
+	for (const auto& light : theLights_)
+	{
+		double color[3];
+		double position[3];
+		double fp[3];
+		bool positional;
+		double intensity;
+		double coneAngle;
+
+		light->GetSpecularColor(color);
+		light->GetPosition(position);
+		light->GetFocalPoint(fp);
+		positional = light->GetPositional();
+		intensity = light->GetIntensity();
+		coneAngle = light->GetConeAngle();
+
+		ar& color[0];
+		ar& color[1];
+		ar& color[2];
+
+		ar& position[0];
+		ar& position[1];
+		ar& position[2];
+
+		ar& fp[0];
+		ar& fp[1];
+		ar& fp[2];
+
+		ar& positional;
+
+		ar& intensity;
+
+		ar& coneAngle;
+	}
 }
 
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene_Entity)
@@ -1036,12 +1265,73 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene_Entity)
 	ar& yViewUp;
 	ar& zViewUp;
 
+	ar& theIsContextMenuExecutable_;
+
+	ar& theMajorGridActor_;
+	ar& theMinorGridActor_;
+	ar& theMajorGridColor_;
+	ar& theMinorGridColor_;
+
 	theRenderer_->SetBackground(redBackground, greenBackground, blueBackground);
 	theRenderer_->SetBackground2(redBackground2, greenBackground2, blueBackground2);
 	theRenderer_->SetGradientBackground(isGradientBackground);
 	theCamera_->SetPosition(xCameraPosition, yCameraPosition, zCameraPosition);
 	theCamera_->SetFocalPoint(xFocalPoint, yFocalPoint, zFocalPoint);
 	theCamera_->SetViewUp(xViewUp, yViewUp, zViewUp);
+
+	QString logo;
+	ar& logo;
+
+	theLogoActor_->SetInput(logo.toStdString().c_str());
+
+	int sizeOfLights;
+	ar& sizeOfLights;
+
+	for (int i = 0; i < sizeOfLights; i++)
+	{
+		double color0;
+		double color1;
+		double color2;
+		double position0;
+		double position1;
+		double position2;
+		double fp0;
+		double fp1;
+		double fp2;
+		bool positional;
+		double intensity;
+		double coneAngle;
+
+		ar& color0;
+		ar& color1;
+		ar& color2;
+
+		ar& position0;
+		ar& position1;
+		ar& position2;
+
+		ar& fp0;
+		ar& fp1;
+		ar& fp2;
+
+		ar& positional;
+
+		ar& intensity;
+
+		ar& coneAngle;
+
+		auto light = vtkSmartPointer<vtkLight>::New();
+
+		light->SetLightTypeToCameraLight();
+		light->SetColor(color0, color1, color2);
+		light->SetPosition(position0, position1, position2);
+		light->SetFocalPoint(fp0, fp1, fp2);
+		light->SetPositional(positional);
+		light->SetIntensity(intensity);
+		light->SetConeAngle(coneAngle);
+
+		theLights_.push_back(light);
+	}
 }
 
 template<int Dim>
@@ -1092,9 +1382,6 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 			ar& isFrgVisualActor;
 		}
 	}*/
-
-	ar& theMajorGridColor_;
-	ar& theMinorGridColor_;
 }
 
 template<int Dim>
@@ -1151,11 +1438,10 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 	//	}
 	//}
 
-	ar& theMajorGridColor_;
-	ar& theMinorGridColor_;
-
+	int i = 0;
 	for (const auto& actor : theRegistry_->GetAllActors())
 	{
+		actor.second->SetIndex(actor.first);
 		AddActorToScene(actor.second);
 	}
 
@@ -1185,5 +1471,8 @@ template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(ForgBaseLib::FrgBase_Pnt<3> P0, ForgBaseLib::FrgBase_Pnt<3> P1, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddText(const QString& value, double posx, double posy, bool render);
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddText(const QString& value, double posx, double posy, double posz, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(ForgBaseLib::FrgBase_Pnt<3> Start, ForgBaseLib::FrgBase_Pnt<3> End, double radius, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(double Start_X, double Start_Y, double Start_Z, double End_X, double End_Y, double End_Z, double radius, bool render);
+
+//template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddText(const QString& value, double posx, double posy, bool render);
+//template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddText(const QString& value, double posx, double posy, double posz, bool render);

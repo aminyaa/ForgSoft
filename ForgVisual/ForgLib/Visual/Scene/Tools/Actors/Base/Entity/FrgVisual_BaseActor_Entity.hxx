@@ -41,6 +41,7 @@ public:
 		Circle,
 		Rectangle,
 		Box,
+		Cylinder,
 		Mesh,
 		Grid,
 		Text,
@@ -74,11 +75,15 @@ public:
 	virtual void SetColor(double a[3]);
 	virtual void SetColor(const QColor& color);
 
+	virtual void SetSelectingColor(const QColor& color) { theSelectingColor_ = color; }
+	virtual QColor GetSelectingColor() const { return theSelectingColor_; }
+
 	virtual double* GetColor();
 	virtual void GetColor(double rgb[3]);
 	virtual void GetColor(double& r, double& g, double& b);
 
 	virtual bool SelectActor(const QColor& color);
+	virtual bool SelectActor();
 	virtual bool UnSelectActor();
 
 	virtual bool HideActor();
@@ -96,6 +101,9 @@ public:
 	vtkRenderer* GetRenderer() const { return theRenderer_; }
 	virtual void SetRenderer(vtkRenderer* renderer) { theRenderer_ = renderer; }
 
+	vtkProperty* GetCopyProperty() const { return theCopyProperty_; }
+
+	virtual void AddActors(vtkRenderer* renderer) {}
 	virtual void RemoveActors(vtkRenderer* renderer) {}
 
 	const bool& IsIndependent() const { return theIsIndependent_; }
@@ -121,6 +129,7 @@ public:
 	bool IsCircle() const;
 	bool IsRectangle() const;
 	bool IsBox() const;
+	bool IsCylinder() const;
 	bool IsMesh() const;
 	bool IsGrid() const;
 	bool IsText() const;
@@ -150,6 +159,8 @@ protected:
 	bool theIsSelected_;
 
 	bool theIsIndependent_;
+
+	QColor theSelectingColor_;
 };
 
 EndForgVisualLib
