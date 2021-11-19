@@ -6,17 +6,6 @@
 #include <Psapi.h>
 #include <string>
 #include <sstream>
-namespace ForgBaseLib
-{
-	class FrgBase_ExceptionString
-		: public std::string
-	{
-
-	public:
-		
-		FrgBase_ExceptionString(std::string str) : std::string(str) {}
-	};
-}
 
 namespace ForgBaseLib
 {
