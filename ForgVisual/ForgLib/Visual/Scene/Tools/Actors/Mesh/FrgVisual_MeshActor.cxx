@@ -1,4 +1,6 @@
 #include <FrgVisual_MeshActor.hxx>
+#include <FrgViusal_LookUpTable.hxx>
+#include <FrgVisual_ContoursLUTable_Rainbow.hxx>
 
 #include <FrgBase_Pnt.hxx>
 #include <FrgBase_SerialSpec_Tuple.hxx>
@@ -10,6 +12,10 @@
 #include <vtkTriangleFilter.h>
 #include <vtkTriangleMeshPointNormals.h>
 #include <vtkTransform.h>
+#include <vtkProperty.h>
+#include <vtkUnsignedCharArray.h>
+#include <vtkPointData.h>
+#include <vtkCellData.h>
 
 #include <array>
 
@@ -34,10 +40,13 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 	thePoints_.clear();
 	theConnectivity_.clear();
 
+	if (pts.empty() || connectivity.empty())
+		return;
+
 	thePoints_ = pts;
 	theConnectivity_ = connectivity;
 
-	auto Hull = vtkSmartPointer<vtkPolyData>::New();
+	thePolyData_ = vtkSmartPointer<vtkPolyData>::New();
 	auto points = vtkSmartPointer<vtkPoints>::New();
 	auto polys = vtkSmartPointer<vtkCellArray>::New();
 
@@ -62,27 +71,34 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 		std::array<std::array<vtkIdType, 3>, 1> order = { { {I1 - 1,I2 - 1,I3 - 1 } } };
 		polys->InsertNextCell(vtkIdType(3), order[0].data());
 	}
-	Hull->SetPoints(points);
-	Hull->SetPolys(polys);
+	thePolyData_->SetPoints(points);
+	thePolyData_->SetPolys(polys);
 
 	// Now we'll look at it.
 	auto HullMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+	this->SetMapper(HullMapper);
 
-	HullMapper->SetInputData(Hull);
+	HullMapper->SetInputData(thePolyData_);
+
+	auto lut = vtkSmartPointer<FrgVisual_ContoursLUTable_Rainbow>::New();
+	lut->SetRange(0.0, 1.0);
+
+	SetLookUpTable(lut);
+	SetScalarModeToUseCellData();
 
 	// Create a transform to rescale model
-	double center[3];
-	Hull->GetCenter(center);
+	/*double center[3];
+	thePolyData_->GetCenter(center);
 	double bounds[6];
-	Hull->GetBounds(bounds);
+	thePolyData_->GetBounds(bounds);
 	double maxBound =
 		std::max(std::max(bounds[1] - bounds[0], bounds[3] - bounds[2]),
-			bounds[5] - bounds[4]);
+			bounds[5] - bounds[4]);*/
 
 	auto userTransform = vtkSmartPointer<vtkTransform>::New();
 	auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
 	transform->SetTransform(userTransform);
-	transform->SetInputData(Hull);
+	transform->SetInputData(thePolyData_);
 
 	auto triangles = vtkSmartPointer<vtkTriangleFilter>::New();
 	triangles->SetInputConnection(transform->GetOutputPort());
@@ -91,9 +107,9 @@ inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 	norms->SetInputConnection(triangles->GetOutputPort());
 
 	HullMapper->SetInputConnection(norms->GetOutputPort());
-	HullMapper->ScalarVisibilityOff();
+	SetScalarVisibility(false);
 
-	this->SetMapper(HullMapper);
+	HullMapper->InterpolateScalarsBeforeMappingOn();
 }
 
 template<int Dim>
@@ -122,21 +138,165 @@ ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisu
 }
 
 template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetMeshVisible(bool condition)
+{
+	this->GetProperty()->SetEdgeVisibility(condition);
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetMeshColor(const QColor& color)
+{
+	this->GetProperty()->SetEdgeColor(color.redF(), color.greenF(), color.blueF());
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetScalarModeToUseCellData()
+{
+	const auto& myMapper = this->GetMapper();
+
+	if (myMapper)
+		myMapper->SetScalarModeToUseCellData();
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetScalarModeToUsePointData()
+{
+	const auto& myMapper = this->GetMapper();
+
+	if (myMapper)
+		myMapper->SetScalarModeToUsePointData();
+}
+
+template<int Dim>
+ForgVisualLib::FrgViusal_LookUpTable* ForgVisualLib::FrgVisual_MeshActor<Dim>::GetLookUpTable()
+{
+	const auto& myMapper = this->GetMapper();
+
+	if (myMapper)
+	{
+		auto lut = dynamic_cast<FrgViusal_LookUpTable*>(myMapper->GetLookupTable());
+
+		if (!lut)
+			lut = vtkSmartPointer<FrgVisual_ContoursLUTable_Rainbow>::New();
+
+		return lut;
+	}
+
+	return nullptr;
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetLookUpTable(FrgViusal_LookUpTable* lut)
+{
+	if (!lut)
+		return;
+
+	const auto& myMapper = this->GetMapper();
+
+	if (myMapper)
+	{
+		myMapper->SetLookupTable(lut);
+		myMapper->SetScalarRange(lut->GetRange());
+	}
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetScalarVisibility(bool condition)
+{
+	const auto& myMapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (myMapper)
+	{
+		myMapper->SetScalarVisibility(condition);
+	}
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetScalarRange(double minValue, double maxValue)
+{
+	const auto& lut = GetLookUpTable();
+	if (lut)
+	{
+		lut->SetRange(minValue, maxValue);
+	}
+
+	SetLookUpTable(lut);
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetScalarValues(const std::vector<double>& values)
+{
+	const auto& myMapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
+	if (myMapper)
+	{
+		auto scalarMode = myMapper->GetScalarMode();
+
+		if (!CanSetScalarValues(values.size()))
+			return;
+
+		const auto& lut = GetLookUpTable();
+		auto colors = vtkSmartPointer<vtkUnsignedCharArray>::New();
+		colors->SetNumberOfComponents(3);
+		colors->SetName("Colors");
+
+		for (const auto& value : values)
+		{
+			auto color = FrgViusal_LookUpTable::MapScalarToColor(value, lut);
+			colors->InsertNextTypedTuple(color);
+		}
+
+		if (scalarMode == VTK_SCALAR_MODE_USE_POINT_DATA)
+			thePolyData_->GetPointData()->SetScalars(colors);
+		else if (scalarMode == VTK_SCALAR_MODE_USE_CELL_DATA)
+			thePolyData_->GetCellData()->SetScalars(colors);
+	}
+}
+
+template<int Dim>
+bool ForgVisualLib::FrgVisual_MeshActor<Dim>::CanSetScalarValues(const int valuesSize)
+{
+	if (valuesSize == 0)
+		return false;
+
+	const auto& myMapper = vtkPolyDataMapper::SafeDownCast(GetMapper());
+	if (myMapper && thePolyData_)
+	{
+		auto scalarMode = myMapper->GetScalarMode();
+
+		if (scalarMode == VTK_SCALAR_MODE_USE_POINT_DATA)
+		{
+			if (thePolyData_->GetNumberOfPoints() != valuesSize)
+				return false;
+
+			return true;
+		}
+		else if (scalarMode == VTK_SCALAR_MODE_USE_CELL_DATA)
+		{
+			if (thePolyData_->GetNumberOfCells() != valuesSize)
+				return false;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+template<int Dim>
 DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
-	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
+	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	ar & thePoints_;
-	ar & theConnectivity_;
+	ar& thePoints_;
+	ar& theConnectivity_;
 }
 
 template<int Dim>
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
-	ar & boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
+	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	ar & thePoints_;
-	ar & theConnectivity_;
+	ar& thePoints_;
+	ar& theConnectivity_;
 
 	SetDataTriangulation(thePoints_, theConnectivity_);
 }

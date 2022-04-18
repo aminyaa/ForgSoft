@@ -242,6 +242,11 @@ bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsMesh() const
 	IsThatType(Mesh);
 }
 
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsPolyhedral() const
+{
+	IsThatType(Polyhedral);
+}
+
 bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsGrid() const
 {
 	IsThatType(Grid);

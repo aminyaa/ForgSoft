@@ -204,7 +204,7 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::MouseMoveEvent(const vtkContextMou
 				// Draw Horizontal and Vertical Dashed Lines
 				for (int iLine = 0; iLine < 2; iLine++)
 				{
-					auto& table = vtkSmartPointer<vtkTable>::New();
+					auto table = vtkSmartPointer<vtkTable>::New();
 
 					vtkSmartPointer<vtkFloatArray> arrX =
 						vtkSmartPointer<vtkFloatArray>::New();

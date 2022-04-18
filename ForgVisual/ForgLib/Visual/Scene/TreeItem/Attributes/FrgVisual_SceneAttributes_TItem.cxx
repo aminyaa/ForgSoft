@@ -13,7 +13,7 @@ ForgVisualLib::FrgVisual_SceneAttributes_TItem_Entity::FrgVisual_SceneAttributes
 )
 	: ForgBaseLib::FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
-
+	this->setHidden(true);
 }
 
 void ForgVisualLib::FrgVisual_SceneAttributes_TItem_Entity::FormTItem()

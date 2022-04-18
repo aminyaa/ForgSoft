@@ -2,13 +2,12 @@
 #ifndef _FrgVisual_ContoursLUTable_BlackAndWhite_Header
 #define _FrgVisual_ContoursLUTable_BlackAndWhite_Header
 
-#include <FrgVisual_Global.hxx>
-#include <vtkLookupTable.h>
+#include <FrgViusal_LookUpTable.hxx>
 
 BeginForgVisualLib
 
 class FORGVISUAL_EXPORT FrgVisual_ContoursLUTable_BlackAndWhite
-	: public vtkLookupTable
+	: public FrgViusal_LookUpTable
 
 {
 
@@ -16,7 +15,9 @@ public:
 
 	static FrgVisual_ContoursLUTable_BlackAndWhite* New();
 
-	vtkTypeMacro(FrgVisual_ContoursLUTable_BlackAndWhite, vtkLookupTable);
+	vtkTypeMacro(FrgVisual_ContoursLUTable_BlackAndWhite, FrgViusal_LookUpTable);
+
+	bool IsBlackAndWhite() const override { return true; }
 
 protected:
 

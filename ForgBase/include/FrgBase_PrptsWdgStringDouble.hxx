@@ -41,7 +41,7 @@ Q_SIGNALS:
 
 	void EditingFinishedSignal();
 
-private slots:
+public slots:
 
 	void DisplayNameChangedSlot(const QString& displayName);
 	void ValueChangedSlot(const double& value);

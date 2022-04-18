@@ -57,7 +57,7 @@ public:
 Q_SIGNALS:
 
 	void RenderView() const;
-	virtual void SetThemeDark(bool condition) const;
+	void SetThemeDark(bool condition) const;
 
 protected slots:
 

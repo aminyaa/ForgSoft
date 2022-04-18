@@ -266,6 +266,12 @@
     <Filter Include="ForgLib\Visual\Tools">
       <UniqueIdentifier>{42921b6a-5b71-4bd7-8643-7120bfae5d9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\Polyhedral">
+      <UniqueIdentifier>{764cadd9-cc85-4ba6-b42a-4106a8647985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable">
+      <UniqueIdentifier>{55363da1-5ded-46a0-9fd7-d40a8a8be570}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -436,6 +442,12 @@
     <ClCompile Include="ForgLib\Visual\Tools\FrgVisual_Tools.cxx">
       <Filter>ForgLib\Visual\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\Polyhedral\FrgVisual_MeshPolyhedralActor.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Mesh\Polyhedral</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable\FrgViusal_LookUpTable.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -598,6 +610,12 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Tools\FrgVisual_Tools.hxx">
       <Filter>ForgLib\Visual\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\Polyhedral\FrgVisual_MeshPolyhedralActor.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Actors\Mesh\Polyhedral</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable\FrgViusal_LookUpTable.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -83,7 +83,7 @@ inline void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Dlg<Type>::setupLa
 				item->setIcon(0, myChild->icon(0));
 
 				//auto& myP = theMapTreeToSelectionTree_.at(myChild->QTreeWidgetItem::parent());
-				auto& myP = theMapTreeToSelectionTree_.find(myChild->QTreeWidgetItem::parent());
+				const auto& myP = theMapTreeToSelectionTree_.find(myChild->QTreeWidgetItem::parent());
 				if (myP != theMapTreeToSelectionTree_.end())
 				{
 					myP->second->addChild(item);

@@ -52,7 +52,7 @@ void ForgBaseLib::FrgBase_ProgressBar::SetProgressBarBusySlot(bool condition)
 	}
 }
 
-auto ForgBaseLib::FrgBase_ProgressBar::GetLabel() const -> const QString&
+QString ForgBaseLib::FrgBase_ProgressBar::GetLabel() const
 {
 	return theLabel_->text();
 }

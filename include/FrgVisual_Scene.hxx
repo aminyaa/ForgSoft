@@ -256,6 +256,8 @@ class FrgVisual_PolylineActor;
 template<int Dim>
 class FrgVisual_MeshActor;
 template<int Dim>
+class FrgVisual_MeshPolyhedralActor;
+template<int Dim>
 class FrgVisual_BSPLineActor;
 template<int Dim>
 class FrgVisual_PlaneActor;
@@ -413,6 +415,16 @@ public:
 	(
 		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
 		std::vector<std::tuple<int, int, int>> connectivity,
+		bool render = true
+	);
+
+	// ==================================================================================
+	// Add Polyhedral
+	// ==================================================================================
+	FrgVisual_MeshPolyhedralActor<Dim>* AddPolyhedral
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+		const std::vector<std::vector<int>>& connectivity,
 		bool render = true
 	);
 

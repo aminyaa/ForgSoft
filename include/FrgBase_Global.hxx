@@ -2,6 +2,10 @@
 #ifndef _FrgBase_Global_Header
 #define _FrgBase_Global_Header
 
+#ifndef BOOST_ALL_DYN_LINK
+#define BOOST_ALL_DYN_LINK
+#endif // !BOOST_ALL_DYN_LINK
+
 #include <FrgBase_Global_Build.hxx>
 #include <FrgBase_Global_Type.hxx>
 

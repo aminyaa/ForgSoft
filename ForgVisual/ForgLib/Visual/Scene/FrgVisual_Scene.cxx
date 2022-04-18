@@ -13,6 +13,7 @@
 #include <FrgVisual_LineActor.hxx>
 #include <FrgVisual_PolylineActor.hxx>
 #include <FrgVisual_MeshActor.hxx>
+#include <FrgVisual_MeshPolyhedralActor.hxx>
 #include <FrgVisual_BSPLineActor.hxx>
 #include <FrgVisual_RectangleActor.hxx>
 #include <FrgVisual_CircleActor.hxx>
@@ -902,6 +903,34 @@ ForgVisualLib::FrgVisual_MeshActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::Ad
 		RenderScene(false);
 
 	return std::move(actor);
+}
+
+template<int Dim>
+ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPolyhedral
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+	const std::vector<std::vector<int>>& connectivity,
+	bool render
+)
+{
+	if (pts.size() == 0 || connectivity.size() == 0)
+	{
+		std::exception myException("pts or connectivity vector is empty in order to add polyhedral.");
+		throw myException;
+	}
+
+	vtkSmartPointer<FrgVisual_MeshPolyhedralActor<Dim>> actor =
+		vtkSmartPointer<FrgVisual_MeshPolyhedralActor<Dim>>::New();
+	//actor->SetRenderer(theRenderer_);
+
+	actor->SetDataPolyhedral(pts, connectivity);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return actor;
 }
 
 template<int Dim>

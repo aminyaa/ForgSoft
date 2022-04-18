@@ -80,13 +80,16 @@ void ForgBaseLib::FrgBase_ToolsParameterScalar_TItem::Update()
 		exprtk::parser<double> myParser;
 		bool compiled = myParser.compile(command.toStdString(), myExpression);
 
-		double& valueRef = theValue_->GetValueRef();
+		//double& valueRef = theValue_->GetValueRef();
 
 		if (compiled)
 		{
-			valueRef = myExpression.value();
+			theValue_->SetValue(myExpression.value());
+			//valueRef = myExpression.value();
 
-			emit theValue_->ValueChangedSignal(theValue_->GetValue());
+			//myWidget->ValueChangedSlot(valueRef);
+
+			//emit theValue_->ValueChangedSignal(theValue_->GetValue());
 		}
 		else
 		{

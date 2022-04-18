@@ -43,6 +43,7 @@ public:
 		Box,
 		Cylinder,
 		Mesh,
+		Polyhedral,
 		Grid,
 		Text,
 		Surface,
@@ -131,6 +132,7 @@ public:
 	bool IsBox() const;
 	bool IsCylinder() const;
 	bool IsMesh() const;
+	bool IsPolyhedral() const;
 	bool IsGrid() const;
 	bool IsText() const;
 	bool IsSurface() const;

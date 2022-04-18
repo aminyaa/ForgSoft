@@ -2,7 +2,10 @@
 #ifndef _FrgBase_Serialization_Global_Header
 #define _FrgBase_Serialization_Global_Header
 
+#ifndef BOOST_ALL_DYN_LINK
 #define BOOST_ALL_DYN_LINK
+#endif // !BOOST_ALL_DYN_LINK
+
 #include <boost/serialization/config.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/base_object.hpp>
@@ -96,111 +99,223 @@ void load_construct_data\
 	Archive & ar, C* t, const unsigned int file_version\
 )\
 
+#define DECLARE_BOOST_DATA_TYPES_EACH_TYPE(C, Type)																	\
+template __declspec(dllexport) void C::load<boost::archive::Type##_iarchive>										\
+(boost::archive::Type##_iarchive & ar, const unsigned int version);													\
+template __declspec(dllexport) void C::save<boost::archive::Type##_oarchive>										\
+(boost::archive::Type##_oarchive & ar, const unsigned int version) const;											\
+template __declspec(dllexport) void C::load<boost::archive::polymorphic_##Type##_iarchive>							\
+(boost::archive::polymorphic_##Type##_iarchive& ar, const unsigned int version);									\
+template __declspec(dllexport) void C::save<boost::archive::polymorphic_##Type##_oarchive>							\
+(boost::archive::polymorphic_##Type##_oarchive & ar, const unsigned int version) const;								\
+
 #define DECLARE_BOOST_DATA_TYPES(C)																					\
-template __declspec(dllexport) void C::load<boost::archive::text_iarchive>											\
-(boost::archive::text_iarchive & ar, const unsigned int version);													\
-template __declspec(dllexport) void C::save<boost::archive::text_oarchive>											\
-(boost::archive::text_oarchive & ar, const unsigned int version) const;												\
-template __declspec(dllexport) void C::load<boost::archive::binary_iarchive>										\
-(boost::archive::binary_iarchive& ar, const unsigned int version);													\
-template __declspec(dllexport) void C::save<boost::archive::binary_oarchive>										\
-(boost::archive::binary_oarchive & ar, const unsigned int version) const;											\
+DECLARE_BOOST_DATA_TYPES_EACH_TYPE(C, text)																			\
+DECLARE_BOOST_DATA_TYPES_EACH_TYPE(C, binary)																		\
 template __declspec(dllexport) void C::load<boost::archive::polymorphic_iarchive>									\
 (boost::archive::polymorphic_iarchive& ar, const unsigned int version);												\
 template __declspec(dllexport) void C::save<boost::archive::polymorphic_oarchive>									\
 (boost::archive::polymorphic_oarchive & ar, const unsigned int version) const;										\
-template __declspec(dllexport) void C::load<boost::archive::polymorphic_text_iarchive>								\
-(boost::archive::polymorphic_text_iarchive& ar, const unsigned int version);										\
-template __declspec(dllexport) void C::save<boost::archive::polymorphic_text_oarchive>								\
-(boost::archive::polymorphic_text_oarchive & ar, const unsigned int version) const;									\
-template __declspec(dllexport) void C::load<boost::archive::polymorphic_binary_iarchive>							\
-(boost::archive::polymorphic_binary_iarchive& ar, const unsigned int version);										\
-template __declspec(dllexport) void C::save<boost::archive::polymorphic_binary_oarchive>							\
-(boost::archive::polymorphic_binary_oarchive & ar, const unsigned int version) const;								\
 
-#define DECLARE_BOOST_DATA_TYPES_SPEC(C)																			\
+//#define DECLARE_BOOST_DATA_TYPES(C)																					\
+//template __declspec(dllexport) void C::load<boost::archive::text_iarchive>											\
+//(boost::archive::text_iarchive & ar, const unsigned int version);													\
+//template __declspec(dllexport) void C::save<boost::archive::text_oarchive>											\
+//(boost::archive::text_oarchive & ar, const unsigned int version) const;												\
+//template __declspec(dllexport) void C::load<boost::archive::binary_iarchive>										\
+//(boost::archive::binary_iarchive& ar, const unsigned int version);													\
+//template __declspec(dllexport) void C::save<boost::archive::binary_oarchive>										\
+//(boost::archive::binary_oarchive & ar, const unsigned int version) const;											\
+//template __declspec(dllexport) void C::load<boost::archive::xml_iarchive>											\
+//(boost::archive::xml_iarchive& ar, const unsigned int version);														\
+//template __declspec(dllexport) void C::save<boost::archive::xml_oarchive>											\
+//(boost::archive::xml_oarchive & ar, const unsigned int version) const;												\
+//template __declspec(dllexport) void C::load<boost::archive::polymorphic_iarchive>									\
+//(boost::archive::polymorphic_iarchive& ar, const unsigned int version);												\
+//template __declspec(dllexport) void C::save<boost::archive::polymorphic_oarchive>									\
+//(boost::archive::polymorphic_oarchive & ar, const unsigned int version) const;										\
+//template __declspec(dllexport) void C::load<boost::archive::polymorphic_text_iarchive>								\
+//(boost::archive::polymorphic_text_iarchive& ar, const unsigned int version);										\
+//template __declspec(dllexport) void C::save<boost::archive::polymorphic_text_oarchive>								\
+//(boost::archive::polymorphic_text_oarchive & ar, const unsigned int version) const;									\
+//template __declspec(dllexport) void C::load<boost::archive::polymorphic_binary_iarchive>							\
+//(boost::archive::polymorphic_binary_iarchive& ar, const unsigned int version);										\
+//template __declspec(dllexport) void C::save<boost::archive::polymorphic_binary_oarchive>							\
+//(boost::archive::polymorphic_binary_oarchive & ar, const unsigned int version) const;								\
+
+#define DECLARE_BOOST_DATA_TYPES_SPEC_EACH_TYPE(C, Type)															\
 namespace boost																										\
 {																													\
 	namespace serialization																							\
 	{																												\
-	template __declspec(dllexport) void load<boost::archive::text_iarchive>											\
-		(boost::archive::text_iarchive & ar, C& m, const unsigned int version);										\
-	template __declspec(dllexport) void save<boost::archive::text_oarchive>											\
-		(boost::archive::text_oarchive & ar, const C& m, const unsigned int version);								\
-	template __declspec(dllexport) void load<boost::archive::binary_iarchive>										\
-		(boost::archive::binary_iarchive& ar, C& m, const unsigned int version);									\
-	template __declspec(dllexport) void save<boost::archive::binary_oarchive>										\
-		(boost::archive::binary_oarchive & ar, const C& m, const unsigned int version);								\
+	template __declspec(dllexport) void load<boost::archive::Type##_iarchive>										\
+		(boost::archive::Type##_iarchive & ar, C& m, const unsigned int version);									\
+	template __declspec(dllexport) void save<boost::archive::Type##_oarchive>										\
+		(boost::archive::Type##_oarchive & ar, const C& m, const unsigned int version);								\
+}																													\
+}
+
+#define DECLARE_BOOST_DATA_TYPES_SPEC(C)																			\
+DECLARE_BOOST_DATA_TYPES_SPEC_EACH_TYPE(C, text)																	\
+DECLARE_BOOST_DATA_TYPES_SPEC_EACH_TYPE(C, binary)																	\
+namespace boost																										\
+{																													\
+	namespace serialization																							\
+	{																												\
 	template __declspec(dllexport) void load<boost::archive::polymorphic_iarchive>									\
 		(boost::archive::polymorphic_iarchive& ar, C& m, const unsigned int version);								\
 	template __declspec(dllexport) void save<boost::archive::polymorphic_oarchive>									\
 		(boost::archive::polymorphic_oarchive & ar, const C& m, const unsigned int version);						\
-	template __declspec(dllexport) void load<boost::archive::polymorphic_text_iarchive>								\
-		(boost::archive::polymorphic_text_iarchive& ar, C& m, const unsigned int version);							\
-	template __declspec(dllexport) void save<boost::archive::polymorphic_text_oarchive>								\
-		(boost::archive::polymorphic_text_oarchive & ar, const C& m, const unsigned int version);					\
-	template __declspec(dllexport) void load<boost::archive::polymorphic_binary_iarchive>							\
-		(boost::archive::polymorphic_binary_iarchive& ar, C& m, const unsigned int version);						\
-	template __declspec(dllexport) void save<boost::archive::polymorphic_binary_oarchive>							\
-		(boost::archive::polymorphic_binary_oarchive & ar, const C& m, const unsigned int version);					\
 }																													\
 }
 
-#define BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE 																						   \
+//#define DECLARE_BOOST_DATA_TYPES_SPEC(C)																			\
+//namespace boost																										\
+//{																													\
+//	namespace serialization																							\
+//	{																												\
+//	template __declspec(dllexport) void load<boost::archive::text_iarchive>											\
+//		(boost::archive::text_iarchive & ar, C& m, const unsigned int version);										\
+//	template __declspec(dllexport) void save<boost::archive::text_oarchive>											\
+//		(boost::archive::text_oarchive & ar, const C& m, const unsigned int version);								\
+//	template __declspec(dllexport) void load<boost::archive::binary_iarchive>										\
+//		(boost::archive::binary_iarchive& ar, C& m, const unsigned int version);									\
+//	template __declspec(dllexport) void save<boost::archive::binary_oarchive>										\
+//		(boost::archive::binary_oarchive & ar, const C& m, const unsigned int version);								\
+//	template __declspec(dllexport) void load<boost::archive::xml_iarchive>											\
+//		(boost::archive::xml_iarchive& ar, C& m, const unsigned int version);										\
+//	template __declspec(dllexport) void save<boost::archive::xml_oarchive>											\
+//		(boost::archive::xml_oarchive & ar, const C& m, const unsigned int version);								\
+//	template __declspec(dllexport) void load<boost::archive::polymorphic_iarchive>									\
+//		(boost::archive::polymorphic_iarchive& ar, C& m, const unsigned int version);								\
+//	template __declspec(dllexport) void save<boost::archive::polymorphic_oarchive>									\
+//		(boost::archive::polymorphic_oarchive & ar, const C& m, const unsigned int version);						\
+//	template __declspec(dllexport) void load<boost::archive::polymorphic_text_iarchive>								\
+//		(boost::archive::polymorphic_text_iarchive& ar, C& m, const unsigned int version);							\
+//	template __declspec(dllexport) void save<boost::archive::polymorphic_text_oarchive>								\
+//		(boost::archive::polymorphic_text_oarchive & ar, const C& m, const unsigned int version);					\
+//	template __declspec(dllexport) void load<boost::archive::polymorphic_binary_iarchive>							\
+//		(boost::archive::polymorphic_binary_iarchive& ar, C& m, const unsigned int version);						\
+//	template __declspec(dllexport) void save<boost::archive::polymorphic_binary_oarchive>							\
+//		(boost::archive::polymorphic_binary_oarchive & ar, const C& m, const unsigned int version);					\
+//}																													\
+//}
+
+#define BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE_EACH_TYPE(Type) \
 namespace boost																														   \
 {																																	   \
 	namespace serialization																											   \
 	{																																   \
-		template __declspec(dllexport) void serialize<boost::archive::text_iarchive>												   \
-		(boost::archive::text_iarchive & ar, std::tuple<>& t, const unsigned int version);											   \
-		template __declspec(dllexport) void serialize<boost::archive::text_oarchive>									 			   \
-		(boost::archive::text_oarchive & ar, std::tuple<>& t, const unsigned int version);											   \
-		template __declspec(dllexport) void serialize<boost::archive::binary_iarchive>												   \
-		(boost::archive::binary_iarchive & ar, std::tuple<>& t, const unsigned int version);										   \
-		template __declspec(dllexport) void serialize<boost::archive::binary_oarchive>												   \
-		(boost::archive::binary_oarchive & ar, std::tuple<>& t, const unsigned int version);										   \
-		template __declspec(dllexport) void serialize<boost::archive::polymorphic_iarchive>											   \
+		template __declspec(dllexport) void serialize<boost::archive::Type##_iarchive>												   \
+		(boost::archive::Type##_iarchive & ar, std::tuple<>& t, const unsigned int version);										   \
+		template __declspec(dllexport) void serialize<boost::archive::Type##_oarchive>									 			   \
+		(boost::archive::Type##_oarchive & ar, std::tuple<>& t, const unsigned int version);										   \
+}																																	   \
+}
+
+#define BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE																						   \
+BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE_EACH_TYPE(text)																				   \
+BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE_EACH_TYPE(binary)																				   \
+namespace boost																														   \
+{																																	   \
+	namespace serialization																											   \
+	{																																   \
+	template __declspec(dllexport) void serialize<boost::archive::polymorphic_iarchive>												   \
 		(boost::archive::polymorphic_iarchive & ar, std::tuple<>& t, const unsigned int version);									   \
 		template __declspec(dllexport) void serialize<boost::archive::polymorphic_oarchive>											   \
 		(boost::archive::polymorphic_oarchive & ar, std::tuple<>& t, const unsigned int version);									   \
-		template __declspec(dllexport) void serialize<boost::archive::polymorphic_text_iarchive>									   \
-		(boost::archive::polymorphic_text_iarchive & ar, std::tuple<>& t, const unsigned int version);								   \
-		template __declspec(dllexport) void serialize<boost::archive::polymorphic_text_oarchive>									   \
-		(boost::archive::polymorphic_text_oarchive & ar, std::tuple<>& t, const unsigned int version);								   \
-		template __declspec(dllexport) void serialize<boost::archive::polymorphic_binary_iarchive>									   \
-		(boost::archive::polymorphic_binary_iarchive & ar, std::tuple<>& t, const unsigned int version);							   \
-		template __declspec(dllexport) void serialize<boost::archive::polymorphic_binary_oarchive>									   \
-		(boost::archive::polymorphic_binary_oarchive & ar, std::tuple<>& t, const unsigned int version);							   \
-	}																																   \
+}																																	   \
 }
 
-#define DECLARE_BOOST_DATA_TYPES_CONSTRUCT(C)																		\
+//#define BOOST_CLASS_EXPORT_CXX_SPEC_STDTUPLE 																						   \
+//namespace boost																														   \
+//{																																	   \
+//	namespace serialization																											   \
+//	{																																   \
+//		template __declspec(dllexport) void serialize<boost::archive::text_iarchive>												   \
+//		(boost::archive::text_iarchive & ar, std::tuple<>& t, const unsigned int version);											   \
+//		template __declspec(dllexport) void serialize<boost::archive::text_oarchive>									 			   \
+//		(boost::archive::text_oarchive & ar, std::tuple<>& t, const unsigned int version);											   \
+//		template __declspec(dllexport) void serialize<boost::archive::binary_iarchive>												   \
+//		(boost::archive::binary_iarchive & ar, std::tuple<>& t, const unsigned int version);										   \
+//		template __declspec(dllexport) void serialize<boost::archive::binary_oarchive>												   \
+//		(boost::archive::binary_oarchive & ar, std::tuple<>& t, const unsigned int version);										   \
+//		template __declspec(dllexport) void serialize<boost::archive::xml_iarchive>													   \
+//		(boost::archive::xml_iarchive & ar, std::tuple<>& t, const unsigned int version);											   \
+//		template __declspec(dllexport) void serialize<boost::archive::xml_oarchive>													   \
+//		(boost::archive::xml_oarchive & ar, std::tuple<>& t, const unsigned int version);											   \
+//		template __declspec(dllexport) void serialize<boost::archive::polymorphic_iarchive>											   \
+//		(boost::archive::polymorphic_iarchive & ar, std::tuple<>& t, const unsigned int version);									   \
+//		template __declspec(dllexport) void serialize<boost::archive::polymorphic_oarchive>											   \
+//		(boost::archive::polymorphic_oarchive & ar, std::tuple<>& t, const unsigned int version);									   \
+//		template __declspec(dllexport) void serialize<boost::archive::polymorphic_text_iarchive>									   \
+//		(boost::archive::polymorphic_text_iarchive & ar, std::tuple<>& t, const unsigned int version);								   \
+//		template __declspec(dllexport) void serialize<boost::archive::polymorphic_text_oarchive>									   \
+//		(boost::archive::polymorphic_text_oarchive & ar, std::tuple<>& t, const unsigned int version);								   \
+//		template __declspec(dllexport) void serialize<boost::archive::polymorphic_binary_iarchive>									   \
+//		(boost::archive::polymorphic_binary_iarchive & ar, std::tuple<>& t, const unsigned int version);							   \
+//		template __declspec(dllexport) void serialize<boost::archive::polymorphic_binary_oarchive>									   \
+//		(boost::archive::polymorphic_binary_oarchive & ar, std::tuple<>& t, const unsigned int version);							   \
+//	}																																   \
+//}
+
+#define DECLARE_BOOST_DATA_TYPES_CONSTRUCT_EACH_TYPE(C, Type)														\
 namespace boost																										\
 {																													\
 namespace serialization																								\
 {																													\
-	template __declspec(dllexport) void load_construct_data<boost::archive::text_iarchive>							\
-		(boost::archive::text_iarchive & ar, C* m, const unsigned int version);										\
-	template __declspec(dllexport) void save_construct_data<boost::archive::text_oarchive>							\
-		(boost::archive::text_oarchive & ar, const C* m, const unsigned int version);								\
-	template __declspec(dllexport) void load_construct_data<boost::archive::binary_iarchive>						\
-		(boost::archive::binary_iarchive& ar, C* m, const unsigned int version);									\
-	template __declspec(dllexport) void save_construct_data<boost::archive::binary_oarchive>						\
-		(boost::archive::binary_oarchive & ar, const C* m, const unsigned int version);  							\
+	template __declspec(dllexport) void load_construct_data<boost::archive::Type##_iarchive>						\
+		(boost::archive::Type##_iarchive & ar, C* m, const unsigned int version);									\
+	template __declspec(dllexport) void save_construct_data<boost::archive::Type##_oarchive>						\
+		(boost::archive::Type##_oarchive & ar, const C* m, const unsigned int version);								\
+}																													\
+}
+
+#define DECLARE_BOOST_DATA_TYPES_CONSTRUCT(C)																		\
+DECLARE_BOOST_DATA_TYPES_CONSTRUCT_EACH_TYPE(C, text)																\
+DECLARE_BOOST_DATA_TYPES_CONSTRUCT_EACH_TYPE(C, binary)																\
+namespace boost																										\
+{																													\
+	namespace serialization																							\
+	{																												\
 	template __declspec(dllexport) void load_construct_data<boost::archive::polymorphic_iarchive>					\
 		(boost::archive::polymorphic_iarchive& ar, C* m, const unsigned int version);								\
 	template __declspec(dllexport) void save_construct_data<boost::archive::polymorphic_oarchive>					\
 		(boost::archive::polymorphic_oarchive & ar, const C* m, const unsigned int version);  						\
-	template __declspec(dllexport) void load_construct_data<boost::archive::polymorphic_text_iarchive>				\
-		(boost::archive::polymorphic_text_iarchive& ar, C* m, const unsigned int version);							\
-	template __declspec(dllexport) void save_construct_data<boost::archive::polymorphic_text_oarchive>				\
-		(boost::archive::polymorphic_text_oarchive & ar, const C* m, const unsigned int version);  					\
-	template __declspec(dllexport) void load_construct_data<boost::archive::polymorphic_binary_iarchive>			\
-		(boost::archive::polymorphic_binary_iarchive& ar, C* m, const unsigned int version);						\
-	template __declspec(dllexport) void save_construct_data<boost::archive::polymorphic_binary_oarchive>			\
-		(boost::archive::polymorphic_binary_oarchive & ar, const C* m, const unsigned int version);  				\
 }																													\
 }
+
+//#define DECLARE_BOOST_DATA_TYPES_CONSTRUCT(C)																		\
+//namespace boost																										\
+//{																													\
+//namespace serialization																								\
+//{																													\
+//	template __declspec(dllexport) void load_construct_data<boost::archive::text_iarchive>							\
+//		(boost::archive::text_iarchive & ar, C* m, const unsigned int version);										\
+//	template __declspec(dllexport) void save_construct_data<boost::archive::text_oarchive>							\
+//		(boost::archive::text_oarchive & ar, const C* m, const unsigned int version);								\
+//	template __declspec(dllexport) void load_construct_data<boost::archive::binary_iarchive>						\
+//		(boost::archive::binary_iarchive& ar, C* m, const unsigned int version);									\
+//	template __declspec(dllexport) void save_construct_data<boost::archive::binary_oarchive>						\
+//		(boost::archive::binary_oarchive & ar, const C* m, const unsigned int version);  							\
+//	template __declspec(dllexport) void load_construct_data<boost::archive::xml_iarchive>							\
+//		(boost::archive::xml_iarchive& ar, C* m, const unsigned int version);										\
+//	template __declspec(dllexport) void save_construct_data<boost::archive::xml_oarchive>							\
+//		(boost::archive::xml_oarchive & ar, const C* m, const unsigned int version);  								\
+//	template __declspec(dllexport) void load_construct_data<boost::archive::polymorphic_iarchive>					\
+//		(boost::archive::polymorphic_iarchive& ar, C* m, const unsigned int version);								\
+//	template __declspec(dllexport) void save_construct_data<boost::archive::polymorphic_oarchive>					\
+//		(boost::archive::polymorphic_oarchive & ar, const C* m, const unsigned int version);  						\
+//	template __declspec(dllexport) void load_construct_data<boost::archive::polymorphic_text_iarchive>				\
+//		(boost::archive::polymorphic_text_iarchive& ar, C* m, const unsigned int version);							\
+//	template __declspec(dllexport) void save_construct_data<boost::archive::polymorphic_text_oarchive>				\
+//		(boost::archive::polymorphic_text_oarchive & ar, const C* m, const unsigned int version);  					\
+//	template __declspec(dllexport) void load_construct_data<boost::archive::polymorphic_binary_iarchive>			\
+//		(boost::archive::polymorphic_binary_iarchive& ar, C* m, const unsigned int version);						\
+//	template __declspec(dllexport) void save_construct_data<boost::archive::polymorphic_binary_oarchive>			\
+//		(boost::archive::polymorphic_binary_oarchive & ar, const C* m, const unsigned int version);  				\
+//}																													\
+//}
 
 #define BOOST_CLASS_EXPORT_CXX(C)				   \
 DECLARE_BOOST_DATA_TYPES(C)						   \
@@ -237,7 +352,7 @@ BOOST_CLASS_EXPORT_CXX(C)
 		parentTItemIsNull = "PARENT_TITEM_IS_NOT_NULL";												 \
 																									 \
 		Archive & parentTItemIsNull;																 \
-		Archive & const_cast<ForgBaseLib::FrgBase_TreeItem*>(parentTItem);							 \
+		Archive & parentTItem;																		 \
 	}																								 \
 																									 \
 	QString parentTreeIsNull;																		 \
@@ -254,10 +369,10 @@ BOOST_CLASS_EXPORT_CXX(C)
 		parentTreeIsNull = "PARENT_TREE_IS_NOT_NULL";												 \
 																									 \
 		Archive & parentTreeIsNull;																	 \
-		Archive & const_cast<ForgBaseLib::FrgBase_Tree*>(parentTree);								 \
+		Archive & parentTree;																		 \
 	}																								 \
 }
-																									 
+
 
 #define LOAD_CONSTRUCT_DATA_TITEM(Archive, Class)													 \
 {																									 \

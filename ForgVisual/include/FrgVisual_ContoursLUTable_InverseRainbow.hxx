@@ -2,13 +2,12 @@
 #ifndef _FrgVisual_ContoursLUTable_InverseRainbow_Header
 #define _FrgVisual_ContoursLUTable_InverseRainbow_Header
 
-#include <FrgVisual_Global.hxx>
-#include <vtkLookupTable.h>
+#include <FrgViusal_LookUpTable.hxx>
 
 BeginForgVisualLib
 
 class FORGVISUAL_EXPORT FrgVisual_ContoursLUTable_InverseRainbow
-	: public vtkLookupTable
+	: public FrgViusal_LookUpTable
 
 {
 
@@ -16,7 +15,9 @@ public:
 
 	static FrgVisual_ContoursLUTable_InverseRainbow* New();
 
-	vtkTypeMacro(FrgVisual_ContoursLUTable_InverseRainbow, vtkLookupTable);
+	vtkTypeMacro(FrgVisual_ContoursLUTable_InverseRainbow, FrgViusal_LookUpTable);
+
+	bool IsInverseRainbow() const override { return true; }
 
 protected:
 
