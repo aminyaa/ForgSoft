@@ -63,6 +63,13 @@ public:
 
 	void SetScalarValues(const std::vector<double>& values);
 
+	void SetScalarScaleToLinear();
+	void SetScalarScaleToLog10();
+
+	void UpdateScalarValues();
+
+	std::vector<double> ConvertCellDataToPointData(const std::vector<double>& values);
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )

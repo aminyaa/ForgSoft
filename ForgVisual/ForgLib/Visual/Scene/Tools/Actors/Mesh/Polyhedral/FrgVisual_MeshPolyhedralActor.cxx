@@ -14,7 +14,10 @@
 #include <vtkUnsignedCharArray.h>
 #include <vtkPointData.h>
 #include <vtkCellData.h>
+#include <vtkDoubleArray.h>
+#include <vtkElevationFilter.h>
 
+#include <set>
 #include <array>
 
 #include <vtkObjectFactory.h>
@@ -81,13 +84,20 @@ inline void ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>::SetDataPolyhedral
 	auto HullMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
 	this->SetMapper(HullMapper);
 
-	HullMapper->SetInputData(thePolyData_);
+	//HullMapper->SetInputData(thePolyData_);
+	/*vtkSmartPointer<vtkButterflySubdivisionFilter> butterflyFilter = vtkSmartPointer<vtkButterflySubdivisionFilter>::New();
+	butterflyFilter->SetInputData(thePolyData_);
+	butterflyFilter->SetNumberOfSubdivisions(3);
+	butterflyFilter->Update();*/
+
+	//HullMapper->SetInputData(butterflyFilter->GetOutput());
 
 	// Create a transform to rescale model
 	auto userTransform = vtkSmartPointer<vtkTransform>::New();
 	auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
 	transform->SetTransform(userTransform);
 	transform->SetInputData(thePolyData_);
+	//transform->SetInputData(butterflyFilter->GetOutput());
 
 	auto norms = vtkSmartPointer<vtkPolyDataNormals>::New();
 	norms->SetInputConnection(transform->GetOutputPort());
@@ -95,14 +105,63 @@ inline void ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>::SetDataPolyhedral
 	HullMapper->SetInputConnection(norms->GetOutputPort());
 
 	auto lut = vtkSmartPointer<FrgVisual_ContoursLUTable_Rainbow>::New();
+	lut->SetRampToSQRT();
 	lut->SetRange(0.0, 1.0);
 
 	SetLookUpTable(lut);
-	SetScalarModeToUseCellData();
+	SetScalarModeToUsePointData();
 
 	SetScalarVisibility(false);
 
-	HullMapper->InterpolateScalarsBeforeMappingOn();
+	HullMapper->SetUseLookupTableScalarRange(true);
+	HullMapper->InterpolateScalarsBeforeMappingOff();
+	HullMapper->SetColorModeToDirectScalars();
+	HullMapper->SelectColorArray("Colors");
+
+	/*vtkSmartPointer<vtkElevationFilter> elFilter = vtkSmartPointer<vtkElevationFilter>::New();
+	elFilter->SetInputConnection(norms->GetOutputPort());
+	elFilter->SetLowPoint(0.0, 0.0, 0.0);
+	elFilter->SetHighPoint(0.0, 1.99, 0.0);
+	elFilter->SetScalarRange(0.0, 1.99);
+	elFilter->Update();*/
+	
+	//HullMapper->SetInputConnection(elFilter->GetOutputPort());
+
+	// =======================================================
+	//AdjustEdgeCurvatures(thePolyData_, "ABC", 1.0e-08);
+
+	/*std::cout << "Is Here 0\n";
+	auto arrayName = "ABC";
+	std::cout << "Is Here 1\n";
+	thePolyData_->GetPointData()->SetActiveScalars(arrayName);
+	std::cout << "Is Here 2\n";
+	auto array = thePolyData_->GetPointData()->GetAbstractArray(arrayName);
+	std::cout << "Is Here 3\n";
+	std::vector<double> curvatures;
+	std::cout << "Is Here 4\n";
+	for (vtkIdType i = 0; i < thePolyData_->GetNumberOfPoints(); ++i)
+	{
+	std::cout << "Is Here 5\n";
+		curvatures.push_back(array->GetVariantValue(i).ToDouble());
+	std::cout << "Is Here 6\n";
+	}
+	std::cout << "Is Here 7\n";
+	vtkNew<vtkDoubleArray> adjustedCurvatures;
+	std::cout << "Is Here 8\n";
+	adjustedCurvatures->SetName(arrayName);
+	std::cout << "Is Here 9\n";
+	for (auto curvature : curvatures)
+	{
+	std::cout << "Is Here 10\n";
+		adjustedCurvatures->InsertNextTuple1(curvature);
+	std::cout << "Is Here 11\n";
+	}
+	std::cout << "Is Here 12\n";
+	thePolyData_->GetPointData()->AddArray(adjustedCurvatures);
+	std::cout << "Is Here 13\n";
+	thePolyData_->GetPointData()->SetActiveScalars(arrayName);
+	std::cout << "Is Here 14\n";*/
+
 
 	//// Generate the colors for each point based on the color map
 	//vtkSmartPointer<vtkUnsignedCharArray> colors =

@@ -6,11 +6,12 @@ vtkStandardNewMacro(ForgVisualLib::FrgVisual_ContoursLUTable_Rainbow);
 
 ForgVisualLib::FrgVisual_ContoursLUTable_Rainbow::FrgVisual_ContoursLUTable_Rainbow()
 {
+	int nbColors = 256;
 	this->SetHueRange(0.6667, 0.0);
 	this->SetSaturationRange(1.0, 1.0);
 	this->SetValueRange(1.0, 1.0);
 	this->SetAlphaRange(1.0, 1.0);
-	this->SetNumberOfColors(256);
+	this->SetNumberOfColors(nbColors);
 
 	this->Build();
 }
