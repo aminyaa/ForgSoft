@@ -7,7 +7,6 @@
 #include <FrgBase_SerialSpec_QString.hxx>
 #include <FrgBase_SerialSpec_QColor.hxx>
 
-#include <FrgVisual_Global_Icons.hxx>
 #include <FrgVisual_PointActor.hxx>
 #include <FrgVisual_PickingPointActor.hxx>
 #include <FrgVisual_LineActor.hxx>
@@ -29,6 +28,10 @@
 #include <FrgBase_TabWidget.hxx>
 
 #include <QVTKOpenGLNativeWidget.h>
+#include <QFile.h>
+#include <QTextStream.h>
+#include <QApplication>
+
 #include <vtkActor.h>
 #include <vtkProperty.h>
 #include <vtkRenderer.h>
@@ -46,6 +49,9 @@
 #include <vtkCollection.h>
 #include <vtkCameraInterpolator.h>
 #include <vtkFXAAOptions.h>
+#include <vtkLogoRepresentation.h>
+#include <vtkPNGReader.h>
+#include <vtkProperty2D.h>
 
 #include <QToolBar>
 #include <QToolButton>
@@ -329,6 +335,104 @@ ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene_Entity::Ad
 	return std::move(actor);
 }
 
+void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImage(const vtkSmartPointer<vtkLogoRepresentation>& logoImage)
+{
+	if (!logoImage)
+		return;
+
+	if (theLogoImage_)
+	{
+		theRenderer_->RemoveViewProp(theLogoImage_);
+	}
+
+	theLogoImage_ = logoImage;
+
+	theRenderer_->AddViewProp(theLogoImage_);
+	theLogoImage_->SetRenderer(theRenderer_);
+
+	RenderScene(false, false);
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImageFileAddress(const std::string& fileName)
+{
+	InitLogoImage(fileName);
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImageHidden(bool condition)
+{
+	if (theLogoImage_)
+	{
+		if (!condition)
+			theRenderer_->RemoveViewProp(theLogoImage_);
+		else
+		{
+			if (!theRenderer_->HasViewProp(theLogoImage_))
+				theRenderer_->AddViewProp(theLogoImage_);
+		}
+	}
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::InitLogoImage(const std::string& fileName)
+{
+	if (fileName.empty())
+	{
+		if (theLogoImage_)
+			theRenderer_->RemoveViewProp(theLogoImage_);
+
+		RenderScene(false, false);
+
+		return;
+	}
+
+	std::string imageFileName = "SceneLogo.png";
+	auto newFileAddress = QApplication::instance()->applicationDirPath() + "/" + QString::fromStdString(imageFileName);
+
+	if (QFile::exists(newFileAddress))
+	{
+		QFile f;
+		f.setFileName(newFileAddress);
+		f.setPermissions(QFileDevice::Permission::WriteOwner);
+		f.remove();
+		f.close();
+	}
+
+	if (!QFile::copy(QString::fromStdString(fileName), newFileAddress))
+	{
+		std::cout << "Cannot copy\n";
+		return;
+	}
+
+	auto pngReader = vtkSmartPointer<vtkPNGReader>::New();
+	pngReader->SetFileName(newFileAddress.toStdString().c_str());
+	pngReader->Update();
+
+	auto logoInput = pngReader->GetOutput();
+
+	if (theLogoImage_)
+		theRenderer_->RemoveViewProp(theLogoImage_);
+
+	theLogoImage_ = vtkSmartPointer<vtkLogoRepresentation>::New();
+	theLogoImage_->SetImage(logoInput);
+	theLogoImage_->ProportionalResizeOn();
+	theLogoImage_->SetPosition(0.0, 0.85);
+	theLogoImage_->SetPosition2(0.15, 0.15);
+	theLogoImage_->GetImageProperty()->SetOpacity(1.0);
+	theLogoImage_->GetImageProperty()->SetDisplayLocationToForeground();
+	theRenderer_->AddViewProp(theLogoImage_);
+	theLogoImage_->SetRenderer(theRenderer_);
+
+	//std::remove(imageFileName);
+	{
+		QFile f;
+		f.setFileName(newFileAddress);
+		f.setPermissions(QFileDevice::Permission::WriteOwner);
+		f.remove();
+		f.close();
+	}
+
+	RenderScene(false, false);
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::FormToolBar()
 {
 	if (!theToolBar_)
@@ -608,6 +712,8 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	for(const auto& light : theLights_)
 		GetRenderer()->AddLight(light);
+
+	InitLogoImage();
 
 	theInitiated_ = true;
 }
@@ -1366,6 +1472,8 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene_Entity)
 
 		theLights_.push_back(light);
 	}
+
+	InitLogoImage();
 }
 
 template<int Dim>

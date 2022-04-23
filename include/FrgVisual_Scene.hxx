@@ -7,6 +7,7 @@
 #include <QtWidgets/QMainWindow>
 
 #include <FrgVisual_Serialization_Global.hxx>
+#include <FrgVisual_Global_Icons.hxx>
 
 class vtkRenderer;
 class vtkGenericOpenGLRenderWindow;
@@ -17,6 +18,7 @@ class vtkTextActor;
 class vtkAxesActor;
 class vtkCameraInterpolator;
 class vtkLight;
+class vtkLogoRepresentation;
 
 class QPoint;
 class QVTKOpenGLNativeWidget;
@@ -160,6 +162,16 @@ public:
 
 	FrgVisual_SceneRegistry* GetRegistry() const { return theRegistry_; }
 
+	const vtkSmartPointer<vtkLogoRepresentation>& GetLogoImage() const { return theLogoImage_; }
+	void SetLogoImage(const vtkSmartPointer<vtkLogoRepresentation>& logoImage);
+
+	void SetLogoImageFileAddress(const std::string& fileName);
+	void SetLogoImageHidden(bool condition);
+
+protected:
+
+	void InitLogoImage(const std::string& fileName = ICON_FRGVISUAL_SCENE_LOGO);
+
 Q_SIGNALS:
 
 	void RenderScene(bool resetCamera = true, bool resetView = false);
@@ -221,6 +233,8 @@ protected:
 	QColor theMinorGridColor_;
 
 	bool theIsContextMenuExecutable_ = true;
+
+	vtkSmartPointer<vtkLogoRepresentation> theLogoImage_;
 
 protected:
 

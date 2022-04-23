@@ -2,7 +2,7 @@
 #ifndef _FrgBase_ToolsParameter_TItem_Header
 #define _FrgBase_ToolsParameter_TItem_Header
 
-#define exprtk_disable_caseinsensitivity 
+//#define exprtk_disable_caseinsensitivity 
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_TreeItem.hxx>

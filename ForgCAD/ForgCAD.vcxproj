@@ -44,12 +44,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(SolutionDir)include;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(BOOST_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Deb;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(Qt_INCLUDELIB);$(BOOST_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Deb;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)D</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <IncludePath>$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(SolutionDir)include;$(SolutionDir)ForgVisual\ThirdParties\VTK\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(BOOST_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Rel;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(Qt_INCLUDELIB);$(BOOST_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(SolutionDir)ForgVisual\ThirdParties\VTK\lib\Rel;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

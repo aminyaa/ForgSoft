@@ -35,4 +35,8 @@
 #define ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPPLUSX ":/ForgVisual/Resources/Scene/Axes/-Z/Up +X.png"
 #define ICON_FRGVISUAL_SCENE_VIEW_MINUSZ_UPMINUSX ":/ForgVisual/Resources/Scene/Axes/-Z/Up -X.png"
 
+#ifndef ICON_FRGVISUAL_SCENE_LOGO
+#define ICON_FRGVISUAL_SCENE_LOGO ":/ForgVisual/Resources/Scene/SceneLogo.png"
+#endif // !ICON_FRGVISUAL_SCENE_LOGO
+
 #endif // !_FrgVisual_Global_Icons_Header

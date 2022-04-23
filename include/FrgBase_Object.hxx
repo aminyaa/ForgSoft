@@ -14,7 +14,7 @@ class FORGBASE_EXPORT FrgBase_Object
 protected:
 
 	int theIndex_;
-	QString theName_;
+	std::string theName_;
 
 public:
 
@@ -25,8 +25,8 @@ public:
 	virtual int GetIndex() const { return theIndex_; }
 	virtual void SetIndex(int index) { theIndex_ = index; }
 
-	virtual const QString& GetName() const { return theName_; }
-	virtual void SetName(const QString& name) { theName_ = name; }
+	virtual std::string GetName() const { return theName_; }
+	virtual void SetName(const std::string& name) { theName_ = name; }
 
 private:
 
