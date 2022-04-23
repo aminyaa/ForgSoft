@@ -51,7 +51,7 @@ void Tree::FormTree()
 	////s->GetScene()->AddPlaneUsingCenterNormal(P1, P2);
 	//s->GetScene()->DrawGrid(0.0, 0.0, 5.0, 5.0, 10, 10);
 
-	auto parameters = new ForgBaseLib::FrgBase_ToolsParameters_TItem("Parameters", nullptr, this);
+	/*auto parameters = new ForgBaseLib::FrgBase_ToolsParameters_TItem("Parameters", nullptr, this);
 	parameters->FormTItem();
 
 	auto parameterTItem = new ForgBaseLib::FrgBase_ToolsParameterScalar_TItem("Scalar", parameters, this);
@@ -74,5 +74,5 @@ void Tree::FormTree()
 	pp->AddRow(tVar);
 
 	int ind = pp->GetRowFromVariant(tVar);
-	parameterTItem2->GetPropertiesPanel()->setRowHeight(ind, pp->rowHeight(ind) / 2);
+	parameterTItem2->GetPropertiesPanel()->setRowHeight(ind, pp->rowHeight(ind) / 2);*/
 }

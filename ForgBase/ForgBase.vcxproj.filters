@@ -418,6 +418,18 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\TextEdit">
       <UniqueIdentifier>{419ba47a-0492-4457-8996-c6a2392124cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field">
+      <UniqueIdentifier>{6ef4ff9a-2e83-4344-9eb7-fcf0de72b55d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field\Scalar">
+      <UniqueIdentifier>{25077246-5b5c-47e8-af03-d6ed4a4bbf44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field\Parser">
+      <UniqueIdentifier>{88aef407-e76b-4c70-ac25-3e2a9eb04faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\SymbolTable">
+      <UniqueIdentifier>{226428fc-fdfa-401a-a098-86919941746a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -783,6 +795,18 @@
     <ClCompile Include="ForgLib\Base\Widgets\Properties\Widgets\TextEdit\FrgBase_PrptsWdgTextEdit.cxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\TextEdit</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\SymbolTable\FrgBase_SymbolTable.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Scalar\FrgBase_ScalarField.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Scalar</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Parser\FrgBase_FieldParser.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\FrgBase_Field.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
@@ -988,6 +1012,24 @@
     </ClInclude>
     <ClInclude Include="ThirdParties\CodeEditor\include\internal\QStyleSyntaxHighlighter.hpp">
       <Filter>ThirdParties\CodeEditor\include\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\FrgBase_Field.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\SymbolTable\FrgBase_SymbolTable.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Scalar\FrgBase_ScalarField.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Scalar</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\FrgBase_FieldI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Parser\FrgBase_FieldParser.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Parser\FrgBase_FieldParserI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
