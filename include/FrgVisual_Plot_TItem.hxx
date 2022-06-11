@@ -36,12 +36,17 @@ public:
 
 	void FormTItem() override;
 
-	void ShowTabWidget() const;
+	ForgBaseLib::FrgBase_TreeItem* GetParentTitleTItem() const { return theParentTitleTItem_; }
+	virtual void SetParentTitleTItem(ForgBaseLib::FrgBase_TreeItem* pt);
+
+	void ShowTabWidget();
+
+	virtual QString GetTabText() const;
 
 	FrgVisual_Plot* GetPlot() const { return thePlot_; }
 	void RenderView() const;
 
-	bool RemovePlot(vtkPlot* plot);
+	virtual bool RemovePlot(vtkPlot* plot);
 
 	void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow) override;
 
@@ -51,7 +56,9 @@ private:
 
 protected:
 
-	FrgVisual_Plot* thePlot_ = NullPtr;
+	FrgVisual_Plot* thePlot_ = nullptr;
+
+	ForgBaseLib::FrgBase_TreeItem* theParentTitleTItem_ = nullptr;
 
 	virtual void Init();
 

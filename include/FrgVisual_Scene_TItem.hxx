@@ -31,6 +31,9 @@ public:
 
 	void FormTItem() override;
 
+	ForgBaseLib::FrgBase_TreeItem* GetParentTitleTItem() const { return theParentTitleTItem_; }
+	virtual void SetParentTitleTItem(ForgBaseLib::FrgBase_TreeItem* pt);
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )
@@ -50,10 +53,16 @@ public slots:
 
 	virtual void ShowTabWidget() {}
 
+	virtual QString GetTabText() const;
+
 protected slots:
 
 	void TItemDoubleClickedSlot() override;
 	virtual void TItemNameToTabTitleChangedSlot(const QString&) {}
+
+protected:
+
+	ForgBaseLib::FrgBase_TreeItem* theParentTitleTItem_ = nullptr;
 };
 
 template<int Dim>

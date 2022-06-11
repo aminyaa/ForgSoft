@@ -70,6 +70,8 @@ public:
 
 	std::vector<double> ConvertCellDataToPointData(const std::vector<double>& values);
 
+	const vtkSmartPointer<vtkPolyData>& GetPolyData() const { return thePolyData_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER( )

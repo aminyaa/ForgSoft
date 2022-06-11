@@ -30,6 +30,8 @@ public:
 
 	void AddPointToPlot(vtkPlot* vtkplot, double x, double y, bool render = true) const;
 
+	void RemoveAllPoints(vtkPlot* vtkplot);
+
 	// Add some predefined function such as Sin(x), Cos(x)
 	vtkPlot* AddSinX(const char* title, const int nbPts = 350) const;
 	vtkPlot* AddCosX(const char* title, const int nbPts = 350) const;

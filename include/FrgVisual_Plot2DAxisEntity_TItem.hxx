@@ -44,6 +44,8 @@ public:
 
 	FrgVisual_Plot2D_TItem* GetPlot2DTItem() const { return thePlot2DTItem_; }
 
+	FrgVisual_Plot2DAxisTitle_TItem* GetTitleTItem() const { return theTitleTItem_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)

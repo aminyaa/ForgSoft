@@ -31,6 +31,9 @@ public:
 
 	void FormAxes();
 
+	FrgVisual_Plot2DBtmAxis_TItem* GetBottomAxis() const { return theBottomAxisTItem_; }
+	FrgVisual_Plot2DLeftAxis_TItem* GetLeftAxis() const { return theLeftAxisTItem_; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)

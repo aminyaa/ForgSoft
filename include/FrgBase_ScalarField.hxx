@@ -15,6 +15,8 @@ public:
 	FrgBase_ScalarField();
 
 	bool IsScalar() const override { return true; }
+
+	void CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = nullptr) override;
 };
 
 EndForgBaseLib
