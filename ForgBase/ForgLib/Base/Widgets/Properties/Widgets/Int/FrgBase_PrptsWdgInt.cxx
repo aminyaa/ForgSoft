@@ -6,6 +6,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtCore/QEvent>
 #include <QtGui/QKeyEvent>
+#include <QLineEdit>
 
 #include <string.h>
 
@@ -54,6 +55,8 @@ void ForgBaseLib::FrgBase_PrptsWdgInt::FormWidget()
 	}
 	
 	theSpinBox_ = new QSpinBox(this);
+
+	theSpinBox_->setLocale(QLocale(QLocale::Language::English, QLocale::UnitedStates));
 
 	theSpinBox_->setMinimum(GetMinimumValue());
 	theSpinBox_->setMaximum(GetMaximumValue());
@@ -169,8 +172,13 @@ bool ForgBaseLib::FrgBase_PrptsWdgInt::eventFilter(QObject * obj, QEvent * event
 			}
 			if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter)
 			{
-				event->accept();
+				/*const auto& le = theSpinBox_->findChild<QLineEdit*>();
+				if(le)
+					le->deselect();*/
 				theSpinBox_->clearFocus();
+				event->accept();
+
+				return true;
 			}
 		}
 	}

@@ -430,6 +430,21 @@
     <Filter Include="ForgLib\Base\Core\Data Types\SymbolTable">
       <UniqueIdentifier>{226428fc-fdfa-401a-a098-86919941746a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\SymbolTable\Registry">
+      <UniqueIdentifier>{324eba7b-4d6a-4f4f-b191-ebfc7035bef8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field\Entity">
+      <UniqueIdentifier>{0d11ac85-10cb-448e-aae4-dee3aa247397}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field\Vector">
+      <UniqueIdentifier>{cbbf1bb6-13a5-4a9c-a533-cc026ed767dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field\Vector\Entity">
+      <UniqueIdentifier>{efa12bd3-0938-42b7-9ea9-5221729e8e8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\Field\Tools">
+      <UniqueIdentifier>{6f296980-1eff-4d9f-b46d-69d87c5cfa8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -807,6 +822,21 @@
     <ClCompile Include="ForgLib\Base\Core\Data Types\Field\FrgBase_Field.cxx">
       <Filter>ForgLib\Base\Core\Data Types\Field</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\SymbolTable\Registry\FrgBase_SymbolTableRegistry.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Entity\FrgBase_Field_Entity.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Vector\FrgBase_VectorField.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Vector\Entity\FrgBase_VectorField_Entity.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Vector\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Tools\FrgBase_FieldTools.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
@@ -1030,6 +1060,27 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Parser\FrgBase_FieldParserI.hxx">
       <Filter>ForgLib\Base\Core\Data Types\Field\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\SymbolTable\Registry\FrgBase_SymbolTableRegistry.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Entity\FrgBase_Field_Entity.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Vector\FrgBase_VectorField.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Vector\FrgBase_VectorFieldI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\SymbolTable\FrgBase_SymbolTableI.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Vector\Entity\FrgBase_VectorField_Entity.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Vector\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Tools\FrgBase_FieldTools.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\Field\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

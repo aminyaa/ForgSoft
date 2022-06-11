@@ -15,6 +15,7 @@ BeginForgBaseLib
 class FrgBase_SymbolTable;
 class FrgBase_Field_Entity;
 class FrgBase_ScalarField;
+class FrgBase_VectorField_Entity;
 
 class FORGBASE_EXPORT FrgBase_FieldParser
 	: public FrgBase_Object
@@ -33,17 +34,17 @@ public:
 		const std::vector<FrgBase_SymbolTable*>& symbolTables
 	);
 
-	static double CalcValue
+	static double CalcValueScalar
 	(
 		FrgBase_ScalarField* field,
 		const std::shared_ptr<Calculated>& calculated = nullptr
 	);
 
-	/*static std::vector<double> CalcValues
+	static std::vector<double> CalcValueVector
 	(
-		const std::string& expression,
-		std::vector<FrgBase_SymbolTable*> symbolTables
-	);*/
+		FrgBase_VectorField_Entity* field,
+		const std::shared_ptr<Calculated>& calculated = nullptr
+	);
 
 	static FrgBase_Field_Entity* RetrieveFieldUsingFullName
 	(
@@ -54,6 +55,18 @@ public:
 	static std::vector<FrgBase_Field_Entity*> RetrieveFieldsUsingFullName
 	(
 		const std::vector<std::string>& variablesFullName,
+		const std::vector<FrgBase_SymbolTable*>& symbolTables
+	);
+
+	static std::vector<FrgBase_Field_Entity*> RetrieveDependentFields
+	(
+		const FrgBase_Field_Entity* const field,
+		const std::vector<FrgBase_SymbolTable*>& symbolTables
+	);
+
+	static std::vector<FrgBase_Field_Entity*> RetrieveFieldsUsingThisField
+	(
+		const FrgBase_Field_Entity* const field,
 		const std::vector<FrgBase_SymbolTable*>& symbolTables
 	);
 
@@ -68,12 +81,35 @@ public:
 		const std::vector<FrgBase_SymbolTable*>& symbolTables
 	);*/
 
-protected:
-
 	static std::shared_ptr<Calculated> InitCalculated();
 	//static void ClearCalculated(const std::shared_ptr<Calculated>& calculated);
 
 	static bool ContainFieldInCalculated(const std::shared_ptr<Calculated>& calculated, FrgBase_Field_Entity* field);
+
+	static std::string CombineString
+	(
+		const std::vector<std::string>& strs
+	);
+
+	static std::string CombineValues
+	(
+		const std::vector<std::string>& headers,
+		const std::vector<double>& values
+	);
+
+protected:
+
+	static std::shared_ptr<exprtk::expression<double>> CalcValueEntity
+	(
+		FrgBase_Field_Entity* field,
+		const std::shared_ptr<Calculated>& calculated = nullptr
+	);
+
+	static std::vector<double> RetrieveValuesFromExpression
+	(
+		const size_t size,
+		std::shared_ptr<exprtk::expression<double>> expression
+	);
 };
 
 EndForgBaseLib

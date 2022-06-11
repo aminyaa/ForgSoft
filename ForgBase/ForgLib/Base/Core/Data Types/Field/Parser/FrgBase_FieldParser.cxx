@@ -4,6 +4,8 @@
 
 #include <exprtk.hpp>
 
+#define GetM(str) (std::max(15, (int)str.size() + 2))
+
 std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::CompileExpression
 (
 	const std::string& expression,
@@ -15,6 +17,7 @@ std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::Co
 		myExpression->register_symbol_table(*table->GetSymbolTable());
 
 	auto myParser = std::make_shared<exprtk::parser<double>>();
+
 	auto isCompiled = myParser->compile(expression, *myExpression.get());
 	if (!isCompiled)
 	{
@@ -25,15 +28,23 @@ std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::Co
 	return myExpression;
 }
 
-double ForgBaseLib::FrgBase_FieldParser::CalcValue
+std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::CalcValueEntity
 (
-	FrgBase_ScalarField* field,
+	FrgBase_Field_Entity* field,
 	const std::shared_ptr<Calculated>& calculated
 )
 {
 	auto tables = field->RetrieveSymbolTablesIncludingExternals();
 
-	auto myExpression = CompileExpression(field->GetExpression(), tables);
+	auto myExpression = CompileExpression
+	(
+		field->IsScalar() ?
+		field->GetExpression() :
+		"return " + field->GetExpression(),
+		tables
+	);
+
+	//auto myExpression = CompileExpression(field->GetExpression(), tables);
 
 	std::shared_ptr<FrgBase_FieldParser::Calculated> myCalculated;
 	if (!calculated)
@@ -54,6 +65,86 @@ double ForgBaseLib::FrgBase_FieldParser::CalcValue
 		}
 	}
 
+	if (!ContainFieldInCalculated(myCalculated, field))
+		myCalculated->theFields_.push_back(field);
+
+	return myExpression;
+}
+
+std::vector<double> ForgBaseLib::FrgBase_FieldParser::RetrieveValuesFromExpression
+(
+	const size_t size,
+	std::shared_ptr<exprtk::expression<double>> expression
+)
+{
+	std::vector<double> result;
+
+	auto value = expression->value();
+
+	const auto& results = expression->results();
+	if (results.count() == 0 || results.count() != size)
+	{
+		std::string message = "Cannot calculate the value. The size should be equal to " + std::to_string(size);
+		std::exception ex(message.c_str());
+		throw ex;
+	}
+
+	typedef exprtk::results_context<double> results_context_t;
+	typedef typename results_context_t::type_store_t type_t;
+	typedef typename type_t::scalar_view scalar_t;
+	typedef typename type_t::vector_view vector_t;
+	typedef typename type_t::string_view string_t;
+
+	//const auto& results = expression->results();
+
+	bool areValuesAcceptable = true;
+	for (std::size_t i = 0; i < results.count(); ++i)
+	{
+		auto t = results[i];
+
+		if (t.type == type_t::e_scalar)
+		{
+			auto value = scalar_t(t);
+
+			if (std::isinf(value()))
+				areValuesAcceptable = false;
+			else if (std::isnan(value()))
+				areValuesAcceptable = false;
+
+			result.push_back(value());
+		}
+		else if (t.type == type_t::e_vector)
+		{
+			auto value = vector_t(t);
+			for (std::size_t iter = 0; iter < value.size(); iter++)
+			{
+				if (std::isinf(value[iter]))
+					areValuesAcceptable = false;
+				else if (std::isnan(value[iter]))
+					areValuesAcceptable = false;
+
+				result.push_back(value[iter]);
+			}
+		}
+	}
+
+	if (!areValuesAcceptable)
+	{
+		std::exception ex("Value is not acceptable.");
+		throw ex;
+	}
+
+	return result;
+}
+
+double ForgBaseLib::FrgBase_FieldParser::CalcValueScalar
+(
+	FrgBase_ScalarField* field,
+	const std::shared_ptr<Calculated>& calculated
+)
+{
+	auto myExpression = CalcValueEntity(field, calculated);
+
 	auto value = myExpression->value();
 
 	auto results = myExpression->results();
@@ -64,6 +155,17 @@ double ForgBaseLib::FrgBase_FieldParser::CalcValue
 	}
 
 	return value;
+}
+
+std::vector<double> ForgBaseLib::FrgBase_FieldParser::CalcValueVector
+(
+	FrgBase_VectorField_Entity* field,
+	const std::shared_ptr<Calculated>& calculated
+)
+{
+	auto myExpression = CalcValueEntity(field, calculated);
+
+	return RetrieveValuesFromExpression(field->GetSize(), myExpression);
 }
 
 //std::vector<double> ForgBaseLib::FrgBase_FieldParser::CalcValues
@@ -92,13 +194,44 @@ std::shared_ptr<ForgBaseLib::FrgBase_FieldParser::Calculated> ForgBaseLib::FrgBa
 
 bool ForgBaseLib::FrgBase_FieldParser::ContainFieldInCalculated(const std::shared_ptr<Calculated>& calculated, FrgBase_Field_Entity* field)
 {
-	for (const auto& f : calculated->theFields_)
+	if (calculated)
 	{
-		if (f == field)
-			return true;
+		for (const auto& f : calculated->theFields_)
+		{
+			if (f == field)
+				return true;
+		}
 	}
 
 	return false;
+}
+
+std::string ForgBaseLib::FrgBase_FieldParser::CombineString(const std::vector<std::string>& strs)
+{
+	std::ostringstream header;
+
+	for (const auto& h : strs)
+	{
+		header << std::setw(GetM(h)) << h;
+	}
+
+	return header.str();
+}
+
+std::string ForgBaseLib::FrgBase_FieldParser::CombineValues
+(
+	const std::vector<std::string>& headers,
+	const std::vector<double>& values
+)
+{
+	std::ostringstream value;
+
+	for (int i = 0; i < headers.size(); i++)
+	{
+		value << std::setw(GetM(headers[i])) << std::scientific << std::setprecision(6) << values[i];
+	}
+
+	return value.str();
 }
 
 ForgBaseLib::FrgBase_Field_Entity* ForgBaseLib::FrgBase_FieldParser::RetrieveFieldUsingFullName
@@ -133,6 +266,46 @@ std::vector<ForgBaseLib::FrgBase_Field_Entity*> ForgBaseLib::FrgBase_FieldParser
 	}
 
 	return fields;
+}
+
+std::vector<ForgBaseLib::FrgBase_Field_Entity*> ForgBaseLib::FrgBase_FieldParser::RetrieveDependentFields
+(
+	const FrgBase_Field_Entity* const field,
+	const std::vector<FrgBase_SymbolTable*>& symbolTables
+)
+{
+	std::vector<std::string> collectedVariables;
+	exprtk::collect_variables(field->GetExpression(), collectedVariables);
+
+	auto dependentFields = RetrieveFieldsUsingFullName(collectedVariables, symbolTables);
+
+	return dependentFields;
+}
+
+std::vector<ForgBaseLib::FrgBase_Field_Entity*> ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingThisField
+(
+	const FrgBase_Field_Entity* const field,
+	const std::vector<FrgBase_SymbolTable*>& symbolTables
+)
+{
+	std::vector<FrgBase_Field_Entity*> result;
+
+	for (const auto& t : symbolTables)
+	{
+		for (const auto& f : t->GetFields())
+		{
+			for (const auto& df : RetrieveDependentFields(f, symbolTables))
+			{
+				if (df == field)
+				{
+					result.push_back(f);
+					break;
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 //std::vector<ForgBaseLib::FrgBase_Field_Entity*> ForgBaseLib::FrgBase_FieldParser::RetrieveDependentFields

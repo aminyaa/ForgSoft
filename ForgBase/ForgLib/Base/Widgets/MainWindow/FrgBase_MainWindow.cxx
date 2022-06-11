@@ -359,6 +359,15 @@ void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget* widget, const QStri
 				else
 					theCentralContainer_->showSectionContent(myContent);
 
+				myContent.data()->setTitle(title);
+
+				auto myTitleWidget = dynamic_cast<IconTitleWidget*>(myContent.data()->titleWidget());
+				if (myTitleWidget)
+					myTitleWidget->setTitle(title);
+
+				auto tabWidget = theMapWidgetToTabWidget_[widget];
+				tabWidget->setTabText(tabWidget->indexOf(widget), title);
+
 				return;
 			}
 		}
@@ -368,7 +377,14 @@ void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget* widget, const QStri
 	theMapWidgetToTabWidget_[widget] = tabWidget;
 	tabWidget->ShowTabWidget(widget, title);
 
-	auto _sc1 = ADS_NS::SectionContent::newSectionContent(title + " " + QString::number(myContents.size()), theCentralContainer_, new IconTitleWidget(QIcon(), title, tabWidget), tabWidget);
+	auto _sc1 = ADS_NS::SectionContent::newSectionContent
+	(
+		title + " " + QString::number(myContents.size()),
+		theCentralContainer_,
+		new IconTitleWidget(QIcon(), title, tabWidget),
+		tabWidget
+	);
+
 	tabWidget->SetSectionContent(_sc1);
 
 	theCentralSectionWidget_ = theCentralContainer_->addSectionContent(_sc1, theCentralSectionWidget_, ADS_NS::CenterDropArea);
@@ -398,6 +414,29 @@ void ForgBaseLib::FrgBase_MainWindow::RemoveTabWidget(QWidget* widget)
 void ForgBaseLib::FrgBase_MainWindow::SetTabText(QWidget* widget, const QString& title)
 {
 	auto myContents = theCentralContainer_->contents();
+
+	auto iter = theMapWidgetToTabWidget_.find(widget);
+	if (iter != theMapWidgetToTabWidget_.end())
+	{
+		for (auto myContent : myContents)
+		{
+			if (myContent.data()->contentWidget() == theMapWidgetToTabWidget_.at(widget))
+			{
+				myContent.data()->setTitle(title);
+
+				auto myTitleWidget = dynamic_cast<IconTitleWidget*>(myContent.data()->titleWidget());
+				if (myTitleWidget)
+					myTitleWidget->setTitle(title);
+
+				auto tabWidget = theMapWidgetToTabWidget_[widget];
+				tabWidget->setTabText(tabWidget->indexOf(widget), title);
+
+				return;
+			}
+		}
+	}
+
+	/*auto myContents = theCentralContainer_->contents();
 	for (auto myContent : myContents)
 	{
 		if (myContent.data()->contentWidget() == widget)
@@ -405,7 +444,7 @@ void ForgBaseLib::FrgBase_MainWindow::SetTabText(QWidget* widget, const QString&
 			myContent.data()->setTitle(title);
 			return;
 		}
-	}
+	}*/
 	/*int index = theTabWidget_->indexOf(widget);
 
 	SetTabText(index, title);*/

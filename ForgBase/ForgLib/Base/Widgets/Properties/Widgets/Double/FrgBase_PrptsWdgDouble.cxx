@@ -52,6 +52,7 @@ void ForgBaseLib::FrgBase_PrptsWdgDouble::FormWidget()
 	}
 
 	theSpinBox_ = new QDoubleSpinBox;
+	theSpinBox_->setLocale(QLocale(QLocale::Language::English, QLocale::UnitedStates));
 	theSpinBox_->setMinimum(GetMinimumValue());
 	theSpinBox_->setMaximum(GetMaximumValue());
 	theSpinBox_->setSingleStep(GetStepValue());

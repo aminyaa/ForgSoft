@@ -1,6 +1,6 @@
 #pragma once
 
-#include <FrgBase_SymbolTable.hxx>
+//#include <FrgBase_SymbolTable.hxx>
 
 //template<typename T>
 //inline std::string ForgBaseLib::FrgBase_Field<T>::GetFullPresentationName(const std::string& delimiter) const
