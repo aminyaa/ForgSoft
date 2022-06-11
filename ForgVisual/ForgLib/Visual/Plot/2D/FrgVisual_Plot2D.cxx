@@ -57,14 +57,14 @@ void ForgVisualLib::FrgVisual_Plot2D::Init()
 
 	theChart_ = vtkSmartPointer<FrgVisual_Plot2D_ChartXY>::New();
 	theView_->GetScene()->AddItem(theChart_);
-	
+
 	theRenderWindow_->GetInteractor()->SetDesiredUpdateRate(1);
 	theView_->GetInteractor()->Initialize();
 
 	SetBottomAxisTitle("X Axis");
 	SetLeftAxisTitle("Y Axis");
 
-	if(theParentMainWindow_)
+	if (theParentMainWindow_)
 		SetThemeDark(theParentMainWindow_->IsThemeDark());
 
 	RenderView();
@@ -88,7 +88,7 @@ void ForgVisualLib::FrgVisual_Plot2D::wheelEvent(QWheelEvent* event)
 		int delta = std::floor(event->delta() / 120);
 		if (delta == 0)
 			delta = event->delta() > 0 ? 1 : -1;
-		
+
 		theChart_->MouseWheelEvent(mouseEvent, delta);
 	}
 }
@@ -195,9 +195,9 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 	}
 
 	iii++;*/
-	
+
 	//this->GetView()->GetContext()->DrawEllipseWedge(1.0, 2.0, 1.5, 2.23, 1.0, 1.2, 0.0, 125.0);
-	QThread::msleep(1);
+	//QThread::msleep(1);
 	RenderView();
 
 	return line;
@@ -207,7 +207,7 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddPlot
 (
 	std::vector<double>& x,
 	std::vector<double>& y,
-	const char * title
+	const char* title
 ) const
 {
 	QList<double> Qx, Qy;
@@ -228,7 +228,7 @@ void ForgVisualLib::FrgVisual_Plot2D::AddPointToPlot(vtkPlot* vtkplot, double x,
 
 	int markerSize = 1;
 	int markerStyle = 1;
-	auto VTKPlotPoints = dynamic_cast<vtkPlotPoints*>(vtkplot);
+	const auto& VTKPlotPoints = dynamic_cast<vtkPlotPoints*>(vtkplot);
 	if (VTKPlotPoints)
 	{
 		markerSize = VTKPlotPoints->GetMarkerSize();
@@ -261,9 +261,24 @@ void ForgVisualLib::FrgVisual_Plot2D::AddPointToPlot(vtkPlot* vtkplot, double x,
 
 	if (render)
 	{
-		QThread::msleep(1);
+		//QThread::msleep(1);
 		RenderView();
 	}
+}
+
+void ForgVisualLib::FrgVisual_Plot2D::RemoveAllPoints(vtkPlot* vtkplot)
+{
+	if (!vtkplot)
+		return;
+
+	const auto& myTable = vtkplot->GetInput();
+	while (myTable->GetNumberOfRows() > 0)
+		myTable->RemoveRow(myTable->GetNumberOfRows() - 1);
+
+	theChart_->UpdateBoundingBox(ForgBaseLib::FrgBase_Pnt<2>(0.0, 0.0));
+
+	//QThread::msleep(1);
+	RenderView();
 }
 
 vtkPlot* ForgVisualLib::FrgVisual_Plot2D::AddSinX(const char* title, const int nbPts) const
@@ -317,7 +332,7 @@ bool ForgVisualLib::FrgVisual_Plot2D::GetLegendVisible() const
 	return true;
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisTitle(const char * title)
+void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisTitle(const char* title)
 {
 	if (theChart_)
 	{
@@ -328,7 +343,7 @@ void ForgVisualLib::FrgVisual_Plot2D::SetBottomAxisTitle(const char * title)
 	}
 }
 
-const char * ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisTitle() const
+const char* ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisTitle() const
 {
 	if (theChart_)
 	{
@@ -341,7 +356,7 @@ const char * ForgVisualLib::FrgVisual_Plot2D::GetBottomAxisTitle() const
 
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitle(const char * title)
+void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitle(const char* title)
 {
 	if (theChart_)
 	{
@@ -352,7 +367,7 @@ void ForgVisualLib::FrgVisual_Plot2D::SetLeftAxisTitle(const char * title)
 	}
 }
 
-const char * ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitle() const
+const char* ForgVisualLib::FrgVisual_Plot2D::GetLeftAxisTitle() const
 {
 	if (theChart_)
 	{
@@ -459,7 +474,7 @@ void ForgVisualLib::FrgVisual_Plot2D::SetAxisLogarithmic(int axisNumber, bool co
 		auto axis = theChart_->GetAxis(axisNumber);
 		if (axis->GetLogScale() == condition)
 			return;
-		
+
 		//theChart_->SetAdjustLowerBoundForLogPlot(condition);
 		axis->SetLogScale(condition);
 		theChart_->RecalculateAndUpdateBoundingBox();
@@ -716,7 +731,7 @@ void ForgVisualLib::FrgVisual_Plot2D::HighlightAxis(int axisNumber, bool conditi
 			axis->GetLabelProperties()->SetColor(red, green, blue);
 			axis->GetLabelProperties()->BoldOn();
 			axis->GetPen()->SetColorF(red, green, blue);
-			axis->GetPen()->SetWidth(axis->GetPen()->GetWidth()*2.0);
+			axis->GetPen()->SetWidth(axis->GetPen()->GetWidth() * 2.0);
 		}
 		else
 		{
@@ -962,18 +977,18 @@ bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName) cons
 
 void ForgVisualLib::FrgVisual_Plot2D::SetThemeDarkSlot(bool condition) const
 {
-	if(condition)
+	if (condition)
 	{
 		theView_->GetRenderer()->GradientBackgroundOn();
 		theView_->GetRenderer()->SetBackground(0.2, 0.2, 0.2);
 		theView_->GetRenderer()->SetBackground2(0.1497, 0.1497, 0.1497);
 
-		if(theChart_)
+		if (theChart_)
 		{
 			theChart_->GetBackgroundBrush()->SetColor(42, 42, 42, 255);
-			
+
 			const auto nbAxes = theChart_->GetNumberOfAxes();
-			for(auto i = 0; i < nbAxes; i++)
+			for (auto i = 0; i < nbAxes; i++)
 			{
 				auto* const axis = theChart_->GetAxis(i);
 				axis->GetPen()->SetColor(255, 255, 255, 255);

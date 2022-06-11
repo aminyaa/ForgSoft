@@ -96,6 +96,10 @@ public:
 
 	vtkPlot* AddPlot(std::vector<double> x, std::vector<double> y, const char* title);
 
+	bool RemovePlot(vtkPlot* plot) override;
+
+	bool RemovePlot2DDataSeriesTItem(FrgVisual_Plot2DDataSeries_TItem* p);
+
 	FrgVisual_Plot2DDataSeries_TItem* GetPlotDataSeriesTItem(vtkPlot* vtkplot) const;
 
 	void AddPointToPlot(vtkPlot* vtkplot, double x, double y, bool render = true);

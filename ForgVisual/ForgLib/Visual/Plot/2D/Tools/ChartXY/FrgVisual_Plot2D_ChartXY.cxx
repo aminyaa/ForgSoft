@@ -20,6 +20,7 @@
 #include <FrgBase_SerialSpec_QString.hxx>
 
 #include <string>
+#include <sstream>
 #include <QtCore/QList>
 
 ForgVisualLib::FrgVisual_Plot2D_ChartXY* ForgVisualLib::FrgVisual_Plot2D_ChartXY::New()
@@ -342,9 +343,91 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::KeyPressEvent(const vtkContextKeyE
 	return true;
 }
 
-bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSV(std::string myFileName)
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportData(const std::string& myFileName, const char delimiter)
 {
-	const auto& nbPlots = this->GetNumberOfPlots();
+	const auto nbPlots = this->GetNumberOfPlots();
+
+	if (nbPlots == 0)
+		return false;
+
+	fstream myFile;
+	myFile.open(myFileName, std::ios::out);
+
+	if (!myFile.is_open())
+		return false;
+
+	std::ostringstream titles;
+	//std::vector<std::vector<std::string>> myData;
+	std::ostringstream AllData;
+
+	vtkIdType maxRows = 0;
+	for (vtkIdType iPlot = 0; iPlot < nbPlots; iPlot++)
+	{
+		auto myPlot = GetPlot(iPlot);
+		vtkTable* myTable = myPlot->GetInput();
+
+		const auto nbOfRows = myTable->GetNumberOfRows();
+		const auto nbOfColumns = myTable->GetNumberOfColumns();
+
+		if (maxRows < nbOfRows)
+			maxRows = nbOfRows;
+
+		for (vtkIdType iCol = 0; iCol < nbOfColumns; iCol++)
+		{
+			const auto myAbstractArray = myTable->GetColumn(iCol);
+			std::string myTableTitle = iCol == 0 ? (myPlot->GetXAxis()->GetTitle()) : myAbstractArray->GetName();
+
+			if (iPlot == nbPlots - 1 && iCol == nbOfColumns - 1)
+				titles << "\"" << myTableTitle << "\"";
+			else
+				titles << "\"" << myTableTitle << "\"" << delimiter << " ";
+		}
+	}
+
+	titles << std::endl;
+
+	for (vtkIdType i = 0, k = 0; i < maxRows; i++, k++)
+	{
+		for (vtkIdType iPlot = 0; iPlot < nbPlots; iPlot++)
+		{
+			auto myPlot = GetPlot(iPlot);
+			auto myTable = myPlot->GetInput();
+
+			const auto nbOfRows = myTable->GetNumberOfRows();
+			const auto nbOfColumns = myTable->GetNumberOfColumns();
+
+			for (vtkIdType iCol = 0; iCol < nbOfColumns; iCol++)
+			{
+				if (i < nbOfRows)
+					AllData << myTable->GetValue(i, iCol).ToString();
+
+				if (iPlot == nbPlots - 1 && iCol == nbOfColumns - 1)
+				{
+					// Do nothing
+				}
+				else
+					AllData << delimiter;
+			}
+		}
+		AllData << std::endl;
+	}
+
+	myFile << titles.str();
+	myFile << AllData.str();
+
+	myFile.close();
+
+	return true;
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSV(const std::string& myFileName)
+{
+	return ExportData(myFileName, ',');
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataMerged(const std::string& myFileName, const char delimiter)
+{
+	const auto nbPlots = this->GetNumberOfPlots();
 
 	if (nbPlots == 0)
 		return false;
@@ -370,12 +453,12 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSV(std::string myFile
 		QString myTableTitle = QString(myAbstractArray->GetName());
 
 		if (iPlot == 0)
-			titles += "\"" + myPlot->GetXAxis()->GetTitle() + "\", ";
+			titles += "\"" + myPlot->GetXAxis()->GetTitle() + "\"" + delimiter + " ";
 
 		if (iPlot == nbPlots - 1)
 			titles += "\"" + myTableTitle.toStdString() + "\"";
 		else
-			titles += "\"" + myTableTitle.toStdString() + "\", ";
+			titles += "\"" + myTableTitle.toStdString() + "\"" + delimiter + " ";
 
 		vtkIdType col0;
 		if (iPlot == 0)
@@ -410,13 +493,36 @@ bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSV(std::string myFile
 			if (j == nCol - 1)
 				myFile << myData[j][i];
 			else
-				myFile << myData[j][i] << ", ";
+				myFile << myData[j][i] << delimiter << " ";
 		}
 		if (i < nRow - 1)
 			myFile << std::endl;
 	}
 
+	myFile.close();
+
 	return true;
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsCSVMerged(const std::string& myFileName)
+{
+	return ExportDataMerged(myFileName, ',');
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_ChartXY::ExportDataAsXLSX(const std::string& fileName)
+{
+	const auto nbPlots = this->GetNumberOfPlots();
+
+	if (nbPlots == 0)
+		return false;
+
+	fstream myFile;
+	myFile.open(fileName, std::ios::out);
+
+	if (!myFile.is_open())
+		return false;
+
+	return false;
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_ChartXY::RecalculateAndUpdateBoundingBox()

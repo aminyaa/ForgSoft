@@ -320,6 +320,34 @@ vtkPlot* ForgVisualLib::FrgVisual_Plot2D_TItem::AddPlot(std::vector<double> x, s
 	return nullptr;
 }
 
+bool ForgVisualLib::FrgVisual_Plot2D_TItem::RemovePlot(vtkPlot* plot)
+{
+	const auto& plotDataSeries = GetPlotDataSeriesTItem(plot);
+	if (!plotDataSeries)
+		return false;
+
+	std::vector<FrgVisual_Plot2DDataSeries_TItem*> items;
+	for (const auto& it : thePlotsTItem_)
+	{
+		if (it != plotDataSeries)
+			items.push_back(it);
+	}
+
+	thePlotsTItem_ = items;
+
+	return FrgVisual_Plot_TItem::RemovePlot(plot);
+}
+
+bool ForgVisualLib::FrgVisual_Plot2D_TItem::RemovePlot2DDataSeriesTItem(FrgVisual_Plot2DDataSeries_TItem* p)
+{
+	if (!p)
+		return false;
+
+	delete p;
+
+	return true;
+}
+
 ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem* ForgVisualLib::FrgVisual_Plot2D_TItem::GetPlotDataSeriesTItem
 (
 	vtkPlot* vtkplot
@@ -396,8 +424,15 @@ void ForgVisualLib::FrgVisual_Plot2D_TItem::ExportDataAsCSVSlot()
 	if (myPlot2D)
 	{
 		if (myPlot2D->ExportDataAsCSV(fileName.toStdString()))
+		{
 			if (GetParentMainWindow())
 				GetParentMainWindow()->PrintInfoToConsole("The plot exported successfully at \"" + fileName + "\"");
+		}
+		else
+		{
+			if (GetParentMainWindow())
+				GetParentMainWindow()->PrintErrorToConsole("Cannot export the plot at \"" + fileName + "\"");
+		}
 	}
 }
 

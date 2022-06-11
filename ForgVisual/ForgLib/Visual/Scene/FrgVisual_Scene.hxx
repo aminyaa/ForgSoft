@@ -62,35 +62,48 @@ public:
 	~FrgVisual_Scene_Entity();
 
 	vtkSmartPointer<vtkRenderer> GetRenderer() { return theRenderer_; }
+	vtkSmartPointer<vtkGenericOpenGLRenderWindow> GetRenderWindow() { return theRenderWindow_; }
 	vtkSmartPointer<vtkRenderWindowInteractor> GetRenderWindowInteractor() { return theRenderWindowInteractor_; }
-
+	FrgVisual_Scene_InterStyle_Base* GetInteractorStyle() { return theInteractorStyle_; }
+	vtkSmartPointer<vtkCamera> GetCamera() const { return theCamera_; }
+	std::vector<vtkSmartPointer<vtkLight>> GetLights() const { return theLights_; }
+	std::vector<vtkSmartPointer<vtkLight>>& GetLightsRef() { return theLights_; }
+	vtkSmartPointer<vtkTextActor> GetLogoTextActor() const { return theLogoActor_; }
 	vtkAxesActor* GetAxesActor() const { return theAxesActor_; }
+	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
+
+	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
+	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theCopyContextMenuInScene_ ? theCopyContextMenuInScene_ : theContextMenuInScene_; }
+	ForgBaseLib::FrgBase_Menu*& GetContextMenuInSceneRef() { return theCopyContextMenuInScene_; }
+	void SetContextMenuInScene(ForgBaseLib::FrgBase_Menu* menu);
+	void RestoreContextMenuInScene() { theCopyContextMenuInScene_ = nullptr; }
+	const auto& GetContextMenuPosition() const { return theContextMenuPosition_; }
+	void SetContextMenuPosition(const QPoint& pos) { theContextMenuPosition_ = pos; }
+
+	bool IsInitiated() const { return theInitiated_; }
+	void SetInitiated(bool condition) { theInitiated_ = condition; }
+
+	FrgVisual_GridActor* GetMajorGridActor() const { return theMajorGridActor_; }
+	FrgVisual_GridActor* GetMinorGridActor() const { return theMinorGridActor_; }
+
+	const QColor& GetMajorGridColor() const { return theMajorGridColor_; }
+	const QColor& GetMinorGridColor() const { return theMinorGridColor_; }
+
+	bool IsContextMenuExecutable() const { return theIsContextMenuExecutable_; }
+	void SetContextMenuExecutable(bool condition) { theIsContextMenuExecutable_ = condition; }
 
 	void RemoveAllActors();
 	virtual void SetLogoText(const char* logoText);
-
-	std::vector<vtkSmartPointer<vtkLight>> GetLights() const { return theLights_; }
-	std::vector<vtkSmartPointer<vtkLight>>& GetLightsRef() { return theLights_; }
-
-	vtkSmartPointer<vtkTextActor> GetLogoTextActor() const { return theLogoActor_; }
 
 	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
 	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
 
-	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
-
-	const QColor& GetMajorGridColor() const { return theMajorGridColor_; }
-	const QColor& GetMinorGridColor() const { return theMinorGridColor_; }
-
-	FrgVisual_GridActor* GetMajorGridActor() const { return theMajorGridActor_; }
-	FrgVisual_GridActor* GetMinorGridActor() const { return theMinorGridActor_; }
-
 	void SetMajorGridColor(const QColor& color);
 	void SetMinorGridColor(const QColor& color);
 
-	vtkSmartPointer<vtkCamera> GetCamera() const { return theCamera_; }
-	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
+	const vtkSmartPointer<vtkLogoRepresentation>& GetLogoImage() const { return theLogoImage_; }
+	void SetLogoImage(const vtkSmartPointer<vtkLogoRepresentation>& logoImage);
 
 	virtual std::vector<FrgVisual_BaseActor_Entity*> GetSelectedActors() const { return std::vector<FrgVisual_BaseActor_Entity*>(); }
 	virtual std::vector<FrgVisual_BaseActor_Entity*> GetHiddenActors() const { return std::vector<FrgVisual_BaseActor_Entity*>(); }
@@ -100,17 +113,6 @@ public:
 	virtual void UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render = true) {}
 	virtual void SelectAllActors(bool render = true) {}
 	virtual void UnSelectAllActors(bool render = true) {}
-
-	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theCopyContextMenuInScene_ ? theCopyContextMenuInScene_ : theContextMenuInScene_; }
-	ForgBaseLib::FrgBase_Menu*& GetContextMenuInSceneRef() { return theCopyContextMenuInScene_; }
-	void SetContextMenuInScene(ForgBaseLib::FrgBase_Menu* menu);
-	void RestoreContextMenuInScene() { theCopyContextMenuInScene_ = nullptr; }
-
-	bool IsContextMenuExecutable() const { return theIsContextMenuExecutable_; }
-	void SetContextMenuExecutable(bool condition) { theIsContextMenuExecutable_ = condition; }
-
-	const auto& GetContextMenuPosition() const { return theContextMenuPosition_; }
-	void SetContextMenuPosition(const QPoint& pos) { theContextMenuPosition_ = pos; }
 
 	// return actor index in registry, return -2 if actor is PickingPoint, return -1 if registration of actor was not successful
 	int AddActorToScene(FrgVisual_BaseActor_Entity* actor);
@@ -161,9 +163,6 @@ public:
 	);
 
 	FrgVisual_SceneRegistry* GetRegistry() const { return theRegistry_; }
-
-	const vtkSmartPointer<vtkLogoRepresentation>& GetLogoImage() const { return theLogoImage_; }
-	void SetLogoImage(const vtkSmartPointer<vtkLogoRepresentation>& logoImage);
 
 	void SetLogoImageFileAddress(const std::string& fileName);
 	void SetLogoImageHidden(bool condition);

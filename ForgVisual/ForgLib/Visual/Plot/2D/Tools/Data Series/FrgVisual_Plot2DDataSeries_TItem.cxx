@@ -6,6 +6,8 @@
 #include <FrgVisual_Plot.hxx>
 
 #include <vtkPlot.h>
+#include <vtkTable.h>
+#include <vtkAbstractArray.h>
 #include <vtkContextScene.h>
 
 ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem::FrgVisual_Plot2DDataSeries_TItem
@@ -45,7 +47,7 @@ ForgVisualLib::FrgVisual_Plot2D_TItem * ForgVisualLib::FrgVisual_Plot2DDataSerie
 
 	if (!parentPlot2DTItem)
 	{
-		std::cout << "parentPlot2DTItem is null in void ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem::RenderView() const\n";
+		std::cout << "parentPlot2DTItem is null in void ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem::GetPlot2DTItem() const\n";
 		return nullptr;
 	}
 
@@ -70,5 +72,10 @@ void ForgVisualLib::FrgVisual_Plot2DDataSeries_TItem::DataSeriesNameChangedSlot(
 	{
 		theVTKPlot_->SetLabel(name.toStdString());
 		theVTKPlot_->GetScene()->SetDirty(true);
+
+		const auto& col = theVTKPlot_->GetInput()->GetColumn(1);
+		
+		if(col)
+			col->SetName(name.toStdString().c_str());
 	}
 }

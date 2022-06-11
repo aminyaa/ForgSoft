@@ -31,7 +31,11 @@ public:
 	void SetLegendVisible(bool condition);
 	bool GetLegendVisible() const;
 
-	bool ExportDataAsCSV(std::string myFileName);
+	bool ExportData(const std::string& myFileName, const char delimiter = ',');
+	bool ExportDataAsCSV(const std::string& myFileName);
+	bool ExportDataMerged(const std::string& myFileName, const char delimiter = ','); // All X values should be same size
+	bool ExportDataAsCSVMerged(const std::string& myFileName); // All X values should be same size
+	bool ExportDataAsXLSX(const std::string& fileName);
 
 	virtual void RecalculateAndUpdateBoundingBox();
 	virtual void UpdateBoundingBox(const ForgBaseLib::FrgBase_Pnt<2>& P);

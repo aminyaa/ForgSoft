@@ -25,6 +25,10 @@ ForgVisualLib::FrgVisual_Scene_TItem_Entity::FrgVisual_Scene_TItem_Entity
 {
 	this->AddRenameOptionInContextMenu();
 	this->AddDeleteOptionInContextMenu();
+
+	SetParentTitleTItem(GetParentTItem());
+
+	connect(this, &FrgVisual_Scene_TItem_Entity::TItemNameChanged, this, &FrgVisual_Scene_TItem_Entity::TItemNameToTabTitleChangedSlot);
 }
 
 void ForgVisualLib::FrgVisual_Scene_TItem_Entity::FormTItem()
@@ -32,9 +36,48 @@ void ForgVisualLib::FrgVisual_Scene_TItem_Entity::FormTItem()
 	ForgBaseLib::FrgBase_TreeItem::FormTItem();
 }
 
+void ForgVisualLib::FrgVisual_Scene_TItem_Entity::SetParentTitleTItem(ForgBaseLib::FrgBase_TreeItem* pt)
+{
+	if (theParentTitleTItem_)
+	{
+		disconnect
+		(
+			theParentTitleTItem_,
+			&ForgBaseLib::FrgBase_TreeItem::TItemNameChanged,
+			this,
+			&ForgVisualLib::FrgVisual_Scene_TItem_Entity::TItemNameToTabTitleChangedSlot
+		);
+	}
+
+	theParentTitleTItem_ = pt;
+
+	if (theParentTitleTItem_)
+	{
+		connect
+		(
+			theParentTitleTItem_,
+			&ForgBaseLib::FrgBase_TreeItem::TItemNameChanged,
+			this,
+			&ForgVisualLib::FrgVisual_Scene_TItem_Entity::TItemNameToTabTitleChangedSlot
+		);
+	}
+}
+
 void ForgVisualLib::FrgVisual_Scene_TItem_Entity::TItemDoubleClickedSlot()
 {
 	ShowTabWidget();
+}
+
+QString ForgVisualLib::FrgVisual_Scene_TItem_Entity::GetTabText() const
+{
+	QString prefix = "";
+	if (theParentTitleTItem_)
+		prefix = theParentTitleTItem_->text(0);
+
+	if (prefix.isEmpty())
+		return this->text(0);
+	else
+		return (prefix + " - " + this->text(0));
 }
 
 template<int Dim>
@@ -66,12 +109,6 @@ void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::FormTItem()
 
 	ShowTabWidget();
 
-	auto parentItem = dynamic_cast<ForgBaseLib::FrgBase_TreeItem*>(((QTreeWidgetItem*)this)->parent());
-	if (parentItem)
-		connect(parentItem, SIGNAL(TItemNameChanged(const QString&)), this, SLOT(TItemNameToTabTitleChangedSlot(const QString&)));
-
-	connect(this, SIGNAL(TItemNameChanged(const QString&)), this, SLOT(TItemNameToTabTitleChangedSlot(const QString&)));
-
 	theAttributes_ = new FrgVisual_SceneAttributes_TItem<Dim>("Attributes", dynamic_cast<FrgVisual_Scene_TItem*>(this), GetParentTree());
 	theAttributes_->FormTItem();
 
@@ -92,27 +129,18 @@ void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::FormTItem()
 template<int Dim>
 void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::ShowTabWidget()
 {
-	auto myMainWindow = dynamic_cast<ForgBaseLib::FrgBase_MainWindow*>(GetParentMainWindow());
-	if (myMainWindow)
-	{
-		QString prefix = "";
-		const auto& myParent = dynamic_cast<QTreeWidgetItem*>(this)->parent();
-		if (myParent)
-			prefix = myParent->text(0);
-
-		if(prefix.isEmpty())
-			myMainWindow->ShowTabWidget(theScene_, this->text(0));
-		else
-			myMainWindow->ShowTabWidget(theScene_, dynamic_cast<QTreeWidgetItem*>(this)->parent()->text(0) + " - " + this->text(0));
-	}
+	if (GetParentMainWindow())
+		GetParentMainWindow()->ShowTabWidget(theScene_, GetTabText());
 }
 
 template<int Dim>
 void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::TItemNameToTabTitleChangedSlot(const QString& title)
 {
-	auto myMainWindow = dynamic_cast<ForgBaseLib::FrgBase_MainWindow*>(GetParentMainWindow());
+	GetParentMainWindow()->SetTabText(theScene_, GetTabText());
+
+	/*auto myMainWindow = dynamic_cast<ForgBaseLib::FrgBase_MainWindow*>(GetParentMainWindow());
 	if (myMainWindow)
-		myMainWindow->SetTabText(theScene_, title + " - " + this->text(0));
+		myMainWindow->SetTabText(theScene_, title + " - " + this->text(0));*/
 }
 
 template<int Dim>
