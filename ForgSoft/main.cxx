@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
 	SetSurfaceFormat();
 
-	vtkObject::GlobalWarningDisplayOff();
+	//vtkObject::GlobalWarningDisplayOff();
 
 	ForgBaseLib::FrgBase_Application app(argc, argv);
 

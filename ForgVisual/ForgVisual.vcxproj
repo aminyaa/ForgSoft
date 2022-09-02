@@ -31,13 +31,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)D</TargetName>
-    <LibraryPath>$(Qt_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
+    <LibraryPath>$(Qt_INCLUDELIB);$(OPENCASCADE_INCLUDELIB_7_6);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR_7_6);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
-    <LibraryPath>$(Qt_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR_7_6);$(IncludePath)</IncludePath>
+    <LibraryPath>$(Qt_INCLUDELIB);$(OPENCASCADE_INCLUDELIB_7_6);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -87,10 +87,16 @@
       <AdditionalLibraryDirectories>$(ProjectDir)ThirdParties\VTK\lib\Deb;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
-if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
-for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+      <Command>if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
+if not exist "$(ProjectDir)include" mkdir "$(ProjectDir)include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)" mkdir "$(ENGINES_DIR)\$(ProjectName)"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\include" mkdir "$(ENGINES_DIR)\$(ProjectName)\include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\lib" mkdir "$(ENGINES_DIR)\$(ProjectName)\lib"
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ProjectDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ENGINES_DIR)\$(ProjectName)\include" /y
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib"  "$(ENGINES_DIR)\$(ProjectName)\lib"
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "$(ENGINES_DIR)\$(ProjectName)\lib"</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkIOExport-8.2.lib;vtkIOImage-8.2.lib;vtkIOExportPDF-8.2.lib;vtkIOExportOpenGL2-8.2.lib;vtkRenderingGL2PSOpenGL2-8.2.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;vtkfilterssources-8.2.lib;libboost_serialization-vc142-mt-gd-x64-1_73.lib;ForgBaseD.lib;Qt5Cored.lib;Qt5Widgetsd.lib;Qt5Guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -124,10 +130,16 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <AdditionalLibraryDirectories>$(ProjectDir)ThirdParties\VTK\lib\Rel;$(BOOST_INCLUDELIB);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
-if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
-for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+      <Command>if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
+if not exist "$(ProjectDir)include" mkdir "$(ProjectDir)include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)" mkdir "$(ENGINES_DIR)\$(ProjectName)"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\include" mkdir "$(ENGINES_DIR)\$(ProjectName)\include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\lib" mkdir "$(ENGINES_DIR)\$(ProjectName)\lib"
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ProjectDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ENGINES_DIR)\$(ProjectName)\include" /y
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib"  "$(ENGINES_DIR)\$(ProjectName)\lib"
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "$(ENGINES_DIR)\$(ProjectName)\lib"</Command>
     </PostBuildEvent>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -191,6 +203,7 @@ for /r "$(MSBuildProjectDirectory)\include" %%f in (*.hxx) do @xcopy "%%f" "$(So
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\InverseRainbow\FrgVisual_ContoursLUTable_InverseRainbow.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable\FrgViusal_LookUpTable.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow\FrgVisual_ContoursLUTable_Rainbow.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyle.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Registry\FrgVisual_SceneRegistry.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes\FrgVisual_SceneAttAxes_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\FrgVisual_SceneAttBackColor_TItem.cxx" />

@@ -3,6 +3,8 @@
 
 #include <FrgBase_Tree.hxx>
 
+#include <vtkGenericOpenGLRenderWindow.h>
+
 ForgVisualLib::FrgVisual_Scene3D_TItem::FrgVisual_Scene3D_TItem
 (
 	const FrgString& itemTitle,
@@ -33,6 +35,12 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_Scene3D_TItem)
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene3D_TItem)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_Scene_TItem<3>>(*this);
+
+	if (theScene_)
+	{
+		if (theScene_->GetRenderWindow())
+			theScene_->GetRenderWindow()->Render();
+	}
 
 	/*FrgVisual_Scene3D* myScene;
 

@@ -59,11 +59,11 @@ void ForgVisualLib::FrgVisual_CylinderActor::SetData(double Start_x, double Star
 
 		if (IsRepresentationToSurface())
 		{
-			meshes = FrgVisual_Tools::GetMeshOnSurfacesFromShape(shape);
+			//meshes = FrgVisual_Tools::GetMeshOnSurfacesFromShape(shape);
 		}
 		else
 		{
-			meshes = FrgVisual_Tools::GetMeshOnEdgesFromShape(shape);
+			//meshes = FrgVisual_Tools::GetMeshOnEdgesFromShape(shape);
 		}
 
 		if (!isMeshEmpty && meshes.size() != theMesh_.size())

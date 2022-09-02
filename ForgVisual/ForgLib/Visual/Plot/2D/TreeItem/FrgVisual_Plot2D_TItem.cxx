@@ -8,6 +8,7 @@
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_Menu.hxx>
+#include <FrgBase_Icon.hxx>
 
 #include <FrgVisual_Plot2D.hxx>
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
@@ -33,7 +34,7 @@ ForgVisualLib::FrgVisual_Plot2D_TItem::FrgVisual_Plot2D_TItem
 )
 	: FrgVisual_Plot_TItem(itemTitle, parentItem, parentTree)
 {
-	this->setIcon(0, QIcon(ICONPlot_2D));
+	this->SetIcon(0, ForgBaseLib::FrgBase_Icon(ICONPlot_2D));
 
 	thePlot_ = new FrgVisual_Plot2D(GetParentMainWindow());
 

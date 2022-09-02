@@ -2,6 +2,7 @@
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
+#include <FrgBase_Icon.hxx>
 
 #include <vtkPlot.h>
 #include <vtkPen.h>
@@ -24,7 +25,7 @@ ForgVisualLib::FrgVisual_Plot2DLnStyle_TItem::FrgVisual_Plot2DLnStyle_TItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
-	this->setIcon(0, QIcon(ICONTreeItemCircle));
+	this->SetIcon(0, ForgBaseLib::FrgBase_Icon(ICONTreeItemCircle));
 
 	auto myVTKPlot = GetVTKPlot();
 

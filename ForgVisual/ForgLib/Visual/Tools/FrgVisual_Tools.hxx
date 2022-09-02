@@ -24,7 +24,7 @@ class FrgVisual_Tools
 
 public:
 
-	static std::vector
+	/*static std::vector
 		<
 		std::tuple
 		<
@@ -58,7 +58,7 @@ protected:
 		<
 		std::vector<ForgBaseLib::FrgBase_Pnt<3>>,
 		std::vector<std::tuple<int, int, int>>
-		> ConvertPolyLineToMesh(std::vector<ForgBaseLib::FrgBase_Pnt<3>> poly);
+		> ConvertPolyLineToMesh(std::vector<ForgBaseLib::FrgBase_Pnt<3>> poly);*/
 };
 
 EndForgVisualLib

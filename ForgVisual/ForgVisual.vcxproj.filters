@@ -448,6 +448,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable\FrgViusal_LookUpTable.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyle.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\InteractorStyle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">

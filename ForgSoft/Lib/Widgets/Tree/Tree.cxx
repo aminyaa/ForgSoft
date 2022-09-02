@@ -14,6 +14,8 @@
 #include <FrgBase_PrptsVrntTextEdit.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 
+#include <QPushButton>
+
 Tree::Tree(MainWindow* parentMainWindow /* = nullptr */)
 	: ForgBaseLib::FrgBase_Tree(parentMainWindow)
 {
@@ -41,8 +43,42 @@ void Tree::FormTree()
 	//p2->FormTItem();
 	//p2->GetPlot2D()->AddSinX("Sin (x)");
 
-	//auto s = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 3D", nullptr, this);
-	//s->FormTItem();
+	auto s1 = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 1 3D", nullptr, this);
+	s1->FormTItem();
+
+	auto s2 = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 2 3D", nullptr, this);
+	s2->FormTItem();
+
+	auto s3 = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 3 3D", nullptr, this);
+	s3->FormTItem();
+
+	theItems_.push_back(s1);
+	theItems_.push_back(s2);
+	theItems_.push_back(s3);
+
+	auto myButton = new QPushButton("Click", GetParentMainWindow());
+
+	connect(myButton, &QPushButton::clicked, [this, s1, s2, s3]()
+		{
+			QString str1 = QString("s1 isVisible = ") + (GetParentMainWindow()->IsTabWidgetVisible(s1->GetScene()) == true ? "true" : "false");
+			QString str2 = QString("s2 isVisible = ") + (GetParentMainWindow()->IsTabWidgetVisible(s2->GetScene()) == true ? "true" : "false");
+			QString str3 = QString("s3 isVisible = ") + (GetParentMainWindow()->IsTabWidgetVisible(s3->GetScene()) == true ? "true" : "false");
+
+			GetParentMainWindow()->PrintInfoToConsole(str1);
+			GetParentMainWindow()->PrintInfoToConsole(str2);
+			GetParentMainWindow()->PrintInfoToConsole(str3);
+		});
+
+	auto l = new QVBoxLayout;
+	l->addWidget(myButton);
+	l->addStretch();
+
+	QWidget* ww = new QWidget;
+	ww->setLayout(l);
+
+	GetParentMainWindow()->ShowTabWidget(ww, "Button");
+
+	//myButton.show();
 
 	//ForgBaseLib::FrgBase_Pnt<3> P1(-1.0, 0.0, -1.0);
 	//ForgBaseLib::FrgBase_Pnt<3> P2(1.0, 0.0, 1.0);
@@ -76,3 +112,17 @@ void Tree::FormTree()
 	int ind = pp->GetRowFromVariant(tVar);
 	parameterTItem2->GetPropertiesPanel()->setRowHeight(ind, pp->rowHeight(ind) / 2);*/
 }
+
+DECLARE_SAVE_IMP(Tree)
+{
+	boost::serialization::base_object<ForgBaseLib::FrgBase_Tree>(*this);
+	ar & theItems_;
+}
+
+DECLARE_LOAD_IMP(Tree)
+{
+	boost::serialization::base_object<ForgBaseLib::FrgBase_Tree>(*this);
+	ar & theItems_;
+}
+
+BOOST_CLASS_EXPORT_CXX(Tree)

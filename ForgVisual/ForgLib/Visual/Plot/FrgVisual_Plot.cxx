@@ -20,12 +20,29 @@ ForgVisualLib::FrgVisual_Plot::FrgVisual_Plot
 {
 	connect(this, &FrgVisual_Plot::RenderView, this, &FrgVisual_Plot::RenderViewSlot, Qt::QueuedConnection);
 	connect(this, &FrgVisual_Plot::SetThemeDark, this, &FrgVisual_Plot::SetThemeDarkSlot);
-	connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
+	
+	if (theParentMainWindow_)
+	{
+		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::TabWidgetActivated, [this](QWidget* w, bool isActive)
+			{
+				if (w == this && isActive == true)
+					RenderView();
+			});
+
+		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
+	}
 }
 
 void ForgVisualLib::FrgVisual_Plot::RenderViewSlot() const
 {
-	if (theView_)
+	const QWidget* w = this;
+	QWidget* myW = const_cast<QWidget*>(w);
+
+	bool canRender = true;
+	if(theParentMainWindow_)
+		canRender = theParentMainWindow_->IsTabWidgetVisible(myW);
+
+	if (theView_ && canRender)
 	{
 		theView_->Render();
 		theChart_->FitWindowToBoundingBox();
@@ -50,6 +67,15 @@ void ForgVisualLib::FrgVisual_Plot::SetParentMainWindow(ForgBaseLib::FrgBase_Mai
 	theParentMainWindow_ = parentMainWindow;
 	this->setParent(parentMainWindow);
 
-	connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
-	SetThemeDark(parentMainWindow->IsThemeDark());
+	if (theParentMainWindow_)
+	{
+		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::TabWidgetActivated, [this](QWidget* w, bool isActive)
+			{
+				if (w == this && isActive == true)
+					RenderView();
+			});
+
+		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
+		SetThemeDark(theParentMainWindow_->IsThemeDark());
+	}
 }

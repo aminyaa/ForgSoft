@@ -108,10 +108,15 @@ public:
 
 	//FrgBase_TabWidget* GetTabWidget() const { return theTabWidget_; }
 
+	auto GetMenus() const { return theMainWindowMenus_; }
+
 	bool IsThemeDark() const { return theIsThemeDark_; }
 
 	void ShowTabWidget(QWidget* widget, const QString& title);
 	void RemoveTabWidget(QWidget* widget);
+
+	bool IsTabWidgetVisible(QWidget* widget) const;
+
 	void SetTabText(QWidget* widget, const QString& title);
 	void SetTabText(int index, const QString& title) const;
 	FrgBase_Tree* GetTree() const { return theTree_; }
@@ -132,7 +137,7 @@ public:
 
 	virtual void Show(bool darkTheme = false);
 
-	void SetThemeDark(bool condition = true);
+	virtual void SetThemeDark(bool condition = true);
 
 	void SetQApplication(QApplication* qapplication) { theQApplication_ = qapplication; }
 	QApplication* GetQApplication() const { return theQApplication_; }
@@ -148,6 +153,8 @@ Q_SIGNALS:
 	void ThemeModeChangedSignal(bool darkMode);
 
 	void TabWidgetClosedSignal(QWidget*);
+
+	void TabWidgetActivated(QWidget* w, bool isActive);
 
 protected slots:
 

@@ -2,6 +2,7 @@
 #include <FrgBase_Global_Icons.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgVisual_Plot2DDataSeries_TItem.hxx>
+#include <FrgBase_Icon.hxx>
 
 #include <FrgBase_SerialSpec_QString.hxx>
 #include <FrgBase_Tree.hxx>
@@ -26,7 +27,7 @@ ForgVisualLib::FrgVisual_Plot2DSmblStyle_TItem::FrgVisual_Plot2DSmblStyle_TItem
 )
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 {
-	this->setIcon(0, QIcon(ICONTreeItemCircle));
+	this->SetIcon(0, ForgBaseLib::FrgBase_Icon(ICONTreeItemCircle));
 
 	std::vector<QString> items;
 	items.push_back(SYMBOL_NONE);

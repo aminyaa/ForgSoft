@@ -28,7 +28,7 @@ inline ForgBaseLib::FrgBase_VectorField<Dim>* ForgBaseLib::FrgBase_SymbolTable::
 		}
 		expression += "]";
 
-		field->SetPresentationExpression(expression);
+		//field->SetPresentationExpression(expression);
 
 		bool added = AddVectorToSymbolTable(theSymbolTable_, variableFullName, field->GetValueRef());
 

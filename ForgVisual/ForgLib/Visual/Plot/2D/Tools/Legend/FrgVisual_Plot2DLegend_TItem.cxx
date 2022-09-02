@@ -4,6 +4,7 @@
 #include <FrgVisual_Plot2D_TItem.hxx>
 #include <FrgVisual_Plot.hxx>
 #include <FrgBase_Tree.hxx>
+#include <FrgBase_Icon.hxx>
 
 #include <vtkChartXY.h>
 #include <vtkChartLegend.h>
@@ -30,7 +31,7 @@ ForgVisualLib::FrgVisual_Plot2DLegend_TItem::FrgVisual_Plot2DLegend_TItem
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, thePlot2DTItem_(dynamic_cast<FrgVisual_Plot2D_TItem*>(parentItem))
 {
-	this->setIcon(0, QIcon(ICONTreeItemCircle));
+	this->SetIcon(0, ForgBaseLib::FrgBase_Icon(ICONTreeItemCircle));
 
 	theVisible_ = new ForgBaseLib::FrgBase_PrptsVrntBool("Visible", thePlot2DTItem_ ? thePlot2DTItem_->GetLegendVisible() : true);
 

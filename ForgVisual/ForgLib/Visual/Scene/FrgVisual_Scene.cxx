@@ -27,6 +27,8 @@
 #include <FrgBase_Pnt.hxx>
 #include <FrgBase_TabWidget.hxx>
 
+#include <filesystem>
+
 #include <QVTKOpenGLNativeWidget.h>
 #include <QFile.h>
 #include <QTextStream.h>
@@ -52,6 +54,18 @@
 #include <vtkLogoRepresentation.h>
 #include <vtkPNGReader.h>
 #include <vtkProperty2D.h>
+
+#include <vtkSequencePass.h>
+#include <vtkOpaquePass.h>
+#include <vtkLightsPass.h>
+#include <vtkDepthPeelingPass.h>
+#include <vtkTranslucentPass.h>
+#include <vtkCameraPass.h>
+#include <vtkShadowMapBakerPass.h>
+#include <vtkShadowMapPass.h>
+#include <vtkVolumetricPass.h>
+#include <vtkRenderPassCollection.h>
+#include <vtkOverlayPass.h>
 
 #include <QToolBar>
 #include <QToolButton>
@@ -93,6 +107,11 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 
 	if (theParentMainWindow_)
 	{
+		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::TabWidgetActivated, [this](QWidget* w, bool isActive)
+			{
+				if (w == this && isActive == true)
+					RenderScene(false, false);
+			});
 		//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 	}
 
@@ -102,6 +121,8 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 
 	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
 	theLogoActor_->SetInput("Forg Soft");
+
+	//SetParentMainWindow(parentMainWindow);
 }
 
 ForgVisualLib::FrgVisual_Scene_Entity::~FrgVisual_Scene_Entity()
@@ -122,7 +143,7 @@ void ForgVisualLib::FrgVisual_Scene_Entity::RemoveAllActors()
 		for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
 		{
 			const auto& frgActor = dynamic_cast<FrgVisual_BaseActor_Entity*>(anActor);
-			if(frgActor)
+			if (frgActor)
 				RemoveActor(frgActor);
 		}
 	}
@@ -141,6 +162,15 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetParentMainWindow(ForgBaseLib::Frg
 {
 	this->setParent(parentMainWindow);
 	theParentMainWindow_ = parentMainWindow;
+
+	if (theParentMainWindow_)
+	{
+		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::TabWidgetActivated, [this](QWidget* w, bool isActive)
+			{
+				if (w == this && isActive == true)
+					RenderScene(false, false);
+			});
+	}
 
 	//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 }
@@ -372,6 +402,36 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImageHidden(bool condition)
 	}
 }
 
+static std::string GenerateRandomName
+(
+	unsigned int length,
+	const std::string& prefix = "",
+	const std::string& suffix = "",
+	const std::string& contains = ""
+)
+{
+	std::string alphanum =
+		"0123456789"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz";
+
+	alphanum += contains;
+
+	int stringLength = (int)alphanum.size();
+	std::string Str = prefix;
+
+	unsigned int i;
+	for (i = 0; i < length; ++i)
+	{
+		auto a = rand();
+
+		Str += alphanum[a % stringLength];
+	}
+
+	Str += suffix;
+	return Str;
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::InitLogoImage(const std::string& fileName)
 {
 	if (fileName.empty())
@@ -384,8 +444,14 @@ void ForgVisualLib::FrgVisual_Scene_Entity::InitLogoImage(const std::string& fil
 		return;
 	}
 
-	std::string imageFileName = "SceneLogo.png";
-	auto newFileAddress = QApplication::instance()->applicationDirPath() + "/" + QString::fromStdString(imageFileName);
+	std::string imageFileName = GenerateRandomName(10, "Tonb-", ".png");
+	//auto newFileAddress = QApplication::instance()->applicationDirPath() + "/" + QString::fromStdString(imageFileName);
+	std::filesystem::path tmp_dir_path{ std::filesystem::temp_directory_path() /= std::tmpnam(nullptr) };
+	std::filesystem::create_directories(tmp_dir_path);
+
+	QString newFileAddress = QString::fromStdString(tmp_dir_path.string());
+	newFileAddress = newFileAddress.replace("\\", "/");
+	newFileAddress += ("/" + QString::fromStdString(imageFileName));
 
 	if (QFile::exists(newFileAddress))
 	{
@@ -465,7 +531,7 @@ void ForgVisualLib::FrgVisual_Scene_Entity::customContextMenuRequestedSlot(const
 
 		if (theIsContextMenuExecutable_)
 		{
-			if(!theCopyContextMenuInScene_->actions().isEmpty())
+			if (!theCopyContextMenuInScene_->actions().isEmpty())
 				theCopyContextMenuInScene_->exec(this->mapToGlobal(pos));
 		}
 	}
@@ -637,12 +703,13 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 	theRenderer_->AddActor2D(theLogoActor_);
 
 	theCamera_ = vtkSmartPointer<vtkCamera>::New();
+	//theCamera_ = vtkSmartPointer<vtkCameraPass>::New();
 	theRenderer_->LightFollowCameraOn();
 	theRenderer_->TwoSidedLightingOn();
 
-	theRenderer_->SetUseDepthPeeling(true);
+	/*theRenderer_->SetUseDepthPeeling(true);
 	theRenderer_->SetMaximumNumberOfPeels(8);
-	theRenderer_->SetOcclusionRatio(0.0);
+	theRenderer_->SetOcclusionRatio(0.0);*/
 
 	//theRenderer_->SetUseFXAA(true);
 	//theRenderer_->GetFXAAOptions()->SetRelativeContrastThreshold(1.0 / 8.0);
@@ -675,10 +742,10 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	if (theLights_.empty())
 	{
-		vtkSmartPointer<vtkLight> myLight1 = vtkSmartPointer<vtkLight>::New();
-		vtkSmartPointer<vtkLight> myLight2 = vtkSmartPointer<vtkLight>::New();
-		vtkSmartPointer<vtkLight> myLight3 = vtkSmartPointer<vtkLight>::New();
-		vtkSmartPointer<vtkLight> myLight4 = vtkSmartPointer<vtkLight>::New();
+		auto myLight1 = vtkSmartPointer<vtkLight>::New();
+		auto myLight2 = vtkSmartPointer<vtkLight>::New();
+		auto myLight3 = vtkSmartPointer<vtkLight>::New();
+		auto myLight4 = vtkSmartPointer<vtkLight>::New();
 
 		myLight1->SetLightTypeToCameraLight();
 		myLight1->SetColor(1.0, 1.0, 1.0);
@@ -710,10 +777,60 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 		theLights_.push_back(myLight4);
 	}
 
-	for(const auto& light : theLights_)
+	for (const auto& light : theLights_)
 		GetRenderer()->AddLight(light);
 
 	InitLogoImage();
+
+	{
+		auto opaque_sequence = vtkSmartPointer<vtkSequencePass>::New();
+		auto passes2 = vtkSmartPointer<vtkRenderPassCollection>::New();
+		auto opaque = vtkSmartPointer<vtkOpaquePass>::New();
+		auto peeling = vtkSmartPointer<vtkDepthPeelingPass>::New();
+		auto translucent = vtkSmartPointer<vtkTranslucentPass>::New();
+		peeling->SetTranslucentPass(translucent);
+		peeling->SetOcclusionRatio(0.3);
+		passes2->AddItem(opaque);
+		opaque_sequence->SetPasses(passes2);
+		auto opaque_camera_pass = vtkSmartPointer<vtkCameraPass>::New();
+		opaque_camera_pass->SetDelegatePass(opaque_sequence);
+
+		auto shadow_baker = vtkSmartPointer<vtkShadowMapBakerPass>::New();
+		shadow_baker->SetOpaqueSequence(opaque_camera_pass);
+
+		shadow_baker->SetResolution(std::pow(2.0, 9));
+		//shadow_baker->SetPolygonOffsetFactor(3.1);
+		//shadow_baker->SetPolygonOffsetUnits(10.0);
+
+		auto shadows = vtkSmartPointer<vtkShadowMapPass>::New();
+		shadows->SetShadowMapBakerPass(shadow_baker);
+		shadows->SetOpaqueSequence(opaque_sequence);
+		shadows->SetShadowMapBakerPass(shadow_baker);
+
+		auto seq = vtkSmartPointer<vtkSequencePass>::New();
+		auto passes = vtkSmartPointer<vtkRenderPassCollection>::New();
+		seq->SetPasses(passes);
+		//passes->AddItem(shadow_baker);
+		passes->AddItem(shadows);
+
+		passes->AddItem(peeling);
+		passes->AddItem(vtkSmartPointer<vtkVolumetricPass>::New());
+		passes->AddItem(vtkSmartPointer<vtkOverlayPass>::New());
+
+		auto cameraP = vtkSmartPointer<vtkCameraPass>::New();
+		cameraP->SetDelegatePass(seq);
+
+		auto lights = vtkSmartPointer<vtkLightsPass>::New();
+
+		passes2->AddItem(lights);
+		passes->AddItem(lights);
+
+		theRenderer_->SetPass(cameraP);
+
+		theRenderer_->SetOcclusionRatio(0.3);
+
+		theRenderWindow_->OffScreenRenderingOn();
+	}
 
 	theInitiated_ = true;
 }
@@ -1587,7 +1704,13 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 		AddActorToScene(actor.second);
 	}
 
-	this->RenderScene(false, false);
+	//this->RenderScene(false, false);
+
+	if(theRenderWindow_)
+		theRenderWindow_->Render();
+
+	/*if (theRenderer_)
+		theRenderer_->Render();*/
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_Scene_Entity)

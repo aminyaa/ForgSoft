@@ -82,10 +82,16 @@
       <AdditionalDependencies>zlibstatd.lib;dld.lib;libgmp-10.lib;libmpfr-4.lib;msmpi.lib;msmpifec.lib;msmpifmc.lib;psapi.lib;Qt5Cored.lib;Qt5Widgetsd.lib;TnbBase.lib;TnbCad.lib;TnbCad2d.lib;TnbCadModel.lib;TnbFiniteVolume.lib;TnbGeo.lib;TnbHydrostatic.lib;TnbIO.lib;TnbMarineBase.lib;TnbMeshBase.lib;TnbNumAlg.lib;TKBin.lib;TKBinL.lib;TKBinTObj.lib;TKBinXCAF.lib;TKBO.lib;TKBool.lib;TKBRep.lib;TKCAF.lib;TKCDF.lib;TKD3DHost.lib;TKDCAF.lib;TKDFBrowser.lib;TKDraw.lib;TKernel.lib;TKFeat.lib;TKFillet.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKHLR.lib;TKIGES.lib;TKIVtk.lib;TKIVtkDraw.lib;TKLCAF.lib;TKMath.lib;TKMesh.lib;TKMeshVS.lib;TKOffset.lib;TKOpenGl.lib;TKPrim.lib;TKQADraw.lib;TKService.lib;TKShapeView.lib;TKShHealing.lib;TKStd.lib;TKStdL.lib;TKSTEP.lib;TKSTEP209.lib;TKSTEPAttr.lib;TKSTEPBase.lib;TKSTL.lib;TKTInspector.lib;TKTInspectorAPI.lib;TKTObj.lib;TKTObjDRAW.lib;TKToolsDraw.lib;TKTopAlgo.lib;TKTopTest.lib;TKTreeModel.lib;TKV3d.lib;TKVCAF.lib;TKView.lib;TKViewerTest.lib;TKVInspector.lib;TKVRML.lib;TKXCAF.lib;TKXDEDRAW.lib;TKXDEIGES.lib;TKXDESTEP.lib;TKXMesh.lib;TKXml.lib;TKXmlL.lib;TKXmlTObj.lib;TKXmlXCAF.lib;TKXSBase.lib;TKXSDRAW.lib;tbb.lib;tbb_debug.lib;tbb_preview.lib;tbb_preview_debug.lib;tbbmalloc.lib;tbbmalloc_debug.lib;tbbmalloc_debug_s.lib;tbbmalloc_proxy.lib;tbbmalloc_proxy_debug.lib;tbbmalloc_s.lib;tbbproxy.lib;tbbproxy_debug.lib;lapack_win64_MT.lib;blas_win64_MT.lib;vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
-if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+      <Command>if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
+if not exist "$(ProjectDir)include" mkdir "$(ProjectDir)include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)" mkdir "$(ENGINES_DIR)\$(ProjectName)"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\include" mkdir "$(ENGINES_DIR)\$(ProjectName)\include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\lib" mkdir "$(ENGINES_DIR)\$(ProjectName)\lib"
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ProjectDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ENGINES_DIR)\$(ProjectName)\include" /y
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib"  "$(ENGINES_DIR)\$(ProjectName)\lib"
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "$(ENGINES_DIR)\$(ProjectName)\lib"</Command>
     </PostBuildEvent>
     <ProjectReference />
     <Lib>
@@ -116,10 +122,16 @@ for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(So
       <AdditionalDependencies>zlibstatd.lib;dld.lib;libgmp-10.lib;libmpfr-4.lib;msmpi.lib;msmpifec.lib;msmpifmc.lib;psapi.lib;Qt5Core.lib;Qt5Widgets.lib;Qt5Qml.lib;Qt5Quick.lib;Qt5Concurrent.lib;TnbBase.lib;TnbCad.lib;TnbCad2d.lib;TnbCadModel.lib;TnbFiniteVolume.lib;TnbGeo.lib;TnbHydrostatic.lib;TnbIO.lib;TnbMarineBase.lib;TnbMeshBase.lib;TnbNumAlg.lib;TKBin.lib;TKBinL.lib;TKBinTObj.lib;TKBinXCAF.lib;TKBO.lib;TKBool.lib;TKBRep.lib;TKCAF.lib;TKCDF.lib;TKD3DHost.lib;TKDCAF.lib;TKDFBrowser.lib;TKDraw.lib;TKernel.lib;TKFeat.lib;TKFillet.lib;TKG2d.lib;TKG3d.lib;TKGeomAlgo.lib;TKGeomBase.lib;TKHLR.lib;TKIGES.lib;TKIVtk.lib;TKIVtkDraw.lib;TKLCAF.lib;TKMath.lib;TKMesh.lib;TKMeshVS.lib;TKOffset.lib;TKOpenGl.lib;TKPrim.lib;TKQADraw.lib;TKService.lib;TKShapeView.lib;TKShHealing.lib;TKStd.lib;TKStdL.lib;TKSTEP.lib;TKSTEP209.lib;TKSTEPAttr.lib;TKSTEPBase.lib;TKSTL.lib;TKTInspector.lib;TKTInspectorAPI.lib;TKTObj.lib;TKTObjDRAW.lib;TKToolsDraw.lib;TKTopAlgo.lib;TKTopTest.lib;TKTreeModel.lib;TKV3d.lib;TKVCAF.lib;TKView.lib;TKViewerTest.lib;TKVInspector.lib;TKVRML.lib;TKXCAF.lib;TKXDEDRAW.lib;TKXDEIGES.lib;TKXDESTEP.lib;TKXMesh.lib;TKXml.lib;TKXmlL.lib;TKXmlTObj.lib;TKXmlXCAF.lib;TKXSBase.lib;TKXSDRAW.lib;tbb.lib;tbb_debug.lib;tbb_preview.lib;tbbmalloc.lib;tbbmalloc_proxy.lib;tbbmalloc_s.lib;tbbproxy.lib;tbbproxy_debug.lib;lapack_win64_MT.lib;blas_win64_MT.lib;vtkCommonCore-8.2.lib;QVTKWidgetPlugin.lib;vtkCommonColor-8.2.lib;vtkGUISupportQt-8.2.lib;vtkRenderingContextOpenGL2-8.2.lib;vtkInteractionStyle-8.2.lib;vtkRenderingFreeType-8.2.lib;vtkRenderingOpenGL2-8.2.lib;vtkRenderingCore-8.2.lib;vtkRenderingAnnotation-8.2.lib;vtkCommonTransforms-8.2.lib;vtkInteractionWidgets-8.2.lib;vtkCommonDataModel-8.2.lib;vtkChartsCore-8.2.lib;vtkViewsContext2D-8.2.lib;vtkRenderingContext2D-8.2.lib;vtkCommonExecutionModel-8.2.lib;vtkFiltersCore-8.2.lib;vtkFiltersGeneral-8.2.lib;vtkCommonMath-8.2.lib;vtksys-8.2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist "$(MSBuildProjectDirectory)\include" mkdir "$(MSBuildProjectDirectory)\include"
-if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(MSBuildProjectDirectory)\include" /y
-for /r "$(MSBuildProjectDirectory)\ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)include" /y</Command>
+      <Command>if not exist "$(SolutionDir)include" mkdir "$(SolutionDir)include"
+if not exist "$(ProjectDir)include" mkdir "$(ProjectDir)include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)" mkdir "$(ENGINES_DIR)\$(ProjectName)"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\include" mkdir "$(ENGINES_DIR)\$(ProjectName)\include"
+if not exist "$(ENGINES_DIR)\$(ProjectName)\lib" mkdir "$(ENGINES_DIR)\$(ProjectName)\lib"
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(SolutionDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ProjectDir)\include" /y
+for /r "$(ProjectDir)ForgLib" %%f in (*.hxx) do @xcopy "%%f" "$(ENGINES_DIR)\$(ProjectName)\include" /y
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).lib"  "$(ENGINES_DIR)\$(ProjectName)\lib"
+xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "$(ENGINES_DIR)\$(ProjectName)\lib"</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Message />

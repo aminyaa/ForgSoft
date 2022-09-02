@@ -802,7 +802,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonUp()
 
 		// Pick from this location.
 		auto myPicker = vtkSmartPointer<vtkCellPicker>::New();
-		myPicker->SetTolerance(0.001);
+		myPicker->SetTolerance(GetPickingTolerance());
+		//myPicker->SetTolerance(0.001);
 		int pick = myPicker->Pick(clickPos[0], clickPos[1], 0, this->CurrentRenderer);
 
 		/*auto myPicker = vtkSmartPointer<vtkPropPicker>::New();
@@ -864,6 +865,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnRightButtonUp()
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 {
+	this->StartDolly();
+
 	double factor = this->MotionFactor * -0.2 * this->MouseWheelMotionFactor;
 
 	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
@@ -890,10 +893,14 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelBackward()
 	this->Interactor->Render();
 
 	emit theParentScene_->OnMouseWheelBackward(theParentScene_);
+
+	this->EndDolly();
 }
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
 {
+	this->StartDolly();
+
 	double factor = -(this->MotionFactor * -0.2 * this->MouseWheelMotionFactor);
 
 	vtkCamera* camera = this->CurrentRenderer->GetActiveCamera();
@@ -915,6 +922,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnMouseWheelForward()
 	this->Interactor->Render();
 
 	emit theParentScene_->OnMouseWheelForward(theParentScene_);
+
+	this->EndDolly();
 }
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Rotate()
@@ -1130,8 +1139,9 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::Get3DPointOnScreen(int x, int 
 
 	// Pick from this location.
 	auto myPicker = vtkSmartPointer<vtkCellPicker>::New();
-	//myPicker->SetTolerance(0.00001);
-	myPicker->SetTolerance(0.001);
+	myPicker->SetTolerance(GetPickingTolerance());
+	//myPicker->SetTolerance(0.001);
+
 	int pick = myPicker->Pick(clickPos[0], clickPos[1], 0.0, this->CurrentRenderer);
 	//auto myPicker = vtkSmartPointer<vtkPropPicker>::New();
 	//int pick = myPicker->PickProp(clickPos[0], clickPos[1], this->CurrentRenderer);
@@ -1446,6 +1456,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseAc
 	if (index >= 0)
 	{
 		theSelectedActors_[index]->UnSelectActor();
+		theSelectedActors_[index]->GetProperty()->SetOpacity(1.0);
 		theParentScene_->ActorUnSelectedSignal(theSelectedActors_[index]);
 		theSelectedActors_.removeAt(index);
 
@@ -1476,7 +1487,10 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectAllActors(bool render)
 		return;
 
 	while (!theSelectedActors_.empty())
-		UnSelectActor(theSelectedActors_[0], render);
+		UnSelectActor(theSelectedActors_[0], false);
+
+	if (render)
+		this->Interactor->Render();
 
 	/*FrgVisual_BaseActor_Entity* lastActor = theSelectedActors_[theSelectedActors_.size() - 1];
 	for (int i = 0; i < theSelectedActors_.size(); i++)

@@ -26,6 +26,7 @@
 #include "ads/API.h"
 #include "ads/ContainerWidget.h"
 #include "ads/SectionContent.h"
+#include "ads/SectionWidget.h"
 #include "ads/iconTitleWidget.h"
 
 using namespace QtilitiesLogging;
@@ -101,16 +102,51 @@ void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
 
 	QObject::connect(theCentralContainer_, &ContainerWidget::SectionContentClosed, [this](const SectionContent::RefPtr& sc)
 		{
-			for (auto m : theMapWidgetToTabWidget_)
+			if (sc.isNull())
+				return;
+
+			QWidget* w = nullptr;
+
+			for (const auto& m : theMapWidgetToTabWidget_)
 			{
+
 				if (m.second->GetSectionContent() == sc)
 				{
-					RemoveTabWidget(m.first);
-					emit TabWidgetClosedSignal(m.first);
+					w = m.first;
+					break;
 				}
+			}
+
+			if (w)
+			{
+				RemoveTabWidget(w);
+				emit TabWidgetClosedSignal(w);
 			}
 		}
 	);
+
+	QObject::connect(theCentralContainer_, &ContainerWidget::activeTabChanged, [this](const SectionContent::RefPtr& sc, bool isActive)
+		{
+			if (sc.isNull())
+				return;
+
+			QWidget* w = nullptr;
+
+			for (const auto& m : theMapWidgetToTabWidget_)
+			{
+
+				if (m.second->GetSectionContent() == sc)
+				{
+					w = m.first;
+					break;
+				}
+			}
+
+			if (w)
+			{
+				emit TabWidgetActivated(w, isActive);
+			}
+		});
 
 	thePropertiesPanelDockWidget_ = new QDockWidget("Properties", this);
 	thePropertiesPanelDockWidget_->setWidget(thePropertiesPanel_);
@@ -345,6 +381,9 @@ void ForgBaseLib::FrgBase_MainWindow::SetPropertiesPanel(FrgBase_PropertiesPanel
 
 void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget* widget, const QString& title)
 {
+	if (!theCentralContainer_)
+		return;
+
 	auto myContents = theCentralContainer_->contents();
 
 	auto iter = theMapWidgetToTabWidget_.find(widget);
@@ -397,22 +436,71 @@ void ForgBaseLib::FrgBase_MainWindow::ShowTabWidget(QWidget* widget, const QStri
 
 void ForgBaseLib::FrgBase_MainWindow::RemoveTabWidget(QWidget* widget)
 {
+	if (!theCentralContainer_ || !theCentralSectionWidget_)
+		return;
+
+	bool shouldSetCentralSectionWidgetToNull = false;
+
+	auto iter = theMapWidgetToTabWidget_.find(widget);
+	if (iter != theMapWidgetToTabWidget_.end())
+	{
+
+		auto myContents = theCentralContainer_->contents();
+		for (const auto& myContent : myContents)
+		{
+			if (myContent.data()->contentWidget() == theMapWidgetToTabWidget_.at(widget))
+			{
+				const auto& sc = iter->second->GetSectionContent();
+
+				if (myContent.data()->containerWidget()->GetSectionWidgetBySectionContent(sc) == theCentralSectionWidget_)
+				{
+					if (theCentralSectionWidget_->contents().size() == 1)
+						shouldSetCentralSectionWidgetToNull = true;
+				}
+
+				theCentralContainer_->hideSectionContent(myContent);
+				delete myContent.data();
+				//theCentralContainer_->removeSectionContent(myContent);
+				break;
+			}
+		}
+
+		theMapWidgetToTabWidget_.erase(widget);
+	}
+
+	if (shouldSetCentralSectionWidgetToNull)
+		theCentralSectionWidget_ = nullptr;
+}
+
+bool ForgBaseLib::FrgBase_MainWindow::IsTabWidgetVisible(QWidget* widget) const
+{
+	if (!widget)
+		return false;
+
+	if (!theCentralContainer_)
+		return false;
+
 	auto iter = theMapWidgetToTabWidget_.find(widget);
 	if (iter != theMapWidgetToTabWidget_.end())
 	{
 		auto myContents = theCentralContainer_->contents();
-		for (auto myContent : myContents)
+		for (const auto& myContent : myContents)
 		{
 			if (myContent.data()->contentWidget() == theMapWidgetToTabWidget_.at(widget))
 			{
-				theCentralContainer_->hideSectionContent(myContent);
+				return theCentralContainer_->isSectionContentVisible(myContent);
 			}
 		}
 	}
+
+	return false;
 }
 
 void ForgBaseLib::FrgBase_MainWindow::SetTabText(QWidget* widget, const QString& title)
 {
+	if (!theCentralContainer_)
+		return;
+
 	auto myContents = theCentralContainer_->contents();
 
 	auto iter = theMapWidgetToTabWidget_.find(widget);

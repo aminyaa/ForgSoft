@@ -445,6 +445,9 @@
     <Filter Include="ForgLib\Base\Core\Data Types\Field\Tools">
       <UniqueIdentifier>{6f296980-1eff-4d9f-b46d-69d87c5cfa8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Icon">
+      <UniqueIdentifier>{d61cb1b9-8d24-4374-b831-eb8dd88c3707}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -837,6 +840,9 @@
     <ClCompile Include="ForgLib\Base\Core\Data Types\Field\Tools\FrgBase_FieldTools.cxx">
       <Filter>ForgLib\Base\Core\Data Types\Field\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Icon\FrgBase_Icon.cxx">
+      <Filter>ForgLib\Base\Widgets\Icon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
@@ -1081,6 +1087,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Data Types\Field\Tools\FrgBase_FieldTools.hxx">
       <Filter>ForgLib\Base\Core\Data Types\Field\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Icon\FrgBase_Icon.hxx">
+      <Filter>ForgLib\Base\Widgets\Icon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

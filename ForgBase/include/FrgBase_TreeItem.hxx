@@ -19,6 +19,7 @@ class FrgBase_Tree;
 class FrgBase_MainWindow;
 class FrgBase_PropertiesPanel;
 class FrgBase_Menu;
+class FrgBase_Icon;
 
 class FORGBASE_EXPORT FrgBase_TreeItem
 	: public QObject
@@ -45,6 +46,8 @@ protected:
 	int theLevelInTree_ = -1;
 
 	FrgBase_PrptsVrntString* theTItemName_ = NullPtr;
+
+	FrgBase_Icon* theIcon_ = nullptr;
 
 	virtual void FormPropertiesPanel();
 
@@ -131,6 +134,9 @@ public:
 	virtual bool CanDropTo(FrgBase_TreeItem* draggedTItem) { return true; }
 
 	virtual bool IsMyParent(FrgBase_TreeItem* p, bool recursive = true) const;
+
+	auto GetIcon() const { return theIcon_; }
+	virtual void SetIcon(int column, const FrgBase_Icon& icon);
 
 private:
 

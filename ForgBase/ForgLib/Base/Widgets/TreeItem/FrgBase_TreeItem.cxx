@@ -5,6 +5,7 @@
 #include <FrgBase_PropertiesPanel.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgBase_Icon.hxx>
 #include <FrgBase_Tree.hxx>
 
 #include <QtCore/QMetaProperty>
@@ -101,7 +102,8 @@ void ForgBaseLib::FrgBase_TreeItem::ConstructTItem
 	if(parentTree)
 		theParentMainWindow_ = parentTree->GetParentMainWindow();
 
-	this->setIcon(0, QIcon(ICON_Menu_File_Load));
+	//this->setIcon(0, QIcon(ICON_Menu_File_Load));
+	this->SetIcon(0, FrgBase_Icon(ICON_Menu_File_Load, true));
 
 	theTItemName_ = new FrgBase_PrptsVrntString("Name", "");
 	RenameTItemSlot(itemTitle);
@@ -172,6 +174,15 @@ bool ForgBaseLib::FrgBase_TreeItem::IsMyParent(FrgBase_TreeItem* p, bool recursi
 	}
 
 	return false;
+}
+
+void ForgBaseLib::FrgBase_TreeItem::SetIcon(int column, const FrgBase_Icon& icon)
+{
+	this->setIcon(column, icon);
+
+	FreePointer(theIcon_);
+
+	theIcon_ = new FrgBase_Icon(icon);
 }
 
 void ForgBaseLib::FrgBase_TreeItem::SortTItem(Qt::SortOrder sortOrder_)

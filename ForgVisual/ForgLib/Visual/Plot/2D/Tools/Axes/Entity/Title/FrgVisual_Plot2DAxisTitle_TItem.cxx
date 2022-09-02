@@ -7,6 +7,7 @@
 #include <FrgVisual_Plot2D.hxx>
 #include <FrgBase_Tree.hxx>
 #include <FrgVisual_Plot2DAxes_TItem.hxx>
+#include <FrgBase_Icon.hxx>
 
 //BOOST_CLASS_EXPORT_GUID(ForgVisualLib::FrgVisual_Plot2DAxisTitle_TItem, "ForgVisualLib::FrgVisual_Plot2DAxisTitle_TItem")
 //BOOST_CLASS_EXPORT_IMPLEMENT(ForgVisualLib::FrgVisual_Plot2DAxisTitle_TItem)
@@ -30,7 +31,7 @@ ForgVisualLib::FrgVisual_Plot2DAxisTitle_TItem::FrgVisual_Plot2DAxisTitle_TItem
 	: FrgBase_TreeItem(itemTitle, parentItem, parentTree)
 	, thePlot2DTItem_(plot2DTItem)
 {
-	this->setIcon(0, QIcon(ICONTreeItemCircle));
+	this->SetIcon(0, ForgBaseLib::FrgBase_Icon(ICONTreeItemCircle));
 
 	auto btmAxis = dynamic_cast<FrgVisual_Plot2DBtmAxis_TItem*>(parentItem);
 	auto leftAxis = dynamic_cast<FrgVisual_Plot2DLeftAxis_TItem*>(parentItem);

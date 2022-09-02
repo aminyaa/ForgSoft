@@ -50,8 +50,10 @@ SectionContent::~SectionContent()
 		SCLookupMapById(_containerWidget).remove(_uid);
 		SCLookupMapByName(_containerWidget).remove(_uniqueName);
 	}
-	delete _titleWidget;
-	delete _contentWidget;
+
+
+	//delete _titleWidget;
+	//delete _contentWidget;
 }
 
 int SectionContent::uid() const

@@ -28,7 +28,22 @@ class FrgVisual_Scene_InterStyle_Base
 
 public:
 
+	enum class PickingToleranceHelper
+	{
+		Surface,
+		Curve
+	};
+
 	FrgVisual_Scene_InterStyle_Base() {}
+
+	// Default is set to picking surface (0.00001)
+	double GetPickingTolerance() const { return thePickingTolerance_; }
+	void SetPickingTolerance(const double tol) { thePickingTolerance_ = tol; }
+
+	void FORGVISUAL_EXPORT SetPickingToleranceToSurface();
+	void FORGVISUAL_EXPORT SetPickingToleranceToCurve();
+
+	static double FORGVISUAL_EXPORT RecommendPickingTolerance(PickingToleranceHelper helper);
 
 public slots:
 
@@ -38,6 +53,10 @@ public slots:
 public:
 
 	virtual void FormInterStyle() {}
+
+protected:
+
+	double thePickingTolerance_ = 0.00001;
 };
 
 template <int Dim, class T>
@@ -47,6 +66,8 @@ class FrgVisual_Scene_InterStyle
 {
 
 public:
+
+	
 
 	static ForgVisualLib::FrgVisual_Scene_InterStyle<Dim, T>* New();
 

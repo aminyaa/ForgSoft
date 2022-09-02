@@ -115,6 +115,20 @@ ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 
 void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool resetView)
 {
+	if (resetCamera && resetView)
+	{
+
+	}
+	else
+	{
+		if (theParentMainWindow_)
+		{
+			auto canRender = theParentMainWindow_->IsTabWidgetVisible(this);
+			if (!canRender)
+				return;
+		}
+	}
+
 	if(!theInitiated_)
 	{
 		theCamera_->SetPosition(0, -1, 0);
