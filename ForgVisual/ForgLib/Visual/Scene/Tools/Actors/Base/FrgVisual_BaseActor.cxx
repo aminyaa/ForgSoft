@@ -45,17 +45,21 @@ inline void ForgVisualLib::FrgVisual_BaseActor<Dim>::TranslateActor(double dx, d
 }
 
 template<int Dim>
-std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BaseActor<Dim>::DiscreteCurve(opencascade::handle<Standard_Transient> curve, const double degree)
+std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BaseActor<Dim>::DiscreteCurve
+(
+	const opencascade::handle<Standard_Transient>& curve,
+	const double degree
+)
 {
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
 
 	if (!curve)
 		return pts;
 
-	auto my2dCurve = opencascade::handle<Geom2d_Curve>::DownCast(curve);
-	auto my3dCurve = opencascade::handle<Geom_Curve>::DownCast(curve);
+	const auto my2dCurve = opencascade::handle<Geom2d_Curve>::DownCast(curve);
+	const auto my3dCurve = opencascade::handle<Geom_Curve>::DownCast(curve);
 
-	bool hasDer1 = my2dCurve ? my2dCurve->IsCN(1) : my3dCurve->IsCN(1);
+	const bool hasDer1 = my2dCurve ? my2dCurve->IsCN(1) : my3dCurve->IsCN(1);
 	if (!hasDer1)
 		return pts;
 
@@ -89,7 +93,7 @@ std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BaseActor<Di
 		if (u0 == un)
 			return pts;
 
-		auto p0Curve = my2dCurve->Value(u0);
+		const auto p0Curve = my2dCurve->Value(u0);
 		pts.emplace_back(p0Curve.X(), p0Curve.Y());
 	}
 	else if constexpr (Dim == 3)
@@ -100,7 +104,7 @@ std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BaseActor<Di
 		if (u0 == un)
 			return pts;
 
-		auto p0Curve = my3dCurve->Value(u0);
+		const auto p0Curve = my3dCurve->Value(u0);
 		pts.emplace_back(p0Curve.X(), p0Curve.Y(), p0Curve.Z());
 	}
 

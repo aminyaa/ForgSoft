@@ -140,7 +140,7 @@ bool ForgVisualLib::FrgVisual_PointActor<Dim>::UnSelectActor()
 //}
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_PointActor<Dim>::SetData(ForgBaseLib::FrgBase_Pnt<Dim> pt)
+void ForgVisualLib::FrgVisual_PointActor<Dim>::SetData(const ForgBaseLib::FrgBase_Pnt<Dim>& pt)
 {
 	theP_ = pt;
 

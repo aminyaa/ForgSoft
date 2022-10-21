@@ -75,7 +75,11 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>::~FrgVisual_BSPLineActor()
 //}
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree)
+void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetData
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+	int degree
+)
 {
 	theDegree_ = degree;
 
@@ -93,7 +97,7 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetData(std::vector<ForgBaseLib
 		newDegree = ctrlPts.size() - 1;
 
 	bool isPeriodic = false;
-	if (ctrlPts[0] == ctrlPts[ctrlPts.size() - 1])
+	if (ctrlPts[0].IsEqual(ctrlPts[ctrlPts.size() - 1]))
 		isPeriodic = true;
 
 	CreateBSPLineCurve(ctrlPts, CalculateKnots(ctrlPts, newDegree, isPeriodic), CalculateMultiplicities(ctrlPts, newDegree, isPeriodic), newDegree, isPeriodic);
@@ -102,7 +106,11 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetData(std::vector<ForgBaseLib
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetDataInterpolate(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts, int degree)
+void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetDataInterpolate
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+	int degree
+)
 {
 	if (theDegree_ == -1)
 		theDegree_ = degree;
@@ -121,7 +129,7 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetDataInterpolate(std::vector<
 	auto ptEnd = pts[pts.size() - 1];
 	for (int i = 1; i < pts.size() - 1; i++)
 	{
-		if (pts[i] == ptStart || pts[i] == ptEnd)
+		if (pts[i].IsEqual(ptStart) || pts[i].IsEqual(ptEnd))
 		{
 			canBeDrawn = false;
 			break;
@@ -154,7 +162,7 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetDataInterpolate(std::vector<
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::AddNextPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt)
+void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::AddNextPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt)
 {
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts = GetCtrlPts();
 	ctrlPts.push_back(pt);
@@ -162,7 +170,7 @@ void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::AddNextPoint(ForgBaseLib::FrgBa
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetLastPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt)
+void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::SetLastPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt)
 {
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts = GetCtrlPts();
 	ctrlPts[ctrlPts.size() - 1] = pt;
@@ -439,7 +447,12 @@ long long ForgVisualLib::FrgVisual_BSPLineActor<Dim>::GetNumberOfCtrlPts()
 //}
 
 template<int Dim>
-std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalculateKnots(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree, bool isPeriodic)
+std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalculateKnots
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+	int degree,
+	bool isPeriodic
+)
 {
 	std::vector<double> knots;
 
@@ -468,7 +481,12 @@ std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalculateKnots(s
 }
 
 template<int Dim>
-std::vector<int> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalculateMultiplicities(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree, bool isPeriodic)
+std::vector<int> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalculateMultiplicities
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+	int degree,
+	bool isPeriodic
+)
 {
 	std::vector<int> mult;
 
@@ -498,9 +516,9 @@ std::vector<int> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalculateMultiplici
 template<int Dim>
 void ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CreateBSPLineCurve
 (
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts,
-	std::vector<double> theKnots,
-	std::vector<int> theMultiplicities,
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+	const std::vector<double>& theKnots,
+	const std::vector<int>& theMultiplicities,
 	int degree,
 	bool isPerodic
 )
@@ -925,7 +943,13 @@ ForgVisualLib::FrgVisual_BaseActor_Entity::ActorDimension ForgVisualLib::FrgVisu
 }
 
 template<int Dim>
-std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcBasisFunctionVector(std::vector<double> U, int i, int p, double u) const
+std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcBasisFunctionVector
+(
+	const std::vector<double>& U,
+	int i,
+	int p,
+	double u
+) const
 {
 	std::vector<double> N(p + 1);
 	std::vector<double> left(p + 1);
@@ -950,7 +974,13 @@ std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcBasisFunctio
 }
 
 template<int Dim>
-double ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcBasisFunction(std::vector<double> U, int i, int p, double u) const
+double ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcBasisFunction
+(
+	const std::vector<double>& U,
+	int i,
+	int p,
+	double u
+) const
 {
 	int m = U.size() - 1;
 
@@ -1022,7 +1052,12 @@ double ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcBasisFunction(std::vector
 }
 
 template<int Dim>
-int ForgVisualLib::FrgVisual_BSPLineActor<Dim>::FindSpan(int n, int p, double u, std::vector<double> knots)
+int ForgVisualLib::FrgVisual_BSPLineActor<Dim>::FindSpan
+(
+	int n,
+	int p,
+	double u,
+	const std::vector<double>& knots)
 {
 	if (u >= knots[n + 1])
 		return n;
@@ -1043,7 +1078,10 @@ int ForgVisualLib::FrgVisual_BSPLineActor<Dim>::FindSpan(int n, int p, double u,
 }
 
 template<int Dim>
-std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarEquallySpaced(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q)
+std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarEquallySpaced
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q
+)
 {
 	std::vector<double> knots;
 	knots.push_back(0.0);
@@ -1059,7 +1097,10 @@ std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarEqual
 }
 
 template<int Dim>
-std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarChordLength(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q)
+std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarChordLength
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q
+)
 {
 	std::vector<double> knots;
 	knots.push_back(0.0);
@@ -1078,7 +1119,10 @@ std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarChord
 }
 
 template<int Dim>
-std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarCentripetal(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q)
+std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarCentripetal
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q
+)
 {
 	std::vector<double> knots;
 	knots.push_back(0.0);
@@ -1097,7 +1141,12 @@ std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotBarCentr
 }
 
 template<int Dim>
-std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotVector(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q, std::vector<double> knotsBar, int degree)
+std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotVector
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q,
+	const std::vector<double>& knotsBar,
+	int degree
+)
 {
 	std::vector<double> knots;
 
@@ -1120,7 +1169,11 @@ std::vector<double> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::CalcKnotVector(s
 }
 
 template<int Dim>
-std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::Interpolate(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q, int degree)
+std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ForgVisualLib::FrgVisual_BSPLineActor<Dim>::Interpolate
+(
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q,
+	int degree
+)
 {
 	auto knotsBar = CalcKnotBarCentripetal(Q);
 
@@ -1226,12 +1279,14 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_BSPLineActor<Dim>)
 
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
 
-	ar& theDegree_;
+	int degree;
+
+	ar& degree;
 	ar& theCtrlPts_;
 	ar& theCtrlPtsPolyLine_;
 	ar& pts;
 
-	SetData(pts, theDegree_);
+	SetData(pts, degree);
 
 	/*ar& theDegree_;
 	ar& theNumberOfDiscretization_;

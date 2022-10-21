@@ -843,7 +843,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::RenderSceneSlot(bool resetCamera, bool
 
 template<int Dim>
 ForgVisualLib::FrgVisual_PointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPoint(
-	ForgBaseLib::FrgBase_Pnt<Dim> pt,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& pt,
 	bool render
 )
 {
@@ -897,7 +897,7 @@ ForgVisualLib::FrgVisual_PointActor<3>* ForgVisualLib::FrgVisual_Scene<Dim>::Add
 template<int Dim>
 ForgVisualLib::FrgVisual_PickingPointActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPickingPoint
 (
-	ForgBaseLib::FrgBase_Pnt<Dim> pt,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& pt,
 	bool render
 )
 {
@@ -918,8 +918,8 @@ ForgVisualLib::FrgVisual_PickingPointActor<Dim>* ForgVisualLib::FrgVisual_Scene<
 template<int Dim>
 ForgVisualLib::FrgVisual_LineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddLine
 (
-	ForgBaseLib::FrgBase_Pnt<Dim> P0,
-	ForgBaseLib::FrgBase_Pnt<Dim> P1,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& P0,
+	const ForgBaseLib::FrgBase_Pnt<Dim>& P1,
 	bool render
 )
 {
@@ -978,7 +978,7 @@ ForgVisualLib::FrgVisual_LineActor<3>* ForgVisualLib::FrgVisual_Scene<Dim>::AddL
 template<int Dim>
 ForgVisualLib::FrgVisual_PolylineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPolyline
 (
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
 	bool render
 )
 {
@@ -1008,8 +1008,8 @@ template<int Dim>
 template<typename>
 ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddRectangle
 (
-	ForgBaseLib::FrgBase_Pnt<2> P0,
-	ForgBaseLib::FrgBase_Pnt<2> P1,
+	const ForgBaseLib::FrgBase_Pnt<2>& P0,
+	const ForgBaseLib::FrgBase_Pnt<2>& P1,
 	bool render
 )
 {
@@ -1046,7 +1046,7 @@ template<int Dim>
 template<typename>
 ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCircle
 (
-	ForgBaseLib::FrgBase_Pnt<2> center,
+	const ForgBaseLib::FrgBase_Pnt<2>& center,
 	double radius,
 	bool render
 )
@@ -1070,8 +1070,8 @@ template<int Dim>
 template<typename>
 ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCircleUsingCenterAndPointOnCurve
 (
-	ForgBaseLib::FrgBase_Pnt<2> center,
-	ForgBaseLib::FrgBase_Pnt<2> pointOnCurve,
+	const ForgBaseLib::FrgBase_Pnt<2>& center,
+	const ForgBaseLib::FrgBase_Pnt<2>& pointOnCurve,
 	bool render
 )
 {
@@ -1094,7 +1094,7 @@ template<int Dim>
 template<typename Triangulation>
 void ForgVisualLib::FrgVisual_Scene<Dim>::AddTriangulations
 (
-	std::vector<Triangulation> triangulations,
+	const std::vector<Triangulation>& triangulations,
 	bool render
 )
 {
@@ -1103,8 +1103,8 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::AddTriangulations
 template<int Dim>
 ForgVisualLib::FrgVisual_MeshActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddTriangulation
 (
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
-	std::vector<std::tuple<int, int, int>> connectivity,
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+	const std::vector<std::tuple<int, int, int>>& connectivity,
 	bool render
 )
 {
@@ -1159,7 +1159,7 @@ ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>* ForgVisualLib::FrgVisual_Scen
 template<int Dim>
 ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddBSPLine
 (
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts,
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
 	int degree,
 	bool render
 )
@@ -1196,7 +1196,7 @@ ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>:
 template<int Dim>
 ForgVisualLib::FrgVisual_BSPLineActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddBSPLineThroughPoints
 (
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
 	int degree,
 	bool render
 )
@@ -1221,8 +1221,8 @@ template<int Dim>
 template<typename>
 ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddBox
 (
-	ForgBaseLib::FrgBase_Pnt<3> P0,
-	ForgBaseLib::FrgBase_Pnt<3> P1,
+	const ForgBaseLib::FrgBase_Pnt<3>& P0,
+	const ForgBaseLib::FrgBase_Pnt<3>& P1,
 	bool render
 )
 {
@@ -1261,8 +1261,8 @@ template<int Dim>
 template<typename>
 ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<Dim>::AddCylinder
 (
-	ForgBaseLib::FrgBase_Pnt<3> Start,
-	ForgBaseLib::FrgBase_Pnt<3> End,
+	const ForgBaseLib::FrgBase_Pnt<3>& Start,
+	const ForgBaseLib::FrgBase_Pnt<3>& End,
 	double radius,
 	bool render
 )
@@ -1273,7 +1273,7 @@ ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<Dim>::Add
 		throw myException;
 	}
 
-	if (Start == End)
+	if (Start.IsEqual(End))
 	{
 		std::exception myException("The cylinder should have a height");
 		throw myException;
@@ -1727,16 +1727,16 @@ template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_PointActor<3>* ForgVisualLib
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_LineActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddLine(double P0_X, double P0_Y, double P1_X, double P1_Y, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_LineActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddLine(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<2>::AddRectangle(ForgBaseLib::FrgBase_Pnt<2> P0, ForgBaseLib::FrgBase_Pnt<2> P1, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<2>::AddRectangle(const ForgBaseLib::FrgBase_Pnt<2>& P0, const ForgBaseLib::FrgBase_Pnt<2>& P1, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_RectangleActor* ForgVisualLib::FrgVisual_Scene<2>::AddRectangle(double P0_X, double P0_Y, double P1_X, double P1_Y, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<2>::AddCircle(ForgBaseLib::FrgBase_Pnt<2> center, double radius, bool render);
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<2>::AddCircleUsingCenterAndPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> center, ForgBaseLib::FrgBase_Pnt<2> pointOnCurve, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<2>::AddCircle(const ForgBaseLib::FrgBase_Pnt<2>& center, double radius, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CircleActor* ForgVisualLib::FrgVisual_Scene<2>::AddCircleUsingCenterAndPointOnCurve(const ForgBaseLib::FrgBase_Pnt<2>& center, const ForgBaseLib::FrgBase_Pnt<2>& pointOnCurve, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(ForgBaseLib::FrgBase_Pnt<3> P0, ForgBaseLib::FrgBase_Pnt<3> P1, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(const ForgBaseLib::FrgBase_Pnt<3>& P0, const ForgBaseLib::FrgBase_Pnt<3>& P1, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::FrgVisual_Scene<3>::AddBox(double P0_X, double P0_Y, double P0_Z, double P1_X, double P1_Y, double P1_Z, bool render);
 
-template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(ForgBaseLib::FrgBase_Pnt<3> Start, ForgBaseLib::FrgBase_Pnt<3> End, double radius, bool render);
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(const ForgBaseLib::FrgBase_Pnt<3>& Start, const ForgBaseLib::FrgBase_Pnt<3>& End, double radius, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(double Start_X, double Start_Y, double Start_Z, double End_X, double End_Y, double End_Z, double radius, bool render);
 
 //template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddText(const QString& value, double posx, double posy, bool render);

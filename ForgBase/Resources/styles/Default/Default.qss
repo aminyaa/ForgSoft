@@ -209,18 +209,180 @@ QMenu::indicator{
   height:18px;
 }
 QMenu::indicator:non-exclusive:checked{
-  image:url(:/styles/DarkStyle/icon_checkbox_checked.png);
+  image:url(:/styles/Default/icon_checkbox_checked.png);
   padding-left:2px;
 }
 QMenu::indicator:non-exclusive:unchecked{
-  image:url(:/styles/DarkStyle/icon_checkbox_unchecked.png);
+  image:url(:/styles/Default/icon_checkbox_unchecked.png);
   padding-left:2px;
 }
 QMenu::indicator:exclusive:checked{
-  image:url(:/styles/DarkStyle/icon_radiobutton_checked.png);
+  image:url(:/styles/Default/icon_radiobutton_checked.png);
   padding-left:2px;
 }
 QMenu::indicator:exclusive:unchecked{
-  image:url(:/styles/DarkStyle/icon_radiobutton_unchecked.png);
+  image:url(:/styles/Default/icon_radiobutton_unchecked.png);
   padding-left:2px;
+}
+/*QDockWidget::title{
+  padding:4px;
+  background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(166,245,220,127),stop:1 rgba(80,217,174,75));
+  border:1px solid rgba(4,185,127,75);
+  border-bottom:2px solid rgba(4,185,127,75);
+}*/
+QDockWidget{
+  titlebar-close-icon:url(:/styles/Default/icon_close.png);
+  titlebar-normal-icon:url(:/styles/Default/icon_restore.png);
+}
+QDockWidget::close-button,QDockWidget::float-button{
+  subcontrol-position:top right;
+  subcontrol-origin:margin;
+  position:absolute;
+  top:3px;
+  bottom:0px;
+  width:20px;
+  height:20px;
+}
+QDockWidget::close-button{
+  right:3px;
+}
+QDockWidget::float-button{
+  right:25px;
+}
+ads--ContainerWidget,
+ContainerWidget
+{
+	background: palette(light);
+}
+
+ads--ContainerWidget QSplitter::handle,
+ContainerWidget QSplitter::handle
+{
+	background: palette(light);
+}
+
+ads--ContainerWidget QSplitter::handle:horizontal:hover,
+ContainerWidget QSplitter::handle:horizontal:hover
+{
+	background : #6b9cb8;
+}
+
+ads--ContainerWidget QSplitter::handle:vertical:hover,
+ContainerWidget QSplitter::handle:vertical:hover
+{
+	background : #6b9cb8;
+}
+
+ads--SectionWidget,
+SectionWidget
+{
+	background: palette(window);
+	border: 1px solid palette(highlight);
+	padding: 0 9px;
+}
+
+ads--SectionWidget #tabsMenuButton::menu-indicator,
+SectionWidget #tabsMenuButton::menu-indicator
+{
+	image: none;
+}
+
+ads--SectionTitleWidget,
+SectionTitleWidget
+{
+	padding:4px 6px;
+	margin-right:2px;
+	margin-top:2px;
+	background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(194, 202, 207,127),stop:1 rgba(218, 230, 237,75));
+	/*border:1px solid rgba(191, 242, 233,75);*/
+	border-top-left-radius:2px;
+	border-top-right-radius:8px;
+	/*border-style: solid;*/
+	/*border-width: 0 1px 0 0;*/
+	border-left: 1px solid palette(highlight);
+	border-right: 1px solid palette(highlight);
+	border-top: 1px solid palette(highlight);
+}
+
+ads--SectionTitleWidget:hover,
+SectionTitleWidget:hover
+{
+	background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(194, 202, 207,200),stop:1 rgba(218, 230, 237,150));
+}
+
+ads--FloatingWidget,
+FloatingWidget
+{
+	padding:4px 6px;
+	margin-right:2px;
+	margin-top:2px;
+	background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(194, 202, 207,127),stop:1 rgba(218, 230, 237,75));
+	/*border:1px solid rgba(191, 242, 233,75);*/
+	border-top-left-radius:2px;
+	border-top-right-radius:8px;
+	/*border-style: solid;*/
+	/*border-width: 0 1px 0 0;*/
+	border-left: 1px solid palette(highlight);
+	border-right: 1px solid palette(highlight);
+	border-top: 1px solid palette(highlight);
+}
+
+ads--SectionTitleWidget[activeTab="true"],
+SectionTitleWidget[activeTab="true"]
+{
+/*	background: palette(light);*/
+/*	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(240, 240, 240, 255));*/
+	/*background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:0.5, stop:0 palette(window), stop:1 palette(light));*/
+	background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(194, 202, 207,255),stop:1 rgba(218, 230, 237,255));
+	border-bottom:2px solid palette(highlight);
+}
+
+ads--SectionContentWidget,
+SectionContentWidget
+{
+	background-color:qlineargradient(x1:0,y1:1,x2:0,y2:0,stop:0 rgba(159, 192, 199,127),stop:1 rgba(191, 242, 233,75));
+	/*border: 1px solid palette(highlight);
+	background: palette(light);
+	border-color: palette(light);
+	border-style: solid;
+	border-width: 1px 0 0 0;*/
+}
+
+/* Special: QLabels inside SectionTitleWidget
+*/
+ads--SectionTitleWidget QLabel,
+SectionTitleWidget QLabel
+{
+	color: black;
+	/*color: palette(dark);
+	margin-top:2px;
+	margin-bottom:2px;
+	margin-left:2px;
+	margin-right:2px;*/
+}
+ads--SectionTitleWidget[activeTab="true"] QLabel,
+SectionTitleWidget[activeTab="true"] QLabel
+{
+	color: black;
+	/*color: palette(foreground);
+	margin-top:4px;
+	margin-bottom:2px;
+	margin-left:2px;
+	margin-right:2px;*/
+}
+
+/* Special: QLabels inside SectionTitleWidget, which is floating
+*/
+ads--FloatingWidget ads--SectionTitleWidget QLabel,
+FloatingWidget SectionTitleWidget QLabel
+{
+	color: black;
+	/*color: palette(foreground);*/
+}
+
+ads--SectionWidget QPushButton#closeButton, SectionWidget QPushButton#closeButton,
+ads--FloatingWidget QPushButton#closeButton, FloatingWidget QPushButton#closeButton {
+	/*background: #ff0000;
+	border: 1px solid red;*/
+	background-image:url(:/styles/Default/icon_close.png);
 }

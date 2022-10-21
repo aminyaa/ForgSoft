@@ -49,7 +49,7 @@ public:
 	bool SelectActor(const QColor& color) override;
 	bool UnSelectActor() override;
 
-	void SetData(ForgBaseLib::FrgBase_Pnt<Dim> pt);
+	void SetData(const ForgBaseLib::FrgBase_Pnt<Dim>& pt);
 	const auto& GetData() const { return theP_; }
 
 	//void UpdateActor();

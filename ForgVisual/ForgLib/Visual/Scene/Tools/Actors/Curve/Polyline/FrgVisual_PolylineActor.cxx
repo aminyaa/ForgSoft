@@ -46,7 +46,7 @@ ForgVisualLib::FrgVisual_PolylineActor<Dim>::FrgVisual_PolylineActor()
 //}
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts)
+void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetData(const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts)
 {
 	//vtkSmartPointer<vtkPolyDataMapper> mapper = vtkPolyDataMapper::SafeDownCast(this->GetMapper());
 	if (theMapper_)
@@ -124,7 +124,7 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetData(std::vector<ForgBaseLi
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_PolylineActor<Dim>::AddNextPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt)
+void ForgVisualLib::FrgVisual_PolylineActor<Dim>::AddNextPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt)
 {
 	if constexpr (Dim == 2)
 		AddNextPoint(pt.X(), pt.Y());
@@ -133,7 +133,7 @@ void ForgVisualLib::FrgVisual_PolylineActor<Dim>::AddNextPoint(ForgBaseLib::FrgB
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetLastPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt)
+void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetLastPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt)
 {
 	if constexpr (Dim == 2)
 		SetLastPoint(pt.X(), pt.Y());
@@ -336,7 +336,7 @@ ForgBaseLib::FrgBase_Pnt<Dim> ForgVisualLib::FrgVisual_PolylineActor<Dim>::GetPo
 }
 
 template<int Dim>
-void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetPoint(long long i, ForgBaseLib::FrgBase_Pnt<Dim> pt)
+void ForgVisualLib::FrgVisual_PolylineActor<Dim>::SetPoint(long long i, const ForgBaseLib::FrgBase_Pnt<Dim>& pt)
 {
 	if constexpr (Dim == 2)
 		SetPoint(i, pt.X(), pt.Y());

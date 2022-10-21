@@ -16,7 +16,7 @@ int main(int argc, char** argv)
 	app.SetParentMainWindow(mainWindow.get());
 
 	mainWindow->SetQApplication(&app);
-	mainWindow->Show(true);
+	mainWindow->Show(false);
 	mainWindow->SetGeometry(80);
 
 	return app.exec();

@@ -19,7 +19,7 @@ ForgVisualLib::FrgVisual_CylinderActor::FrgVisual_CylinderActor()
 
 }
 
-void ForgVisualLib::FrgVisual_CylinderActor::SetData(ForgBaseLib::FrgBase_Pnt<3> Start, ForgBaseLib::FrgBase_Pnt<3> End, double radius)
+void ForgVisualLib::FrgVisual_CylinderActor::SetData(const ForgBaseLib::FrgBase_Pnt<3>& Start, const ForgBaseLib::FrgBase_Pnt<3>& End, double radius)
 {
 	SetData(Start.X(), End.X(), Start.Y(), End.Y(), Start.Z(), End.Z(), radius);
 }

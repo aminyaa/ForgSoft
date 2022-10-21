@@ -74,7 +74,7 @@ template<int Dim>
 void ForgVisualLib::FrgVisual_TextActor<Dim>::SetData
 (
 	const QString& value,
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> position
+	const std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>& position
 )
 {
 	thePosition_ = position;

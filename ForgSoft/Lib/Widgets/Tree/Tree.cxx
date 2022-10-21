@@ -12,6 +12,7 @@
 #include <FrgBase_ToolsParameterScalar_TItem.hxx>
 #include <FrgBase_ToolsParameterVector_TItem.hxx>
 #include <FrgBase_PrptsVrntTextEdit.hxx>
+#include <FrgBase_PrptsVrntBool.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
 
 #include <QPushButton>
@@ -55,6 +56,12 @@ void Tree::FormTree()
 	theItems_.push_back(s1);
 	theItems_.push_back(s2);
 	theItems_.push_back(s3);
+
+	auto i = new ForgBaseLib::FrgBase_PrptsVrntBool("Boolean", true);
+	auto i2 = new ForgBaseLib::FrgBase_PrptsVrntTextEdit("TextEdit", "This is a test");
+
+	s1->GetPropertiesPanel()->AddRow(i);
+	s1->GetPropertiesPanel()->AddRow(i2);
 
 	auto myButton = new QPushButton("Click", GetParentMainWindow());
 

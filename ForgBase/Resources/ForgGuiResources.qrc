@@ -93,5 +93,11 @@
         <file>styles/QCodeEditor/languages/glsl.xml</file>
         <file>styles/QCodeEditor/languages/lua.xml</file>
         <file>styles/QCodeEditor/languages/python.xml</file>
+        <file>styles/Default/icon_close.png</file>
+        <file>styles/Default/icon_restore.png</file>
+        <file>styles/Default/icon_checkbox_checked.png</file>
+        <file>styles/Default/icon_checkbox_unchecked.png</file>
+        <file>styles/Default/icon_radiobutton_checked.png</file>
+        <file>styles/Default/icon_radiobutton_unchecked.png</file>
     </qresource>
 </RCC>

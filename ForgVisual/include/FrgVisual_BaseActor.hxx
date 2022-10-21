@@ -40,7 +40,11 @@ public:
 	virtual void TranslateActor(double dx, double dy);
 	virtual void TranslateActor(double dx, double dy, double dz);
 
-	static std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> DiscreteCurve(opencascade::handle<Standard_Transient> curve, const double degree = 3.0);
+	static std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> DiscreteCurve
+	(
+		const opencascade::handle<Standard_Transient>& curve,
+		const double degree = 3.0
+	);
 
 private:
 

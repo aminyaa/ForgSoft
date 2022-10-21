@@ -46,9 +46,9 @@ public:
 	vtkTypeMacro(FrgVisual_PolylineActor, FrgVisual_CurveActor<Dim>);
 
 	//void SetData(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> pts);
-	void SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts);
-	virtual void AddNextPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt);
-	virtual void SetLastPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt);
+	void SetData(const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts);
+	virtual void AddNextPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt);
+	virtual void SetLastPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt);
 
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	void AddNextPoint(double x, double y);
@@ -66,7 +66,7 @@ public:
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> GetPoints() const;
 
 	ForgBaseLib::FrgBase_Pnt<Dim> GetPoint(long long i);
-	void SetPoint(long long i, ForgBaseLib::FrgBase_Pnt<Dim> pt);
+	void SetPoint(long long i, const ForgBaseLib::FrgBase_Pnt<Dim>& pt);
 
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	void SetPoint(long long i, double x, double y);

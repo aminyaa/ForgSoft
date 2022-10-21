@@ -20,14 +20,14 @@ ForgVisualLib::FrgVisual_CircleActor::FrgVisual_CircleActor()
 
 }
 
-void ForgVisualLib::FrgVisual_CircleActor::SetData(ForgBaseLib::FrgBase_Pnt<2> center, double radius)
+void ForgVisualLib::FrgVisual_CircleActor::SetData(const ForgBaseLib::FrgBase_Pnt<2>& center, double radius)
 {
 	auto ptOnCurve = center;
 	ptOnCurve.X() += radius;
 	SetDataCenterAndPointOnCurve(center, ptOnCurve);
 }
 
-void ForgVisualLib::FrgVisual_CircleActor::SetDataCenterAndPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> center, ForgBaseLib::FrgBase_Pnt<2> pointOnCurve)
+void ForgVisualLib::FrgVisual_CircleActor::SetDataCenterAndPointOnCurve(const ForgBaseLib::FrgBase_Pnt<2>& center, const ForgBaseLib::FrgBase_Pnt<2>& pointOnCurve)
 {
 	ForgBaseLib::FrgBase_Pnt<2> directionWithTwoPoints(pointOnCurve.X() - center.X(), pointOnCurve.Y() - center.Y());
 	double radius = directionWithTwoPoints.TwoNorm();
@@ -59,7 +59,7 @@ void ForgVisualLib::FrgVisual_CircleActor::SetDataCenterAndPointOnCurve(ForgBase
 	FrgVisual_PolylineActor::SetData(DiscreteCurve(theCurve_));
 }
 
-void ForgVisualLib::FrgVisual_CircleActor::SetPointOnCurve(ForgBaseLib::FrgBase_Pnt<2> p)
+void ForgVisualLib::FrgVisual_CircleActor::SetPointOnCurve(const ForgBaseLib::FrgBase_Pnt<2>& p)
 {
 	auto circle = opencascade::handle<Geom2d_Circle>::DownCast(theCurve_);
 	if (circle)

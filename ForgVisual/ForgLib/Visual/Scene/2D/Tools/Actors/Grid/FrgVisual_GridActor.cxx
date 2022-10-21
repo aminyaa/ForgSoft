@@ -24,7 +24,7 @@ ForgVisualLib::FrgVisual_GridActor::~FrgVisual_GridActor()
 
 void ForgVisualLib::FrgVisual_GridActor::SetData
 (
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>> center,
+	const std::shared_ptr<ForgBaseLib::FrgBase_Pnt<2>>& center,
 	double L1,
 	double L2,
 	int numberOfDivisions1,

@@ -37,12 +37,12 @@ public:
 	void SetEdgeColor(double red, double green, double blue);
 	void SetColor(double red, double green, double blue) override;
 
-	void SetData(ForgBaseLib::FrgBase_Pnt<2> P0, ForgBaseLib::FrgBase_Pnt<2> P1);
+	void SetData(const ForgBaseLib::FrgBase_Pnt<2>& P0, const ForgBaseLib::FrgBase_Pnt<2>& P1);
 	void SetData(double P0_X, double P0_Y, double P1_X, double P1_Y);
 
-	void SetP0(ForgBaseLib::FrgBase_Pnt<2> p0);
+	void SetP0(const ForgBaseLib::FrgBase_Pnt<2>& p0);
 	void SetP0(double x, double y);
-	void SetP1(ForgBaseLib::FrgBase_Pnt<2> p1);
+	void SetP1(const ForgBaseLib::FrgBase_Pnt<2>& p1);
 	void SetP1(double x, double y);
 
 	ForgBaseLib::FrgBase_Pnt<2> GetP0();

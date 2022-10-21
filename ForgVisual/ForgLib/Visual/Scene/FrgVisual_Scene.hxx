@@ -301,7 +301,7 @@ public:
 
 	FrgVisual_PointActor<Dim>* AddPoint
 	(
-		ForgBaseLib::FrgBase_Pnt<Dim> pt,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& pt,
 		bool render = true
 	);
 
@@ -324,7 +324,7 @@ public:
 
 	FrgVisual_PickingPointActor<Dim>* AddPickingPoint
 	(
-		ForgBaseLib::FrgBase_Pnt<Dim> pt,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& pt,
 		bool render = true
 	);
 
@@ -334,8 +334,8 @@ public:
 
 	FrgVisual_LineActor<Dim>* AddLine
 	(
-		ForgBaseLib::FrgBase_Pnt<Dim> P0,
-		ForgBaseLib::FrgBase_Pnt<Dim> P1,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& P0,
+		const ForgBaseLib::FrgBase_Pnt<Dim>& P1,
 		bool render = true
 	);
 
@@ -367,7 +367,7 @@ public:
 
 	FrgVisual_PolylineActor<Dim>* AddPolyline
 	(
-		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
 		bool render = true
 	);
 
@@ -378,8 +378,8 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	FrgVisual_RectangleActor* AddRectangle
 	(
-		ForgBaseLib::FrgBase_Pnt<2> P0,
-		ForgBaseLib::FrgBase_Pnt<2> P1,
+		const ForgBaseLib::FrgBase_Pnt<2>& P0,
+		const ForgBaseLib::FrgBase_Pnt<2>& P1,
 		bool render = true
 	);
 
@@ -400,7 +400,7 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	FrgVisual_CircleActor* AddCircle
 	(
-		ForgBaseLib::FrgBase_Pnt<2> center,
+		const ForgBaseLib::FrgBase_Pnt<2>& center,
 		double radius,
 		bool render = true
 	);
@@ -408,8 +408,8 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	FrgVisual_CircleActor* AddCircleUsingCenterAndPointOnCurve
 	(
-		ForgBaseLib::FrgBase_Pnt<2> center,
-		ForgBaseLib::FrgBase_Pnt<2> pointOnCurve,
+		const ForgBaseLib::FrgBase_Pnt<2>& center,
+		const ForgBaseLib::FrgBase_Pnt<2>& pointOnCurve,
 		bool render = true
 	);
 
@@ -420,14 +420,14 @@ public:
 	template <typename Triangulation>
 	void AddTriangulations
 	(
-		std::vector<Triangulation> triangulations,
+		const std::vector<Triangulation>& triangulations,
 		bool render
 	);
 
 	FrgVisual_MeshActor<Dim>* AddTriangulation
 	(
-		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
-		std::vector<std::tuple<int, int, int>> connectivity,
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+		const std::vector<std::tuple<int, int, int>>& connectivity,
 		bool render = true
 	);
 
@@ -447,7 +447,7 @@ public:
 
 	FrgVisual_BSPLineActor<Dim>* AddBSPLine
 	(
-		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts,
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
 		int degree,
 		bool render = true
 	);
@@ -455,7 +455,7 @@ public:
 	// Interpolating BSPLine Curve
 	FrgVisual_BSPLineActor<Dim>* AddBSPLineThroughPoints
 	(
-		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
 		int degree,
 		bool render = true
 	);
@@ -467,8 +467,8 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 3>>
 	FrgVisual_BoxActor* AddBox
 	(
-		ForgBaseLib::FrgBase_Pnt<3> P0,
-		ForgBaseLib::FrgBase_Pnt<3> P1,
+		const ForgBaseLib::FrgBase_Pnt<3>& P0,
+		const ForgBaseLib::FrgBase_Pnt<3>& P1,
 		bool render = true
 	);
 
@@ -491,8 +491,8 @@ public:
 	template <typename = typename std::enable_if_t<Dim == 3>>
 	FrgVisual_CylinderActor* AddCylinder
 	(
-		ForgBaseLib::FrgBase_Pnt<3> Start,
-		ForgBaseLib::FrgBase_Pnt<3> End,
+		const ForgBaseLib::FrgBase_Pnt<3>& Start,
+		const ForgBaseLib::FrgBase_Pnt<3>& End,
 		double radius,
 		bool render = true
 	);

@@ -52,6 +52,8 @@ public:
 	FORGBASE_EXPORT FrgBase_Pnt& operator+();
 	FORGBASE_EXPORT FrgBase_Pnt operator-();
 
+	FORGBASE_EXPORT bool IsEqual(const FrgBase_Pnt& pt) const;
+
 	FORGBASE_EXPORT bool operator==(const FrgBase_Pnt& pt);
 	FORGBASE_EXPORT bool operator!=(const FrgBase_Pnt& pt);
 

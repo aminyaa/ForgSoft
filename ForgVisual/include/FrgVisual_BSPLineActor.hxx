@@ -59,12 +59,12 @@ public:
 	vtkTypeMacro(FrgVisual_BSPLineActor, FrgVisual_PolylineActor<Dim>);
 
 	//void SetData(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> ctrlPts, int degree, bool drawCtrlPts = true);
-	void SetData(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree);
+	void SetData(const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts, int degree);
 
-	void SetDataInterpolate(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts, int degree);
+	void SetDataInterpolate(const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts, int degree);
 
-	void AddNextPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt) override;
-	void SetLastPoint(ForgBaseLib::FrgBase_Pnt<Dim> pt) override;
+	void AddNextPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt) override;
+	void SetLastPoint(const ForgBaseLib::FrgBase_Pnt<Dim>& pt) override;
 
 	template <typename = typename std::enable_if_t<Dim == 2>>
 	void AddNextPoint(double x, double y);
@@ -115,27 +115,89 @@ protected:
 
 private:
 
-	std::vector<double> CalculateKnots(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree, bool isPeriodic);
-	std::vector<int> CalculateMultiplicities(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, int degree, bool isPeriodic);
+	std::vector<double> CalculateKnots
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+		int degree,
+		bool isPeriodic
+	);
+
+	std::vector<int> CalculateMultiplicities
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+		int degree,
+		bool isPeriodic
+	);
+
 	//void CalculateKnotsAndMultiplicities(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> ctrlPts);
 	//void CreateBSPLineCurve(std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> ctrlPts, std::vector<double> theKnots, std::vector<int> theMultiplicities);
-	void CreateBSPLineCurve(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> ctrlPts, std::vector<double> theKnots, std::vector<int> theMultiplicities, int degree, bool isPerodic);
+
+	void CreateBSPLineCurve
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& ctrlPts,
+		const std::vector<double>& theKnots,
+		const std::vector<int>& theMultiplicities,
+		int degree,
+		bool isPerodic
+	);
+
 	//std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>> CalculatePointsOnCurve() const;
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> CalculatePointsOnCurve();
 	//std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> CalculatePointsOnCurve(double epsilon);
 
 	//std::vector<ForgVisualLib::FrgVisual_PointActor<Dim>*> GetCtrlPts() const;
 
-	std::vector<double> CalcBasisFunctionVector(std::vector<double> knots, int i, int p, double u) const;
-	double CalcBasisFunction(std::vector<double> knots, int i, int p, double u) const;
+	std::vector<double> CalcBasisFunctionVector
+	(
+		const std::vector<double>& knots,
+		int i,
+		int p,
+		double u
+	) const;
 
-	int FindSpan(int n, int p, double u, std::vector<double> knots);
+	double CalcBasisFunction
+	(
+		const std::vector<double>& knots,
+		int i,
+		int p,
+		double u
+	) const;
 
-	std::vector<double> CalcKnotBarEquallySpaced(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q);
-	std::vector<double> CalcKnotBarChordLength(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q);
-	std::vector<double> CalcKnotBarCentripetal(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q);
-	std::vector<double> CalcKnotVector(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q, std::vector<double> knotsBar, int degree);
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Interpolate(std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Q, int degree);
+	int FindSpan
+	(
+		int n,
+		int p,
+		double u,
+		const std::vector<double>& knots
+	);
+
+	std::vector<double> CalcKnotBarEquallySpaced
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q
+	);
+
+	std::vector<double> CalcKnotBarChordLength
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q
+	);
+
+	std::vector<double> CalcKnotBarCentripetal
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q
+	);
+
+	std::vector<double> CalcKnotVector
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q,
+		const std::vector<double>& knotsBar,
+		int degree
+	);
+
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> Interpolate
+	(
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& Q,
+		int degree
+	);
 
 private:
 

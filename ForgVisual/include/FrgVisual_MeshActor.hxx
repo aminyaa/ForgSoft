@@ -37,8 +37,8 @@ public:
 
 	void SetDataTriangulation
 	(
-		std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
-		std::vector<std::tuple<int, int, int>> connectivity
+		const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+		const std::vector<std::tuple<int, int, int>>& connectivity
 	);
 
 	ActorType GetActorType() const override;

@@ -18,7 +18,7 @@ ForgVisualLib::FrgVisual_RectangleActor::FrgVisual_RectangleActor()
 
 }
 
-void ForgVisualLib::FrgVisual_RectangleActor::SetData(ForgBaseLib::FrgBase_Pnt<2> P0, ForgBaseLib::FrgBase_Pnt<2> P1)
+void ForgVisualLib::FrgVisual_RectangleActor::SetData(const ForgBaseLib::FrgBase_Pnt<2>& P0, const ForgBaseLib::FrgBase_Pnt<2>& P1)
 {
 	SetData(P0.X(), P0.Y(), P1.X(), P1.Y());
 }
@@ -34,7 +34,7 @@ void ForgVisualLib::FrgVisual_RectangleActor::SetData(double P0_X, double P0_Y, 
 	FrgVisual_PolylineActor::SetData({ p0, p1, p2, p3, p4 });
 }
 
-void ForgVisualLib::FrgVisual_RectangleActor::SetP0(ForgBaseLib::FrgBase_Pnt<2> p0)
+void ForgVisualLib::FrgVisual_RectangleActor::SetP0(const ForgBaseLib::FrgBase_Pnt<2>& p0)
 {
 	SetP0(p0.X(), p0.Y());
 }
@@ -48,7 +48,7 @@ void ForgVisualLib::FrgVisual_RectangleActor::SetP0(double x, double y)
 	SetPoint(4, x, y);
 }
 
-void ForgVisualLib::FrgVisual_RectangleActor::SetP1(ForgBaseLib::FrgBase_Pnt<2> p1)
+void ForgVisualLib::FrgVisual_RectangleActor::SetP1(const ForgBaseLib::FrgBase_Pnt<2>& p1)
 {
 	SetP1(p1.X(), p1.Y());
 }

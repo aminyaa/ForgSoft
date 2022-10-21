@@ -240,10 +240,13 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	ar& thePoints_;
-	ar& theConnectivity_;
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
+	std::vector<std::vector<int>> connectivity;
 
-	SetDataPolyhedral(thePoints_, theConnectivity_);
+	ar& pts;
+	ar& connectivity;
+
+	SetDataPolyhedral(pts, connectivity);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_MeshPolyhedralActor<2>)

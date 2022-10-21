@@ -39,7 +39,7 @@ public:
 
 	void UpdateActor();
 
-	void SetData(const QString& value, std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> position);
+	void SetData(const QString& value, const std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>& position);
 
 	template <typename = std::enable_if_t<Dim == 2>>
 	void SetData(const QString& value, double x, double y);
@@ -50,7 +50,7 @@ public:
 
 	/* Properties */
 
-	std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>> GetPosition() const { return thePosition_; }
+	const std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>& GetPosition() const { return thePosition_; }
 
 	QString GetText() const { return theValue_; }
 	void SetText(const QString& value);

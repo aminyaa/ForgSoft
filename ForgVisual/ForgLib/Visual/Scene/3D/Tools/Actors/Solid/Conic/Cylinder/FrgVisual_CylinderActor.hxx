@@ -42,7 +42,7 @@ public:
 
 	void SetEdgeColor(double red, double green, double blue);
 
-	void SetData(ForgBaseLib::FrgBase_Pnt<3> Start, ForgBaseLib::FrgBase_Pnt<3> End, double radius);
+	void SetData(const ForgBaseLib::FrgBase_Pnt<3>& Start, const ForgBaseLib::FrgBase_Pnt<3>& End, double radius);
 	void SetData(double Start_x, double Start_y, double Start_z, double End_x, double End_y, double End_z, double radius);
 
 	ActorType GetActorType() const override;

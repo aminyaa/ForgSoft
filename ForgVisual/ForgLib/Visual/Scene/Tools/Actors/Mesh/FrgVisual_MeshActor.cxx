@@ -41,8 +41,8 @@ inline ForgVisualLib::FrgVisual_MeshActor<Dim>::FrgVisual_MeshActor()
 template<int Dim>
 inline void ForgVisualLib::FrgVisual_MeshActor<Dim>::SetDataTriangulation
 (
-	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts,
-	std::vector<std::tuple<int, int, int>> connectivity
+	const std::vector<ForgBaseLib::FrgBase_Pnt<Dim>>& pts,
+	const std::vector<std::tuple<int, int, int>>& connectivity
 )
 {
 	thePoints_.clear();
@@ -376,10 +376,13 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_MeshActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
-	ar& thePoints_;
-	ar& theConnectivity_;
+	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> points;
+	std::vector<std::tuple<int, int, int>> connectivity;
 
-	SetDataTriangulation(thePoints_, theConnectivity_);
+	ar& points;
+	ar& connectivity;
+
+	SetDataTriangulation(points, connectivity);
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_MeshActor<2>)

@@ -242,16 +242,21 @@ ForgBaseLib::FrgBase_Pnt<Dim> ForgBaseLib::FrgBase_Pnt<Dim>::operator-()
 }
 
 template<int Dim>
-bool ForgBaseLib::FrgBase_Pnt<Dim>::operator==(const FrgBase_Pnt& pt)
+bool ForgBaseLib::FrgBase_Pnt<Dim>::IsEqual(const FrgBase_Pnt& pt) const
 {
-	bool result = true;
 	for (int i = 0; i < Dim; i++)
 	{
-		if (theCoords_[i] != pt.Coord(i))
-			result = false;
+		if (Coord(i) != pt.Coord(i))
+			return false;
 	}
 
-	return result;
+	return true;
+}
+
+template<int Dim>
+bool ForgBaseLib::FrgBase_Pnt<Dim>::operator==(const FrgBase_Pnt& pt)
+{
+	return IsEqual(pt);
 }
 
 template<int Dim>
