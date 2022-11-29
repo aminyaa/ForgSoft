@@ -5,6 +5,7 @@
 #include <FrgBase_SymbolTableRegistry.hxx>
 #include <FrgBase_ScalarField.hxx>
 #include <FrgBase_VectorField.hxx>
+#include <FrgBase_FieldTools.hxx>
 
 MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 	: ForgBaseLib::FrgBase_MainWindow(parent)
@@ -14,7 +15,7 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 	try
 	{
 		auto registry1 = new ForgBaseLib::FrgBase_SymbolTableRegistry;
-		auto table1 = registry1->CreateTable("Table 1");
+		auto table1 = registry1->CreateTable("Geometry");
 		auto table2 = registry1->CreateTable("Table 2");
 
 		auto x = table1->AddVariable("X");
@@ -41,19 +42,30 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 		auto h2 = table1->AddVariable("H2");
 		h2->SetExpression(h->GetFullName() + " * 2.23");
 
-		auto v1 = table1->AddVector<3>("V1");
-		v1->SetExpression("[" + h->GetFullName() + ", 2.0*" + h2->GetFullName() + ", " + f->GetFullName() + /*", " + t->GetFullName() +*/ "]");
-		//v1->CalcValue();
+		auto v1 = table1->AddVector<4>("V1");
+		v1->SetExpression("[" + h->GetFullName() + ", 2.0 * " + h2->GetFullName() + ", " + f->GetFullName() + ", " + t->GetFullName() + "]");
 
-		//PrintInfoToConsole(QString::fromStdString(table1->Print()));
-		//PrintInfoToConsole(QString::fromStdString(table2->Print()));
+		//ForgBaseLib::FrgBase_FieldTools::SetBracket(ForgBaseLib::FrgBase_FieldTools::Bracket::Angle);
+		//ForgBaseLib::FrgBase_FieldTools::SetDecorator(ForgBaseLib::FrgBase_FieldTools::Decorator::Ampersand);
+
+		auto partsTable = registry1->CreateTable("Parts");
+		partsTable->SetParentSymbolTable(table1);
+
+		auto p1 = partsTable->AddVariable("P1");
+
+		auto p2 = partsTable->AddVariable("P1");
+		p2->SetExpression(p1->GetFullName() + " + 2.2");
+
+		std::cout << p2->GetExpression() << std::endl;
+		auto dec = ForgBaseLib::FrgBase_FieldTools::DecorizeExpression(p2);
+		std::cout << dec << std::endl;
+
+		auto ss = dec;
+		auto undec = ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression(ss, registry1);
+		std::cout << undec << std::endl;
+		p2->SetExpression(undec);
+
 		PrintInfoToConsole(QString::fromStdString(registry1->Print()));
-
-		/*ForgBaseLib::FrgBase_VectorField<4> v1;
-		v1.SetExpression("[1, 3, 8.2, -33.3]");
-		v1.CalcValue();
-		for (const auto& x : v1.GetValue())
-			PrintInfoToConsole(QString::number(x));*/
 	}
 	catch (const std::exception& ex)
 	{

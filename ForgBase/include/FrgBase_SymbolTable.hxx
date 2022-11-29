@@ -60,6 +60,7 @@ public:
 
 	bool ContainsField(FrgBase_Field_Entity* field) const;
 	FrgBase_Field_Entity* ContainsField(const std::string& fieldFullName) const;
+	FrgBase_Field_Entity* ContainsFieldFullPresentationName(const std::string& fieldFullPresentationName) const;
 
 	const std::vector<FrgBase_Field_Entity*>& GetFields() const { return theFields_; }
 

@@ -19,9 +19,6 @@
     <ProjectReference Include="..\ForgBase\ForgBase.vcxproj">
       <Project>{81f5e528-f15d-4792-8c1b-84c8d6f3a8ee}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\ForgCAD\ForgCAD.vcxproj">
-      <Project>{577d5df2-772d-40a6-b217-b18f206a3f8a}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ForgVisual\ForgVisual.vcxproj">
       <Project>{09faa12b-7698-41fe-85c6-4fdbd685c868}</Project>
     </ProjectReference>
@@ -79,11 +76,11 @@
   </ImportGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui</QtModules>
+    <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui</QtModules>
+    <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />

@@ -24,7 +24,11 @@ public:
 	virtual void CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = false) = 0;
 
 	std::string GetPresentationName() const { return thePresentationName_; }
-	std::string GetFullPresentationName(const std::string& delimiter = ".") const;
+	std::string GetFullPresentationName
+	(
+		const std::string& delimiter = ".",
+		const bool pure = false
+	) const;
 
 	void SetPresentationName(const std::string& pn) { thePresentationName_ = pn; }
 

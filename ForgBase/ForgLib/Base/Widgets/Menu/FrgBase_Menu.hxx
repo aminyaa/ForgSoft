@@ -4,10 +4,10 @@
 
 #include <FrgBase_Global.hxx>
 #include <FrgBase_Object.hxx>
+#include <FrgBase_MenuAction.hxx>
 
 #include <QtWidgets/QMenu>
 
-class QAction;
 class QToolBar;
 
 BeginForgBaseLib
@@ -22,18 +22,18 @@ class FORGBASE_EXPORT FrgBase_Menu
 
 private:
 
-	FrgBase_MainWindow* theParentMainWindow_ = NullPtr;
-	QToolBar* theToolBar_ = NullPtr;
+	FrgBase_MainWindow* theParentMainWindow_ = nullptr;
+	QToolBar* theToolBar_ = nullptr;
 
-	QAction* theTitleAsAnAction_ = NullPtr;
+	FrgBase_MenuAction* theTitleAsAnAction_ = nullptr;
 
 public:
 
 	FrgBase_Menu
 	(
-		const FrgString& menuTitle,
+		const QString& menuTitle,
 		FrgBase_MainWindow* parentMainWindow,
-		FrgBool addTitleAsAnAction = FrgFalse
+		const bool addTitleAsAnAction = false
 	);
 
 	FrgBase_Menu
@@ -43,18 +43,48 @@ public:
 
 	~FrgBase_Menu();
 
-	QAction* AddItem(const FrgString& itemTitle, FrgBool isInToolBar = FrgTrue);
-	QAction* AddItem(const FrgString& iconAddress, const FrgString& itemTitle, FrgBool isInToolBar = FrgTrue);
-	QAction* AddItem(QIcon icon, const FrgString& itemTitle, FrgBool isInToolBar = FrgTrue);
+	FrgBase_MenuAction* AddItem
+	(
+		const QString& itemTitle,
+		const bool isInToolBar = true
+	);
 
-	QAction* GetItem(const FrgString& itemTitle);
+	FrgBase_MenuAction* AddItem
+	(
+		const QString& iconAddress,
+		const QString& itemTitle,
+		const bool isInToolBar = true
+	);
 
-	void SetToolBarHidden(bool condition);
+	FrgBase_MenuAction* AddItem
+	(
+		const QIcon& icon,
+		const QString& itemTitle,
+		const bool isInToolBar = true
+	);
+
+	FrgBase_MenuAction* GetItem(const QString& itemTitle);
+
+	void SetToolBarHidden(const bool condition);
 
 	FrgGetMacro(QToolBar*, ToolBar, theToolBar_);
 	FrgGetMacro(FrgBase_MainWindow*, ParentMainWindow, theParentMainWindow_);
 
 	bool HasTitleAsAnAction() const { return theHasTitleAsAnAction_; }
+
+	void Execute();
+
+	void Execute
+	(
+		const QPoint& pos,
+		QAction* at = nullptr
+	);
+
+	std::vector<QAction*>
+		GetListOfActions
+		(
+			const bool containingHiddens = true
+		) const;
 
 public slots:
 

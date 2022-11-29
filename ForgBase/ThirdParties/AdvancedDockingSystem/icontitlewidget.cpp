@@ -32,47 +32,51 @@ IconTitleWidget::IconTitleWidget(const QIcon& icon, const QString& title, QWidge
 	_closeButton->setToolTip("Close Tab");
 	l->addWidget(_closeButton);
 
-	auto pm = ForgBaseLib::FrgBase_Application::Instance()->GetParentMainWindow();
-	if (pm)
+	auto app = ForgBaseLib::FrgBase_Application::Instance();
+	if (app)
 	{
-		QString filePath;
-		QIcon buttonIcon;
-		if (pm->IsThemeDark())
-			buttonIcon = QIcon(":/styles/DarkStyle/icon_close.png");
-		else
+		auto pm = app->GetParentMainWindow();
+		if (pm)
 		{
-			filePath = ":/styles/Default/icon_close.png";
-			auto img = new QPixmap(filePath);
+			QString filePath;
+			QIcon buttonIcon;
+			if (pm->IsThemeDark())
+				buttonIcon = QIcon(":/styles/DarkStyle/icon_close.png");
+			else
+			{
+				filePath = ":/styles/Default/icon_close.png";
+				auto img = new QPixmap(filePath);
 
-			QPainter qp(img);
-			qp.setCompositionMode(QPainter::CompositionMode_SourceIn);
+				QPainter qp(img);
+				qp.setCompositionMode(QPainter::CompositionMode_SourceIn);
 
-			QLinearGradient m_gradient(img->rect().topLeft(), img->rect().bottomLeft());
+				QLinearGradient m_gradient(img->rect().topLeft(), img->rect().bottomLeft());
 
-			QColor color(42, 130, 218);
-			m_gradient.setColorAt(0.0, color);
-			m_gradient.setColorAt(1.0, color);
+				QColor color(42, 130, 218);
+				m_gradient.setColorAt(0.0, color);
+				m_gradient.setColorAt(1.0, color);
 
-			qp.fillRect(img->rect(), m_gradient);
-			qp.end();
-			QIcon icon(*img);
+				qp.fillRect(img->rect(), m_gradient);
+				qp.end();
+				QIcon icon(*img);
 
-			buttonIcon = icon;
+				buttonIcon = icon;
 
-			QString style =
-				R"(
+				QString style =
+					R"(
 				QPushButton
 				{
 				border: 0px;
 				background-color: rgba(218, 230, 237,255);
 				}			
 			  )";
-			_closeButton->setStyleSheet(QString(style));
-		}
+				_closeButton->setStyleSheet(QString(style));
+			}
 
-		_closeButton->setIcon(buttonIcon);
-		_closeButton->setIconSize(QSize(15, 15));
-	}
+			_closeButton->setIcon(buttonIcon);
+			_closeButton->setIconSize(QSize(15, 15));
+		}
+	}	
 	_closeButton->setMaximumSize(16, 16);
 
 	setIcon(icon);

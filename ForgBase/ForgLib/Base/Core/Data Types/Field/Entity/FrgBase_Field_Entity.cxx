@@ -19,13 +19,20 @@ ForgBaseLib::FrgBase_Field_Entity::~FrgBase_Field_Entity()
 		theSymbolTable_->GetSymbolTable()->remove_vector(GetFullName());
 }
 
-void ForgBaseLib::FrgBase_Field_Entity::CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated)
+void ForgBaseLib::FrgBase_Field_Entity::CalcValue
+(
+	const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated
+)
 {
 	if (theIsCalculating_)
 	{
 		theIsCalculating_ = false;
 
-		std::exception ex("Cannot calculate the value. Recursive Loop!");
+		std::string message =
+			"Cannot calculate the value. Recursive Loop in calculating \"" +
+			this->GetFullPresentationName() + "\"";
+
+		std::exception ex(message.c_str());
 		throw ex;
 	}
 
@@ -33,15 +40,24 @@ void ForgBaseLib::FrgBase_Field_Entity::CalcValue(const std::shared_ptr<FrgBase_
 		return;
 }
 
-std::string ForgBaseLib::FrgBase_Field_Entity::GetFullPresentationName(const std::string& delimiter) const
+std::string ForgBaseLib::FrgBase_Field_Entity::GetFullPresentationName
+(
+	const std::string& delimiter,
+	const bool pure
+) const
 {
-	if (theSymbolTable_)
-		return theSymbolTable_->GetFullPresentationName(delimiter) + delimiter + thePresentationName_;
+	std::string name = (pure ? thePresentationName_ : theName_);
 
-	return thePresentationName_;
+	if (theSymbolTable_)
+		return theSymbolTable_->GetFullPresentationName(delimiter) + delimiter + name;
+
+	return name;
 }
 
-std::string ForgBaseLib::FrgBase_Field_Entity::GetFullName(const std::string& delimiter) const
+std::string ForgBaseLib::FrgBase_Field_Entity::GetFullName
+(
+	const std::string& delimiter
+) const
 {
 	if (theSymbolTable_)
 		return theSymbolTable_->GetFullName(delimiter) + delimiter + theName_;
@@ -49,7 +65,8 @@ std::string ForgBaseLib::FrgBase_Field_Entity::GetFullName(const std::string& de
 	return theName_;
 }
 
-std::vector<ForgBaseLib::FrgBase_SymbolTable*> ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTables() const
+std::vector<ForgBaseLib::FrgBase_SymbolTable*>
+ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTables() const
 {
 	std::vector<FrgBase_SymbolTable*> tables;
 
@@ -58,13 +75,14 @@ std::vector<ForgBaseLib::FrgBase_SymbolTable*> ForgBaseLib::FrgBase_Field_Entity
 	{
 		tables.push_back(theSymbolTable_);
 
-		base = theSymbolTable_->GetParentSymbolTable();
+		base = base->GetParentSymbolTable();
 	}
 
 	return tables;
 }
 
-std::vector<ForgBaseLib::FrgBase_SymbolTable*> ForgBaseLib::FrgBase_Field_Entity::RetrieveExternalSymbolTables() const
+std::vector<ForgBaseLib::FrgBase_SymbolTable*>
+ForgBaseLib::FrgBase_Field_Entity::RetrieveExternalSymbolTables() const
 {
 	std::vector<FrgBase_SymbolTable*> result;
 	std::vector<std::vector<FrgBase_SymbolTable*>> resultIn;
@@ -90,7 +108,8 @@ std::vector<ForgBaseLib::FrgBase_SymbolTable*> ForgBaseLib::FrgBase_Field_Entity
 	return result;
 }
 
-std::vector<ForgBaseLib::FrgBase_SymbolTable*> ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTablesIncludingExternals() const
+std::vector<ForgBaseLib::FrgBase_SymbolTable*>
+ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTablesIncludingExternals() const
 {
 	std::vector<FrgBase_SymbolTable*> result;
 
@@ -107,7 +126,15 @@ std::vector<ForgBaseLib::FrgBase_SymbolTable*> ForgBaseLib::FrgBase_Field_Entity
 
 bool ForgBaseLib::FrgBase_Field_Entity::IsDeletable() const
 {
-	auto fields = FrgBase_FieldParser::RetrieveFieldsUsingThisField(this, theSymbolTable_->GetRegistry()->GetTables());
+	auto object =
+		const_cast<FrgBase_Field_Entity*>(this);
+
+	auto fields =
+		FrgBase_FieldParser::RetrieveFieldsUsingThisField
+		(
+			object,
+			theSymbolTable_->GetRegistry()->GetTables()
+		);
 
 	return fields.empty();
 }

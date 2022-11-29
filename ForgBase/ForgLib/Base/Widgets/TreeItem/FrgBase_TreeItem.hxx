@@ -19,6 +19,7 @@ class FrgBase_Tree;
 class FrgBase_MainWindow;
 class FrgBase_PropertiesPanel;
 class FrgBase_Menu;
+class FrgBase_MenuAction;
 class FrgBase_Icon;
 
 class FORGBASE_EXPORT FrgBase_TreeItem
@@ -50,6 +51,9 @@ protected:
 	FrgBase_Icon* theIcon_ = nullptr;
 
 	virtual void FormPropertiesPanel();
+
+	FrgBase_MenuAction* theRenameAction_ = nullptr;
+	FrgBase_MenuAction* theDeleteAction_ = nullptr;
 
 signals:
 
@@ -137,6 +141,9 @@ public:
 
 	auto GetIcon() const { return theIcon_; }
 	virtual void SetIcon(int column, const FrgBase_Icon& icon);
+
+	auto GetRenameAction() const { return theRenameAction_; }
+	auto GetDeleteAction() const { return theDeleteAction_; }
 
 private:
 

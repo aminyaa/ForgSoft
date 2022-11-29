@@ -234,13 +234,18 @@ void ForgBaseLib::FrgBase_MainWindow::FormMenus()
 	theMainWindowMenus_ = new MainWindowMenus_Struct;
 
 	theMainWindowMenus_->theFileMenu_ = new FrgBase_MenuFile(this);
+
 	theMainWindowMenus_->theEditMenu_ = new FrgBase_MenuEdit(this);
 	/*theMainWindowMenus_->theToolsMenu_ = new FrgBase_MenuTools;
 	theMainWindowMenus_->theWindowMenu_ = new FrgBase_MenuWindow;*/
 	theMainWindowMenus_->theHelpMenu_ = new FrgBase_MenuHelp(this);
 
-	auto saveAction = theMainWindowMenus_->theFileMenu_->GetItem("&Save");
-	const auto loadAction = theMainWindowMenus_->theFileMenu_->GetItem("&Load");
+	theMainWindowMenus_->theFileMenu_->SetToolBarHidden(false);
+	theMainWindowMenus_->theEditMenu_->SetToolBarHidden(false);
+	theMainWindowMenus_->theHelpMenu_->SetToolBarHidden(false);
+
+	auto saveAction = theMainWindowMenus_->theFileMenu_->GetSaveAction();
+	const auto loadAction = theMainWindowMenus_->theFileMenu_->GetLoadAction();
 	saveAction->setEnabled(true);
 
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(FileSaveActionSlot()));

@@ -1,5 +1,6 @@
 #include <FrgBase_TreeItem.hxx>
 #include <FrgBase_Menu.hxx>
+#include <FrgBase_MenuAction.hxx>
 #include <FrgBase_Tree.hxx>
 #include <FrgBase_DlgRename.hxx>
 #include <FrgBase_PropertiesPanel.hxx>
@@ -32,6 +33,15 @@ ForgBaseLib::FrgBase_TreeItem::FrgBase_TreeItem
 	theTItemIsDeletable_ = true;
 	theTItemIsDraggable_ = false;
 	theTItemIsDroppable_ = false;
+
+	theRenameAction_ = theContextMenu_->AddItem("Rename", false);
+	theDeleteAction_ = theContextMenu_->AddItem(QIcon(ICON_Menu_Edit_Delete), "Delete", false);
+
+	connect(theRenameAction_, SIGNAL(ClickedSignal()), this, SLOT(RenameTItemSlot()));
+	connect(theDeleteAction_, &FrgBase_MenuAction::ClickedSignal, this, &FrgBase_TreeItem::DeleteTItemCalled);
+
+	theRenameAction_->SetHidden(true);
+	theDeleteAction_->SetHidden(true);
 }
 
 ForgBaseLib::FrgBase_TreeItem::~FrgBase_TreeItem()
@@ -341,13 +351,17 @@ void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(const QString& name, bool so
 
 void ForgBaseLib::FrgBase_TreeItem::AddRenameOptionInContextMenu()
 {
-	auto action = theContextMenu_->AddItem("Rename", FrgFalse);
-	QObject::connect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
+	theRenameAction_->SetHidden(false);
+
+	/*auto action = theContextMenu_->AddItem("Rename", FrgFalse);
+	QObject::connect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));*/
 }
 
 void ForgBaseLib::FrgBase_TreeItem::RemoveRenameOptionInContextMenu()
 {
-	auto action = theContextMenu_->GetItem("Rename");
+	theRenameAction_->SetHidden(true);
+
+	/*auto action = theContextMenu_->GetItem("Rename");
 
 	if (!action)
 	{
@@ -356,20 +370,24 @@ void ForgBaseLib::FrgBase_TreeItem::RemoveRenameOptionInContextMenu()
 	}
 
 	QObject::disconnect(action, SIGNAL(triggered()), this, SLOT(RenameTItemSlot()));
-	theContextMenu_->removeAction(action);
+	theContextMenu_->removeAction(action);*/
 }
 
 void ForgBaseLib::FrgBase_TreeItem::AddDeleteOptionInContextMenu()
 {
-	auto action = theContextMenu_->AddItem("Delete", FrgFalse);
+	theDeleteAction_->SetHidden(false);
+
+	/*auto action = theContextMenu_->AddItem("Delete", FrgFalse);
 	action->setIcon(QIcon(ICON_Menu_Edit_Delete));
 
-	QObject::connect(action, SIGNAL(triggered()), this, SIGNAL(DeleteTItemCalled()));
+	QObject::connect(action, SIGNAL(triggered()), this, SIGNAL(DeleteTItemCalled()));*/
 }
 
 void ForgBaseLib::FrgBase_TreeItem::RemoveDeleteOptionInContextMenu()
 {
-	auto action = theContextMenu_->GetItem("Delete");
+	theDeleteAction_->SetHidden(true);
+
+	/*auto action = theContextMenu_->GetItem("Delete");
 
 	if (!action)
 	{
@@ -378,7 +396,7 @@ void ForgBaseLib::FrgBase_TreeItem::RemoveDeleteOptionInContextMenu()
 	}
 
 	QObject::disconnect(action, SIGNAL(triggered()), this, SIGNAL(DeleteTItemCalled()));
-	theContextMenu_->removeAction(action);
+	theContextMenu_->removeAction(action);*/
 }
 
 void ForgBaseLib::FrgBase_TreeItem::FormPropertiesPanel()

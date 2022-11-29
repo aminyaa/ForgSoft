@@ -16,6 +16,14 @@ class FORGBASE_EXPORT FrgBase_MenuHelp
 public:
 
 	FrgBase_MenuHelp(FrgBase_MainWindow* parentMainWindow);
+
+	QAction* GetViewHelpAction() const { return theViewHelpAction_; }
+	QAction* GetAboutAction() const { return theAboutAction_; }
+
+protected:
+
+	QAction* theViewHelpAction_ = nullptr;
+	QAction* theAboutAction_ = nullptr;
 };
 
 EndForgBaseLib

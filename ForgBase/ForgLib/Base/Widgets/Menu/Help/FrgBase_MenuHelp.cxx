@@ -12,11 +12,9 @@ ForgBaseLib::FrgBase_MenuHelp::FrgBase_MenuHelp
 )
 	: FrgBase_Menu("&Help", parentMainWindow)
 {
-	auto helpAction = AddItem(ICON_Menu_Help_Help, FrgString("&View Help"), false);
+	theViewHelpAction_ = AddItem(ICON_Menu_Help_Help, FrgString("&View Help"), false);
 	addSeparator();
-	auto aboutAction = AddItem(ICON_Menu_Help_AboutUs, FrgString("&About"), false);
+	theAboutAction_ = AddItem(ICON_Menu_Help_AboutUs, FrgString("&About"), false);
 
 	GetParentMainWindow()->menuBar()->addMenu(this);
-	if (GetToolBar())
-		GetToolBar()->setHidden(true);
 }

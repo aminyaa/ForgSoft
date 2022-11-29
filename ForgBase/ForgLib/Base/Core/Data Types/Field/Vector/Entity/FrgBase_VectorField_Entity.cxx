@@ -21,7 +21,13 @@ void ForgBaseLib::FrgBase_VectorField_Entity::CalcValue
 
 	theIsCalculating_ = true;
 
-	auto value = FrgBase_FieldParser::CalcValueVector(this, calculated);
+	auto value =
+		FrgBase_FieldParser::CalcValueVector
+		(
+			this,
+			calculated
+		);
+
 	theValue_ = value;
 
 	theIsCalculating_ = false;

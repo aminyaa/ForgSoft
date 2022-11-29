@@ -20,6 +20,12 @@ namespace chaiscript
 BeginForgBaseLib
 
 class FrgBase_Menu;
+class FrgBase_MenuFile;
+class FrgBase_MenuEdit;
+class FrgBase_MenuTools;
+class FrgBase_MenuWindow;
+class FrgBase_MenuHelp;
+
 class FrgBase_Tree;
 class FrgBase_ProgressBar;
 class FrgBase_PropertiesPanel;
@@ -38,11 +44,11 @@ protected:
 
 	struct MainWindowMenus_Struct
 	{
-		FrgBase_Menu* theFileMenu_ = nullptr;
-		FrgBase_Menu* theEditMenu_ = nullptr;
-		FrgBase_Menu* theToolsMenu_ = nullptr;
-		FrgBase_Menu* theWindowMenu_ = nullptr;
-		FrgBase_Menu* theHelpMenu_ = nullptr;
+		FrgBase_MenuFile* theFileMenu_ = nullptr;
+		FrgBase_MenuEdit* theEditMenu_ = nullptr;
+		FrgBase_MenuTools* theToolsMenu_ = nullptr;
+		FrgBase_MenuWindow* theWindowMenu_ = nullptr;
+		FrgBase_MenuHelp* theHelpMenu_ = nullptr;
 
 		~MainWindowMenus_Struct();
 	};

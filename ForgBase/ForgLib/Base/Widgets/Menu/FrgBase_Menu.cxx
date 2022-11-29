@@ -1,14 +1,14 @@
 #include <FrgBase_Menu.hxx>
+#include <FrgBase_MenuAction.hxx>
 #include <FrgBase_MainWindow.hxx>
 
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QAction>
 
 ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 (
-	const FrgString & menuTitle,
+	const QString & menuTitle,
 	FrgBase_MainWindow * parentMainWindow,
-	FrgBool addTitleAsAnAction
+	const bool addTitleAsAnAction
 )
 	: QMenu(menuTitle, parentMainWindow)
 	, theParentMainWindow_(parentMainWindow)
@@ -28,6 +28,8 @@ ForgBaseLib::FrgBase_Menu::FrgBase_Menu
 		theTitleAsAnAction_->setFont(myFont);
 		this->addSeparator();
 	}
+
+	SetToolBarHidden(true);
 }
 
 ForgBaseLib::FrgBase_Menu::FrgBase_Menu
@@ -47,13 +49,16 @@ ForgBaseLib::FrgBase_Menu::~FrgBase_Menu()
 	FreePointer(theToolBar_);
 }
 
-QAction* ForgBaseLib::FrgBase_Menu::AddItem
+ForgBaseLib::FrgBase_MenuAction* ForgBaseLib::FrgBase_Menu::AddItem
 (
-	const FrgString & itemTitle,
-	FrgBool isInToolBar
+	const QString & itemTitle,
+	const bool isInToolBar
 )
 {
-	QAction* action = FrgNew QAction(QMainWindow::tr(itemTitle.toLocal8Bit().data()), this);
+	auto action = new FrgBase_MenuAction(QMainWindow::tr(itemTitle.toLocal8Bit().data()), this);
+
+	action->SetIndex(actions().size());
+
 	this->addAction(action);
 
 	if (isInToolBar)
@@ -62,11 +67,11 @@ QAction* ForgBaseLib::FrgBase_Menu::AddItem
 	return action;
 }
 
-QAction* ForgBaseLib::FrgBase_Menu::AddItem
+ForgBaseLib::FrgBase_MenuAction* ForgBaseLib::FrgBase_Menu::AddItem
 (
-	const FrgString & iconAddress,
-	const FrgString & itemTitle,
-	FrgBool isInToolBar
+	const QString & iconAddress,
+	const QString & itemTitle,
+	const bool isInToolBar
 )
 {
 	QIcon icon(iconAddress);
@@ -76,11 +81,11 @@ QAction* ForgBaseLib::FrgBase_Menu::AddItem
 	return action;
 }
 
-QAction* ForgBaseLib::FrgBase_Menu::AddItem
+ForgBaseLib::FrgBase_MenuAction* ForgBaseLib::FrgBase_Menu::AddItem
 (
-	QIcon icon,
-	const FrgString & itemTitle,
-	FrgBool isInToolBar
+	const QIcon& icon,
+	const QString & itemTitle,
+	const bool isInToolBar
 )
 {
 	auto action = AddItem(itemTitle, isInToolBar);
@@ -89,19 +94,22 @@ QAction* ForgBaseLib::FrgBase_Menu::AddItem
 	return action;
 }
 
-QAction* ForgBaseLib::FrgBase_Menu::GetItem
+ForgBaseLib::FrgBase_MenuAction* ForgBaseLib::FrgBase_Menu::GetItem
 (
-	const FrgString & itemTitle
+	const QString & itemTitle
 )
 {
 	auto listOfActions = this->actions();
 
 	for (int iAction = 0; iAction < listOfActions.size(); iAction++)
 	{
-		if (listOfActions[iAction]->text() == itemTitle)
-			return listOfActions[iAction];
+		auto action = listOfActions[iAction];
+
+		if (action->text() == itemTitle)
+			return dynamic_cast<FrgBase_MenuAction*>(action);
 	}
-	return NullPtr;
+
+	return nullptr;
 }
 
 void ForgBaseLib::FrgBase_Menu::MenuTitleChangedSlot(const QString& name)
@@ -112,7 +120,62 @@ void ForgBaseLib::FrgBase_Menu::MenuTitleChangedSlot(const QString& name)
 		theTitleAsAnAction_->setText(name);
 }
 
-void ForgBaseLib::FrgBase_Menu::SetToolBarHidden(bool condition)
+void ForgBaseLib::FrgBase_Menu::SetToolBarHidden(const bool condition)
 {
+	if (!condition)
+	{
+		if (theToolBar_->actions().isEmpty())
+			return;
+	}
+
 	theToolBar_->setHidden(condition);
+}
+
+std::vector<QAction*>
+ForgBaseLib::FrgBase_Menu::GetListOfActions
+(
+	const bool containingHiddens
+) const
+{
+	std::vector<QAction*> result;
+
+	for (auto action : actions())
+	{
+		auto act = dynamic_cast<FrgBase_MenuAction*>(action);
+		if (act)
+		{
+			if (!containingHiddens)
+			{
+				if(!act->IsHidden())
+					result.push_back(act);
+			}
+			else
+				result.push_back(act);
+		}
+		else
+			result.push_back(act);
+	}
+
+	return result;
+}
+
+void ForgBaseLib::FrgBase_Menu::Execute()
+{
+	QPoint point;
+
+	Execute(point);
+}
+
+void ForgBaseLib::FrgBase_Menu::Execute
+(
+	const QPoint& pos,
+	QAction* at
+)
+{
+	auto items = GetListOfActions(false);
+
+	int i = HasTitleAsAnAction() ? 2 : 0;
+
+	if (items.size() > i)
+		this->exec(pos);
 }

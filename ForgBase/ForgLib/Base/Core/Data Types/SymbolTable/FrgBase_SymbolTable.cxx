@@ -20,7 +20,10 @@ ForgBaseLib::FrgBase_SymbolTable::~FrgBase_SymbolTable()
 		delete f;
 }
 
-std::string ForgBaseLib::FrgBase_SymbolTable::GetFullPresentationName(const std::string& delimiter) const
+std::string ForgBaseLib::FrgBase_SymbolTable::GetFullPresentationName
+(
+	const std::string& delimiter
+) const
 {
 	if (theParentSymbolTable_)
 		return theParentSymbolTable_->GetFullPresentationName(delimiter) + delimiter + thePresentationName_;
@@ -28,7 +31,10 @@ std::string ForgBaseLib::FrgBase_SymbolTable::GetFullPresentationName(const std:
 	return thePresentationName_;
 }
 
-void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTable(FrgBase_SymbolTable* est)
+void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTable
+(
+	FrgBase_SymbolTable* est
+)
 {
 	if (!est)
 		return;
@@ -42,7 +48,10 @@ void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTable(FrgBase_SymbolTabl
 	theExternalSymbolTables_.push_back(est);
 }
 
-void ForgBaseLib::FrgBase_SymbolTable::RemoveExternalSymbolTable(FrgBase_SymbolTable* est)
+void ForgBaseLib::FrgBase_SymbolTable::RemoveExternalSymbolTable
+(
+	FrgBase_SymbolTable* est
+)
 {
 	if (!est)
 		return;
@@ -60,7 +69,10 @@ void ForgBaseLib::FrgBase_SymbolTable::RemoveExternalSymbolTable(FrgBase_SymbolT
 	theExternalSymbolTables_ = result;
 }
 
-std::string ForgBaseLib::FrgBase_SymbolTable::GetFullName(const std::string& delimiter) const
+std::string ForgBaseLib::FrgBase_SymbolTable::GetFullName
+(
+	const std::string& delimiter
+) const
 {
 	if (theParentSymbolTable_)
 		return theParentSymbolTable_->GetFullName(delimiter) + delimiter + theName_;
@@ -68,12 +80,19 @@ std::string ForgBaseLib::FrgBase_SymbolTable::GetFullName(const std::string& del
 	return theRegistry_->GetName() + delimiter + theName_;
 }
 
-ForgBaseLib::FrgBase_ScalarField* ForgBaseLib::FrgBase_SymbolTable::AddVariable(const std::string& presentationName)
+ForgBaseLib::FrgBase_ScalarField*
+ForgBaseLib::FrgBase_SymbolTable::AddVariable
+(
+	const std::string& presentationName
+)
 {
 	if (theSymbolTable_)
 	{
-		std::string variableName = "Value" + std::to_string(theVariableIndex_);
-		std::string variableFullName = GetFullName() + "_" + variableName;
+		std::string variableName =
+			"Value" + std::to_string(theVariableIndex_);
+
+		std::string variableFullName =
+			GetFullName() + "_" + variableName;
 
 		auto field = new FrgBase_ScalarField();
 		field->SetSymbolTable(this);
@@ -81,7 +100,11 @@ ForgBaseLib::FrgBase_ScalarField* ForgBaseLib::FrgBase_SymbolTable::AddVariable(
 		field->SetPresentationName(presentationName);
 		field->SetExpression("0.0");
 
-		bool added = theSymbolTable_->add_variable(variableFullName, field->GetValueRef());
+		bool added = theSymbolTable_->add_variable
+		(
+			variableFullName,
+			field->GetValueRef()
+		);
 
 		if (added)
 		{
@@ -98,15 +121,10 @@ ForgBaseLib::FrgBase_ScalarField* ForgBaseLib::FrgBase_SymbolTable::AddVariable(
 	return nullptr;
 }
 
-//bool ForgBaseLib::FrgBase_SymbolTable::AddVector(const std::string& vectorName)
-//{
-//	/*if (theSymbolTable_)
-//		return theSymbolTable_->add_vector(vectorName, valuesRef);*/
-//
-//	return false;
-//}
-
-bool ForgBaseLib::FrgBase_SymbolTable::DeleteField(FrgBase_Field_Entity* field)
+bool ForgBaseLib::FrgBase_SymbolTable::DeleteField
+(
+	FrgBase_Field_Entity* field
+)
 {
 	if (!field)
 		return false;
@@ -116,12 +134,21 @@ bool ForgBaseLib::FrgBase_SymbolTable::DeleteField(FrgBase_Field_Entity* field)
 
 	if (!field->IsDeletable())
 	{
-		auto uFields = FrgBase_FieldParser::RetrieveFieldsUsingThisField(field, theRegistry_->GetTables());
+		auto uFields =
+			FrgBase_FieldParser::RetrieveFieldsUsingThisField
+			(
+				field,
+				theRegistry_->GetTables()
+			);
+
 		std::vector<std::string> uFieldsString;
 		for (const auto& x : uFields)
 			uFieldsString.push_back(x->GetPresentationName());
 
-		std::exception ex(("Cannot delete the field due to dependency.\n Variables: " + FrgBase_FieldParser::CombineString(uFieldsString)).c_str());
+		std::string meassage = "Cannot delete the field due to dependency.\n Variables: " +
+			FrgBase_FieldParser::CombineString(uFieldsString);
+
+		std::exception ex(meassage.c_str());
 		throw ex;
 	}
 
@@ -139,7 +166,10 @@ bool ForgBaseLib::FrgBase_SymbolTable::DeleteField(FrgBase_Field_Entity* field)
 	return true;
 }
 
-bool ForgBaseLib::FrgBase_SymbolTable::ContainsField(FrgBase_Field_Entity* field) const
+bool ForgBaseLib::FrgBase_SymbolTable::ContainsField
+(
+	FrgBase_Field_Entity* field
+) const
 {
 	for (const auto& f : theFields_)
 	{
@@ -150,11 +180,30 @@ bool ForgBaseLib::FrgBase_SymbolTable::ContainsField(FrgBase_Field_Entity* field
 	return nullptr;
 }
 
-ForgBaseLib::FrgBase_Field_Entity* ForgBaseLib::FrgBase_SymbolTable::ContainsField(const std::string& fieldFullName) const
+ForgBaseLib::FrgBase_Field_Entity*
+ForgBaseLib::FrgBase_SymbolTable::ContainsField
+(
+	const std::string& fieldFullName
+) const
 {
 	for (const auto& f : theFields_)
 	{
 		if (f->GetFullName() == fieldFullName)
+			return f;
+	}
+
+	return nullptr;
+}
+
+ForgBaseLib::FrgBase_Field_Entity*
+ForgBaseLib::FrgBase_SymbolTable::ContainsFieldFullPresentationName
+(
+	const std::string& fieldFullPresentationName
+) const
+{
+	for (const auto& f : theFields_)
+	{
+		if (f->GetFullPresentationName() == fieldFullPresentationName)
 			return f;
 	}
 
@@ -166,22 +215,44 @@ for (int i = 0; i < myString.size() + margin; i++) \
 ss << myChar; \
 ss << std::endl;
 
-void ForgBaseLib::FrgBase_SymbolTable::PrintField(std::ostringstream& ss, FrgBase_Field_Entity* field)
+void ForgBaseLib::FrgBase_SymbolTable::PrintField
+(
+	std::ostringstream& ss,
+	FrgBase_Field_Entity* field
+)
 {
 	if (!field)
 		return;
 
 	if (field->IsScalar())
 	{
-		auto scalarField = dynamic_cast<FrgBase_ScalarField*>(field);
+		auto scalarField =
+			dynamic_cast<FrgBase_ScalarField*>(field);
+
 		auto value = scalarField->GetValue();
 
-		auto valueString = FrgBase_FieldParser::CombineValues({ "Value" }, { value });
-		ss << FrgBase_FieldParser::CombineString({ scalarField->GetPresentationName(), valueString }) << std::endl;
+		auto valueString =
+			FrgBase_FieldParser::CombineValues
+			(
+				{ "Value" },
+				{ value }
+		);
+
+		ss << FrgBase_FieldParser::CombineString
+		(
+			{
+				scalarField->GetPresentationName(),
+				scalarField->GetName(),
+				valueString
+			}
+		)
+			<< std::endl;
 	}
 	else if (field->IsVector())
 	{
-		auto vectorField = dynamic_cast<FrgBase_VectorField_Entity*>(field);
+		auto vectorField =
+			dynamic_cast<FrgBase_VectorField_Entity*>(field);
+
 		auto value = vectorField->GetValue();
 
 		if (value.empty())
@@ -191,13 +262,30 @@ void ForgBaseLib::FrgBase_SymbolTable::PrintField(std::ostringstream& ss, FrgBas
 		for (const auto& v : value)
 			headerString.push_back(std::to_string(v));
 
-		auto valueString = FrgBase_FieldParser::CombineValues(headerString, value);
+		auto valueString =
+			FrgBase_FieldParser::CombineValues
+			(
+				headerString,
+				value
+			);
 
-		ss << FrgBase_FieldParser::CombineString({vectorField->GetPresentationName(), "[" + valueString + "]"}) << std::endl;
+		ss <<
+			FrgBase_FieldParser::CombineString
+			(
+				{
+					vectorField->GetPresentationName(),
+					vectorField->GetName(),
+					"[" + valueString + "]"
+				}
+			)
+			<< std::endl;
 	}
 }
 
-std::string ForgBaseLib::FrgBase_SymbolTable::PrintField(FrgBase_Field_Entity* field)
+std::string ForgBaseLib::FrgBase_SymbolTable::PrintField
+(
+	FrgBase_Field_Entity* field
+)
 {
 	std::ostringstream ss;
 	PrintField(ss, field);
@@ -205,43 +293,58 @@ std::string ForgBaseLib::FrgBase_SymbolTable::PrintField(FrgBase_Field_Entity* f
 	return ss.str();
 }
 
-void ForgBaseLib::FrgBase_SymbolTable::PrintField(std::ostream& out, FrgBase_Field_Entity* field)
+void ForgBaseLib::FrgBase_SymbolTable::PrintField
+(
+	std::ostream& out,
+	FrgBase_Field_Entity* field
+)
 {
 	auto str = PrintField(field);
 
 	out << str;
 }
 
-void ForgBaseLib::FrgBase_SymbolTable::Print(std::ostringstream& ss, bool calcValue)
+void ForgBaseLib::FrgBase_SymbolTable::Print
+(
+	std::ostringstream& ss,
+	bool calcValue
+)
 {
+	auto pName = GetPresentationName();
+
 	if (theFields_.empty())
 	{
-		ss << "Table is empty.";
+		ss << "The table \"" + pName + "\" is empty.";
 		return;
 	}
 
 	int margin = 2;
 
-	auto pName = GetPresentationName();
-
 	ss << std::endl;
 	PRINT_ONELINE_CHAR(pName, margin + 2, ss, "=");
-	ss <<  pName << std::endl;
+	ss << pName << std::endl;
 	PRINT_ONELINE_CHAR(pName, margin + 2, ss, "=");
 
-	std::vector<std::string> headers = { "Variable", "Value" };
-	auto headersInLine = FrgBase_FieldParser::CombineString(headers);
+	std::vector<std::string> headers = { "Name", "Real Name", "Value" };
+
+	auto headersInLine =
+		FrgBase_FieldParser::CombineString(headers);
+
 	ss << headersInLine << std::endl;
+
 	PRINT_ONELINE_CHAR(headersInLine, margin, ss, "-");
 
-	if(calcValue)
+	if (calcValue)
 		CalcValue(FrgBase_FieldParser::InitCalculated());
 
 	for (const auto& field : theFields_)
 		PrintField(ss, field);
 }
 
-std::string ForgBaseLib::FrgBase_SymbolTable::Print(bool calcValue)
+std::string ForgBaseLib::FrgBase_SymbolTable::Print
+(
+	bool calcValue
+)
 {
 	std::ostringstream ss;
 	Print(ss, calcValue);
@@ -249,14 +352,21 @@ std::string ForgBaseLib::FrgBase_SymbolTable::Print(bool calcValue)
 	return ss.str();
 }
 
-void ForgBaseLib::FrgBase_SymbolTable::Print(std::ostream& out, bool calcValue)
+void ForgBaseLib::FrgBase_SymbolTable::Print
+(
+	std::ostream& out,
+	bool calcValue
+)
 {
 	auto str = Print(calcValue);
 
 	out << str;
 }
 
-void ForgBaseLib::FrgBase_SymbolTable::CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated)
+void ForgBaseLib::FrgBase_SymbolTable::CalcValue
+(
+	const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated
+)
 {
 	std::shared_ptr<FrgBase_FieldParser::Calculated> myCalculated;
 	if (!calculated)
@@ -275,7 +385,7 @@ bool ForgBaseLib::FrgBase_SymbolTable::AddVectorToSymbolTable
 	std::vector<double>& value
 )
 {
-	if(table)
+	if (table)
 		return table->add_vector(variableFullName, value);
 
 	return false;

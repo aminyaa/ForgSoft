@@ -448,6 +448,9 @@
     <Filter Include="ForgLib\Base\Widgets\Icon">
       <UniqueIdentifier>{d61cb1b9-8d24-4374-b831-eb8dd88c3707}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Menu\Action">
+      <UniqueIdentifier>{7c8c0404-2114-433a-a9cb-bcdc8f5c8888}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -842,6 +845,9 @@
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Icon\FrgBase_Icon.cxx">
       <Filter>ForgLib\Base\Widgets\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Menu\Action\FrgBase_MenuAction.cxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Action</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1365,6 +1371,9 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Core\Application\FrgBase_Application.hxx">
       <Filter>ForgLib\Base\Core\Application</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Menu\Action\FrgBase_MenuAction.hxx">
+      <Filter>ForgLib\Base\Widgets\Menu\Action</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

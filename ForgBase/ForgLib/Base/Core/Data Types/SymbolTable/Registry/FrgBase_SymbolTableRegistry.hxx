@@ -20,7 +20,13 @@ public:
 
 	FrgBase_SymbolTable* CreateTable(const std::string& presentationName);
 
+	void AddTable(FrgBase_SymbolTable* table);
+
+	// This method just removes the table from the registry and the user
+	// is responsible to delete the table
 	void RemoveTable(FrgBase_SymbolTable* table);
+
+	bool ContainsTable(FrgBase_SymbolTable* table);
 
 	const std::vector<FrgBase_SymbolTable*> GetTables() const { return theTables_; }
 

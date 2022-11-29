@@ -7,6 +7,7 @@
 BeginForgBaseLib
 
 class FrgBase_Field_Entity;
+class FrgBase_SymbolTableRegistry;
 
 class FORGBASE_EXPORT FrgBase_FieldTools
 	: public FrgBase_Object
@@ -16,21 +17,19 @@ public:
 
 	enum class Decorator
 	{
-		Dollar,
-		HashTag,
-		Percent,
-		AtSign,
-		Ampersand,
-		None
+		Dollar,		// $
+		HashTag,	// #
+		Percent,	// %
+		AtSign,		// @
+		Ampersand	// &
 	};
 
 	enum class Bracket
 	{
-		Round,
-		Square,
-		Curly,
-		Angle,
-		None
+		Round,		// ()
+		Square,		// []
+		Curly,		// {}
+		Angle		// <>
 	};
 
 	static Decorator theDecorator_;
@@ -47,9 +46,20 @@ public:
 	// Methods
 
 	static std::string AddDecoratorAndBracket(FrgBase_Field_Entity* field);
-	static std::string RemoveDecoratorAndBracket(FrgBase_Field_Entity* field);
+	//static std::string RemoveDecoratorAndBracket(FrgBase_Field_Entity* field);
 
 	static size_t GetNumberOfAdditionalString();
+
+	static std::string DecorizeExpression
+	(
+		FrgBase_Field_Entity* field
+	);
+
+	static std::string UnDecorizeExpression
+	(
+		const std::string& decorizedExpression,
+		FrgBase_SymbolTableRegistry* registry
+	);
 };
 
 EndForgBaseLib

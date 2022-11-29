@@ -123,9 +123,9 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool re
 	{
 		if (theParentMainWindow_)
 		{
-			auto canRender = theParentMainWindow_->IsTabWidgetVisible(this);
+			/*auto canRender = theParentMainWindow_->IsTabWidgetVisible(this);
 			if (!canRender)
-				return;
+				return;*/
 		}
 	}
 

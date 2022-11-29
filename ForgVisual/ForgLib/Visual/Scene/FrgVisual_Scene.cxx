@@ -782,6 +782,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	InitLogoImage();
 
+	if(false)
 	{
 		auto opaque_sequence = vtkSmartPointer<vtkSequencePass>::New();
 		auto passes2 = vtkSmartPointer<vtkRenderPassCollection>::New();
@@ -789,7 +790,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 		auto peeling = vtkSmartPointer<vtkDepthPeelingPass>::New();
 		auto translucent = vtkSmartPointer<vtkTranslucentPass>::New();
 		peeling->SetTranslucentPass(translucent);
-		peeling->SetOcclusionRatio(0.3);
+		peeling->SetOcclusionRatio(0.0);
 		passes2->AddItem(opaque);
 		opaque_sequence->SetPasses(passes2);
 		auto opaque_camera_pass = vtkSmartPointer<vtkCameraPass>::New();
@@ -827,7 +828,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 		theRenderer_->SetPass(cameraP);
 
-		theRenderer_->SetOcclusionRatio(0.3);
+		theRenderer_->SetOcclusionRatio(0.0);
 
 		theRenderWindow_->OffScreenRenderingOn();
 	}

@@ -63,6 +63,8 @@ void Tree::FormTree()
 	s1->GetPropertiesPanel()->AddRow(i);
 	s1->GetPropertiesPanel()->AddRow(i2);
 
+	s1->GetScene()->AddBox(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+
 	auto myButton = new QPushButton("Click", GetParentMainWindow());
 
 	connect(myButton, &QPushButton::clicked, [this, s1, s2, s3]()

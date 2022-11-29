@@ -174,7 +174,9 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 		theLastRightClickedTItem_ = item;
 		if (item->GetContextMenu())
 		{
-			if (item->GetContextMenu()->HasTitleAsAnAction())
+			item->GetContextMenu()->Execute(globalPos);
+
+			/*if (item->GetContextMenu()->HasTitleAsAnAction())
 			{
 				if (item->GetContextMenu()->actions().size() > 2)
 					item->GetContextMenu()->exec(globalPos);
@@ -183,7 +185,7 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 			{
 				if (item->GetContextMenu()->actions().size() > 0)
 					item->GetContextMenu()->exec(globalPos);
-			}
+			}*/
 		}
 			
 	}

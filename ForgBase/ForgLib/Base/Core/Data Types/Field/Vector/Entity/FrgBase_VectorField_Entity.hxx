@@ -20,7 +20,10 @@ public:
 
 	auto GetSize() const { return theValue_.size(); }
 
-	void CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = false) override;
+	void CalcValue
+	(
+		const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = nullptr
+	) override;
 };
 
 EndForgBaseLib

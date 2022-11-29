@@ -1,9 +1,9 @@
 #include <FrgBase_MenuFile.hxx>
 #include <FrgBase_MainWindow.hxx>
 #include <FrgBase_Global_Icons.hxx>
+#include <FrgBase_MenuAction.hxx>
 
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QAction>
 
 ForgBaseLib::FrgBase_MenuFile::FrgBase_MenuFile
 (
@@ -11,31 +11,32 @@ ForgBaseLib::FrgBase_MenuFile::FrgBase_MenuFile
 )
 	: FrgBase_Menu("&File", parentMainWindow)
 {
-	auto newAction = AddItem(ICON_Menu_File_New, FrgString("&New"));
-	auto loadAction = AddItem(ICON_Menu_File_Load, FrgString("&Load"));
-	addSeparator();
-	auto saveAction = AddItem(ICON_Menu_File_Save, FrgString("&Save"));
-	auto saveAsAction = AddItem(ICON_Menu_File_SaveAs, FrgString("Save As..."));
+	theNewAction_ = AddItem(ICON_Menu_File_New, FrgString("&New"));
+	theLoadAction_ = AddItem(ICON_Menu_File_Load, FrgString("&Load"));
 	addSeparator();
 
-	auto importAction = AddItem(ICON_Menu_File_Import, FrgString("&Import"), false);
-	auto exportAction = AddItem(ICON_Menu_File_Export, FrgString("&Export"), false);
+	theSaveAction_ = AddItem(ICON_Menu_File_Save, FrgString("&Save"));
+	theSaveAsAction_ = AddItem(ICON_Menu_File_SaveAs, FrgString("Save As..."));
 	addSeparator();
 
-	auto exitAction = AddItem(ICON_Menu_File_Exit, FrgString("E&xit"), false);
+	theImportAction_ = AddItem(ICON_Menu_File_Import, FrgString("&Import"), false);
+	theExportAction_ = AddItem(ICON_Menu_File_Export, FrgString("&Export"), false);
+	addSeparator();
 
-	newAction->setShortcut(QMainWindow::tr("Ctrl+N"));
-	loadAction->setShortcut(QMainWindow::tr("Ctrl+L"));
-	saveAction->setShortcut(QMainWindow::tr("Ctrl+S"));
-	saveAsAction->setShortcut(QMainWindow::tr("Ctrl+Shift+S"));
+	theExitAction_ = AddItem(ICON_Menu_File_Exit, FrgString("E&xit"), false);
 
-	importAction->setShortcut(QMainWindow::tr("Ctrl+I"));
-	exportAction->setShortcut(QMainWindow::tr("Ctrl+E"));
+	theNewAction_->setShortcut(QMainWindow::tr("Ctrl+N"));
+	theLoadAction_->setShortcut(QMainWindow::tr("Ctrl+L"));
+	theSaveAction_->setShortcut(QMainWindow::tr("Ctrl+S"));
+	theSaveAsAction_->setShortcut(QMainWindow::tr("Ctrl+Shift+S"));
 
-	exitAction->setShortcut(QMainWindow::tr("Ctrl+Q"));
+	theImportAction_->setShortcut(QMainWindow::tr("Ctrl+I"));
+	theExportAction_->setShortcut(QMainWindow::tr("Ctrl+E"));
 
-	saveAction->setEnabled(false);
-	saveAsAction->setEnabled(false);
+	theExitAction_->setShortcut(QMainWindow::tr("Ctrl+Q"));
+
+	theSaveAction_->setEnabled(false);
+	theSaveAsAction_->setEnabled(false);
 
 	GetParentMainWindow()->menuBar()->addMenu(this);
 	GetParentMainWindow()->addToolBar(this->GetToolBar());
