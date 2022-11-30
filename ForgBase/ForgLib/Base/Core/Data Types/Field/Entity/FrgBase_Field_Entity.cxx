@@ -36,7 +36,7 @@ void ForgBaseLib::FrgBase_Field_Entity::CalcValue
 		throw ex;
 	}
 
-	if (FrgBase_FieldParser::ContainFieldInCalculated(calculated, this))
+	if (FrgBase_FieldParser::ContainFieldInCalculated(calculated, this->shared_from_this()))
 		return;
 }
 
@@ -65,12 +65,12 @@ std::string ForgBaseLib::FrgBase_Field_Entity::GetFullName
 	return theName_;
 }
 
-std::vector<ForgBaseLib::FrgBase_SymbolTable*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>>
 ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTables() const
 {
-	std::vector<FrgBase_SymbolTable*> tables;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> tables;
 
-	FrgBase_SymbolTable* base = theSymbolTable_;
+	auto base = theSymbolTable_;
 	while (base)
 	{
 		tables.push_back(theSymbolTable_);
@@ -81,14 +81,14 @@ ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTables() const
 	return tables;
 }
 
-std::vector<ForgBaseLib::FrgBase_SymbolTable*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>>
 ForgBaseLib::FrgBase_Field_Entity::RetrieveExternalSymbolTables() const
 {
-	std::vector<FrgBase_SymbolTable*> result;
-	std::vector<std::vector<FrgBase_SymbolTable*>> resultIn;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> result;
+	std::vector<std::vector<std::shared_ptr<FrgBase_SymbolTable>>> resultIn;
 
 	auto tables = theSymbolTable_->GetExternalSymbolTables();
-	FrgBase_SymbolTable* base = theSymbolTable_;
+	auto base = theSymbolTable_;
 
 	while (!tables.empty())
 	{
@@ -108,10 +108,10 @@ ForgBaseLib::FrgBase_Field_Entity::RetrieveExternalSymbolTables() const
 	return result;
 }
 
-std::vector<ForgBaseLib::FrgBase_SymbolTable*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>>
 ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTablesIncludingExternals() const
 {
-	std::vector<FrgBase_SymbolTable*> result;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> result;
 
 	auto tables = RetrieveSymbolTables();
 	auto tablesEx = RetrieveExternalSymbolTables();
@@ -126,13 +126,13 @@ ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTablesIncludingExternals() cons
 
 bool ForgBaseLib::FrgBase_Field_Entity::IsDeletable() const
 {
-	auto object =
-		const_cast<FrgBase_Field_Entity*>(this);
+	auto pointer =
+		std::const_pointer_cast<FrgBase_Field_Entity>(this->shared_from_this());
 
 	auto fields =
 		FrgBase_FieldParser::RetrieveFieldsUsingThisField
 		(
-			object,
+			pointer,
 			theSymbolTable_->GetRegistry()->GetTables()
 		);
 

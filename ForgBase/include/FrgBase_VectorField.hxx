@@ -16,10 +16,6 @@ public:
 	FrgBase_VectorField();
 
 	~FrgBase_VectorField();
-
-	//auto GetSize() const { return theValue_.size(); }
-
-	//void CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = false) override;
 };
 
 EndForgBaseLib

@@ -9,15 +9,18 @@
 ForgBaseLib::FrgBase_SymbolTable::FrgBase_SymbolTable()
 	: FrgBase_Object()
 {
-	theSymbolTable_ = new exprtk::symbol_table<double>();
+	theSymbolTable_ = std::make_shared<exprtk::symbol_table<double>>();
 }
 
 ForgBaseLib::FrgBase_SymbolTable::~FrgBase_SymbolTable()
 {
-	FreePointer(theSymbolTable_);
+	//FreePointer(theSymbolTable_);
 
-	for (const auto& f : theFields_)
-		delete f;
+	/*for (const auto& f : theFields_)
+		delete f;*/
+
+	theExternalSymbolTables_.clear();
+	theFields_.clear();
 }
 
 std::string ForgBaseLib::FrgBase_SymbolTable::GetFullPresentationName
@@ -33,7 +36,7 @@ std::string ForgBaseLib::FrgBase_SymbolTable::GetFullPresentationName
 
 void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTable
 (
-	FrgBase_SymbolTable* est
+	const std::shared_ptr<FrgBase_SymbolTable>& est
 )
 {
 	if (!est)
@@ -50,13 +53,13 @@ void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTable
 
 void ForgBaseLib::FrgBase_SymbolTable::RemoveExternalSymbolTable
 (
-	FrgBase_SymbolTable* est
+	const std::shared_ptr<FrgBase_SymbolTable>& est
 )
 {
 	if (!est)
 		return;
 
-	std::vector<FrgBase_SymbolTable*> result;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> result;
 
 	for (const auto& t : theExternalSymbolTables_)
 	{
@@ -80,7 +83,7 @@ std::string ForgBaseLib::FrgBase_SymbolTable::GetFullName
 	return theRegistry_->GetName() + delimiter + theName_;
 }
 
-ForgBaseLib::FrgBase_ScalarField*
+std::shared_ptr<ForgBaseLib::FrgBase_ScalarField>
 ForgBaseLib::FrgBase_SymbolTable::AddVariable
 (
 	const std::string& presentationName
@@ -94,8 +97,8 @@ ForgBaseLib::FrgBase_SymbolTable::AddVariable
 		std::string variableFullName =
 			GetFullName() + "_" + variableName;
 
-		auto field = new FrgBase_ScalarField();
-		field->SetSymbolTable(this);
+		auto field =std::make_shared<FrgBase_ScalarField>();
+		field->SetSymbolTable(this->shared_from_this());
 		field->SetName(variableName);
 		field->SetPresentationName(presentationName);
 		field->SetExpression("0.0");
@@ -115,7 +118,7 @@ ForgBaseLib::FrgBase_SymbolTable::AddVariable
 			return field;
 		}
 
-		FreePointer(field);
+		//FreePointer(field);
 	}
 
 	return nullptr;
@@ -123,7 +126,7 @@ ForgBaseLib::FrgBase_SymbolTable::AddVariable
 
 bool ForgBaseLib::FrgBase_SymbolTable::DeleteField
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
@@ -152,7 +155,7 @@ bool ForgBaseLib::FrgBase_SymbolTable::DeleteField
 		throw ex;
 	}
 
-	std::vector<FrgBase_Field_Entity*> finalFields;
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> finalFields;
 	for (const auto& f : theFields_)
 	{
 		if (f != field)
@@ -161,26 +164,26 @@ bool ForgBaseLib::FrgBase_SymbolTable::DeleteField
 
 	theFields_ = finalFields;
 
-	delete field;
+	//delete field;
 
 	return true;
 }
 
 bool ForgBaseLib::FrgBase_SymbolTable::ContainsField
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 ) const
 {
 	for (const auto& f : theFields_)
 	{
 		if (f == field)
-			return f;
+			return true;
 	}
 
 	return nullptr;
 }
 
-ForgBaseLib::FrgBase_Field_Entity*
+std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>
 ForgBaseLib::FrgBase_SymbolTable::ContainsField
 (
 	const std::string& fieldFullName
@@ -195,7 +198,7 @@ ForgBaseLib::FrgBase_SymbolTable::ContainsField
 	return nullptr;
 }
 
-ForgBaseLib::FrgBase_Field_Entity*
+std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>
 ForgBaseLib::FrgBase_SymbolTable::ContainsFieldFullPresentationName
 (
 	const std::string& fieldFullPresentationName
@@ -218,7 +221,7 @@ ss << std::endl;
 void ForgBaseLib::FrgBase_SymbolTable::PrintField
 (
 	std::ostringstream& ss,
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
@@ -227,7 +230,7 @@ void ForgBaseLib::FrgBase_SymbolTable::PrintField
 	if (field->IsScalar())
 	{
 		auto scalarField =
-			dynamic_cast<FrgBase_ScalarField*>(field);
+			std::dynamic_pointer_cast<FrgBase_ScalarField>(field);
 
 		auto value = scalarField->GetValue();
 
@@ -251,7 +254,7 @@ void ForgBaseLib::FrgBase_SymbolTable::PrintField
 	else if (field->IsVector())
 	{
 		auto vectorField =
-			dynamic_cast<FrgBase_VectorField_Entity*>(field);
+			std::dynamic_pointer_cast<FrgBase_VectorField_Entity>(field);
 
 		auto value = vectorField->GetValue();
 
@@ -284,7 +287,7 @@ void ForgBaseLib::FrgBase_SymbolTable::PrintField
 
 std::string ForgBaseLib::FrgBase_SymbolTable::PrintField
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	std::ostringstream ss;
@@ -296,7 +299,7 @@ std::string ForgBaseLib::FrgBase_SymbolTable::PrintField
 void ForgBaseLib::FrgBase_SymbolTable::PrintField
 (
 	std::ostream& out,
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	auto str = PrintField(field);
@@ -380,7 +383,7 @@ void ForgBaseLib::FrgBase_SymbolTable::CalcValue
 
 bool ForgBaseLib::FrgBase_SymbolTable::AddVectorToSymbolTable
 (
-	exprtk::symbol_table<double>* table,
+	const std::shared_ptr<exprtk::symbol_table<double>>& table,
 	const std::string& variableFullName,
 	std::vector<double>& value
 )

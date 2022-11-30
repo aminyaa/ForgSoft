@@ -25,61 +25,61 @@ public:
 
 	struct Calculated
 	{
-		std::vector<FrgBase_Field_Entity*> theFields_;
+		std::vector<std::shared_ptr<FrgBase_Field_Entity>> theFields_;
 	};
 
 	static std::shared_ptr<exprtk::expression<double>> CompileExpression
 	(
 		const std::string& expression,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
 	static double CalcValueScalar
 	(
-		FrgBase_ScalarField* field,
+		const std::shared_ptr<FrgBase_ScalarField>& field,
 		const std::shared_ptr<Calculated>& calculated = nullptr
 	);
 
 	static std::vector<double> CalcValueVector
 	(
-		FrgBase_VectorField_Entity* field,
+		const std::shared_ptr<FrgBase_VectorField_Entity>& field,
 		const std::shared_ptr<Calculated>& calculated = nullptr
 	);
 
-	static FrgBase_Field_Entity* RetrieveFieldUsingFullName
+	static std::shared_ptr<FrgBase_Field_Entity> RetrieveFieldUsingFullName
 	(
 		const std::string& variableFullName,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
-	static std::vector<FrgBase_Field_Entity*> RetrieveFieldsUsingFullName
+	static std::vector<std::shared_ptr<FrgBase_Field_Entity>> RetrieveFieldsUsingFullName
 	(
 		const std::vector<std::string>& variablesFullName,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
-	static FrgBase_Field_Entity* RetrieveFieldUsingFullPresentationName
+	static std::shared_ptr<FrgBase_Field_Entity> RetrieveFieldUsingFullPresentationName
 	(
 		const std::string& variableFullPresentationName,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
-	static std::vector<FrgBase_Field_Entity*> RetrieveFieldsUsingFullPresentationName
+	static std::vector<std::shared_ptr<FrgBase_Field_Entity>> RetrieveFieldsUsingFullPresentationName
 	(
 		const std::vector<std::string>& variablesFullPresentationName,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
-	static std::vector<FrgBase_Field_Entity*> RetrieveDependentFields
+	static std::vector<std::shared_ptr<FrgBase_Field_Entity>> RetrieveDependentFields
 	(
-		FrgBase_Field_Entity* field,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::shared_ptr<FrgBase_Field_Entity>& field,
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
-	static std::vector<FrgBase_Field_Entity*> RetrieveFieldsUsingThisField
+	static std::vector<std::shared_ptr<FrgBase_Field_Entity>> RetrieveFieldsUsingThisField
 	(
-		FrgBase_Field_Entity* field,
-		const std::vector<FrgBase_SymbolTable*>& symbolTables
+		const std::shared_ptr<FrgBase_Field_Entity>& field,
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
 	/*static std::vector<FrgBase_Field_Entity*> RetrieveDependentFields
@@ -99,17 +99,17 @@ public:
 	static bool ContainFieldInCalculated
 	(
 		const std::shared_ptr<Calculated>& calculated,
-		FrgBase_Field_Entity* field
+		const std::shared_ptr<FrgBase_Field_Entity>& field
 	);
 
 	static std::string CreateFieldExpressionReadyToCompile
 	(
-		FrgBase_Field_Entity* field
+		const std::shared_ptr<FrgBase_Field_Entity>& field
 	);
 
 	static std::vector<std::string> CollectVariablesFullName
 	(
-		FrgBase_Field_Entity* field
+		const std::shared_ptr<FrgBase_Field_Entity>& field
 	);
 
 	static std::string CombineString
@@ -127,7 +127,7 @@ protected:
 
 	static std::shared_ptr<exprtk::expression<double>> CalcValueEntity
 	(
-		FrgBase_Field_Entity* field,
+		const std::shared_ptr<FrgBase_Field_Entity>& field,
 		const std::shared_ptr<Calculated>& calculated = nullptr
 	);
 

@@ -3,7 +3,7 @@
 #include <FrgBase_VectorField.hxx>
 
 template<int Dim>
-inline ForgBaseLib::FrgBase_VectorField<Dim>* ForgBaseLib::FrgBase_SymbolTable::AddVector
+inline std::shared_ptr<ForgBaseLib::FrgBase_VectorField<Dim>> ForgBaseLib::FrgBase_SymbolTable::AddVector
 (
 	const std::string& presentationName
 )
@@ -13,8 +13,8 @@ inline ForgBaseLib::FrgBase_VectorField<Dim>* ForgBaseLib::FrgBase_SymbolTable::
 		std::string variableName = "Value" + std::to_string(theVariableIndex_);
 		std::string variableFullName = GetFullName() + "_" + variableName;
 
-		auto field = new FrgBase_VectorField<Dim>();
-		field->SetSymbolTable(this);
+		auto field = std::make_shared<FrgBase_VectorField<Dim>>();
+		field->SetSymbolTable(this->shared_from_this());
 		field->SetName(variableName);
 		field->SetPresentationName(presentationName);
 
@@ -41,7 +41,7 @@ inline ForgBaseLib::FrgBase_VectorField<Dim>* ForgBaseLib::FrgBase_SymbolTable::
 			return field;
 		}
 
-		FreePointer(field);
+		//FreePointer(field);
 	}
 
 	return nullptr;

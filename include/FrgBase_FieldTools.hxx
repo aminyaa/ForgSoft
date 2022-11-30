@@ -39,26 +39,33 @@ public:
 	static std::string GetDecoratorAsString(Decorator dec);
 	static void SetDecorator(Decorator dec);
 
-	static std::pair<std::string, std::string> GetBracketAsString();
-	static std::pair<std::string, std::string> GetBracketAsString(Bracket bracket);
+	static std::pair<std::string, std::string>
+		GetBracketAsString();
+
+	static std::pair<std::string, std::string>
+		GetBracketAsString(Bracket bracket);
+
 	static void SetBracket(Bracket bracket);
 
 	// Methods
 
-	static std::string AddDecoratorAndBracket(FrgBase_Field_Entity* field);
-	//static std::string RemoveDecoratorAndBracket(FrgBase_Field_Entity* field);
+	static std::string
+		AddDecoratorAndBracket
+		(
+			const std::shared_ptr<FrgBase_Field_Entity>& field
+		);
 
 	static size_t GetNumberOfAdditionalString();
 
 	static std::string DecorizeExpression
 	(
-		FrgBase_Field_Entity* field
+		const std::shared_ptr<FrgBase_Field_Entity>& field
 	);
 
 	static std::string UnDecorizeExpression
 	(
 		const std::string& decorizedExpression,
-		FrgBase_SymbolTableRegistry* registry
+		const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry
 	);
 };
 

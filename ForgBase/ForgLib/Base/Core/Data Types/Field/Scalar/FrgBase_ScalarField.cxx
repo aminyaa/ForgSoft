@@ -15,10 +15,13 @@ void ForgBaseLib::FrgBase_ScalarField::CalcValue
 
 	theIsCalculating_ = true;
 
+	auto pointer =
+		std::dynamic_pointer_cast<FrgBase_ScalarField>(this->shared_from_this());
+
 	auto value =
 		FrgBase_FieldParser::CalcValueScalar
 		(
-			this,
+			pointer,
 			calculated
 		);
 

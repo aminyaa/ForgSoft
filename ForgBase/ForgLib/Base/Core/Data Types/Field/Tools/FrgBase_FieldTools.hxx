@@ -52,20 +52,20 @@ public:
 	static std::string
 		AddDecoratorAndBracket
 		(
-			FrgBase_Field_Entity* field
+			const std::shared_ptr<FrgBase_Field_Entity>& field
 		);
 
 	static size_t GetNumberOfAdditionalString();
 
 	static std::string DecorizeExpression
 	(
-		FrgBase_Field_Entity* field
+		const std::shared_ptr<FrgBase_Field_Entity>& field
 	);
 
 	static std::string UnDecorizeExpression
 	(
 		const std::string& decorizedExpression,
-		FrgBase_SymbolTableRegistry* registry
+		const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry
 	);
 };
 

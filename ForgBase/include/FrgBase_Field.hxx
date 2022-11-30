@@ -30,8 +30,6 @@ public:
 
 protected:
 
-	//virtual bool AddVariableToSymbolTable();
-
 	T theValue_;
 };
 

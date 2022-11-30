@@ -22,6 +22,7 @@ class FrgBase_VectorField;
 
 class FORGBASE_EXPORT FrgBase_SymbolTable
 	: public FrgBase_Object
+	, public std::enable_shared_from_this<FrgBase_SymbolTable>
 {
 
 public:
@@ -35,40 +36,40 @@ public:
 
 	void SetPresentationName(const std::string& pn) { thePresentationName_ = pn; }
 
-	FrgBase_SymbolTableRegistry* GetRegistry() const { return theRegistry_; }
-	void SetRegistry(FrgBase_SymbolTableRegistry* registry) { theRegistry_ = registry; }
+	const auto& GetRegistry() const { return theRegistry_; }
+	void SetRegistry(const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry) { theRegistry_ = registry; }
 
-	FrgBase_SymbolTable* GetParentSymbolTable() const { return theParentSymbolTable_; }
-	void SetParentSymbolTable(FrgBase_SymbolTable* pst) { theParentSymbolTable_ = pst; }
+	const auto& GetParentSymbolTable() const { return theParentSymbolTable_; }
+	void SetParentSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& pst) { theParentSymbolTable_ = pst; }
 
-	const std::vector<FrgBase_SymbolTable*>& GetExternalSymbolTables() const { return theExternalSymbolTables_; }
-	void SetExternalSymbolTables(const std::vector<FrgBase_SymbolTable*> ests) { theExternalSymbolTables_ = ests; }
+	const auto& GetExternalSymbolTables() const { return theExternalSymbolTables_; }
+	void SetExternalSymbolTables(const std::vector<std::shared_ptr<FrgBase_SymbolTable>> ests) { theExternalSymbolTables_ = ests; }
 
-	void AddExternalSymbolTable(FrgBase_SymbolTable* est);
-	void RemoveExternalSymbolTable(FrgBase_SymbolTable* est);
+	void AddExternalSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& est);
+	void RemoveExternalSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& est);
 
-	exprtk::symbol_table<double>* GetSymbolTable() const { return theSymbolTable_; }
+	const auto& GetSymbolTable() const { return theSymbolTable_; }
 
 	std::string GetFullName(const std::string& delimiter = "_") const;
 
-	FrgBase_ScalarField* AddVariable(const std::string& presentationName);
+	std::shared_ptr<FrgBase_ScalarField> AddVariable(const std::string& presentationName);
 
 	template <int Dim>
-	FrgBase_VectorField<Dim>* AddVector(const std::string& presentationName);
+	std::shared_ptr<FrgBase_VectorField<Dim>> AddVector(const std::string& presentationName);
 
-	bool DeleteField(FrgBase_Field_Entity* field);
+	bool DeleteField(const std::shared_ptr<FrgBase_Field_Entity>& field);
 
-	bool ContainsField(FrgBase_Field_Entity* field) const;
-	FrgBase_Field_Entity* ContainsField(const std::string& fieldFullName) const;
-	FrgBase_Field_Entity* ContainsFieldFullPresentationName(const std::string& fieldFullPresentationName) const;
+	bool ContainsField(const std::shared_ptr<FrgBase_Field_Entity>& field) const;
+	std::shared_ptr<FrgBase_Field_Entity> ContainsField(const std::string& fieldFullName) const;
+	std::shared_ptr<FrgBase_Field_Entity> ContainsFieldFullPresentationName(const std::string& fieldFullPresentationName) const;
 
-	const std::vector<FrgBase_Field_Entity*>& GetFields() const { return theFields_; }
+	const auto& GetFields() const { return theFields_; }
 
-	static void PrintField(std::ostringstream& ss, FrgBase_Field_Entity* field);
+	static void PrintField(std::ostringstream& ss, const std::shared_ptr<FrgBase_Field_Entity>& field);
 
-	static std::string PrintField(FrgBase_Field_Entity* field);
+	static std::string PrintField(const std::shared_ptr<FrgBase_Field_Entity>& field);
 
-	static void PrintField(std::ostream& out, FrgBase_Field_Entity* field);
+	static void PrintField(std::ostream& out, const std::shared_ptr<FrgBase_Field_Entity>& field);
 
 	void Print(std::ostringstream& ss, bool calcValue = true);
 
@@ -82,7 +83,7 @@ protected:
 
 	static bool AddVectorToSymbolTable
 	(
-		exprtk::symbol_table<double>* table,
+		const std::shared_ptr<exprtk::symbol_table<double>>& table,
 		const std::string& variableFullName,
 		std::vector<double>& value
 	);
@@ -91,15 +92,15 @@ protected:
 
 	std::string thePresentationName_ = "";
 
-	FrgBase_SymbolTableRegistry* theRegistry_ = nullptr;
+	std::shared_ptr<FrgBase_SymbolTableRegistry> theRegistry_;
 
-	FrgBase_SymbolTable* theParentSymbolTable_ = nullptr;
+	std::shared_ptr<FrgBase_SymbolTable> theParentSymbolTable_;
 
-	std::vector<FrgBase_SymbolTable*> theExternalSymbolTables_;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> theExternalSymbolTables_;
 
-	exprtk::symbol_table<double>* theSymbolTable_ = nullptr;
+	std::shared_ptr<exprtk::symbol_table<double>> theSymbolTable_;
 
-	std::vector<FrgBase_Field_Entity*> theFields_;
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> theFields_;
 
 	unsigned int theVariableIndex_ = 0;
 };

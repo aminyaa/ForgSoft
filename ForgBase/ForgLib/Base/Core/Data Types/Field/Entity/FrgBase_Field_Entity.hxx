@@ -13,6 +13,7 @@ class FrgBase_SymbolTable;
 
 class FORGBASE_EXPORT FrgBase_Field_Entity
 	: public FrgBase_Object
+	, public std::enable_shared_from_this<FrgBase_Field_Entity>
 {
 
 public:
@@ -37,8 +38,8 @@ public:
 
 	std::string GetFullName(const std::string& delimiter = "_") const;
 
-	FrgBase_SymbolTable* GetSymbolTable() const { return theSymbolTable_; }
-	void SetSymbolTable(FrgBase_SymbolTable* st) { theSymbolTable_ = st; }
+	const auto& GetSymbolTable() const { return theSymbolTable_; }
+	void SetSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& st) { theSymbolTable_ = st; }
 
 	std::string GetExpression() const { return theExpression_; }
 	void SetExpression(const std::string& expression) { theExpression_ = expression; }
@@ -46,9 +47,9 @@ public:
 	virtual bool IsScalar() const { return false; }
 	virtual bool IsVector() const { return false; }
 
-	std::vector<FrgBase_SymbolTable*> RetrieveSymbolTables() const;
-	std::vector<FrgBase_SymbolTable*> RetrieveExternalSymbolTables() const;
-	std::vector<FrgBase_SymbolTable*> RetrieveSymbolTablesIncludingExternals() const;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> RetrieveSymbolTables() const;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> RetrieveExternalSymbolTables() const;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> RetrieveSymbolTablesIncludingExternals() const;
 
 	virtual bool IsDeletable() const;
 
@@ -60,7 +61,7 @@ protected:
 
 	std::string thePresentationName_ = "";
 
-	FrgBase_SymbolTable* theSymbolTable_ = nullptr;
+	std::shared_ptr<FrgBase_SymbolTable> theSymbolTable_;
 
 	std::string theExpression_ = "";
 	std::string thePresentationExpression_ = "";

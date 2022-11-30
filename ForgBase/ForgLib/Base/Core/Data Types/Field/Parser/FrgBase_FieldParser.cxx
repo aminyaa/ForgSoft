@@ -9,7 +9,7 @@
 std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::CompileExpression
 (
 	const std::string& expression,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
 	auto myExpression =
@@ -36,7 +36,7 @@ std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::Co
 std::shared_ptr<exprtk::expression<double>>
 ForgBaseLib::FrgBase_FieldParser::CalcValueEntity
 (
-	FrgBase_Field_Entity* field,
+	const std::shared_ptr<FrgBase_Field_Entity>& field,
 	const std::shared_ptr<Calculated>& calculated
 )
 {
@@ -156,7 +156,7 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveValuesFromExpression
 
 double ForgBaseLib::FrgBase_FieldParser::CalcValueScalar
 (
-	FrgBase_ScalarField* field,
+	const std::shared_ptr<FrgBase_ScalarField>& field,
 	const std::shared_ptr<Calculated>& calculated
 )
 {
@@ -177,7 +177,7 @@ double ForgBaseLib::FrgBase_FieldParser::CalcValueScalar
 
 std::vector<double> ForgBaseLib::FrgBase_FieldParser::CalcValueVector
 (
-	FrgBase_VectorField_Entity* field,
+	const std::shared_ptr<FrgBase_VectorField_Entity>& field,
 	const std::shared_ptr<Calculated>& calculated
 )
 {
@@ -206,7 +206,7 @@ ForgBaseLib::FrgBase_FieldParser::InitCalculated()
 bool ForgBaseLib::FrgBase_FieldParser::ContainFieldInCalculated
 (
 	const std::shared_ptr<Calculated>& calculated,
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (calculated)
@@ -223,22 +223,28 @@ bool ForgBaseLib::FrgBase_FieldParser::ContainFieldInCalculated
 
 std::string ForgBaseLib::FrgBase_FieldParser::CreateFieldExpressionReadyToCompile
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
 		throw std::exception("Field is null in " __FUNCSIG__);
 
-	auto expressionString = field->IsScalar() ?
-		field->GetExpression() :
-		"return " + field->GetExpression();
+	auto expression = field->GetExpression();
+	if (expression.empty())
+		throw std::exception("Expression cannot be empty.");
 
-	return expressionString;
+	std::string result;
+	if (field->IsVector() && expression[0] == '[')
+		result = "return " + expression;
+	else
+		result = expression;
+
+	return result;
 }
 
 std::vector<std::string> ForgBaseLib::FrgBase_FieldParser::CollectVariablesFullName
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
@@ -288,11 +294,11 @@ std::string ForgBaseLib::FrgBase_FieldParser::CombineValues
 	return value.str();
 }
 
-ForgBaseLib::FrgBase_Field_Entity*
+std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>
 ForgBaseLib::FrgBase_FieldParser::RetrieveFieldUsingFullName
 (
 	const std::string& variableFullName,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
 	for (const auto& table : symbolTables)
@@ -310,14 +316,14 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveFieldUsingFullName
 	return nullptr;
 }
 
-std::vector<ForgBaseLib::FrgBase_Field_Entity*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
 ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingFullName
 (
 	const std::vector<std::string>& variablesFullName,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
-	std::vector<FrgBase_Field_Entity*> fields;
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> fields;
 
 	for (const auto& variableFullName : variablesFullName)
 	{
@@ -335,11 +341,11 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingFullName
 	return fields;
 }
 
-ForgBaseLib::FrgBase_Field_Entity*
+std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>
 ForgBaseLib::FrgBase_FieldParser::RetrieveFieldUsingFullPresentationName
 (
 	const std::string& variableFullPresentationName,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
 	for (const auto& table : symbolTables)
@@ -357,14 +363,14 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveFieldUsingFullPresentationName
 	return nullptr;
 }
 
-std::vector<ForgBaseLib::FrgBase_Field_Entity*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
 ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingFullPresentationName
 (
 	const std::vector<std::string>& variablesFullPresentationName,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
-	std::vector<FrgBase_Field_Entity*> fields;
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> fields;
 
 	for (const auto& variableFullPresentationName : variablesFullPresentationName)
 	{
@@ -382,11 +388,11 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingFullPresentationName
 	return fields;
 }
 
-std::vector<ForgBaseLib::FrgBase_Field_Entity*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
 ForgBaseLib::FrgBase_FieldParser::RetrieveDependentFields
 (
-	FrgBase_Field_Entity* field,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::shared_ptr<FrgBase_Field_Entity>& field,
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
 	auto collectedVariables =
@@ -402,14 +408,14 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveDependentFields
 	return dependentFields;
 }
 
-std::vector<ForgBaseLib::FrgBase_Field_Entity*>
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
 ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingThisField
 (
-	FrgBase_Field_Entity* field,
-	const std::vector<FrgBase_SymbolTable*>& symbolTables
+	const std::shared_ptr<FrgBase_Field_Entity>& field,
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 )
 {
-	std::vector<FrgBase_Field_Entity*> result;
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> result;
 
 	for (const auto& t : symbolTables)
 	{

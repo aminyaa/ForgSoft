@@ -13,18 +13,20 @@ ForgBaseLib::FrgBase_SymbolTableRegistry::FrgBase_SymbolTableRegistry()
 
 ForgBaseLib::FrgBase_SymbolTableRegistry::~FrgBase_SymbolTableRegistry()
 {
-	for (const auto& t : theTables_)
-		delete t;
+	theTables_.clear();
+
+	/*for (const auto& t : theTables_)
+		delete t;*/
 }
 
-ForgBaseLib::FrgBase_SymbolTable*
+std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>
 ForgBaseLib::FrgBase_SymbolTableRegistry::CreateTable
 (
 	const std::string& presentationName
 )
 {
-	auto table =
-		new ForgBaseLib::FrgBase_SymbolTable;
+	auto table = std::make_shared<FrgBase_SymbolTable>();
+	table->SetPresentationName(presentationName);
 
 	AddTable(table);
 
@@ -33,7 +35,7 @@ ForgBaseLib::FrgBase_SymbolTableRegistry::CreateTable
 
 void ForgBaseLib::FrgBase_SymbolTableRegistry::AddTable
 (
-	FrgBase_SymbolTable* table
+	const std::shared_ptr<FrgBase_SymbolTable>& table
 )
 {
 	if (!table)
@@ -44,7 +46,7 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::AddTable
 
 	std::string tableName = "Table" + std::to_string(theTableIndex_);
 
-	table->SetRegistry(this);
+	table->SetRegistry(this->shared_from_this());
 	table->SetName(tableName);
 	table->SetPresentationName(table->GetPresentationName());
 
@@ -55,13 +57,13 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::AddTable
 
 void ForgBaseLib::FrgBase_SymbolTableRegistry::RemoveTable
 (
-	FrgBase_SymbolTable* table
+	const std::shared_ptr<FrgBase_SymbolTable>& table
 )
 {
 	if (!table)
 		return;
 
-	std::vector<FrgBase_SymbolTable*> finalTables;
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> finalTables;
 	for (const auto& t : theTables_)
 	{
 		if (t != table)
@@ -73,7 +75,7 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::RemoveTable
 
 bool ForgBaseLib::FrgBase_SymbolTableRegistry::ContainsTable
 (
-	FrgBase_SymbolTable* table
+	const std::shared_ptr<FrgBase_SymbolTable>& table
 )
 {
 	if (!table)

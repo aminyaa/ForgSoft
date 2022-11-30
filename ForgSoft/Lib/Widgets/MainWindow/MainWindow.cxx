@@ -14,7 +14,9 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 
 	try
 	{
-		auto registry1 = new ForgBaseLib::FrgBase_SymbolTableRegistry;
+		auto registry1 =
+			std::make_shared<ForgBaseLib::FrgBase_SymbolTableRegistry>();
+
 		auto table1 = registry1->CreateTable("Geometry");
 		auto table2 = registry1->CreateTable("Table 2");
 

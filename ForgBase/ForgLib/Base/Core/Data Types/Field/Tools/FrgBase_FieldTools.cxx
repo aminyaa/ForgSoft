@@ -134,7 +134,7 @@ void ForgBaseLib::FrgBase_FieldTools::SetBracket
 
 std::string ForgBaseLib::FrgBase_FieldTools::AddDecoratorAndBracket
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
@@ -156,7 +156,7 @@ size_t ForgBaseLib::FrgBase_FieldTools::GetNumberOfAdditionalString()
 
 std::string ForgBaseLib::FrgBase_FieldTools::DecorizeExpression
 (
-	FrgBase_Field_Entity* field
+	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
@@ -200,7 +200,7 @@ std::string ForgBaseLib::FrgBase_FieldTools::DecorizeExpression
 std::string ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression
 (
 	const std::string& decorizedExpression,
-	FrgBase_SymbolTableRegistry* registry
+	const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry
 )
 {
 	if (decorizedExpression.empty() || !registry)

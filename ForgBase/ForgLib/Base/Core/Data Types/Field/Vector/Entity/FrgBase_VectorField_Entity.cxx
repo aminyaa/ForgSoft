@@ -21,10 +21,13 @@ void ForgBaseLib::FrgBase_VectorField_Entity::CalcValue
 
 	theIsCalculating_ = true;
 
+	auto pointer =
+		std::dynamic_pointer_cast<FrgBase_VectorField_Entity>(this->shared_from_this());
+
 	auto value =
 		FrgBase_FieldParser::CalcValueVector
 		(
-			this,
+			pointer,
 			calculated
 		);
 
