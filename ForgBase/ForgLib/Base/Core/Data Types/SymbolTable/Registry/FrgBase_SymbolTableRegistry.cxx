@@ -1,22 +1,17 @@
 #include <FrgBase_SymbolTableRegistry.hxx>
 #include <FrgBase_SymbolTable.hxx>
+#include <FrgBase_SymbolTableRegistries.hxx>
 
 #include <sstream>
 
-unsigned int ForgBaseLib::FrgBase_SymbolTableRegistry::theRegistryIndex_ = 0;
-
 ForgBaseLib::FrgBase_SymbolTableRegistry::FrgBase_SymbolTableRegistry()
 {
-	this->SetName("Registry" + std::to_string(theRegistryIndex_));
-	theRegistryIndex_++;
+	
 }
 
 ForgBaseLib::FrgBase_SymbolTableRegistry::~FrgBase_SymbolTableRegistry()
 {
 	theTables_.clear();
-
-	/*for (const auto& t : theTables_)
-		delete t;*/
 }
 
 std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>
@@ -44,15 +39,21 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::AddTable
 	if (ContainsTable(table))
 		return;
 
-	std::string tableName = "Table" + std::to_string(theTableIndex_);
+	const int index = theTables_.size();
+
+	std::string tableName = "Table" + std::to_string(index);
 
 	table->SetRegistry(this->shared_from_this());
 	table->SetName(tableName);
+	table->SetIndex(index);
 	table->SetPresentationName(table->GetPresentationName());
 
-	theTableIndex_++;
-
 	theTables_.push_back(table);
+}
+
+void ForgBaseLib::FrgBase_SymbolTableRegistry::ClearTables()
+{
+	theTables_.clear();
 }
 
 void ForgBaseLib::FrgBase_SymbolTableRegistry::RemoveTable
@@ -81,7 +82,7 @@ bool ForgBaseLib::FrgBase_SymbolTableRegistry::ContainsTable
 	if (!table)
 		return false;
 
-	for (auto t : theTables_)
+	for (const auto& t : theTables_)
 	{
 		if (t == table)
 			return true;
@@ -125,3 +126,21 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::Print
 
 	out << str;
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_SymbolTableRegistry)
+{
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
+
+	ar& theTables_;
+	ar& theParentRegistries_;
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_SymbolTableRegistry)
+{
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
+
+	ar& theTables_;
+	ar& theParentRegistries_;
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_SymbolTableRegistry)

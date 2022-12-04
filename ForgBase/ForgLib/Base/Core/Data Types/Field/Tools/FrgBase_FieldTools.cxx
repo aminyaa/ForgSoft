@@ -1,5 +1,6 @@
 #include <FrgBase_FieldTools.hxx>
 #include <FrgBase_Field_Entity.hxx>
+#include <FrgBase_SymbolTable.hxx>
 #include <FrgBase_SymbolTableRegistry.hxx>
 
 #include <exprtk.hpp>
@@ -19,6 +20,27 @@
 #define BRACKET_ANGLE_BEGIN_STR "<"
 #define BRACKET_ANGLE_END_STR ">"
 
+static std::string ReplaceInString
+(
+	const std::string& str,
+	const size_t start_pos,
+	const size_t length,
+	const std::string& to
+)
+{
+	std::string result = str;
+
+	if (start_pos < 0)
+		throw std::exception("end_pos is smaller than 0 in " __FUNCSIG__);
+
+	if (length > result.size())
+		throw std::exception("length is larger than size of string.");
+
+	result.replace(start_pos, length, to);
+
+	return result;
+}
+
 static std::string ReplaceAllInString
 (
 	const std::string& str,
@@ -27,14 +49,14 @@ static std::string ReplaceAllInString
 )
 {
 	if (from.empty())
-		return "";
+		return str;
 
 	std::string result = str;
 	size_t start_pos = 0;
 
-	while ((start_pos = str.find(from, start_pos)) != std::string::npos)
+	while ((start_pos = result.find(from, start_pos)) != std::string::npos)
 	{
-		result.replace(start_pos, from.length(), to);
+		result = ReplaceInString(result, start_pos, from.length(), to);
 		start_pos += to.length();
 	}
 
@@ -140,10 +162,22 @@ std::string ForgBaseLib::FrgBase_FieldTools::AddDecoratorAndBracket
 	if (!field)
 		return "";
 
+	
+	return AddDecoratorAndBracketToString
+	(
+		field->GetFullPresentationName()
+	);
+}
+
+std::string ForgBaseLib::FrgBase_FieldTools::AddDecoratorAndBracketToString
+(
+	const std::string& text
+)
+{
 	auto decorator = GetDecoratorAsString();
 	auto bracket = GetBracketAsString();
 
-	return (decorator + bracket.first + field->GetFullPresentationName() + bracket.second);
+	return (decorator + bracket.first + text + bracket.second);
 }
 
 size_t ForgBaseLib::FrgBase_FieldTools::GetNumberOfAdditionalString()
@@ -152,6 +186,31 @@ size_t ForgBaseLib::FrgBase_FieldTools::GetNumberOfAdditionalString()
 	auto bracket = GetBracketAsString();
 
 	return decorator.size() + bracket.first.size() + bracket.second.size();
+}
+
+std::string ForgBaseLib::FrgBase_FieldTools::DecorizeExpressionUsingString
+(
+	const std::string& expression,
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& tables
+)
+{
+	auto result = expression;
+	for (const auto& table : tables)
+	{
+		auto fields =
+			table->GetFields();
+		for (const auto& field : fields)
+		{
+			result = ReplaceAllInString
+			(
+				result,
+				field->GetFullName(),
+				AddDecoratorAndBracketToString(field->GetFullPresentationName())
+			);
+		}
+	}
+
+	return result;
 }
 
 std::string ForgBaseLib::FrgBase_FieldTools::DecorizeExpression
@@ -203,8 +262,11 @@ std::string ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression
 	const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry
 )
 {
-	if (decorizedExpression.empty() || !registry)
-		throw std::exception("Error in " __FUNCSIG__);
+	if (decorizedExpression.empty())
+		throw std::exception("Empty Expression.");
+
+	if(!registry)
+		throw std::exception("Registry is null in " __FUNCSIG__);
 
 	auto str = decorizedExpression;
 
@@ -264,6 +326,14 @@ std::string ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression
 					spaces += ' ';
 				}
 			}
+
+			/*str = ReplaceInString
+			(
+				str,
+				found,
+				(decorator + spaces + lb + word + rb).length(),
+				field->GetFullName()
+			);*/
 
 			str = ReplaceAllInString
 			(

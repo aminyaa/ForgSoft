@@ -99,5 +99,7 @@
         <file>styles/Default/icon_checkbox_unchecked.png</file>
         <file>styles/Default/icon_radiobutton_checked.png</file>
         <file>styles/Default/icon_radiobutton_unchecked.png</file>
+        <file>Icons/TreeStyle/Constraint.png</file>
+        <file>Icons/TreeStyle/Field.png</file>
     </qresource>
 </RCC>

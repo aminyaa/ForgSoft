@@ -42,6 +42,9 @@ void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTable
 	if (!est)
 		return;
 
+	if (est == this->shared_from_this())
+		return;
+
 	for (const auto& t : theExternalSymbolTables_)
 	{
 		if (t == est)
@@ -97,14 +100,19 @@ ForgBaseLib::FrgBase_SymbolTable::AddVariable
 		std::string variableFullName =
 			GetFullName() + "_" + variableName;
 
-		auto field =std::make_shared<FrgBase_ScalarField>();
+		auto field =
+			std::make_shared<FrgBase_ScalarField>();
+
 		field->SetSymbolTable(this->shared_from_this());
+		field->SetRegistry(theRegistry_);
 		field->SetName(variableName);
+		field->SetIndex(theVariableIndex_);
 		field->SetPresentationName(presentationName);
 		field->SetExpression("0.0");
 
-		bool added = theSymbolTable_->add_variable
+		const bool added = AddScalarToSymbolTable
 		(
+			theSymbolTable_,
 			variableFullName,
 			field->GetValueRef()
 		);
@@ -117,8 +125,63 @@ ForgBaseLib::FrgBase_SymbolTable::AddVariable
 
 			return field;
 		}
+	}
 
-		//FreePointer(field);
+	return nullptr;
+}
+
+std::shared_ptr<ForgBaseLib::FrgBase_VectorField>
+ForgBaseLib::FrgBase_SymbolTable::AddVector
+(
+	const std::string& presentationName,
+	const int size
+)
+{
+	if (theSymbolTable_)
+	{
+		std::string variableName =
+			"Value" + std::to_string(theVariableIndex_);
+
+		std::string variableFullName =
+			GetFullName() + "_" + variableName;
+
+		auto field =
+			std::make_shared<FrgBase_VectorField>(size);
+
+		field->SetSymbolTable(this->shared_from_this());
+		field->SetRegistry(theRegistry_);
+		field->SetName(variableName);
+		field->SetIndex(theVariableIndex_);
+		field->SetPresentationName(presentationName);
+
+		std::string expression = "[";
+		for (int i = 0; i < field->GetSize(); i++)
+		{
+			if (i == field->GetSize() - 1)
+				expression += "0.0";
+			else
+				expression += "0.0, ";
+		}
+		expression += "]";
+
+		field->SetExpression(expression);
+
+		const bool added =
+			AddVectorToSymbolTable
+			(
+				theSymbolTable_,
+				variableFullName,
+				field->GetValueRef()
+			);
+
+		if (added)
+		{
+			theFields_.push_back(field);
+
+			theVariableIndex_++;
+
+			return field;
+		}
 	}
 
 	return nullptr;
@@ -317,7 +380,7 @@ void ForgBaseLib::FrgBase_SymbolTable::Print
 
 	if (theFields_.empty())
 	{
-		ss << "The table \"" + pName + "\" is empty.";
+		ss << "The table \"" + pName + "\" is empty.\n";
 		return;
 	}
 
@@ -381,6 +444,25 @@ void ForgBaseLib::FrgBase_SymbolTable::CalcValue
 		field->CalcValue(myCalculated);
 }
 
+bool ForgBaseLib::FrgBase_SymbolTable::AddScalarToSymbolTable
+(
+	const std::shared_ptr<exprtk::symbol_table<double>>& table,
+	const std::string& variableFullName,
+	double& value
+)
+{
+	if (table)
+	{
+		return table->add_variable
+		(
+			variableFullName,
+			value
+		);
+	}
+
+	return false;
+}
+
 bool ForgBaseLib::FrgBase_SymbolTable::AddVectorToSymbolTable
 (
 	const std::shared_ptr<exprtk::symbol_table<double>>& table,
@@ -389,7 +471,70 @@ bool ForgBaseLib::FrgBase_SymbolTable::AddVectorToSymbolTable
 )
 {
 	if (table)
-		return table->add_vector(variableFullName, value);
+	{
+		return table->add_vector
+		(
+			variableFullName,
+			value
+		);
+	}
 
 	return false;
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_SymbolTable)
+{
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
+
+	ar& thePresentationName_;
+	ar& theVariableIndex_;
+
+	ar& theRegistry_;
+	ar& theParentSymbolTable_;
+	ar& theExternalSymbolTables_;
+	ar& theFields_;
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_SymbolTable)
+{
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
+
+	ar& thePresentationName_;
+	ar& theVariableIndex_;
+
+	ar& theRegistry_;
+	ar& theParentSymbolTable_;
+	ar& theExternalSymbolTables_;
+	ar& theFields_;
+
+	for (auto field : theFields_)
+	{
+		if (field->IsScalar())
+		{
+			auto myField =
+				std::dynamic_pointer_cast<FrgBase_ScalarField>(field);
+
+			AddScalarToSymbolTable
+			(
+				theSymbolTable_,
+				field->GetFullName(),
+				myField->GetValueRef()
+			);
+		}
+		else if (field->IsVector())
+		{
+			auto myField =
+				std::dynamic_pointer_cast<FrgBase_VectorField_Entity>(field);
+
+			AddVectorToSymbolTable
+			(
+				theSymbolTable_,
+				field->GetFullName(),
+				myField->GetValueRef()
+			);
+		}
+	}
+	
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_SymbolTable)

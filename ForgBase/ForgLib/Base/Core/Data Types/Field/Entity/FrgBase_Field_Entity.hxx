@@ -10,6 +10,7 @@
 BeginForgBaseLib
 
 class FrgBase_SymbolTable;
+class FrgBase_SymbolTableRegistry;
 
 class FORGBASE_EXPORT FrgBase_Field_Entity
 	: public FrgBase_Object
@@ -22,6 +23,12 @@ public:
 
 	~FrgBase_Field_Entity();
 
+	const auto& GetSymbolTable() const { return theSymbolTable_; }
+	void SetSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& st) { theSymbolTable_ = st; }
+
+	const auto& GetRegistry() const { return theRegistry_; }
+	void SetRegistry(const std::shared_ptr<FrgBase_SymbolTableRegistry>& reg) { theRegistry_ = reg; }
+
 	virtual void CalcValue
 	(
 		const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = nullptr
@@ -31,21 +38,20 @@ public:
 	std::string GetFullPresentationName
 	(
 		const std::string& delimiter = ".",
-		const bool pure = false
+		const bool pure = true
 	) const;
 
 	void SetPresentationName(const std::string& pn) { thePresentationName_ = pn; }
 
 	std::string GetFullName(const std::string& delimiter = "_") const;
 
-	const auto& GetSymbolTable() const { return theSymbolTable_; }
-	void SetSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& st) { theSymbolTable_ = st; }
-
 	std::string GetExpression() const { return theExpression_; }
 	void SetExpression(const std::string& expression) { theExpression_ = expression; }
 
 	virtual bool IsScalar() const { return false; }
 	virtual bool IsVector() const { return false; }
+
+	virtual std::string GetTypeAsString() const = 0;
 
 	std::vector<std::shared_ptr<FrgBase_SymbolTable>> RetrieveSymbolTables() const;
 	std::vector<std::shared_ptr<FrgBase_SymbolTable>> RetrieveExternalSymbolTables() const;
@@ -62,6 +68,7 @@ protected:
 	std::string thePresentationName_ = "";
 
 	std::shared_ptr<FrgBase_SymbolTable> theSymbolTable_;
+	std::shared_ptr<FrgBase_SymbolTableRegistry> theRegistry_;
 
 	std::string theExpression_ = "";
 	std::string thePresentationExpression_ = "";

@@ -119,6 +119,8 @@ ForgBaseLib::FrgBase_Application::FrgBase_Application
 
 bool ForgBaseLib::FrgBase_Application::notify(QObject* receiver, QEvent* event)
 {
+	//return QApplication::notify(receiver, event);
+
 	bool done = true;
 	try
 	{

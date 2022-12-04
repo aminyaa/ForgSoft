@@ -7,6 +7,7 @@
 BeginForgBaseLib
 
 class FrgBase_Field_Entity;
+class FrgBase_SymbolTable;
 class FrgBase_SymbolTableRegistry;
 
 class FORGBASE_EXPORT FrgBase_FieldTools
@@ -55,7 +56,19 @@ public:
 			const std::shared_ptr<FrgBase_Field_Entity>& field
 		);
 
+	static std::string
+		AddDecoratorAndBracketToString
+		(
+			const std::string& text
+		);
+
 	static size_t GetNumberOfAdditionalString();
+
+	static std::string DecorizeExpressionUsingString
+	(
+		const std::string& expression,
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& tables
+	);
 
 	static std::string DecorizeExpression
 	(

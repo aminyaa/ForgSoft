@@ -6,6 +6,7 @@
 
 BeginForgBaseLib
 
+class FrgBase_SymbolTableRegistries;
 class FrgBase_SymbolTable;
 
 class FORGBASE_EXPORT FrgBase_SymbolTableRegistry
@@ -19,9 +20,23 @@ public:
 
 	~FrgBase_SymbolTableRegistry();
 
-	std::shared_ptr<FrgBase_SymbolTable> CreateTable(const std::string& presentationName);
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& GetTables() const { return theTables_; }
 
-	void AddTable(const std::shared_ptr<FrgBase_SymbolTable>& table);
+	const auto& GetParentRegistries() const { return theParentRegistries_; }
+	void SetParentRegistries(const std::shared_ptr<FrgBase_SymbolTableRegistries>& pr) { theParentRegistries_ = pr; }
+
+	std::shared_ptr<FrgBase_SymbolTable>
+		CreateTable
+		(
+			const std::string& presentationName
+		);
+
+	void AddTable
+	(
+		const std::shared_ptr<FrgBase_SymbolTable>& table
+	);
+
+	void ClearTables();
 
 	// This method just removes the table from the registry and the user
 	// is responsible to delete the table
@@ -29,23 +44,25 @@ public:
 
 	bool ContainsTable(const std::shared_ptr<FrgBase_SymbolTable>& table);
 
-	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& GetTables() const { return theTables_; }
-
 	void Print(std::ostringstream& ss, bool calcValue = true);
 
 	std::string Print(bool calcValue = true);
 
 	void Print(std::ostream& out, bool calcValue = true);
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
 protected:
 
-	unsigned int theTableIndex_ = 0;
+	std::shared_ptr<FrgBase_SymbolTableRegistries> theParentRegistries_;
 
 	std::vector<std::shared_ptr<FrgBase_SymbolTable>> theTables_;
-
-	static unsigned int theRegistryIndex_;
 };
 
 EndForgBaseLib
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_SymbolTableRegistry)
 
 #endif // !_FrgBase_SymbolTableTools_Header

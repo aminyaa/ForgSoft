@@ -30,6 +30,11 @@ public:
 
 	static std::shared_ptr<exprtk::expression<double>> CompileExpression
 	(
+		const std::shared_ptr<FrgBase_Field_Entity>& field
+	);
+
+	static std::shared_ptr<exprtk::expression<double>> CompileExpression
+	(
 		const std::string& expression,
 		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);

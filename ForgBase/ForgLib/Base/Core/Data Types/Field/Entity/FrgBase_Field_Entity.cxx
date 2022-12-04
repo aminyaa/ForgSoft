@@ -30,7 +30,7 @@ void ForgBaseLib::FrgBase_Field_Entity::CalcValue
 
 		std::string message =
 			"Cannot calculate the value. Recursive Loop in calculating \"" +
-			this->GetFullPresentationName() + "\"";
+			this->GetFullPresentationName(".", true) + "\"";
 
 		std::exception ex(message.c_str());
 		throw ex;
@@ -141,12 +141,26 @@ bool ForgBaseLib::FrgBase_Field_Entity::IsDeletable() const
 
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_Field_Entity)
 {
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
 
+	ar& thePresentationName_;
+	ar& theExpression_;
+	ar& thePresentationExpression_;
+
+	ar& theSymbolTable_;
+	ar& theRegistry_;
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_Field_Entity)
 {
+	ar& boost::serialization::base_object<FrgBase_Object>(*this);
 
+	ar& thePresentationName_;
+	ar& theExpression_;
+	ar& thePresentationExpression_;
+
+	ar& theSymbolTable_;
+	ar& theRegistry_;
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_Field_Entity)

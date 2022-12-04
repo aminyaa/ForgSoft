@@ -18,14 +18,29 @@ public:
 
 	bool IsVector() const override { return true; }
 
-	auto GetSize() const { return theValue_.size(); }
+	std::string GetTypeAsString() const override { return "Vector<" + std::to_string(GetSize()) + ">"; }
+
+	size_t GetSize() const { return theValue_.size(); }
 
 	void CalcValue
 	(
 		const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = nullptr
 	) override;
+
+	const auto& GetCalcValueFunction() const { return theCalcValueFunction_; }
+	void SetCalcValueFunction(const std::function<std::vector<double>()>& f) { theCalcValueFunction_ = f; }
+
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
+protected:
+
+	std::function<std::vector<double>()> theCalcValueFunction_ = nullptr;
 };
 
 EndForgBaseLib
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_VectorField_Entity)
 
 #endif // !_FrgBase_VectorField_Entity_Header

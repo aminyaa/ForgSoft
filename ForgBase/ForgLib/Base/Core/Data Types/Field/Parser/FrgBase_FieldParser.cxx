@@ -1,10 +1,32 @@
 #include <FrgBase_FieldParser.hxx>
 #include <FrgBase_SymbolTable.hxx>
 #include <FrgBase_ScalarField.hxx>
+#include <FrgBase_VectorField.hxx>
+#include <FrgBase_FieldTools.hxx>
 
 #include <exprtk.hpp>
 
 #define GetM(str) (std::max(15, (int)str.size() + 2))
+
+std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::CompileExpression
+(
+	const std::shared_ptr<FrgBase_Field_Entity>& field
+)
+{
+	if (!field)
+		throw std::exception("Field is null in " __FUNCSIG__);
+
+	auto e = field->GetExpression();
+
+	if (e.empty())
+		throw std::exception("Empty Expression.");
+
+	return CompileExpression
+	(
+		CreateFieldExpressionReadyToCompile(field),
+		field->RetrieveSymbolTablesIncludingExternals()
+	);
+}
 
 std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::CompileExpression
 (
@@ -26,7 +48,17 @@ std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::Co
 
 	if (!isCompiled)
 	{
-		std::exception ex(myParser->error().c_str());
+		std::string message =
+			myParser->error().c_str();
+
+		auto messageDecorized =
+			FrgBase_FieldTools::DecorizeExpressionUsingString
+		(
+			message,
+			symbolTables
+		);
+
+		std::exception ex(messageDecorized.c_str());
 		throw ex;
 	}
 

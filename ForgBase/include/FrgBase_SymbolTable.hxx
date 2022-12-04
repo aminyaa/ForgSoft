@@ -17,7 +17,6 @@ class FrgBase_SymbolTableRegistry;
 class FrgBase_ScalarField;
 class FrgBase_Field_Entity;
 
-template <int Dim>
 class FrgBase_VectorField;
 
 class FORGBASE_EXPORT FrgBase_SymbolTable
@@ -52,10 +51,16 @@ public:
 
 	std::string GetFullName(const std::string& delimiter = "_") const;
 
-	std::shared_ptr<FrgBase_ScalarField> AddVariable(const std::string& presentationName);
+	std::shared_ptr<FrgBase_ScalarField> AddVariable
+	(
+		const std::string& presentationName
+	);
 
-	template <int Dim>
-	std::shared_ptr<FrgBase_VectorField<Dim>> AddVector(const std::string& presentationName);
+	std::shared_ptr<FrgBase_VectorField> AddVector
+	(
+		const std::string& presentationName,
+		const int index
+	);
 
 	bool DeleteField(const std::shared_ptr<FrgBase_Field_Entity>& field);
 
@@ -79,7 +84,18 @@ public:
 
 	void CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = nullptr);
 
+private:
+
+	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
+
 protected:
+
+	static bool AddScalarToSymbolTable
+	(
+		const std::shared_ptr<exprtk::symbol_table<double>>& table,
+		const std::string& variableFullName,
+		double& value
+	);
 
 	static bool AddVectorToSymbolTable
 	(
@@ -106,6 +122,8 @@ protected:
 };
 
 EndForgBaseLib
+
+BOOST_CLASS_EXPORT_KEY(ForgBaseLib::FrgBase_SymbolTable)
 
 #include <FrgBase_SymbolTableI.hxx>
 

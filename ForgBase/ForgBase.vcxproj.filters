@@ -451,6 +451,30 @@
     <Filter Include="ForgLib\Base\Widgets\Menu\Action">
       <UniqueIdentifier>{7c8c0404-2114-433a-a9cb-bcdc8f5c8888}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Base\Core\Data Types\SymbolTable\Registries">
+      <UniqueIdentifier>{609ed5f4-70d3-470f-98c0-53212d905a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Field">
+      <UniqueIdentifier>{170c38e0-c923-4e24-99b9-50ab02c1b6a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Widgets">
+      <UniqueIdentifier>{4da08d86-e1ea-4a66-8f41-238a3c2715f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Field\TextEdit">
+      <UniqueIdentifier>{a31169f5-2839-465f-b60a-60aa029fd682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Field\Tree">
+      <UniqueIdentifier>{48e40943-a158-4e83-a8b4-6dbd742d408e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Field\TreeItem">
+      <UniqueIdentifier>{44b5e1ff-86b3-42e3-a2c5-af8fd1912281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Field\Dialog">
+      <UniqueIdentifier>{07257308-67db-44d8-a642-43bc764b3d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Widgets\Tools\Field\Functions">
+      <UniqueIdentifier>{e50cb746-394a-4da9-aa07-f62ce521f1fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Base\Widgets\TreeItem\FrgBase_TreeItem.cxx">
@@ -849,6 +873,27 @@
     <ClCompile Include="ForgLib\Base\Widgets\Menu\Action\FrgBase_MenuAction.cxx">
       <Filter>ForgLib\Base\Widgets\Menu\Action</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Base\Core\Data Types\SymbolTable\Registries\FrgBase_SymbolTableRegistries.cxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable\Registries</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Widgets\FrgBase_ToolsWidgets.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\TextEdit\FrgBase_FieldTextEdit.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\TextEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\Tree\FrgBase_FieldTreeWidget.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\TreeItem\FrgBase_FieldTreeItemWidget.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\TreeItem</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\Dialog\FrgBase_FieldDialog.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\Dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\Functions\FrgBase_FieldFunctionsTreeWidget.cxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\Functions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ForgLib\Base\Global\FrgBase_Global.hxx">
@@ -1096,6 +1141,15 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Icon\FrgBase_Icon.hxx">
       <Filter>ForgLib\Base\Widgets\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Core\Data Types\SymbolTable\Registries\FrgBase_SymbolTableRegistries.hxx">
+      <Filter>ForgLib\Base\Core\Data Types\SymbolTable\Registries</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Tools\Widgets\FrgBase_ToolsWidgets.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Tools\Field\TreeItem\FrgBase_FieldTreeItemWidget.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\TreeItem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1374,6 +1428,18 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Menu\Action\FrgBase_MenuAction.hxx">
       <Filter>ForgLib\Base\Widgets\Menu\Action</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Field\TextEdit\FrgBase_FieldTextEdit.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\TextEdit</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Field\Tree\FrgBase_FieldTreeWidget.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\Tree</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Field\Dialog\FrgBase_FieldDialog.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\Dialog</Filter>
+    </QtMoc>
+    <QtMoc Include="ForgLib\Base\Widgets\Tools\Field\Functions\FrgBase_FieldFunctionsTreeWidget.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools\Field\Functions</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

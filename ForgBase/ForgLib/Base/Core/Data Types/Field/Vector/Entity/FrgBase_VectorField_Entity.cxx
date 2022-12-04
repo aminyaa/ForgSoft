@@ -17,6 +17,18 @@ void ForgBaseLib::FrgBase_VectorField_Entity::CalcValue
 	const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated
 )
 {
+	if (theCalcValueFunction_)
+	{
+		auto value = theCalcValueFunction_();
+
+		if (theValue_.size() != value.size())
+			throw std::exception("Mismatch in size of function in " __FUNCSIG__);
+
+		theValue_ = value;
+
+		return;
+	}
+
 	FrgBase_Field_Entity::CalcValue(calculated);
 
 	theIsCalculating_ = true;
@@ -35,3 +47,15 @@ void ForgBaseLib::FrgBase_VectorField_Entity::CalcValue
 
 	theIsCalculating_ = false;
 }
+
+DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_VectorField_Entity)
+{
+	ar& boost::serialization::base_object<FrgBase_Field<std::vector<double>>>(*this);
+}
+
+DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_VectorField_Entity)
+{
+	ar& boost::serialization::base_object<FrgBase_Field<std::vector<double>>>(*this);
+}
+
+BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_VectorField_Entity)
