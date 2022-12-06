@@ -78,7 +78,7 @@ public:
 	static std::string UnDecorizeExpression
 	(
 		const std::string& decorizedExpression,
-		const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& tables
 	);
 };
 

@@ -47,6 +47,8 @@ public:
 	void AddExternalSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& est);
 	void RemoveExternalSymbolTable(const std::shared_ptr<FrgBase_SymbolTable>& est);
 
+	void AddExternalSymbolTables(const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& tables);
+
 	const auto& GetSymbolTable() const { return theSymbolTable_; }
 
 	std::string GetFullName(const std::string& delimiter = "_") const;
@@ -102,6 +104,11 @@ protected:
 		const std::shared_ptr<exprtk::symbol_table<double>>& table,
 		const std::string& variableFullName,
 		std::vector<double>& value
+	);
+
+	static bool RemoveFieldFromSymbolTable
+	(
+		const std::shared_ptr<FrgBase_Field_Entity>& field
 	);
 
 protected:

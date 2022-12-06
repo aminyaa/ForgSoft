@@ -67,12 +67,6 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 		auto p2 = partsTable->AddVariable("P2");
 		p2->SetExpression(p1->GetFullName() + " + 2.2");
 
-		auto dec = ForgBaseLib::FrgBase_FieldTools::DecorizeExpression(p2);
-
-		auto ss = dec;
-		auto undec = ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression(ss, registry1);
-		p2->SetExpression(undec);
-
 		/*std::string str =
 			"[${Geometry.Value4}, 2.0 * ${Geometry.Value5}, ${Table 2.Value0}, ${Geometry.Value4}]";
 
@@ -115,14 +109,14 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 
 		//PrintInfoToConsole(QString::fromStdString(registry1->Print()));
 
-		std::cout << registry1->Print() << std::endl;
+		/*std::cout << registry1->Print() << std::endl;
 
 		std::cout << "\n==============================\n\n";
 
 		auto fMy = std::make_shared<ForgBaseLib::FrgBase_SymbolTableRegistry>();
 		*fMy = *registry1;
 
-		std::cout << fMy->Print() << std::endl;
+		std::cout << fMy->Print() << std::endl;*/
 
 		/*auto w = new ForgBaseLib::FrgBase_FieldTextEdit(v1, this);
 		w->SetGeometry(40, 30);
@@ -131,10 +125,10 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 		/*auto w2 = new ForgBaseLib::FrgBase_FieldTreeWidget(registry1->GetTables());
 		w2->show();*/
 
-		/*auto w3 =
-			new ForgBaseLib::FrgBase_FieldDialog(v1);
+		auto w3 =
+			new ForgBaseLib::FrgBase_FieldDialog(v1, this);
 
-		w3->exec();*/
+		w3->exec();
 	}
  	catch (const std::exception& ex)
  	{

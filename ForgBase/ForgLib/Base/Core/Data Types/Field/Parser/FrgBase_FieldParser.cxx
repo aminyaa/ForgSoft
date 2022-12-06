@@ -21,10 +21,13 @@ std::shared_ptr<exprtk::expression<double>> ForgBaseLib::FrgBase_FieldParser::Co
 	if (e.empty())
 		throw std::exception("Empty Expression.");
 
+	const auto& tables =
+		field->RetrieveSymbolTablesIncludingExternals();
+
 	return CompileExpression
 	(
 		CreateFieldExpressionReadyToCompile(field),
-		field->RetrieveSymbolTablesIncludingExternals()
+		tables
 	);
 }
 
@@ -186,6 +189,52 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveValuesFromExpression
 	return result;
 }
 
+void ForgBaseLib::FrgBase_FieldParser::CheckRecursiveLoop
+(
+	const std::shared_ptr<FrgBase_Field_Entity>& field,
+	const std::string& expression
+)
+{
+	if (!field)
+		throw std::exception("Field is null in " __FUNCSIG__);
+
+	std::vector<std::string> varsNames;
+	exprtk::collect_variables
+	(
+		CreateFieldExpressionReadyToCompile(expression, field->IsVector()),
+		varsNames
+	);
+
+	const auto& myTables =
+		field->RetrieveSymbolTablesIncludingExternals();
+
+	auto fields =
+		FrgBase_FieldParser::RetrieveFieldsUsingFullName
+		(
+			varsNames,
+			myTables
+		);
+
+	std::string message =
+		"Cannot compile the expression. It points to " + FrgBase_FieldTools::AddDecoratorAndBracket(field) +
+		".\nIt will cause recursive definition.";
+
+	for (const auto& f : fields)
+	{
+		if (f == field)
+			throw std::exception(message.c_str());
+	}
+
+	const auto b = ContainsThisInFields
+	(
+		field,
+		fields
+	);
+
+	if (b)
+		throw std::exception(message.c_str());
+}
+
 double ForgBaseLib::FrgBase_FieldParser::CalcValueScalar
 (
 	const std::shared_ptr<FrgBase_ScalarField>& field,
@@ -255,23 +304,35 @@ bool ForgBaseLib::FrgBase_FieldParser::ContainFieldInCalculated
 
 std::string ForgBaseLib::FrgBase_FieldParser::CreateFieldExpressionReadyToCompile
 (
+	const std::string& expression,
+	const bool isVector
+)
+{
+	if (expression.empty())
+		throw std::exception("Expression cannot be empty.");
+
+	std::string result;
+	if (isVector && expression[0] == '[')
+		result = "return " + expression;
+	else
+		result = expression;
+
+	return result;
+}
+
+std::string ForgBaseLib::FrgBase_FieldParser::CreateFieldExpressionReadyToCompile
+(
 	const std::shared_ptr<FrgBase_Field_Entity>& field
 )
 {
 	if (!field)
 		throw std::exception("Field is null in " __FUNCSIG__);
 
-	auto expression = field->GetExpression();
-	if (expression.empty())
-		throw std::exception("Expression cannot be empty.");
-
-	std::string result;
-	if (field->IsVector() && expression[0] == '[')
-		result = "return " + expression;
-	else
-		result = expression;
-
-	return result;
+	return CreateFieldExpressionReadyToCompile
+	(
+		field->GetExpression(),
+		field->IsVector()
+	);
 }
 
 std::vector<std::string> ForgBaseLib::FrgBase_FieldParser::CollectVariablesFullName
@@ -324,6 +385,44 @@ std::string ForgBaseLib::FrgBase_FieldParser::CombineValues
 	}
 
 	return value.str();
+}
+
+std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>
+ForgBaseLib::FrgBase_FieldParser::ContainsThisInFields
+(
+	const std::shared_ptr<FrgBase_Field_Entity>& field,
+	const std::vector<std::shared_ptr<FrgBase_Field_Entity>>& fields
+)
+{
+	if (!field || fields.empty())
+		return nullptr;
+
+	for (const auto& f : fields)
+	{
+		if (f == field)
+			return f;
+
+		auto t = RetrieveDependentFields
+		(
+			f,
+			f->RetrieveSymbolTablesIncludingExternals()
+		);
+
+		const auto b = ContainsThisInFields
+		(
+			field,
+			RetrieveDependentFields
+			(
+				f,
+				f->RetrieveSymbolTablesIncludingExternals()
+			)
+		);
+
+		if (b)
+			return b;
+	}
+
+	return nullptr;
 }
 
 std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>

@@ -12,6 +12,16 @@ ForgBaseLib::FrgBase_VectorField_Entity::~FrgBase_VectorField_Entity()
 
 }
 
+std::string ForgBaseLib::FrgBase_VectorField_Entity::GetTypeAsString() const
+{
+	std::string middle =
+		GetSize() > 1 ?
+		std::to_string(GetSize()) :
+		"Dynamic";
+
+	return "Vector[" + middle + "]";
+}
+
 void ForgBaseLib::FrgBase_VectorField_Entity::CalcValue
 (
 	const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated
@@ -21,10 +31,13 @@ void ForgBaseLib::FrgBase_VectorField_Entity::CalcValue
 	{
 		auto value = theCalcValueFunction_();
 
-		if (theValue_.size() != value.size())
-			throw std::exception("Mismatch in size of function in " __FUNCSIG__);
+		/*if (theValue_.size() != value.size())
+			throw std::exception("Mismatch in size of function in " __FUNCSIG__);*/
 
-		theValue_ = value;
+		if (value.empty())
+			theValue_ = { 0.0 };
+		else
+			theValue_ = value;
 
 		return;
 	}

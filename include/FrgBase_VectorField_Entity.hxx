@@ -18,7 +18,7 @@ public:
 
 	bool IsVector() const override { return true; }
 
-	std::string GetTypeAsString() const override { return "Vector<" + std::to_string(GetSize()) + ">"; }
+	std::string GetTypeAsString() const override;
 
 	size_t GetSize() const { return theValue_.size(); }
 

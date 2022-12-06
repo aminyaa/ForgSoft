@@ -48,6 +48,8 @@ public:
 
 	Q_SIGNAL void TextEditTextChangedSignal();
 
+	QWidget* GetWidgetToFocus() const;
+
 protected:
 
 	void SetupLayout();

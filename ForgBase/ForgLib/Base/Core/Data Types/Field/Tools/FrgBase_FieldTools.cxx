@@ -259,14 +259,14 @@ std::string ForgBaseLib::FrgBase_FieldTools::DecorizeExpression
 std::string ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression
 (
 	const std::string& decorizedExpression,
-	const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& tables
 )
 {
 	if (decorizedExpression.empty())
 		throw std::exception("Empty Expression.");
 
-	if(!registry)
-		throw std::exception("Registry is null in " __FUNCSIG__);
+	if (tables.empty())
+		return decorizedExpression;
 
 	auto str = decorizedExpression;
 
@@ -300,7 +300,7 @@ std::string ForgBaseLib::FrgBase_FieldTools::UnDecorizeExpression
 				FrgBase_FieldParser::RetrieveFieldUsingFullPresentationName
 				(
 					word,
-					registry->GetTables()
+					tables
 				);
 
 			if (!field)

@@ -43,10 +43,13 @@ protected:
 
 	void UpdateButtons();
 
+	void InsertNameToTextEdit(const QString& name);
+
 protected slots:
 
-	void OKClickedSlot();
-	void CancelClickedSlot();
+	void accept() override;
+	void reject() override;
+
 	void InsertFieldNameToTextEditSlot(const QString& name);
 	void InsertFunctionNameToTextEditSlot(const QString& name);
 

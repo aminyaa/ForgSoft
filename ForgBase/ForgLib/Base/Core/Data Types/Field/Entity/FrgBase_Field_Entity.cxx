@@ -3,6 +3,7 @@
 #include <FrgBase_VectorField.hxx>
 #include <FrgBase_SymbolTableRegistry.hxx>
 #include <FrgBase_SymbolTable.hxx>
+#include <FrgBase_FieldTools.hxx>
 
 #include <exprtk.hpp>
 
@@ -65,6 +66,21 @@ std::string ForgBaseLib::FrgBase_Field_Entity::GetFullName
 	return theName_;
 }
 
+void ForgBaseLib::FrgBase_Field_Entity::SetExpression
+(
+	const std::string& expression
+)
+{
+	// This will check recursive loop.Throws exception if there was a problem.
+	FrgBase_FieldParser::CheckRecursiveLoop
+	(
+		this->shared_from_this(),
+		expression
+	);
+
+	theExpression_ = expression;
+}
+
 std::vector<std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>>
 ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTables() const
 {
@@ -73,7 +89,7 @@ ForgBaseLib::FrgBase_Field_Entity::RetrieveSymbolTables() const
 	auto base = theSymbolTable_;
 	while (base)
 	{
-		tables.push_back(theSymbolTable_);
+		tables.push_back(base);
 
 		base = base->GetParentSymbolTable();
 	}

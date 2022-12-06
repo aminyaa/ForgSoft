@@ -46,7 +46,7 @@ public:
 	std::string GetFullName(const std::string& delimiter = "_") const;
 
 	std::string GetExpression() const { return theExpression_; }
-	void SetExpression(const std::string& expression) { theExpression_ = expression; }
+	void SetExpression(const std::string& expression);
 
 	virtual bool IsScalar() const { return false; }
 	virtual bool IsVector() const { return false; }

@@ -75,6 +75,15 @@ void ForgBaseLib::FrgBase_SymbolTable::RemoveExternalSymbolTable
 	theExternalSymbolTables_ = result;
 }
 
+void ForgBaseLib::FrgBase_SymbolTable::AddExternalSymbolTables
+(
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& tables
+)
+{
+	for (const auto& table : tables)
+		AddExternalSymbolTable(table);
+}
+
 std::string ForgBaseLib::FrgBase_SymbolTable::GetFullName
 (
 	const std::string& delimiter
@@ -217,6 +226,8 @@ bool ForgBaseLib::FrgBase_SymbolTable::DeleteField
 		std::exception ex(meassage.c_str());
 		throw ex;
 	}
+
+	RemoveFieldFromSymbolTable(field);
 
 	std::vector<std::shared_ptr<FrgBase_Field_Entity>> finalFields;
 	for (const auto& f : theFields_)
@@ -477,6 +488,37 @@ bool ForgBaseLib::FrgBase_SymbolTable::AddVectorToSymbolTable
 			variableFullName,
 			value
 		);
+	}
+
+	return false;
+}
+
+bool ForgBaseLib::FrgBase_SymbolTable::RemoveFieldFromSymbolTable
+(
+	const std::shared_ptr<FrgBase_Field_Entity>& field
+)
+{
+	if (field)
+	{
+		const auto& table =
+			field->GetSymbolTable()->GetSymbolTable();
+		if (!table)
+			return false;
+		
+		if (field->IsScalar())
+		{
+			return table->remove_variable
+			(
+				field->GetFullName()
+			);
+		}
+		else if (field->IsVector())
+		{
+			return table->remove_vector
+			(
+				field->GetFullName()
+			);
+		}
 	}
 
 	return false;

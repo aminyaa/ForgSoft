@@ -53,6 +53,8 @@ void ForgBaseLib::FrgBase_FieldTextEdit::SetupLayout()
 			Qt::AlignmentFlag::AlignTop | Qt::AlignmentFlag::AlignLeft
 		);
 
+		theTextEdit_->selectAll();
+
 		connect
 		(
 			theTextEdit_,
@@ -97,7 +99,7 @@ std::string ForgBaseLib::FrgBase_FieldTextEdit::UnDecorizeExpression
 	auto e = FrgBase_FieldTools::UnDecorizeExpression
 	(
 		expression,
-		theField_->GetRegistry()
+		theField_->RetrieveSymbolTablesIncludingExternals()
 	);
 
 	return e;
@@ -117,6 +119,11 @@ void ForgBaseLib::FrgBase_FieldTextEdit::InsertTextAtCursor
 )
 {
 	theTextEdit_->insertPlainText(text);
+}
+
+QWidget* ForgBaseLib::FrgBase_FieldTextEdit::GetWidgetToFocus() const
+{
+	return theTextEdit_;
 }
 
 void ForgBaseLib::FrgBase_FieldTextEdit::CompileExpression()

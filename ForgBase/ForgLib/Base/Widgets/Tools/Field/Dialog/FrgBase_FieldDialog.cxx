@@ -17,7 +17,15 @@ ForgBaseLib::FrgBase_FieldDialog::FrgBase_FieldDialog
 	: QDialog(parent)
 	, theField_(field)
 {
-	this->setWindowTitle("Field Expression Definition Dialog");
+	if (!theField_)
+		throw std::exception("Field is null in " __FUNCSIG__);
+
+	QString wt =
+		"Expression Definition Dialog - Field (" +
+		QString::fromStdString(theField_->GetPresentationName()) +
+		")";
+
+	this->setWindowTitle(wt);
 
 	SetupLayout();
 
@@ -82,7 +90,7 @@ void ForgBaseLib::FrgBase_FieldDialog::SetupLayout()
 			theOKButton_,
 			&QPushButton::clicked,
 			this,
-			&FrgBase_FieldDialog::OKClickedSlot
+			&FrgBase_FieldDialog::accept
 		);
 
 		connect
@@ -90,7 +98,7 @@ void ForgBaseLib::FrgBase_FieldDialog::SetupLayout()
 			theCancelButton_,
 			&QPushButton::clicked,
 			this,
-			&FrgBase_FieldDialog::CancelClickedSlot
+			&FrgBase_FieldDialog::reject
 		);
 	}
 
@@ -148,21 +156,31 @@ void ForgBaseLib::FrgBase_FieldDialog::UpdateButtons()
 	);
 }
 
-void ForgBaseLib::FrgBase_FieldDialog::OKClickedSlot()
+void ForgBaseLib::FrgBase_FieldDialog::InsertNameToTextEdit
+(
+	const QString& name
+)
+{
+	theTextEdit_->InsertTextAtCursor(name);
+
+	theTextEdit_->GetWidgetToFocus()->setFocus(Qt::OtherFocusReason);
+}
+
+void ForgBaseLib::FrgBase_FieldDialog::accept()
 {
 	auto e =
 		theTextEdit_->GetUnDecorizedExpression();
 
 	theField_->SetExpression(e);
 
-	accept();
+	QDialog::accept();
 }
 
-void ForgBaseLib::FrgBase_FieldDialog::CancelClickedSlot()
+void ForgBaseLib::FrgBase_FieldDialog::reject()
 {
 	theField_->SetExpression(theTextEdit_->GetTmpExpression());
 
-	reject();
+	QDialog::reject();
 }
 
 void ForgBaseLib::FrgBase_FieldDialog::InsertFieldNameToTextEditSlot
@@ -170,7 +188,7 @@ void ForgBaseLib::FrgBase_FieldDialog::InsertFieldNameToTextEditSlot
 	const QString& name
 )
 {
-	theTextEdit_->InsertTextAtCursor(name);
+	InsertNameToTextEdit(name);
 }
 
 void ForgBaseLib::FrgBase_FieldDialog::InsertFunctionNameToTextEditSlot
@@ -178,5 +196,5 @@ void ForgBaseLib::FrgBase_FieldDialog::InsertFunctionNameToTextEditSlot
 	const QString& name
 )
 {
-	theTextEdit_->InsertTextAtCursor(name);
+	InsertNameToTextEdit(name);
 }

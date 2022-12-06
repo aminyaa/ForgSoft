@@ -39,6 +39,13 @@ public:
 		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
 	);
 
+	// This method will throw the suitable exception
+	static void CheckRecursiveLoop
+	(
+		const std::shared_ptr<FrgBase_Field_Entity>& field,
+		const std::string& expression
+	);
+
 	static double CalcValueScalar
 	(
 		const std::shared_ptr<FrgBase_ScalarField>& field,
@@ -109,8 +116,14 @@ public:
 
 	static std::string CreateFieldExpressionReadyToCompile
 	(
-		const std::shared_ptr<FrgBase_Field_Entity>& field
+		const std::string& expression,
+		const bool isVector
 	);
+	
+	static std::string CreateFieldExpressionReadyToCompile
+	(
+		const std::shared_ptr<FrgBase_Field_Entity>& field
+	);	
 
 	static std::vector<std::string> CollectVariablesFullName
 	(
@@ -126,6 +139,12 @@ public:
 	(
 		const std::vector<std::string>& headers,
 		const std::vector<double>& values
+	);
+
+	static std::shared_ptr<FrgBase_Field_Entity> ContainsThisInFields
+	(
+		const std::shared_ptr<FrgBase_Field_Entity>& field,
+		const std::vector<std::shared_ptr<FrgBase_Field_Entity>>& fields
 	);
 
 protected:
