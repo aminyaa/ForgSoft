@@ -76,9 +76,27 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 		if (this->selectedItems().size() == 1)
 		{
 			FrgBase_TreeItem* TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
-			if (TItem->GetContextMenu()->GetItem("Rename"))
-				if (TItem->GetContextMenu()->GetItem("Rename")->isEnabled())
-					TItem->RenameTItemSlot();
+			if (TItem)
+			{
+				auto rAction =
+					TItem->GetRenameAction();
+
+				if (rAction)
+				{
+					if (rAction->isEnabled())
+					{
+						if (!TItem->CanRenameUsingLock())
+						{
+							const QString message =
+								"Cannot rename \"" + TItem->text(0) + "\" because it is locked.";
+
+							GetParentMainWindow()->PrintWarningToConsole(message);
+						}
+						else
+							TItem->RenameTItemSlot();
+					}
+				}
+			}
 		}
 		break;
 	case Qt::Key_Return:
@@ -99,9 +117,26 @@ void ForgBaseLib::FrgBase_Tree::keyPressEvent
 		if (this->selectedItems().size() == 1)
 		{
 			FrgBase_TreeItem* TItem = dynamic_cast<FrgBase_TreeItem*>(this->selectedItems()[0]);
-			if(TItem->GetContextMenu()->GetItem("Delete"))
-				if(TItem->GetContextMenu()->GetItem("Delete")->isEnabled())
-					DeleteTreeItemSlot(TItem);
+			if (TItem)
+			{
+				auto dAction = TItem->GetDeleteAction();
+
+				if (dAction)
+				{
+					if (dAction->isEnabled())
+					{
+						if (!TItem->CanDeleteUsingLock())
+						{
+							const QString message =
+								"Cannot delete \"" + TItem->text(0) + "\" because it is locked.";
+
+							GetParentMainWindow()->PrintWarningToConsole(message);
+						}
+						else
+							DeleteTreeItemSlot(TItem);
+					}
+				}
+			}
 		}
 		break;
 	default:
@@ -117,7 +152,17 @@ void ForgBaseLib::FrgBase_Tree::itemClickedSlot
 {
 	theLastLeftClickedTItem_ = dynamic_cast<FrgBase_TreeItem*>(item);
 	if (theLastLeftClickedTItem_)
-		theParentMainWindow_->SetPropertiesPanel(theLastLeftClickedTItem_->GetPropertiesPanel());
+	{
+		auto panel =
+			theLastLeftClickedTItem_->CanShowPPanelUsingLock() ?
+			theLastLeftClickedTItem_->GetPropertiesPanel() :
+			nullptr;
+
+		theParentMainWindow_->SetPropertiesPanel
+		(
+			panel
+		);
+	}
 
 	FrgBase_TreeItem* TItem = dynamic_cast<FrgBase_TreeItem*>(item);
 	if (TItem)
@@ -172,7 +217,14 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 	if (item)
 	{
 		theLastRightClickedTItem_ = item;
-		if (item->GetContextMenu())
+		if (item->GetLockType() == FrgBase_TreeItem::LockType::Full)
+		{
+			const QString message =
+				"\"" + item->text(0) + "\" is locked.";
+
+			GetParentMainWindow()->PrintWarningToConsole(message);
+		}
+		else if (item->GetContextMenu())
 		{
 			item->GetContextMenu()->Execute(globalPos);
 
@@ -187,14 +239,23 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 					item->GetContextMenu()->exec(globalPos);
 			}*/
 		}
-			
+
 	}
 }
 
-void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
+void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem* TItem)
 {
 	if (TItem)
 	{
+		if (!TItem->CanDeleteUsingLock())
+		{
+			const QString message =
+				"Cannot delete \"" + TItem->text(0) + "\" because it is locked.";
+
+			GetParentMainWindow()->PrintWarningToConsole(message);
+			return;
+		}
+
 		std::shared_ptr<FrgBase_DlgDelete> deleteDlg = std::make_shared<FrgBase_DlgDelete>(TItem->text(0), GetParentMainWindow());
 
 		if (deleteDlg->exec() == QDialog::Accepted)
@@ -202,6 +263,16 @@ void ForgBaseLib::FrgBase_Tree::DeleteTreeItemSlot(FrgBase_TreeItem * TItem)
 			const auto& parentItem = TItem->GetParentTItem();
 			try
 			{
+				const auto b = TItem->IsDeletable();
+
+				if (!b)
+				{
+					std::string message =
+						"Cannot delete \"" + TItem->text(0).toStdString() + "\"";
+
+					throw std::exception(message.c_str());
+				}
+
 				emit TItem->TItemIsGoingToBeDeleted();
 
 				delete TItem;
@@ -263,7 +334,7 @@ void ForgBaseLib::FrgBase_Tree::ScrollToItems
 	setFocus();
 }
 
-ForgBaseLib::FrgBase_TreeItem * ForgBaseLib::FrgBase_Tree::FindTItemByObjectName(const QString & objectName)
+ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_Tree::FindTItemByObjectName(const QString& objectName)
 {
 	QTreeWidgetItemIterator it(this);
 	while (*it)
@@ -414,12 +485,12 @@ void ForgBaseLib::FrgBase_Tree::SetParentMainWindow(FrgBase_MainWindow* parentMa
 
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_Tree)
 {
-	
+
 }
 
 DECLARE_LOAD_IMP(ForgBaseLib::FrgBase_Tree)
 {
-	
+
 }
 
 BOOST_CLASS_EXPORT_CXX(ForgBaseLib::FrgBase_Tree)

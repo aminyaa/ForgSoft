@@ -129,6 +129,8 @@ MainWindow::MainWindow(QWidget* parent /* = nullptr */)
 			new ForgBaseLib::FrgBase_FieldDialog(v1, this);
 
 		w3->exec();
+
+		PrintSuccessToConsole("DSfdsjfikg sdihfgids fds");
 	}
  	catch (const std::exception& ex)
  	{

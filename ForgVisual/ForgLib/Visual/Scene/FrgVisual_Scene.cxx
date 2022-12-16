@@ -122,6 +122,15 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 	theLogoActor_ = vtkSmartPointer<vtkTextActor>::New();
 	theLogoActor_->SetInput("Forg Soft");
 
+	connect
+	(
+		this,
+		&FrgVisual_Scene_Entity::RemoveActor,
+		this,
+		&FrgVisual_Scene_Entity::RemoveActorSlot,
+		Qt::QueuedConnection
+	);
+
 	//SetParentMainWindow(parentMainWindow);
 }
 
@@ -219,7 +228,7 @@ int ForgVisualLib::FrgVisual_Scene_Entity::AddActorToScene(FrgVisual_BaseActor_E
 	return index;
 }
 
-void ForgVisualLib::FrgVisual_Scene_Entity::RemoveActor(FrgVisual_BaseActor_Entity* actor)
+void ForgVisualLib::FrgVisual_Scene_Entity::RemoveActorSlot(FrgVisual_BaseActor_Entity* actor)
 {
 	if (!actor)
 		return;

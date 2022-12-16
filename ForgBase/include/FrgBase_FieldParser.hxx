@@ -85,13 +85,15 @@ public:
 	static std::vector<std::shared_ptr<FrgBase_Field_Entity>> RetrieveDependentFields
 	(
 		const std::shared_ptr<FrgBase_Field_Entity>& field,
-		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables,
+		const bool recursively = false
 	);
 
 	static std::vector<std::shared_ptr<FrgBase_Field_Entity>> RetrieveFieldsUsingThisField
 	(
 		const std::shared_ptr<FrgBase_Field_Entity>& field,
-		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
+		const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables,
+		const bool recursively = false
 	);
 
 	/*static std::vector<FrgBase_Field_Entity*> RetrieveDependentFields

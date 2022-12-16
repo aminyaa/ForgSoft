@@ -337,9 +337,6 @@
     <Filter Include="ForgLib\Base\Widgets\Properties\Widgets\Field\Dialog">
       <UniqueIdentifier>{ed854db2-d06d-457b-ad71-e7686d24a0e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ForgLib\Base\Script">
-      <UniqueIdentifier>{c9a1fda1-7352-4a26-b6b5-c011abfddc7d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ForgLib\Base\Widgets\Properties\Variants\SelectPath">
       <UniqueIdentifier>{f45b8c56-02e4-4356-b09c-9ff24742731d}</UniqueIdentifier>
     </Filter>
@@ -474,6 +471,9 @@
     </Filter>
     <Filter Include="ForgLib\Base\Widgets\Tools\Field\Functions">
       <UniqueIdentifier>{e50cb746-394a-4da9-aa07-f62ce521f1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ForgLib\Base\Script">
+      <UniqueIdentifier>{c9a1fda1-7352-4a26-b6b5-c011abfddc7d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1043,9 +1043,6 @@
     <ClInclude Include="ForgLib\Base\Core\Data Types\Point\FrgBase_PntI.hxx">
       <Filter>ForgLib\Base\Core\Data Types\Point</Filter>
     </ClInclude>
-    <ClInclude Include="ForgLib\Base\Script\FrgBase_Script.hxx">
-      <Filter>ForgLib\Base\Script</Filter>
-    </ClInclude>
     <ClInclude Include="ForgLib\Base\Core\Solvers\FullMtx\FrgBase_AbsMtx.hxx">
       <Filter>ForgLib\Base\Core\Solvers\FullMtx</Filter>
     </ClInclude>
@@ -1150,6 +1147,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Base\Widgets\Tools\Field\TreeItem\FrgBase_FieldTreeItemWidget.hxx">
       <Filter>ForgLib\Base\Widgets\Tools\Field\TreeItem</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Base\Script\FrgBase_Script.hxx">
+      <Filter>ForgLib\Base\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

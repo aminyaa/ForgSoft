@@ -523,9 +523,12 @@ std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
 ForgBaseLib::FrgBase_FieldParser::RetrieveDependentFields
 (
 	const std::shared_ptr<FrgBase_Field_Entity>& field,
-	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables,
+	const bool recursively
 )
 {
+	std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>> result;
+
 	auto collectedVariables =
 		CollectVariablesFullName(field);
 
@@ -536,14 +539,27 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveDependentFields
 			symbolTables
 		);
 
-	return dependentFields;
+	result = dependentFields;
+
+	if (recursively)
+	{
+		for (auto f : dependentFields)
+		{
+			auto fs = RetrieveDependentFields(f, symbolTables);
+			for (auto fin : fs)
+				result.push_back(fin);
+		}
+	}
+
+	return result;
 }
 
 std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
 ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingThisField
 (
 	const std::shared_ptr<FrgBase_Field_Entity>& field,
-	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables
+	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& symbolTables,
+	const bool recursively
 )
 {
 	std::vector<std::shared_ptr<FrgBase_Field_Entity>> result;
@@ -552,7 +568,7 @@ ForgBaseLib::FrgBase_FieldParser::RetrieveFieldsUsingThisField
 	{
 		for (const auto& f : t->GetFields())
 		{
-			for (const auto& df : RetrieveDependentFields(f, symbolTables))
+			for (const auto& df : RetrieveDependentFields(f, symbolTables, recursively))
 			{
 				if (df == field)
 				{

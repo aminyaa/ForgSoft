@@ -116,7 +116,7 @@ public:
 
 	// return actor index in registry, return -2 if actor is PickingPoint, return -1 if registration of actor was not successful
 	int AddActorToScene(FrgVisual_BaseActor_Entity* actor);
-	void RemoveActor(FrgVisual_BaseActor_Entity* actor);
+	Q_SIGNAL void RemoveActor(FrgVisual_BaseActor_Entity* actor);
 
 	std::vector<FrgVisual_GridActor*> DrawGrid
 	(
@@ -170,6 +170,8 @@ public:
 protected:
 
 	void InitLogoImage(const std::string& fileName = ICON_FRGVISUAL_SCENE_LOGO);
+
+	void RemoveActorSlot(FrgVisual_BaseActor_Entity* actor);
 
 Q_SIGNALS:
 

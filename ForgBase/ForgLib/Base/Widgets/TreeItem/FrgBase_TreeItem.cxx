@@ -195,6 +195,42 @@ void ForgBaseLib::FrgBase_TreeItem::SetIcon(int column, const FrgBase_Icon& icon
 	theIcon_ = new FrgBase_Icon(icon);
 }
 
+bool ForgBaseLib::FrgBase_TreeItem::CanRenameUsingLock() const
+{
+	auto condition =
+		theLockType_ == LockType::Rename ||
+		theLockType_ == LockType::RenameAndDelete ||
+		theLockType_ == LockType::RenameAndPPanel ||
+		theLockType_ == LockType::RenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::Full;
+
+	return !condition;
+}
+
+bool ForgBaseLib::FrgBase_TreeItem::CanDeleteUsingLock() const
+{
+	auto condition =
+		theLockType_ == LockType::Delete ||
+		theLockType_ == LockType::DeleteAndPPanel ||
+		theLockType_ == LockType::RenameAndDelete ||
+		theLockType_ == LockType::RenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::Full;
+
+	return !condition;
+}
+
+bool ForgBaseLib::FrgBase_TreeItem::CanShowPPanelUsingLock() const
+{
+	auto condition =
+		theLockType_ == LockType::PPanel ||
+		theLockType_ == LockType::RenameAndPPanel ||
+		theLockType_ == LockType::DeleteAndPPanel ||
+		theLockType_ == LockType::RenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::Full;
+
+	return !condition;
+}
+
 void ForgBaseLib::FrgBase_TreeItem::SortTItem(Qt::SortOrder sortOrder_)
 {
 	if (theTItemIsSortable_)
@@ -330,6 +366,15 @@ bool ForgBaseLib::FrgBase_TreeItem::IsSameNameTItem(const QString& name)
 
 void ForgBaseLib::FrgBase_TreeItem::RenameTItemSlot(bool sortParentTItem)
 {
+	if (!CanRenameUsingLock())
+	{
+		const QString message =
+			"Cannot rename \"" + this->text(0) + "\" because it is locked.";
+
+		GetParentMainWindow()->PrintWarningToConsole(message);
+		return;
+	}
+
 	std::shared_ptr<FrgBase_DlgRename> dlg = std::make_shared<FrgBase_DlgRename>(this->text(0), theParentMainWindow_);
 
 	if (dlg->exec() == FrgBase_DlgRename::Accepted)

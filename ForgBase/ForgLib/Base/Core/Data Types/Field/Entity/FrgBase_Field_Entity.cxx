@@ -149,10 +149,24 @@ bool ForgBaseLib::FrgBase_Field_Entity::IsDeletable() const
 		FrgBase_FieldParser::RetrieveFieldsUsingThisField
 		(
 			pointer,
-			theSymbolTable_->GetRegistry()->GetTables()
+			this->RetrieveSymbolTablesIncludingExternals(),
+			true
 		);
 
-	return fields.empty();
+	const bool isDeletable = fields.empty();
+
+	if (!isDeletable)
+	{
+		std::string message =
+			"Cannot delete \"" + GetPresentationName() + "\". Fields that use this field are:\n\t\t";
+
+		for (const auto& field : fields)
+			message += "- " + field->GetFullPresentationName() + "\n\t\t";
+
+		throw std::exception(message.c_str());
+	}
+
+	return true;
 }
 
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_Field_Entity)

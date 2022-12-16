@@ -32,6 +32,21 @@ class FORGBASE_EXPORT FrgBase_TreeItem
 
 		Q_PROPERTY(FrgBase_PrptsVrntString* TItemName READ GetTItemName WRITE SetTItemName NOTIFY TItemNameChanged)
 
+public:
+
+		enum class LockType
+	{
+		None,
+		Rename,
+		Delete,
+		PPanel,
+		RenameAndDelete,
+		RenameAndPPanel,
+		DeleteAndPPanel,
+		RenameAndDeleteAndPPanel,
+		Full
+	};
+
 protected:
 
 	FrgBase_Tree* theParentTree_ = NullPtr;
@@ -43,6 +58,8 @@ protected:
 	bool theTItemIsDeletable_;
 	bool theTItemIsDraggable_;
 	bool theTItemIsDroppable_;
+
+	LockType theLockType_ = LockType::None;
 
 	int theLevelInTree_ = -1;
 
@@ -99,21 +116,21 @@ public:
 	std::vector<T*> GetAllChildrenToTheRootByType() const;
 
 	bool IsSameNameTItem(const QString& name);
-	bool IsTItemClickable() const { return theTItemIsClickable_; }
-	void SetTItemClickable(bool condition) { theTItemIsClickable_ = condition; }
+	virtual bool IsTItemClickable() const { return theTItemIsClickable_; }
+	virtual void SetTItemClickable(bool condition) { theTItemIsClickable_ = condition; }
 
-	void SetTItemSortable(bool condition = true) { theTItemIsSortable_ = condition; }
-	bool IsTItemSortable() const { return theTItemIsSortable_; }
+	virtual void SetTItemSortable(bool condition = true) { theTItemIsSortable_ = condition; }
+	virtual bool IsTItemSortable() const { return theTItemIsSortable_; }
 
 	virtual void DoAfterConstruct() {}
 
 	FrgBase_PrptsVrntString* GetTItemName() const { return theTItemName_; }
 	void SetTItemName(FrgBase_PrptsVrntString* variant) { theTItemName_ = variant; }
 
-	void AddRenameOptionInContextMenu();
-	void RemoveRenameOptionInContextMenu();
-	void AddDeleteOptionInContextMenu();
-	void RemoveDeleteOptionInContextMenu();
+	virtual void AddRenameOptionInContextMenu();
+	virtual void RemoveRenameOptionInContextMenu();
+	virtual void AddDeleteOptionInContextMenu();
+	virtual void RemoveDeleteOptionInContextMenu();
 
 	void ConstructTItem
 	(
@@ -127,23 +144,30 @@ public:
 	virtual void SortTItem(Qt::SortOrder sortOrder_ = Qt::AscendingOrder);
 
 	virtual bool IsDeletable() const { return theTItemIsDeletable_; }
-	void SetDeletable(bool deletable) { theTItemIsDeletable_ = deletable; }
+	virtual void SetDeletable(bool deletable) { theTItemIsDeletable_ = deletable; }
 
-	bool IsDraggable() const { return theTItemIsDraggable_; }
-	void SetDraggable(bool drggable) { theTItemIsDraggable_ = drggable; }
+	virtual bool IsDraggable() const { return theTItemIsDraggable_; }
+	virtual void SetDraggable(bool drggable) { theTItemIsDraggable_ = drggable; }
 
-	bool IsDroppable() const { return theTItemIsDroppable_; }
-	void SetDroppable(bool droppable) { theTItemIsDroppable_ = droppable; }
+	virtual bool IsDroppable() const { return theTItemIsDroppable_; }
+	virtual void SetDroppable(bool droppable) { theTItemIsDroppable_ = droppable; }
+
+	virtual LockType GetLockType() const { return theLockType_; }
+	virtual void SetLockType(LockType lt) { theLockType_ = lt; }
 
 	virtual bool CanDropTo(FrgBase_TreeItem* draggedTItem) { return true; }
 
 	virtual bool IsMyParent(FrgBase_TreeItem* p, bool recursive = true) const;
 
-	auto GetIcon() const { return theIcon_; }
+	virtual FrgBase_Icon* GetIcon() const { return theIcon_; }
 	virtual void SetIcon(int column, const FrgBase_Icon& icon);
 
-	auto GetRenameAction() const { return theRenameAction_; }
-	auto GetDeleteAction() const { return theDeleteAction_; }
+	virtual FrgBase_MenuAction* GetRenameAction() const { return theRenameAction_; }
+	virtual FrgBase_MenuAction* GetDeleteAction() const { return theDeleteAction_; }
+
+	virtual bool CanRenameUsingLock() const;
+	virtual bool CanDeleteUsingLock() const;
+	virtual bool CanShowPPanelUsingLock() const;
 
 private:
 

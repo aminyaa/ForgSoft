@@ -46,12 +46,20 @@ void Tree::FormTree()
 
 	auto s1 = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 1 3D", nullptr, this);
 	s1->FormTItem();
+	s1->SetLockType(ForgBaseLib::FrgBase_TreeItem::LockType::RenameAndDeleteAndPPanel);
+	s1->AddRenameOptionInContextMenu();
+	s1->AddRenameOptionInContextMenu();
 
 	auto s2 = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 2 3D", nullptr, this);
 	s2->FormTItem();
+	s2->AddRenameOptionInContextMenu();
+	s2->AddRenameOptionInContextMenu();
 
 	auto s3 = new ForgVisualLib::FrgVisual_Scene3D_TItem("Scene 3 3D", nullptr, this);
 	s3->FormTItem();
+	s3->SetLockType(ForgBaseLib::FrgBase_TreeItem::LockType::Rename);
+	s3->AddRenameOptionInContextMenu();
+	s3->AddRenameOptionInContextMenu();
 
 	theItems_.push_back(s1);
 	theItems_.push_back(s2);

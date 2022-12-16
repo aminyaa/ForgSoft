@@ -152,6 +152,7 @@ public:
 
 Q_SIGNALS:
 
+	void PrintSuccessToConsole(const QString& info);
 	void PrintInfoToConsole(const QString& info);
 	void PrintWarningToConsole(const QString& info);
 	void PrintErrorToConsole(const QString& info);
@@ -178,9 +179,10 @@ protected slots:
 	void UpdateCPUUsageSlot();
 	void UpdateRAMUsageSlot();
 
+	void PrintSuccessToConsoleSlot(const QString& success);
 	void PrintInfoToConsoleSlot(const QString& info);
-	void PrintWarningToConsoleSlot(const QString& info);
-	void PrintErrorToConsoleSlot(const QString& info);
+	void PrintWarningToConsoleSlot(const QString& warning);
+	void PrintErrorToConsoleSlot(const QString& error);
 
 public slots:
 

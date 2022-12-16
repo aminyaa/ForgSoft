@@ -49,6 +49,7 @@ ForgBaseLib::FrgBase_MainWindow::FrgBase_MainWindow
 
 	theChaiScript_ = std::make_shared<chaiscript::ChaiScript>();
 
+	connect(this, &FrgBase_MainWindow::PrintSuccessToConsole, this, &FrgBase_MainWindow::PrintSuccessToConsoleSlot, Qt::QueuedConnection);
 	connect(this, &FrgBase_MainWindow::PrintInfoToConsole, this, &FrgBase_MainWindow::PrintInfoToConsoleSlot, Qt::QueuedConnection);
 	connect(this, &FrgBase_MainWindow::PrintWarningToConsole, this, &FrgBase_MainWindow::PrintWarningToConsoleSlot, Qt::QueuedConnection);
 	connect(this, &FrgBase_MainWindow::PrintErrorToConsole, this, &FrgBase_MainWindow::PrintErrorToConsoleSlot, Qt::QueuedConnection);
@@ -334,6 +335,18 @@ void ForgBaseLib::FrgBase_MainWindow::SetGeometry(int PercentageOfScreen)
 
 	if (theFrameLessWindow_)
 		theFrameLessWindow_->SetGeometry(PercentageOfScreen);
+}
+
+void ForgBaseLib::FrgBase_MainWindow::PrintSuccessToConsoleSlot
+(
+	const QString& success
+)
+{
+	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
+	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
+
+	QString message = "<a style=\"color:rgb(0, 153, 51);white-space:pre\">" + (QTime::currentTime().toString() + " [Success]  " + success).toHtmlEscaped() + "</a>";
+	editor->appendHtml(message);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsoleSlot(const QString& info)
@@ -685,7 +698,9 @@ void ForgBaseLib::FrgBase_MainWindow::SetThemeDark(bool condition)
 
 	while (ssIn.readLineInto(&line))
 	{
-		if (line.contains("[Info"))
+		if (line.contains("[Success"))
+			color = "rgb(0, 153, 51)";
+		else if (line.contains("[Info"))
 			color = theIsThemeDark_ ? "white" : "black";
 		else if (line.contains("[Warning"))
 			color = "rgb(240, 137, 48)";
