@@ -455,6 +455,38 @@ void ForgBaseLib::FrgBase_SymbolTable::CalcValue
 		field->CalcValue(myCalculated);
 }
 
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_ScalarField>>
+ForgBaseLib::FrgBase_SymbolTable::GetScalarFields() const
+{
+	std::vector<std::shared_ptr<FrgBase_ScalarField>> result;
+
+	for (const auto& field : theFields_)
+	{
+		const auto& scalarField =
+			std::dynamic_pointer_cast<FrgBase_ScalarField>(field);
+		if (scalarField)
+			result.push_back(scalarField);
+	}
+
+	return result;
+}
+
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_VectorField>>
+ForgBaseLib::FrgBase_SymbolTable::GetVectorFields() const
+{
+	std::vector<std::shared_ptr<FrgBase_VectorField>> result;
+
+	for (const auto& field : theFields_)
+	{
+		const auto& vectorField =
+			std::dynamic_pointer_cast<FrgBase_VectorField>(field);
+		if (vectorField)
+			result.push_back(vectorField);
+	}
+
+	return result;
+}
+
 bool ForgBaseLib::FrgBase_SymbolTable::AddScalarToSymbolTable
 (
 	const std::shared_ptr<exprtk::symbol_table<double>>& table,

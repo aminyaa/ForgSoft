@@ -127,6 +127,48 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::Print
 	out << str;
 }
 
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>>
+ForgBaseLib::FrgBase_SymbolTableRegistry::GetAllFields() const
+{
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> result;
+	for (const auto& table : theTables_)
+	{
+		const auto& fields = table->GetFields();
+		for (const auto& field : fields)
+			result.push_back(field);
+	}
+
+	return result;
+}
+
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_ScalarField>>
+ForgBaseLib::FrgBase_SymbolTableRegistry::GetAllScalarFields() const
+{
+	std::vector<std::shared_ptr<FrgBase_ScalarField>> result;
+	for (const auto& table : theTables_)
+	{
+		auto fields = table->GetScalarFields();
+		for (const auto& field : fields)
+			result.push_back(field);
+	}
+
+	return result;
+}
+
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_VectorField>>
+ForgBaseLib::FrgBase_SymbolTableRegistry::GetAllVectorFields() const
+{
+	std::vector<std::shared_ptr<FrgBase_VectorField>> result;
+	for (const auto& table : theTables_)
+	{
+		auto fields = table->GetVectorFields();
+		for (const auto& field : fields)
+			result.push_back(field);
+	}
+
+	return result;
+}
+
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_SymbolTableRegistry)
 {
 	ar& boost::serialization::base_object<FrgBase_Object>(*this);

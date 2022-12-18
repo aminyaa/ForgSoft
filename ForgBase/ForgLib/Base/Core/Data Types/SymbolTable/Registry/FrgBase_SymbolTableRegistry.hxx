@@ -8,6 +8,9 @@ BeginForgBaseLib
 
 class FrgBase_SymbolTableRegistries;
 class FrgBase_SymbolTable;
+class FrgBase_Field_Entity;
+class FrgBase_ScalarField;
+class FrgBase_VectorField;
 
 class FORGBASE_EXPORT FrgBase_SymbolTableRegistry
 	: public FrgBase_Object
@@ -49,6 +52,10 @@ public:
 	std::string Print(bool calcValue = true);
 
 	void Print(std::ostream& out, bool calcValue = true);
+
+	std::vector<std::shared_ptr<FrgBase_Field_Entity>> GetAllFields() const;
+	std::vector<std::shared_ptr<FrgBase_ScalarField>> GetAllScalarFields() const;
+	std::vector<std::shared_ptr<FrgBase_VectorField>> GetAllVectorFields() const;
 
 private:
 

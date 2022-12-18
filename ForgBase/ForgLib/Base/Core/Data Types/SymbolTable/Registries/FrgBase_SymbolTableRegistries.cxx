@@ -75,6 +75,21 @@ bool ForgBaseLib::FrgBase_SymbolTableRegistries::ContainsRegistry
 	return false;
 }
 
+std::vector<std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>>
+ForgBaseLib::FrgBase_SymbolTableRegistries::RetrieveAllTables() const
+{
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>> tables;
+
+	for (const auto& registry : theRegistries_)
+	{
+		const auto& tablesIn = registry->GetTables();
+		for (const auto& table : tablesIn)
+			tables.push_back(table);
+	}
+
+	return tables;
+}
+
 DECLARE_SAVE_IMP(ForgBaseLib::FrgBase_SymbolTableRegistries)
 {
 	ar& boost::serialization::base_object<FrgBase_Object>(*this);
