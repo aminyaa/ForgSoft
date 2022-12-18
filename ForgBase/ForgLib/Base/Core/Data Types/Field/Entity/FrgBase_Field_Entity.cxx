@@ -1,6 +1,7 @@
 #include <FrgBase_Field_Entity.hxx>
 #include <FrgBase_ScalarField.hxx>
 #include <FrgBase_VectorField.hxx>
+#include <FrgBase_SymbolTableRegistries.hxx>
 #include <FrgBase_SymbolTableRegistry.hxx>
 #include <FrgBase_SymbolTable.hxx>
 #include <FrgBase_FieldTools.hxx>
@@ -149,7 +150,8 @@ bool ForgBaseLib::FrgBase_Field_Entity::IsDeletable() const
 		FrgBase_FieldParser::RetrieveFieldsUsingThisField
 		(
 			pointer,
-			this->RetrieveSymbolTablesIncludingExternals(),
+			theRegistry_->GetParentRegistries()->RetrieveAllTables(),
+			/*this->RetrieveSymbolTablesIncludingExternals(),*/
 			true
 		);
 
