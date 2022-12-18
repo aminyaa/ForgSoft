@@ -154,9 +154,12 @@ void ForgBaseLib::FrgBase_Tree::itemClickedSlot
 	if (theLastLeftClickedTItem_)
 	{
 		auto panel =
-			theLastLeftClickedTItem_->CanShowPPanelUsingLock() ?
-			theLastLeftClickedTItem_->GetPropertiesPanel() :
-			nullptr;
+			theLastLeftClickedTItem_->GetPropertiesPanel();
+
+		const auto condition =
+			theLastLeftClickedTItem_->CanShowPPanelUsingLock();
+
+		panel->setEnabled(condition);
 
 		theParentMainWindow_->SetPropertiesPanel
 		(
@@ -217,7 +220,7 @@ void ForgBaseLib::FrgBase_Tree::showContextMenu
 	if (item)
 	{
 		theLastRightClickedTItem_ = item;
-		if (item->GetLockType() == FrgBase_TreeItem::LockType::Full)
+		if (!item->CanShowContextMenuUsingLock())
 		{
 			const QString message =
 				"\"" + item->text(0) + "\" is locked.";

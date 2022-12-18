@@ -202,6 +202,10 @@ bool ForgBaseLib::FrgBase_TreeItem::CanRenameUsingLock() const
 		theLockType_ == LockType::RenameAndDelete ||
 		theLockType_ == LockType::RenameAndPPanel ||
 		theLockType_ == LockType::RenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRename ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDelete ||
+		theLockType_ == LockType::ContextMenuAndRenameAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDeleteAndPPanel ||
 		theLockType_ == LockType::Full;
 
 	return !condition;
@@ -214,6 +218,10 @@ bool ForgBaseLib::FrgBase_TreeItem::CanDeleteUsingLock() const
 		theLockType_ == LockType::DeleteAndPPanel ||
 		theLockType_ == LockType::RenameAndDelete ||
 		theLockType_ == LockType::RenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndDelete ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDelete ||
+		theLockType_ == LockType::ContextMenuAndDeleteAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDeleteAndPPanel ||
 		theLockType_ == LockType::Full;
 
 	return !condition;
@@ -226,9 +234,42 @@ bool ForgBaseLib::FrgBase_TreeItem::CanShowPPanelUsingLock() const
 		theLockType_ == LockType::RenameAndPPanel ||
 		theLockType_ == LockType::DeleteAndPPanel ||
 		theLockType_ == LockType::RenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRenameAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndDeleteAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDeleteAndPPanel ||
 		theLockType_ == LockType::Full;
 
 	return !condition;
+}
+
+bool ForgBaseLib::FrgBase_TreeItem::CanShowContextMenuUsingLock() const
+{
+	auto condition =
+		theLockType_ == LockType::ContextMenu ||
+		theLockType_ == LockType::ContextMenuAndRename ||
+		theLockType_ == LockType::ContextMenuAndDelete ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDelete ||
+		theLockType_ == LockType::ContextMenuAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRenameAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndDeleteAndPPanel ||
+		theLockType_ == LockType::ContextMenuAndRenameAndDeleteAndPPanel ||
+		theLockType_ == LockType::Full;
+
+	return !condition;
+}
+
+bool ForgBaseLib::FrgBase_TreeItem::HasParentTItemNullTree() const
+{
+	if (GetParentTItem())
+	{
+		if (!GetParentTItem()->GetParentTree())
+			return true;
+
+		return false;
+	}
+
+	return false;
 }
 
 void ForgBaseLib::FrgBase_TreeItem::SortTItem(Qt::SortOrder sortOrder_)
