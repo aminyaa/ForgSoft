@@ -44,6 +44,14 @@ public:
 		RenameAndPPanel,
 		DeleteAndPPanel,
 		RenameAndDeleteAndPPanel,
+		ContextMenu,
+		ContextMenuAndRename,
+		ContextMenuAndDelete,
+		ContextMenuAndRenameAndDelete,
+		ContextMenuAndPPanel,
+		ContextMenuAndRenameAndPPanel,
+		ContextMenuAndDeleteAndPPanel,
+		ContextMenuAndRenameAndDeleteAndPPanel,
 		Full
 	};
 
@@ -168,6 +176,9 @@ public:
 	virtual bool CanRenameUsingLock() const;
 	virtual bool CanDeleteUsingLock() const;
 	virtual bool CanShowPPanelUsingLock() const;
+	virtual bool CanShowContextMenuUsingLock() const;
+
+	virtual bool HasParentTItemNullTree() const;
 
 private:
 

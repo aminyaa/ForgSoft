@@ -7,6 +7,7 @@
 BeginForgBaseLib
 
 class FrgBase_SymbolTableRegistry;
+class FrgBase_SymbolTable;
 
 class FORGBASE_EXPORT FrgBase_SymbolTableRegistries
 	: public FrgBase_Object
@@ -33,6 +34,9 @@ public:
 	void RemoveRegistry(const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry);
 
 	bool ContainsRegistry(const std::shared_ptr<FrgBase_SymbolTableRegistry>& registry);
+
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>>
+		RetrieveAllTables() const;
 
 private:
 
