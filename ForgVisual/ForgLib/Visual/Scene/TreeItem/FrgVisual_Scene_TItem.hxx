@@ -31,6 +31,9 @@ public:
 
 	void FormTItem() override;
 
+	virtual bool Is2D() const { return false; }
+	virtual bool Is3D() const { return false; }
+
 	ForgBaseLib::FrgBase_TreeItem* GetParentTitleTItem() const { return theParentTitleTItem_; }
 	virtual void SetParentTitleTItem(ForgBaseLib::FrgBase_TreeItem* pt);
 
@@ -88,6 +91,9 @@ public:
 	~FrgVisual_Scene_TItem();
 
 	void FormTItem() override;
+
+
+	void SetThemeDark(const bool isDark = false) override;
 
 	FrgVisual_Scene<Dim>* GetScene() const { return theScene_; }
 

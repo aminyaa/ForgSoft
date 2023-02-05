@@ -112,6 +112,8 @@ void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::FormTItem()
 	theAttributes_ = new FrgVisual_SceneAttributes_TItem<Dim>("Attributes", dynamic_cast<FrgVisual_Scene_TItem*>(this), GetParentTree());
 	theAttributes_->FormTItem();
 
+	theAttributes_->setHidden(true);
+
 	auto myBackgroundColor = theAttributes_->GetBackgroundColor();
 	connect(myBackgroundColor, SIGNAL(GradientModeChangedSignal(const QString&)), this, SLOT(BackgroundGradientModeChangedSlot(const QString&)));
 	connect(myBackgroundColor, SIGNAL(GradientColor1ChangedSignal(const QColor&)), this, SLOT(BackgroundGradientColor1ChangedSlot(const QColor&)));
@@ -124,6 +126,16 @@ void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::FormTItem()
 	connect(myAxes, SIGNAL(XLabelChangedSignal(const QString&)), this, SLOT(AxesXLabelChangedSlot(const QString&)));
 	connect(myAxes, SIGNAL(YLabelChangedSignal(const QString&)), this, SLOT(AxesYLabelChangedSlot(const QString&)));
 	connect(myAxes, SIGNAL(ZLabelChangedSignal(const QString&)), this, SLOT(AxesZLabelChangedSlot(const QString&)));
+}
+
+template<int Dim>
+void ForgVisualLib::FrgVisual_Scene_TItem<Dim>::SetThemeDark
+(
+	const bool isDark
+)
+{
+	if (theScene_)
+		theScene_->SetThemeDark(isDark);
 }
 
 template<int Dim>
