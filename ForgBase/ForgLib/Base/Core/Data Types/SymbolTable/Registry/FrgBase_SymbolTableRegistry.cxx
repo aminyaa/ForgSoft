@@ -51,6 +51,21 @@ void ForgBaseLib::FrgBase_SymbolTableRegistry::AddTable
 	theTables_.push_back(table);
 }
 
+std::shared_ptr<ForgBaseLib::FrgBase_SymbolTable>
+ForgBaseLib::FrgBase_SymbolTableRegistry::GetTableUsingPresentationName
+(
+	const std::string& presentationName
+) const
+{
+	for (const auto& table : theTables_)
+	{
+		if (table->GetPresentationName() == presentationName)
+			return table;
+	}
+
+	return nullptr;
+}
+
 void ForgBaseLib::FrgBase_SymbolTableRegistry::ClearTables()
 {
 	theTables_.clear();

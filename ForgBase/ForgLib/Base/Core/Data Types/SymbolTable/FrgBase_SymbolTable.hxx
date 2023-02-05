@@ -70,6 +70,10 @@ public:
 	std::shared_ptr<FrgBase_Field_Entity> ContainsField(const std::string& fieldFullName) const;
 	std::shared_ptr<FrgBase_Field_Entity> ContainsFieldFullPresentationName(const std::string& fieldFullPresentationName) const;
 
+	std::shared_ptr<FrgBase_Field_Entity> GetFieldUsingPresentationName(const std::string& presentationName) const;
+	std::shared_ptr<FrgBase_ScalarField> GetScalarFieldUsingPresentationName(const std::string& presentationName) const;
+	std::shared_ptr<FrgBase_VectorField> GetVectorFieldUsingPresentationName(const std::string& presentationName) const;
+
 	static void PrintField(std::ostringstream& ss, const std::shared_ptr<FrgBase_Field_Entity>& field);
 
 	static std::string PrintField(const std::shared_ptr<FrgBase_Field_Entity>& field);
@@ -85,6 +89,7 @@ public:
 	void CalcValue(const std::shared_ptr<FrgBase_FieldParser::Calculated>& calculated = nullptr);
 
 	const auto& GetFields() const { return theFields_; }
+	auto& GetFieldsRef() { return theFields_; }
 
 	std::vector<std::shared_ptr<FrgBase_ScalarField>> GetScalarFields() const;
 	std::vector<std::shared_ptr<FrgBase_VectorField>> GetVectorFields() const;

@@ -287,6 +287,39 @@ ForgBaseLib::FrgBase_SymbolTable::ContainsFieldFullPresentationName
 	return nullptr;
 }
 
+std::shared_ptr<ForgBaseLib::FrgBase_Field_Entity>
+ForgBaseLib::FrgBase_SymbolTable::GetFieldUsingPresentationName
+(
+	const std::string& presentationName
+) const
+{
+	for (const auto& f : theFields_)
+	{
+		if (f->GetPresentationName() == presentationName)
+			return f;
+	}
+
+	return nullptr;
+}
+
+std::shared_ptr<ForgBaseLib::FrgBase_ScalarField>
+ForgBaseLib::FrgBase_SymbolTable::GetScalarFieldUsingPresentationName
+(
+	const std::string& presentationName
+) const
+{
+	return std::dynamic_pointer_cast<FrgBase_ScalarField>(GetFieldUsingPresentationName(presentationName));
+}
+
+std::shared_ptr<ForgBaseLib::FrgBase_VectorField>
+ForgBaseLib::FrgBase_SymbolTable::GetVectorFieldUsingPresentationName
+(
+	const std::string& presentationName
+) const
+{
+	return std::dynamic_pointer_cast<FrgBase_VectorField>(GetFieldUsingPresentationName(presentationName));
+}
+
 #define PRINT_ONELINE_CHAR(myString, margin, ss, myChar) \
 for (int i = 0; i < myString.size() + margin; i++) \
 ss << myChar; \
