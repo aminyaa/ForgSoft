@@ -231,6 +231,8 @@ DECLARE_SAVE_IMP(ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
 
+	VOID_CAST_REGISTER(ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>, ForgVisualLib::FrgVisual_MeshActor<Dim>);
+
 	ar& thePoints_;
 	ar& theConnectivity_;
 }
@@ -239,6 +241,8 @@ template<int Dim>
 DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>)
 {
 	ar& boost::serialization::base_object<ForgVisualLib::FrgVisual_BaseActor<Dim>>(*this);
+
+	VOID_CAST_REGISTER(ForgVisualLib::FrgVisual_MeshPolyhedralActor<Dim>, ForgVisualLib::FrgVisual_MeshActor<Dim>);
 
 	std::vector<ForgBaseLib::FrgBase_Pnt<Dim>> pts;
 	std::vector<std::vector<int>> connectivity;
