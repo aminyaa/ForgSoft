@@ -95,6 +95,8 @@ ForgVisualLib::FrgVisual_Scene2D::FrgVisual_Scene2D
 
 void ForgVisualLib::FrgVisual_Scene2D::RenderSceneSlot(bool resetCamera, bool resetView)
 {
+	FrgVisual_Scene::RenderSceneSlot(resetCamera, resetView);
+
 	if (resetCamera && resetView)
 	{
 
@@ -134,33 +136,16 @@ void ForgVisualLib::FrgVisual_Scene2D::RenderSceneSlot(bool resetCamera, bool re
 
 		auto my2DStyle = FrgVisual_Scene_InterStyle2D::SafeDownCast((FrgVisual_Scene_InterStyle2D::SuperClass*)(theInteractorStyle_));
 
-		auto myActors = my2DStyle->GetAllActors();
-		std::vector<FrgVisual_GridActor*> myGrids;
-		for (auto myActor : myActors)
-		{
-			auto myGrid = dynamic_cast<FrgVisual_GridActor*>(myActor);
-			if (myGrid)
-			{
-				myGrids.push_back(myGrid);
-				myGrid->VisibilityOff();
-			}
-		}
-
 		theRenderer_->ResetCamera();
 
 		double myBounds[6];
-		theRenderer_->ComputeVisiblePropBounds(myBounds);
+		ComputeVisiblePropBounds(myBounds);
 
 		double centerOfRotation[3];
 		centerOfRotation[0] = (myBounds[1] - myBounds[0]) / 2.0;
 		centerOfRotation[1] = (myBounds[3] - myBounds[2]) / 2.0;
 		centerOfRotation[2] = (myBounds[5] - myBounds[4]) / 2.0;
 		my2DStyle->SetCenterOfRotation(centerOfRotation);
-
-		for (auto myGrid : myGrids)
-		{
-			myGrid->VisibilityOn();
-		}
 
 		//theCamera_->Elevation(15);
 		theCamera_->OrthogonalizeViewUp();

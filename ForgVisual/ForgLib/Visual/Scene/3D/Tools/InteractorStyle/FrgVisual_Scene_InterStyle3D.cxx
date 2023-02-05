@@ -641,6 +641,7 @@
 #include <vtkProperty.h>
 #include <vtkPicker.h>
 #include <vtkCellPicker.h>
+#include <vtkAxesActor.h>
 
 #include <QtCore\QPoint>
 
@@ -812,11 +813,11 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnLeftButtonUp()
 
 		SelectActor(FrgVisual_BaseActor_Entity::SafeDownCast(myPicker->GetActor()), this->Interactor->GetControlKey(), true);
 
-#ifdef EliminateUnSelectedActors
+//#ifdef EliminateUnSelectedActors
 
-		SetUnselectedActorsEliminated(true);
+		//SetUnselectedActorsEliminated(true);
 
-#endif // EliminateUnSelectedActors
+//#endif // EliminateUnSelectedActors
 
 	}
 
@@ -1447,6 +1448,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SelectActor(FrgVisual_BaseActo
 				this->Interactor->Render();
 		}
 	}
+
+	SetUnselectedActorsEliminated(render);
 }
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectActor(FrgVisual_BaseActor_Entity* actor, bool render)
@@ -1506,17 +1509,23 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnSelectAllActors(bool render)
 		this->Interactor->Render();*/
 }
 
-#ifdef EliminateUnSelectedActors
+//#ifdef EliminateUnSelectedActors
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SetUnselectedActorsEliminated(bool render)
 {
 	auto myAllActors = GetAllActors();
+
 	if (myAllActors.size() == 0)
 		return;
 
 	for (int i = 0; i < myAllActors.size(); i++)
 	{
+		auto axesActor = dynamic_cast<vtkAxesActor*>(myAllActors[i]);
+		if(axesActor)
+			continue;
+
 		int index = IsActorSelected(myAllActors[i]);
+
 		if (index < 0)
 		{
 			if (!myAllActors[i]->IsSelectable())
@@ -1535,7 +1544,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::SetUnselectedActorsEliminated(
 		this->Interactor->Render();
 }
 
-#endif // EliminateUnSelectedActors
+//#endif // EliminateUnSelectedActors
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render)
 {
@@ -1553,7 +1562,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render
 
 	UnSelectAllActors(false);
 
-#ifdef EliminateUnSelectedActors
+//#ifdef EliminateUnSelectedActors
 
 	auto myAllActors = GetAllActors();
 	for (int i = 0; i < myAllActors.size(); i++)
@@ -1562,7 +1571,7 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideSelectedActors(bool render
 			myAllActors[i]->GetProperty()->SetOpacity(1.0);
 	}
 
-#endif // EliminateUnSelectedActors
+//#endif // EliminateUnSelectedActors
 
 	if (render)
 		this->Interactor->Render();
@@ -1578,12 +1587,12 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::UnHideHiddenActors(bool render
 		theHiddenActors_[i]->UnHideActor();
 		theParentScene_->ActorUnHideSignal(theHiddenActors_[i]);
 
-#ifdef EliminateUnSelectedActors
+//#ifdef EliminateUnSelectedActors
 
 		if (theSelectedActors_.size() == 0)
 			theHiddenActors_[i]->GetProperty()->SetOpacity(1.0);
 
-#endif // EliminateUnSelectedActors
+//#endif // EliminateUnSelectedActors
 	}
 	theHiddenActors_.clear();
 
@@ -1615,7 +1624,9 @@ int ForgVisualLib::FrgVisual_Scene_InterStyle3D::IsActorHidden(FrgVisual_BaseAct
 
 std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual_Scene_InterStyle3D::GetAllActors()
 {
-	std::vector<FrgVisual_BaseActor_Entity*> myActors;
+	return theParentScene_->GetAllActors(false);
+
+	/*std::vector<FrgVisual_BaseActor_Entity*> myActors;
 
 	vtkRenderWindowInteractor* rwi = this->Interactor;
 	vtkActorCollection* ac;
@@ -1637,7 +1648,7 @@ std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*> ForgVisualLib::FrgVisual
 	}
 	rwi->Render();
 
-	return myActors;
+	return myActors;*/
 }
 
 void ForgVisualLib::FrgVisual_Scene_InterStyle3D::HideActionIsCalledSlot()

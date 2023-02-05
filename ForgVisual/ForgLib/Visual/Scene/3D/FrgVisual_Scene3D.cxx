@@ -3,6 +3,7 @@
 #include <FrgVisual_Scene_InterStyle3D.hxx>
 #include <FrgVisual_GridActor.hxx>
 #include <FrgVisual_Global_Icons.hxx>
+#include <Tools/Ruler/FrgVisual_Scene_Ruler.hxx>
 
 #include <FrgBase_SerialSpec_QString.hxx>
 #include <FrgBase_SerialSpec_QColor.hxx>
@@ -115,6 +116,8 @@ ForgVisualLib::FrgVisual_Scene3D::FrgVisual_Scene3D
 
 void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool resetView)
 {
+	FrgVisual_Scene::RenderSceneSlot(resetCamera, resetView);
+
 	if (resetCamera && resetView)
 	{
 
@@ -154,32 +157,16 @@ void ForgVisualLib::FrgVisual_Scene3D::RenderSceneSlot(bool resetCamera, bool re
 
 		auto my3DStyle = FrgVisual_Scene_InterStyle3D::SafeDownCast((FrgVisual_Scene_InterStyle3D::SuperClass*)(theInteractorStyle_));
 
-		auto myActors = my3DStyle->GetAllActors();
-		std::vector<FrgVisual_BaseActor_Entity*> myActorsShouldBeHidden;
-		for (auto myActor : myActors)
-		{
-			if (myActor->IsGrid() || myActor->IsText())
-			{
-				myActorsShouldBeHidden.push_back(myActor);
-				myActor->VisibilityOff();
-			}
-		}
-
 		theRenderer_->ResetCamera();
 
 		double myBounds[6];
-		theRenderer_->ComputeVisiblePropBounds(myBounds);
+		ComputeVisiblePropBounds(myBounds);
 
 		double centerOfRotation[3];
 		centerOfRotation[0] = (myBounds[1] - myBounds[0]) / 2.0;
 		centerOfRotation[1] = (myBounds[3] - myBounds[2]) / 2.0;
 		centerOfRotation[2] = (myBounds[5] - myBounds[4]) / 2.0;
 		my3DStyle->SetCenterOfRotation(centerOfRotation);
-
-		for (auto myActorShouldBeHidden : myActorsShouldBeHidden)
-		{
-			myActorShouldBeHidden->VisibilityOn();
-		}
 
 		//theCamera_->Elevation(15);
 		theCamera_->Dolly(1.5);
@@ -531,10 +518,12 @@ void ForgVisualLib::FrgVisual_Scene3D::SetProjectionModeSlot(QAction* action)
 	{
 		if (action->text() == "Perspective")
 		{
+			theRuler_->TurnOff(false);
 			theCamera_->ParallelProjectionOff();
 		}
 		else if (action->text() == "Parallel")
 		{
+			theRuler_->TurnOn(false);
 			theCamera_->ParallelProjectionOn();
 		}
 
