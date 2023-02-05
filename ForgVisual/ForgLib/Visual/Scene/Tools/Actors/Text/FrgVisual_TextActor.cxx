@@ -77,24 +77,29 @@ void ForgVisualLib::FrgVisual_TextActor<Dim>::SetData
 	const std::shared_ptr<ForgBaseLib::FrgBase_Pnt<Dim>>& position
 )
 {
-	thePosition_ = position;
+	if (!position)
+		throw std::exception("Position cannot be null in " __FUNCSIG__);
 
+	thePosition_ = position;
 	theValue_ = value;
 
 	// Setup the text and add it to the renderer
-	theTextActor_ = vtkSmartPointer<vtkBillboardTextActor3D>::New();
-	theTextActor_->SetInput(value.toStdString().c_str());
-	theTextActor_->GetTextProperty()->SetFontSize(12);
-	theTextActor_->GetTextProperty()->SetColor(0.0, 0.0, 0.0);
-	theTextActor_->GetTextProperty()->SetJustificationToLeft();
+	if (!theTextActor_)
+	{
+		theTextActor_ = vtkSmartPointer<vtkBillboardTextActor3D>::New();
+		theTextActor_->SetInput(value.toStdString().c_str());
+		theTextActor_->GetTextProperty()->SetFontSize(12);
+		theTextActor_->GetTextProperty()->SetColor(0.0, 0.0, 0.0);
+		theTextActor_->GetTextProperty()->SetJustificationToLeft();
+
+		if (theRenderer_)
+			theRenderer_->AddActor(theTextActor_);
+	}
 
 	if constexpr (Dim == 2)
 		theTextActor_->SetPosition(position->X(), position->Y(), 0.0);
 	else if constexpr (Dim == 3)
 		theTextActor_->SetPosition(position->X(), position->Y(), position->Z());
-
-	if (theRenderer_)
-		theRenderer_->AddActor(theTextActor_);
 }
 
 template<>
@@ -457,3 +462,6 @@ BOOST_CLASS_EXPORT_CXX(ForgVisualLib::FrgVisual_TextActor<3>)
 
 template FORGVISUAL_EXPORT class ForgVisualLib::FrgVisual_TextActor<2>;
 template FORGVISUAL_EXPORT class ForgVisualLib::FrgVisual_TextActor<3>;
+
+template FORGVISUAL_EXPORT void ForgVisualLib::FrgVisual_TextActor<2>::SetData(const QString& value, double x, double y);
+template FORGVISUAL_EXPORT void ForgVisualLib::FrgVisual_TextActor<3>::SetData(const QString& value, double x, double y, double z);
