@@ -537,6 +537,7 @@ void ForgVisualLib::FrgVisual_Plot2D_ChartXY::RecalculateAndUpdateBoundingBox()
 		auto nbColumns = myTable->GetNumberOfColumns();
 
 		for (vtkIdType j = 0; j < nbColumns - 1; j++)
+		{
 			for (vtkIdType i = 0; i < nbRow; i++)
 			{
 				double x = myTable->GetValue(i, j).ToDouble();
@@ -544,6 +545,7 @@ void ForgVisualLib::FrgVisual_Plot2D_ChartXY::RecalculateAndUpdateBoundingBox()
 
 				UpdateBoundingBox(ForgBaseLib::FrgBase_Pnt<2>(x, y));
 			}
+		}
 	}
 }
 
@@ -560,7 +562,25 @@ void ForgVisualLib::FrgVisual_Plot2D_ChartXY::UpdateBoundingBox(const ForgBaseLi
 
 void ForgVisualLib::FrgVisual_Plot2D_ChartXY::FitWindowToBoundingBox()
 {
-	auto offset = theBoundingBox_.OffSet(0.01 * theBoundingBox_.Diameter());
+	auto length = theBoundingBox_.Length();
+	auto height = theBoundingBox_.Height();
+
+	const auto tol = 0.01;
+
+	if (length == 0.0)
+	{
+		const auto x = theBoundingBox_.P0().X();
+		length = (x == 0.0 ? 1.0 : x);
+	}
+
+	if (height == 0.0)
+	{
+		const auto y = theBoundingBox_.P0().Y();
+		height = (y == 0.0 ? 1.0 : y);
+	}
+
+	const auto offsetX = theBoundingBox_.OffSet(tol * length);
+	const auto offsetY = theBoundingBox_.OffSet(tol * height);
 
 	auto bottomAxis = this->GetAxis(vtkAxis::BOTTOM);
 	auto leftAxis = this->GetAxis(vtkAxis::LEFT);
@@ -579,15 +599,15 @@ void ForgVisualLib::FrgVisual_Plot2D_ChartXY::FitWindowToBoundingBox()
 	else
 	{
 		//if (bottomAxis->GetUnscaledMinimum() == bottomAxis->GetUnscaledMinimumLimit())
-			bottomAxis->SetUnscaledMinimum(offset.P0().X());
+			bottomAxis->SetUnscaledMinimum(offsetX.P0().X());
 
-		bottomAxis->SetUnscaledMinimumLimit(offset.P0().X());
+		bottomAxis->SetUnscaledMinimumLimit(offsetX.P0().X());
 	}
 	
 	//if (bottomAxis->GetUnscaledMaximum() == bottomAxis->GetUnscaledMaximumLimit())
-		bottomAxis->SetUnscaledMaximum(offset.P1().X());
+		bottomAxis->SetUnscaledMaximum(offsetX.P1().X());
 
-	bottomAxis->SetUnscaledMaximumLimit(offset.P1().X());
+	bottomAxis->SetUnscaledMaximumLimit(offsetX.P1().X());
 
 	if (leftAxis->GetLogScale())
 	{
@@ -603,15 +623,15 @@ void ForgVisualLib::FrgVisual_Plot2D_ChartXY::FitWindowToBoundingBox()
 	else
 	{
 		//if (leftAxis->GetUnscaledMinimum() == leftAxis->GetUnscaledMinimumLimit())
-			leftAxis->SetUnscaledMinimum(offset.P0().Y());
+			leftAxis->SetUnscaledMinimum(offsetY.P0().Y());
 
-		leftAxis->SetUnscaledMinimumLimit(offset.P0().Y());
+		leftAxis->SetUnscaledMinimumLimit(offsetY.P0().Y());
 	}
 	
 	//if (leftAxis->GetUnscaledMaximum() == leftAxis->GetUnscaledMaximumLimit())
-		leftAxis->SetUnscaledMaximum(offset.P1().Y());
+		leftAxis->SetUnscaledMaximum(offsetY.P1().Y());
 
-	leftAxis->SetUnscaledMaximumLimit(offset.P1().Y());
+	leftAxis->SetUnscaledMaximumLimit(offsetY.P1().Y());
 }
 
 void ForgVisualLib::FrgVisual_Plot2D_ChartXY::RecalculateBounds()

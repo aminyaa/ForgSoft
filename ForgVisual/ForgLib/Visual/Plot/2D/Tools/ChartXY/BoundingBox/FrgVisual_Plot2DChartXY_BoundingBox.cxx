@@ -16,6 +16,20 @@ double ForgVisualLib::FrgVisual_Plot2DChartXY_BoundingBox::Diameter() const
 	return theP0_.Distance(theP1_);
 }
 
+double ForgVisualLib::FrgVisual_Plot2DChartXY_BoundingBox::Length() const
+{
+	const auto distance = std::abs(theP1_.X() - theP0_.X());
+
+	return distance;
+}
+
+double ForgVisualLib::FrgVisual_Plot2DChartXY_BoundingBox::Height() const
+{
+	const auto distance = std::abs(theP1_.Y() - theP0_.Y());
+
+	return distance;
+}
+
 bool ForgVisualLib::FrgVisual_Plot2DChartXY_BoundingBox::IsInside(const ForgBaseLib::FrgBase_Pnt<2>& P)
 {
 	if (
