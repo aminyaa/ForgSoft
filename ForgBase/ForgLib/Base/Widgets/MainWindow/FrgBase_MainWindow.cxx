@@ -10,6 +10,7 @@
 #include <FrgBase_MainStyle.hxx>
 #include <FrgBase_FramelessWindow.hxx>
 #include <FrgBase_ProgressBar.hxx>
+#include <FrgBase_Application.hxx>
 
 #include <FrgBase_Serialization_Global.hxx>
 
@@ -103,50 +104,58 @@ void ForgBaseLib::FrgBase_MainWindow::InitMainWindow()
 
 	QObject::connect(theCentralContainer_, &ContainerWidget::SectionContentClosed, [this](const SectionContent::RefPtr& sc)
 		{
-			if (sc.isNull())
-				return;
-
-			QWidget* w = nullptr;
-
-			for (const auto& m : theMapWidgetToTabWidget_)
-			{
-
-				if (m.second->GetSectionContent() == sc)
+			auto func = [this, &sc]()
 				{
-					w = m.first;
-					break;
-				}
-			}
+					if (sc.isNull())
+						return;
 
-			if (w)
-			{
-				RemoveTabWidget(w);
-				emit TabWidgetClosedSignal(w);
-			}
+					QWidget* w = nullptr;
+
+					for (const auto& m : theMapWidgetToTabWidget_)
+					{
+
+						if (m.second->GetSectionContent() == sc)
+						{
+							w = m.first;
+							break;
+						}
+					}
+
+					if (w)
+					{
+						RemoveTabWidget(w);
+						emit TabWidgetClosedSignal(w);
+					}
+				};
+			
+			FrgBase_Application::CatchAndIgnore(func);
 		}
 	);
 
 	QObject::connect(theCentralContainer_, &ContainerWidget::activeTabChanged, [this](const SectionContent::RefPtr& sc, bool isActive)
 		{
-			if (sc.isNull())
-				return;
-
-			QWidget* w = nullptr;
-
-			for (const auto& m : theMapWidgetToTabWidget_)
-			{
-
-				if (m.second->GetSectionContent() == sc)
+			auto func = [this, &sc, &isActive]()
 				{
-					w = m.first;
-					break;
-				}
-			}
+					if (sc.isNull())
+						return;
 
-			if (w)
-			{
-				emit TabWidgetActivated(w, isActive);
-			}
+					QWidget* w = nullptr;
+
+					for (const auto& m : theMapWidgetToTabWidget_)
+					{
+
+						if (m.second->GetSectionContent() == sc)
+						{
+							w = m.first;
+							break;
+						}
+					}
+
+					if (w)
+						emit TabWidgetActivated(w, isActive);
+				};
+
+			FrgBase_Application::CatchAndIgnore(func);
 		});
 
 	thePropertiesPanelDockWidget_ = new QDockWidget("Properties", this);
@@ -245,12 +254,23 @@ void ForgBaseLib::FrgBase_MainWindow::FormMenus()
 	theMainWindowMenus_->theEditMenu_->SetToolBarHidden(false);
 	theMainWindowMenus_->theHelpMenu_->SetToolBarHidden(false);
 
-	auto saveAction = theMainWindowMenus_->theFileMenu_->GetSaveAction();
+	const auto newaction = theMainWindowMenus_->theFileMenu_->GetNewAction();
+	const auto saveAction = theMainWindowMenus_->theFileMenu_->GetSaveAction();
 	const auto loadAction = theMainWindowMenus_->theFileMenu_->GetLoadAction();
+	const auto saveAsAction = theMainWindowMenus_->theFileMenu_->GetSaveAsAction();
+	const auto importAction = theMainWindowMenus_->theFileMenu_->GetImportAction();
+	const auto exportAction = theMainWindowMenus_->theFileMenu_->GetExportAction();
+	const auto exitAction = theMainWindowMenus_->theFileMenu_->GetExitAction();
+
 	saveAction->setEnabled(true);
 
+	connect(newaction, SIGNAL(triggered()), this, SLOT(FileNewActionSlot()));
 	connect(saveAction, SIGNAL(triggered()), this, SLOT(FileSaveActionSlot()));
 	connect(loadAction, SIGNAL(triggered()), this, SLOT(FileLoadActionSlot()));
+	connect(saveAsAction, SIGNAL(triggered()), this, SLOT(FileSaveAsActionSlot()));
+	connect(importAction, SIGNAL(triggered()), this, SLOT(FileImportActionSlot()));
+	connect(exportAction, SIGNAL(triggered()), this, SLOT(FileExportActionSlot()));
+	connect(exitAction, SIGNAL(triggered()), this, SLOT(FileExitActionSlot()));
 }
 
 void ForgBaseLib::FrgBase_MainWindow::InitConsoleOutput()
@@ -342,6 +362,9 @@ void ForgBaseLib::FrgBase_MainWindow::PrintSuccessToConsoleSlot
 	const QString& success
 )
 {
+	if (theConsoleSilent_)
+		return;
+
 	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
 	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
 
@@ -351,6 +374,9 @@ void ForgBaseLib::FrgBase_MainWindow::PrintSuccessToConsoleSlot
 
 void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsoleSlot(const QString& info)
 {
+	if (theConsoleSilent_)
+		return;
+
 	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
 	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
 
@@ -364,6 +390,9 @@ void ForgBaseLib::FrgBase_MainWindow::PrintInfoToConsoleSlot(const QString& info
 
 void ForgBaseLib::FrgBase_MainWindow::PrintWarningToConsoleSlot(const QString& warning)
 {
+	if (theConsoleSilent_)
+		return;
+
 	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
 	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
 	QPlainTextEdit* editor2 = engine->plainTextEdit(WidgetLoggerEngine::WarningsPlainTextEdit);
@@ -378,6 +407,9 @@ void ForgBaseLib::FrgBase_MainWindow::PrintWarningToConsoleSlot(const QString& w
 
 void ForgBaseLib::FrgBase_MainWindow::PrintErrorToConsoleSlot(const QString& error)
 {
+	if (theConsoleSilent_)
+		return;
+
 	const auto& engine = dynamic_cast<WidgetLoggerEngine*>(Log->loggerEngineReference(theConsoleEngineName_));
 	QPlainTextEdit* editor = engine->plainTextEdit(WidgetLoggerEngine::AllMessagesPlainTextEdit);
 	QPlainTextEdit* editor2 = engine->plainTextEdit(WidgetLoggerEngine::ErrorsPlainTextEdit);
@@ -561,29 +593,95 @@ void ForgBaseLib::FrgBase_MainWindow::SetTabText(int index, const QString& title
 	//theTabWidget_->setTabText(index, title);
 }
 
-void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
+void ForgBaseLib::FrgBase_MainWindow::SetTree(FrgBase_Tree* tree, const bool deleteTree)
+{
+	if (!tree || (tree == theTree_))
+		return;
+
+	while(theTabWidgetForTrees_->count() > 0)
+		theTabWidgetForTrees_->removeTab(0);
+
+	if (deleteTree)
+	{
+		auto func = [this]()
+		{
+			delete theTree_;
+		};
+
+		FrgBase_Application::CatchAndIgnore(func);
+	}
+
+	theTree_ = tree;
+	theTree_->SetParentMainWindow(this);
+
+	theTabWidgetForTrees_->addTab(theTree_, "Main Tree");
+}
+
+bool ForgBaseLib::FrgBase_MainWindow::FileNewActionSlot()
+{
+	const auto myMessageOutput =
+		QMessageBox::information
+		(
+			this,
+			"Save project?",
+			"Before creating a new project, do you want to save your project?",
+			QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
+		);
+
+	if (myMessageOutput == QMessageBox::Yes)
+	{
+		if(!FileSaveActionSlot())
+			return false;
+	}
+	else if (myMessageOutput == QMessageBox::Cancel)
+		return false;
+
+	auto myTree = new FrgBase_Tree;
+	myTree->FormTree();
+
+	// this method will set the new tree, delete the old one, update tab widget and set parent main window
+	SetTree(myTree);
+
+	return true;
+}
+
+bool ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 {
 	//if (theProgramIsModified_)
 	{
-		const auto myMessageOutput = QMessageBox::information(this, "Save project?", "This project is not saved. Do you want to save your project?", QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+		const auto myMessageOutput =
+			QMessageBox::information
+			(
+				this,
+				"Save project?",
+				"Before loading a new project, do you want to save your project?",
+				QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel
+			);
 
 		if (myMessageOutput == QMessageBox::Yes)
 		{
-			FileSaveActionSlot();
-			return;
+			if(!FileSaveActionSlot())
+				return false;
 		}
 		else if (myMessageOutput == QMessageBox::Cancel)
-			return;
+			return false;
 	}
 
 	QString* ext;
 	const QString fileName = QFileDialog::getOpenFileName(this, "Load File", "", theProjectExtension_);
 
 	if (fileName.isEmpty())
-		return;
+		return false;
 
 
 	std::ifstream myFile(fileName.toStdString());
+
+	if (!myFile.is_open())
+	{
+		PrintErrorToConsole("Cannot open the file. Maybe it is in used by another application.");
+		return false;
+	}
+
 	boost::archive::polymorphic_text_iarchive ia(myFile);
 
 	FrgBase_Tree* myTree;
@@ -596,43 +694,70 @@ void ForgBaseLib::FrgBase_MainWindow::FileLoadActionSlot()
 	{
 		this->PrintErrorToConsole("Cannot load because of \"" + QString(myException.what()) + "\"");
 		myFile.close();
-		return;
+		return false;
 	}
 
 	myFile.close();
 
-	delete theTree_;
-	theTree_ = myTree;
-	theTree_->SetParentMainWindow(this);
-
-	theTreeDockWidget_->setWidget(theTree_);
+	// this method will set the new tree, delete the old one, update tab widget and set parent main window
+	SetTree(myTree);
 
 	//ProgramModifiedSlot(false);
 
-	PrintInfoToConsole("The project was successfully loaded from \"" + fileName + "\".");
+	PrintSuccessToConsole("The project was successfully loaded from \"" + fileName + "\".");
+
+	return true;
 }
 
-void ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
+bool ForgBaseLib::FrgBase_MainWindow::FileSaveActionSlot()
 {
 	/*if (!theProgramIsModified_)
 		return;*/
 
 	QString* ext;
-	const QString fileName = QFileDialog::getSaveFileName(this, "Save File", "", theProjectExtension_);
+	const QString fileName = QFileDialog::getSaveFileName
+	(
+		this,
+		"Save File",
+		"",
+		theProjectExtension_
+	);
 
 	if (fileName.isEmpty())
-		return;
+		return false;
 
 	std::ofstream myFile(fileName.toStdString());
+
+	if (!myFile.is_open())
+	{
+		PrintErrorToConsole("Cannot open the file. Maybe it is in used by another application.");
+		return false;
+	}
+
 	boost::archive::polymorphic_text_oarchive oa(myFile);
 
-	oa << theTree_;
+	auto loadFunc = [this, &oa]()
+	{
+		oa << theTree_;
+	};
+
+	try
+	{
+		FrgBase_Application::CatchAndThrowStdException(loadFunc);
+	}
+	catch (const std::exception& ex)
+	{
+		myFile.close();
+		throw ex;
+	}
 
 	myFile.close();
 
 	//ProgramModifiedSlot(false);
 
-	PrintInfoToConsole("The project was successfully saved in \"" + fileName + "\".");
+	PrintSuccessToConsole("The project was successfully saved in \"" + fileName + "\".");
+
+	return true;
 }
 
 //void ForgBaseLib::FrgBase_MainWindow::ProgramModifiedSlot(bool condition)
@@ -716,7 +841,10 @@ void ForgBaseLib::FrgBase_MainWindow::SetThemeDark(bool condition)
 	editor->clear();
 	editor->appendHtml(ssOut);
 
-	emit ThemeModeChangedSignal(condition);
+	//emit ThemeModeChangedSignal(condition);
+
+	if (theTree_)
+		theTree_->SetThemeDark(theIsThemeDark_);
 }
 
 void ForgBaseLib::FrgBase_MainWindow::UpdateCPUUsageSlot()
