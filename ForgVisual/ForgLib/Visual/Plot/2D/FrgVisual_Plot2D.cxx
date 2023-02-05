@@ -975,9 +975,9 @@ bool ForgVisualLib::FrgVisual_Plot2D::ExportDataAsImage(QString myFileName) cons
 	return true;
 }
 
-void ForgVisualLib::FrgVisual_Plot2D::SetThemeDarkSlot(bool condition) const
+void ForgVisualLib::FrgVisual_Plot2D::SetThemeDark(const bool isDark)
 {
-	if (condition)
+	if (isDark)
 	{
 		theView_->GetRenderer()->GradientBackgroundOn();
 		theView_->GetRenderer()->SetBackground(0.2, 0.2, 0.2);
@@ -1020,4 +1020,6 @@ void ForgVisualLib::FrgVisual_Plot2D::SetThemeDarkSlot(bool condition) const
 			}
 		}
 	}
+
+	RenderView();
 }

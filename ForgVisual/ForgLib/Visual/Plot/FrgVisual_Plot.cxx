@@ -19,7 +19,6 @@ ForgVisualLib::FrgVisual_Plot::FrgVisual_Plot
 	, theParentMainWindow_(parentMainWindow)
 {
 	connect(this, &FrgVisual_Plot::RenderView, this, &FrgVisual_Plot::RenderViewSlot, Qt::QueuedConnection);
-	connect(this, &FrgVisual_Plot::SetThemeDark, this, &FrgVisual_Plot::SetThemeDarkSlot);
 	
 	if (theParentMainWindow_)
 	{
@@ -28,8 +27,6 @@ ForgVisualLib::FrgVisual_Plot::FrgVisual_Plot
 				if (w == this && isActive == true)
 					RenderView();
 			});
-
-		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
 	}
 }
 
@@ -75,7 +72,6 @@ void ForgVisualLib::FrgVisual_Plot::SetParentMainWindow(ForgBaseLib::FrgBase_Mai
 					RenderView();
 			});
 
-		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::ThemeModeChangedSignal, this, &FrgVisual_Plot::SetThemeDark);
 		SetThemeDark(theParentMainWindow_->IsThemeDark());
 	}
 }

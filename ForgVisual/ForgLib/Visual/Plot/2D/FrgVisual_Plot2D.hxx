@@ -81,14 +81,12 @@ public:
 	bool ExportDataAsCSV(std::string myFileName);
 	bool ExportDataAsImage(QString myFileName) const;
 
+	void SetThemeDark(const bool isDark = false) override;
+
 protected:
 
 	void Init() override;
 	void wheelEvent(QWheelEvent* event) override;
-
-protected slots:
-
-	void SetThemeDarkSlot(bool condition = true) const override;
 
 private:
 
