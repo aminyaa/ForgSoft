@@ -14,7 +14,7 @@ namespace ForgBaseLib
 	{
 
 	public:
-		
+
 		FrgBase_ExceptionString(std::string str) : std::string(str) {}
 	};
 }
@@ -142,4 +142,76 @@ ForgBaseLib::FrgBase_Application* ForgBaseLib::FrgBase_Application::Instance()
 		return item;
 
 	return nullptr;
+}
+
+void ForgBaseLib::FrgBase_Application::CatchAndThrowStdException
+(
+	const std::function<void()>& func
+)
+{
+	_set_se_translator(translator);
+	set_unexpected(transloatorUnexpected_handler);
+
+	std::string baseMessage = "__BaseMessage__";
+	std::string message = baseMessage;
+	try
+	{
+		func();
+	}
+	catch (int i)
+	{
+		message = "Integer detected \"" + std::to_string(i) + "\"";
+	}
+	catch (float f)
+	{
+		message = "Float detected \"" + std::to_string(f) + "\"";
+	}
+	catch (double d)
+	{
+		message = "Double detected \"" + std::to_string(d) + "\"";
+	}
+	catch (const char* s)
+	{
+		message = s;
+	}
+	catch (const FrgBase_ExceptionString& str)
+	{
+		message = str.c_str();
+	}
+	catch (const std::string& s)
+	{
+		message = s;
+	}
+	catch (const std::exception& ex)
+	{
+		message = ex.what();
+	}
+	catch (...)
+	{
+		message = "Unknown Exception...";
+	}
+
+	if (message != baseMessage)
+		throw std::exception(message.c_str());
+}
+
+void ForgBaseLib::FrgBase_Application::CatchAndIgnore
+(
+	const std::function<void()>& func
+)
+{
+	auto mainWindow = Instance()->theParentMainWindow_;
+	const auto condition0 = mainWindow->IsConsoleSilent();
+	try
+	{
+		mainWindow->SetConsoleSilent(true);
+
+		CatchAndThrowStdException(func);
+	}
+	catch (...)
+	{
+		// Do nothing
+	}
+
+	mainWindow->SetConsoleSilent(condition0);
 }
