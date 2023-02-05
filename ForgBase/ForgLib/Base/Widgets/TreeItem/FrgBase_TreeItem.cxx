@@ -65,6 +65,10 @@ void ForgBaseLib::FrgBase_TreeItem::SetParentMainWindow(ForgBaseLib::FrgBase_Mai
 void ForgBaseLib::FrgBase_TreeItem::SetParentTree(FrgBase_Tree* parentTree)
 {
 	theParentTree_ = parentTree;
+
+	const auto& children = GetChildren();
+	for (const auto& child : children)
+		child->SetParentTree(theParentTree_);
 }
 
 void ForgBaseLib::FrgBase_TreeItem::SetParentTItem(FrgBase_TreeItem* parentTItem, bool renameTItem)
@@ -94,6 +98,14 @@ void ForgBaseLib::FrgBase_TreeItem::SetParentTItem(FrgBase_TreeItem* parentTItem
 	const auto& childrenItems = GetAllChildrenToTheRoot();
 	for (const auto& childItem : childrenItems)
 		childItem->SetParentMainWindow(theParentMainWindow_);
+}
+
+bool ForgBaseLib::FrgBase_TreeItem::IsThemeDark() const
+{
+	if (theParentMainWindow_)
+		return theParentMainWindow_->IsThemeDark();
+
+	return false;
 }
 
 ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_TreeItem::GetParentTItem() const
