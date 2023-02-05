@@ -359,7 +359,8 @@ ForgBaseLib::FrgBase_TreeItem* ForgBaseLib::FrgBase_Tree::FindTItemByObjectName(
 	return nullptr;
 }
 
-std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_Tree::GetItemsUsingLevel(int level) const
+std::vector<ForgBaseLib::FrgBase_TreeItem*>
+ForgBaseLib::FrgBase_Tree::GetAllItems() const
 {
 	std::vector<FrgBase_TreeItem*> result;
 	QTreeWidgetItemIterator it(const_cast<FrgBase_Tree*>(this));
@@ -367,15 +368,37 @@ std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_Tree::GetItemsU
 	{
 		const auto myTItem = dynamic_cast<FrgBase_TreeItem*>(*it);
 
-		if (myTItem && myTItem->GetLevelInTree() == level)
-		{
+		if (myTItem)
 			result.push_back(myTItem);
-		}
 
 		++it;
 	}
 
-	return std::move(result);
+	return result;
+}
+
+std::vector<ForgBaseLib::FrgBase_TreeItem*> ForgBaseLib::FrgBase_Tree::GetItemsUsingLevel(int level) const
+{
+	std::vector<FrgBase_TreeItem*> result;
+
+	auto allItems = GetAllItems();
+	for (auto item : allItems)
+	{
+		if (item && item->GetLevelInTree() == level)
+			result.push_back(item);
+	}
+
+	return result;
+}
+
+void ForgBaseLib::FrgBase_Tree::SetThemeDark
+(
+	const bool isDark
+)
+{
+	auto items = GetAllItems();
+	for (auto item : items)
+		item->SetThemeDark(isDark);
 }
 
 void ForgBaseLib::FrgBase_Tree::dropEvent(QDropEvent* event)
