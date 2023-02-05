@@ -24,6 +24,7 @@ public:
 	~FrgBase_SymbolTableRegistry();
 
 	const std::vector<std::shared_ptr<FrgBase_SymbolTable>>& GetTables() const { return theTables_; }
+	std::vector<std::shared_ptr<FrgBase_SymbolTable>>& GetTablesRef() { return theTables_; }
 
 	const auto& GetParentRegistries() const { return theParentRegistries_; }
 	void SetParentRegistries(const std::shared_ptr<FrgBase_SymbolTableRegistries>& pr) { theParentRegistries_ = pr; }
@@ -39,6 +40,10 @@ public:
 		const std::shared_ptr<FrgBase_SymbolTable>& table
 	);
 
+	std::shared_ptr<FrgBase_SymbolTable> GetTableUsingPresentationName(const std::string& presentationName) const;
+
+	// This method only clear the tables and the user
+	// is responsible to delete the tables
 	void ClearTables();
 
 	// This method just removes the table from the registry and the user

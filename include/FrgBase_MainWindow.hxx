@@ -90,6 +90,8 @@ protected:
 
 	FrgBase_MainStyle* theMainStyle_ = nullptr;
 
+	bool theConsoleSilent_ = false;
+
 protected:
 
 	virtual void InitMainWindow();
@@ -126,6 +128,7 @@ public:
 	void SetTabText(QWidget* widget, const QString& title);
 	void SetTabText(int index, const QString& title) const;
 	FrgBase_Tree* GetTree() const { return theTree_; }
+	void SetTree(FrgBase_Tree* tree, const bool deleteTree = true);
 
 	// Add tree to list of trees (if tree = nullptr) a new tree will be created and returned
 	QWidget* AddTree(QWidget* tree, const QString& title);
@@ -150,6 +153,9 @@ public:
 
 	FrgBase_FramelessWindow* GetFramelessWindow() const { return theFrameLessWindow_; }
 
+	virtual bool IsConsoleSilent() const { return theConsoleSilent_; }
+	virtual void SetConsoleSilent(const bool condition) { theConsoleSilent_ = condition; }
+
 Q_SIGNALS:
 
 	void PrintSuccessToConsole(const QString& info);
@@ -168,13 +174,13 @@ protected slots:
 	/*=========================*/
 	/* Menu File Actions Slots */
 	/*=========================*/
-	virtual void FileNewActionSlot() {}
-	virtual void FileLoadActionSlot();
-	virtual void FileSaveActionSlot();
-	virtual void FileSaveAsActionSlot() {}
-	virtual void FileImportActionSlot() {}
-	virtual void FileExportActionSlot() {}
-	virtual void FileExitActionSlot() {}
+	virtual bool FileNewActionSlot();
+	virtual bool FileLoadActionSlot();
+	virtual bool FileSaveActionSlot();
+	virtual bool FileSaveAsActionSlot() { return false; }
+	virtual bool FileImportActionSlot() { return false; }
+	virtual bool FileExportActionSlot() { return false; }
+	virtual bool FileExitActionSlot() { return false; }
 
 	void UpdateCPUUsageSlot();
 	void UpdateRAMUsageSlot();

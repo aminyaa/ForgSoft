@@ -54,15 +54,15 @@ public:
 
 	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
+	virtual void SetThemeDark(const bool isDark = false) = 0;
+
 Q_SIGNALS:
 
 	void RenderView() const;
-	void SetThemeDark(bool condition) const;
 
 protected slots:
 
 	void RenderViewSlot() const;
-	virtual void SetThemeDarkSlot(bool condition) const = 0;
 
 protected:
 

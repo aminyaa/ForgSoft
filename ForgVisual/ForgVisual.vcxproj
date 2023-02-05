@@ -78,6 +78,7 @@
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -121,6 +122,7 @@ xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "
       <PreprocessorDefinitions>FORGVISUAL_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -205,6 +207,7 @@ xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\Rainbow\FrgVisual_ContoursLUTable_Rainbow.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyle.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Registry\FrgVisual_SceneRegistry.cxx" />
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Ruler\FrgVisual_Scene_Ruler.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Axes\FrgVisual_SceneAttAxes_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\FrgVisual_SceneAttBackColor_TItem.cxx" />
     <ClCompile Include="ForgLib\Visual\Scene\TreeItem\Attributes\Background Color\Gradient\FrgVisual_SceneAttBackColorGradient_TItem.cxx" />
@@ -223,6 +226,7 @@ xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "
     <ClInclude Include="ForgLib\Visual\Global\FrgVisual_Global_Icons.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Actors\Mesh\Polyhedral\FrgVisual_MeshPolyhedralActor.hxx" />
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable\FrgViusal_LookUpTable.hxx" />
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Ruler\FrgVisual_Scene_Ruler.hxx" />
     <ClInclude Include="ForgLib\Visual\Tools\FrgVisual_Tools.hxx" />
     <QtMoc Include="ForgLib\Visual\Plot\2D\FrgVisual_Plot2D.hxx" />
     <ClInclude Include="ForgLib\Visual\Plot\2D\Tools\ChartXY\BoundingBox\FrgVisual_Plot2DChartXY_BoundingBox.hxx" />

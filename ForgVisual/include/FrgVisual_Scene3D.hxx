@@ -26,6 +26,8 @@ public:
 
 	//void Init() override;
 
+	bool Is3D() const override { return true; }
+
 	void RenderSceneSlot(bool resetCamera = true, bool resetView = false) override;
 
 	void SetCameraView(const QString& firstDir, const QString& secondDir);

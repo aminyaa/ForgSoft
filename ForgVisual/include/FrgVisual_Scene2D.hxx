@@ -37,6 +37,8 @@ public:
 
 	//void Init() override;
 
+	bool Is2D() const override { return true; }
+
 	void RenderSceneSlot(bool resetCamera = true, bool resetView = false) override;
 
 	std::vector<FrgVisual_BaseActor_Entity*> GetSelectedActors() const override;

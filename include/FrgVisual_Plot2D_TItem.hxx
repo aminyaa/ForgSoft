@@ -45,6 +45,8 @@ public:
 	FrgVisual_Plot2DAxes_TItem* GetAxesTItem() const { return theAxesTItem_; }
 	FrgVisual_Plot2DLegend_TItem* GetLegendTItem() const { return theLegendTItem_; }
 
+	const auto& GetPlotsTItem() const { return thePlotsTItem_; }
+
 public slots:
 	
 	void ExportDataAsCSVSlot();
@@ -113,7 +115,7 @@ protected slots:
 	vtkPlot* AddPlotSinXSlot();
 	vtkPlot* AddPlotCosXSlot();
 
-private:
+protected:
 
 	ForgBaseLib::FrgBase_TreeItem* theDataSeriesTItem_ = nullptr;
 	FrgVisual_Plot2DAxes_TItem* theAxesTItem_ = nullptr;

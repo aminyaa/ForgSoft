@@ -272,6 +272,9 @@
     <Filter Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable">
       <UniqueIdentifier>{55363da1-5ded-46a0-9fd7-d40a8a8be570}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\Tools\Ruler">
+      <UniqueIdentifier>{e9f90914-62cb-4855-8fd9-9ecd4408f9a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -451,6 +454,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\Tools\InteractorStyle\FrgVisual_Scene_InterStyle.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\InteractorStyle</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\Tools\Ruler\FrgVisual_Scene_Ruler.cxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Ruler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -619,6 +625,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable\FrgViusal_LookUpTable.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Contours\LookupTables\LookUpTable</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\Tools\Ruler\FrgVisual_Scene_Ruler.hxx">
+      <Filter>ForgLib\Visual\Scene\Tools\Ruler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

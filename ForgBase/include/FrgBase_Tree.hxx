@@ -54,7 +54,10 @@ public:
 
 	FrgBase_TreeItem* FindTItemByObjectName(const QString& objectName);
 
+	std::vector<FrgBase_TreeItem*> GetAllItems() const;
 	std::vector<FrgBase_TreeItem*> GetItemsUsingLevel(int level) const;
+
+	virtual void SetThemeDark(const bool isDark = false);
 
 private:
 

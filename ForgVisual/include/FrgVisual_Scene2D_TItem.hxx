@@ -27,6 +27,8 @@ public:
 
 	void FormTItem() override;
 
+	bool Is2D() const override { return true; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGVISUAL_EXPORT)

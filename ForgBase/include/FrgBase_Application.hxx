@@ -34,6 +34,12 @@ public:
 	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
 	void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow) { theParentMainWindow_ = parentMainWindow; }
 
+	// Catch everything (including SEH) and throw std::exception
+	static void CatchAndThrowStdException(const std::function<void()>& func);
+
+	// Catch everything (including SEH) and do nothing
+	static void CatchAndIgnore(const std::function<void()>& func);
+
 protected:
 
 	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;

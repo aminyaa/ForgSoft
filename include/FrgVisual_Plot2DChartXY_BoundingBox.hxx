@@ -20,6 +20,9 @@ public:
 
 	double Diameter() const;
 
+	double Length() const;
+	double Height() const;
+
 	bool IsInside(const ForgBaseLib::FrgBase_Pnt<2>& P);
 
 	const auto& P0() const { return theP0_; }

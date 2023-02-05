@@ -41,6 +41,7 @@ class FrgVisual_SceneRegistry;
 class FrgVisual_BaseActor_Entity;
 class FrgVisual_Scene_InterStyle_Base;
 class FrgVisual_GridActor;
+class FrgVisual_Scene_Ruler;
 
 template<int Dim>
 class FrgVisual_TextActor;
@@ -61,6 +62,12 @@ public:
 
 	~FrgVisual_Scene_Entity();
 
+	virtual bool Is2D() const { return false; }
+	virtual bool Is3D() const { return false; }
+
+	virtual bool IsThemeDark() const;
+	virtual void SetThemeDark(const bool isDark = false);
+
 	vtkSmartPointer<vtkRenderer> GetRenderer() { return theRenderer_; }
 	vtkSmartPointer<vtkGenericOpenGLRenderWindow> GetRenderWindow() { return theRenderWindow_; }
 	vtkSmartPointer<vtkRenderWindowInteractor> GetRenderWindowInteractor() { return theRenderWindowInteractor_; }
@@ -69,7 +76,9 @@ public:
 	std::vector<vtkSmartPointer<vtkLight>> GetLights() const { return theLights_; }
 	std::vector<vtkSmartPointer<vtkLight>>& GetLightsRef() { return theLights_; }
 	vtkSmartPointer<vtkTextActor> GetLogoTextActor() const { return theLogoActor_; }
+	vtkSmartPointer<FrgVisual_Scene_Ruler> GetLegendScaleActor() const { return theRuler_; }
 	vtkAxesActor* GetAxesActor() const { return theAxesActor_; }
+	vtkAxesActor* GetAxesCenterWorldActor() const { return theAxesCenterWorldActor_; }
 	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
 
 	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
@@ -97,14 +106,13 @@ public:
 
 	virtual void SetParentMainWindow(ForgBaseLib::FrgBase_MainWindow* parentMainWindow);
 
-	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
-
 	void SetMajorGridColor(const QColor& color);
 	void SetMinorGridColor(const QColor& color);
 
 	const vtkSmartPointer<vtkLogoRepresentation>& GetLogoImage() const { return theLogoImage_; }
 	void SetLogoImage(const vtkSmartPointer<vtkLogoRepresentation>& logoImage);
 
+	virtual std::vector<FrgVisual_BaseActor_Entity*> GetAllActors(const bool everything = false) const;
 	virtual std::vector<FrgVisual_BaseActor_Entity*> GetSelectedActors() const { return std::vector<FrgVisual_BaseActor_Entity*>(); }
 	virtual std::vector<FrgVisual_BaseActor_Entity*> GetHiddenActors() const { return std::vector<FrgVisual_BaseActor_Entity*>(); }
 
@@ -167,6 +175,12 @@ public:
 	void SetLogoImageFileAddress(const std::string& fileName);
 	void SetLogoImageHidden(bool condition);
 
+	// first: min point, second: max point
+	virtual std::pair<ForgBaseLib::FrgBase_Pnt<3>, ForgBaseLib::FrgBase_Pnt<3>>
+		ComputeVisibleBoundingBox() const;
+
+	virtual void ComputeVisiblePropBounds(double bounds[6]) const;
+
 protected:
 
 	void InitLogoImage(const std::string& fileName = ICON_FRGVISUAL_SCENE_LOGO);
@@ -217,7 +231,10 @@ protected:
 	mutable std::vector<vtkSmartPointer<vtkLight>> theLights_;
 	mutable vtkSmartPointer<vtkTextActor> theLogoActor_;
 	vtkAxesActor* theAxesActor_ = nullptr;
+	vtkAxesActor* theAxesCenterWorldActor_ = nullptr;
 	vtkCameraInterpolator* theCameraInterpolator_ = nullptr;
+
+	vtkSmartPointer<FrgVisual_Scene_Ruler> theRuler_;
 
 	ForgBaseLib::FrgBase_MainWindow* theParentMainWindow_ = nullptr;
 	ForgBaseLib::FrgBase_Menu* theContextMenuInScene_ = nullptr;
@@ -255,8 +272,8 @@ public slots:
 	void CurrentTabChangedSlot(int index);
 
 protected slots:
-
-	virtual void RenderSceneSlot(bool resetCamera = true, bool resetView = false) {}
+	
+	virtual void RenderSceneSlot(bool resetCamera = true, bool resetView = false);
 
 };
 
@@ -540,7 +557,7 @@ public:
 
 private:
 
-	DECLARE_SAVE_LOAD_HEADER()
+	DECLARE_SAVE_LOAD_HEADER( )
 };
 
 EndForgVisualLib

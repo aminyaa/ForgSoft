@@ -256,11 +256,11 @@ public:
 	void SelectAllActors(bool render = true);
 	void UnSelectAllActors(bool render = true);
 
-#ifdef EliminateUnSelectedActors
+//#ifdef EliminateUnSelectedActors
 
 	void SetUnselectedActorsEliminated(bool render = true);
 
-#endif // EliminateUnSelectedActors
+//#endif // EliminateUnSelectedActors
 
 	void HideSelectedActors(bool render = true);
 	void UnHideHiddenActors(bool render = true);

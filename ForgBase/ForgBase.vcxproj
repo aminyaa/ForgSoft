@@ -81,6 +81,7 @@
       </AdditionalUsingDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/EHa; /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,6 +125,7 @@ xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "
       </AdditionalUsingDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalOptions>/EHa; /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

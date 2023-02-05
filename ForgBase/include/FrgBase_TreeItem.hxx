@@ -101,6 +101,9 @@ public:
 	virtual void SetParentTree(FrgBase_Tree* parentTree);
 	virtual void SetParentTItem(FrgBase_TreeItem* parentTItem, bool renameTItem = true);
 
+	virtual bool IsThemeDark() const;
+	virtual void SetThemeDark(const bool isDark = false) {}
+
 	virtual int GetLevelInTree() const { return theLevelInTree_; }
 	// setting level in tree is not recommended manually
 	virtual void SetLevelInTree(int level) { theLevelInTree_ = level; }

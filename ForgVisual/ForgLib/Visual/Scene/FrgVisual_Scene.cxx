@@ -23,6 +23,7 @@
 #include <FrgVisual_PlaneActor.hxx>
 #include <FrgVisual_Scene_InterStyle2D.hxx>
 #include <FrgVisual_Scene_InterStyle3D.hxx>
+#include <Tools/Ruler/FrgVisual_Scene_Ruler.hxx>
 #include <FrgBase_Menu.hxx>
 #include <FrgBase_Pnt.hxx>
 #include <FrgBase_TabWidget.hxx>
@@ -110,7 +111,7 @@ ForgVisualLib::FrgVisual_Scene_Entity::FrgVisual_Scene_Entity
 		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::TabWidgetActivated, [this](QWidget* w, bool isActive)
 			{
 				if (w == this && isActive == true)
-					RenderScene(false, false);
+				RenderScene(false, false);
 			});
 		//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
 	}
@@ -139,6 +140,42 @@ ForgVisualLib::FrgVisual_Scene_Entity::~FrgVisual_Scene_Entity()
 	RemoveAllActors();
 
 	FreePointer(theRegistry_);
+}
+
+bool ForgVisualLib::FrgVisual_Scene_Entity::IsThemeDark() const
+{
+	if (theParentMainWindow_)
+		return theParentMainWindow_->IsThemeDark();
+
+	return false;
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::SetThemeDark
+(
+	const bool isDark
+)
+{
+	if (!theRenderer_)
+		return;
+
+	if (Is2D())
+	{
+		if(IsThemeDark())
+			theRenderer_->SetBackground(0.2, 0.2, 0.2);
+		else
+			theRenderer_->SetBackground(1.0, 1.0, 1.0);
+
+		theRenderer_->SetGradientBackground(false);
+	}
+	else if (Is3D())
+	{
+		theRenderer_->SetBackground(1.0, 1.0, 1.0);
+		theRenderer_->SetBackground2(0.7, 0.7, 0.7);
+
+		theRenderer_->SetGradientBackground(true);
+	}
+
+	RenderScene(false, false);
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::RemoveAllActors()
@@ -177,17 +214,14 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetParentMainWindow(ForgBaseLib::Frg
 		connect(theParentMainWindow_, &ForgBaseLib::FrgBase_MainWindow::TabWidgetActivated, [this](QWidget* w, bool isActive)
 			{
 				if (w == this && isActive == true)
-					RenderScene(false, false);
+				RenderScene(false, false);
 			});
+
+		if(Is2D())
+			SetThemeDark(IsThemeDark());
 	}
 
 	//connect(theParentMainWindow_->GetTabWidget(), &ForgBaseLib::FrgBase_TabWidget::currentChanged, this, &FrgVisual_Scene_Entity::CurrentTabChangedSlot);
-}
-
-void ForgVisualLib::FrgVisual_Scene_Entity::ComputeVisiblePropBounds(double bounds[6]) const
-{
-	if (theRenderer_)
-		theRenderer_->ComputeVisiblePropBounds(bounds);
 }
 
 void ForgVisualLib::FrgVisual_Scene_Entity::SetMajorGridColor(const QColor& color)
@@ -392,6 +426,38 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImage(const vtkSmartPointer<v
 	RenderScene(false, false);
 }
 
+std::vector<ForgVisualLib::FrgVisual_BaseActor_Entity*>
+ForgVisualLib::FrgVisual_Scene_Entity::GetAllActors(const bool everything) const
+{
+	std::vector<FrgVisual_BaseActor_Entity*> actors;
+
+	if(everything)
+	{
+		vtkRenderWindowInteractor* rwi = theRenderWindowInteractor_;
+		vtkActorCollection* ac;
+		vtkActor* anActor;
+		if (theRenderer_ != nullptr)
+		{
+			ac = theRenderer_->GetActors();
+			vtkCollectionSimpleIterator ait;
+			for (ac->InitTraversal(ait); (anActor = ac->GetNextActor(ait)); )
+			{
+				auto aPart = dynamic_cast<FrgVisual_BaseActor_Entity*>(anActor);
+				if (aPart)
+					actors.push_back(aPart);
+			}
+		}
+	}
+	else
+	{
+		auto actorsMap = theRegistry_->GetAllActors();
+		for (auto [index, actor] : actorsMap)
+			actors.push_back(actor);
+	}
+
+	return actors;
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImageFileAddress(const std::string& fileName)
 {
 	InitLogoImage(fileName);
@@ -408,6 +474,42 @@ void ForgVisualLib::FrgVisual_Scene_Entity::SetLogoImageHidden(bool condition)
 			if (!theRenderer_->HasViewProp(theLogoImage_))
 				theRenderer_->AddViewProp(theLogoImage_);
 		}
+	}
+}
+
+std::pair<ForgBaseLib::FrgBase_Pnt<3>, ForgBaseLib::FrgBase_Pnt<3>>
+ForgVisualLib::FrgVisual_Scene_Entity::ComputeVisibleBoundingBox() const
+{
+	double bounds[6];
+	ComputeVisiblePropBounds(bounds);
+
+	ForgBaseLib::FrgBase_Pnt<3> minPoint(bounds[0], bounds[2], bounds[4]);
+	ForgBaseLib::FrgBase_Pnt<3> maxPoint(bounds[1], bounds[3], bounds[5]);
+
+	//delete bounds;
+
+	return std::make_pair(minPoint, maxPoint);
+}
+
+void ForgVisualLib::FrgVisual_Scene_Entity::ComputeVisiblePropBounds(double bounds[6]) const
+{
+	std::vector<FrgVisual_BaseActor_Entity*> myActorsShouldBeHidden;
+	for (auto myActor : GetAllActors(true))
+	{
+		const bool isAxesActor = dynamic_cast<vtkAxesActor*>(myActor);
+
+		if (myActor->IsGrid() || myActor->IsText() || isAxesActor)
+		{
+			myActorsShouldBeHidden.push_back(myActor);
+			myActor->VisibilityOff();
+		}
+	}
+
+	theRenderer_->ComputeVisiblePropBounds(bounds);
+
+	for (auto myActorShouldBeHidden : myActorsShouldBeHidden)
+	{
+		myActorShouldBeHidden->VisibilityOn();
 	}
 }
 
@@ -581,6 +683,29 @@ void ForgVisualLib::FrgVisual_Scene_Entity::CurrentTabChangedSlot(int index)
 		RenderScene(false);*/
 }
 
+void ForgVisualLib::FrgVisual_Scene_Entity::RenderSceneSlot
+(
+	bool resetCamera,
+	bool resetView
+)
+{
+	if(theAxesCenterWorldActor_)
+	{
+		auto [mi, ma] = ComputeVisibleBoundingBox();
+
+		const auto dx = std::abs(mi.X() - ma.X());
+		const auto dy = std::abs(mi.Y() - ma.Y());
+		const auto dz = std::abs(mi.Z() - ma.Z());
+
+		auto d = 0.2 * std::min(dx, std::min(dy, dz));
+
+		if (d == 0.0)
+			d = 1.0;
+
+		theAxesCenterWorldActor_->SetTotalLength(d, d, d);
+	}
+}
+
 template<int Dim>
 ForgVisualLib::FrgVisual_Scene<Dim>::FrgVisual_Scene(ForgBaseLib::FrgBase_MainWindow* parentMainWindow)
 	: FrgVisual_Scene_Entity(parentMainWindow)
@@ -594,44 +719,14 @@ ForgVisualLib::FrgVisual_Scene<Dim>::~FrgVisual_Scene()
 
 }
 
+#include <vtkAxisActor2D.h>
+
 template<int Dim>
 void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 {
 	theRenderer_ = vtkSmartPointer<vtkRenderer>::New();
 
-	if (theParentMainWindow_)
-	{
-		if constexpr (Dim == 2)
-		{
-			if (theParentMainWindow_->IsThemeDark())
-			{
-				theRenderer_->SetBackground(0.2, 0.2, 0.2);
-				theRenderer_->SetGradientBackground(false);
-			}
-			else
-			{
-				theRenderer_->SetBackground(1.0, 1.0, 1.0);
-				theRenderer_->SetGradientBackground(false);
-			}
-		}
-		else if constexpr (Dim == 3)
-		{
-			if (theParentMainWindow_->IsThemeDark())
-			{
-				//theRenderer_->SetBackground(30.0 / 255.0, 94.0 / 255.0, 144.0 / 255.0);
-				//theRenderer_->SetBackground2(0.0, 0.0, 0.0);
-				theRenderer_->SetBackground(1.0, 1.0, 1.0);
-				theRenderer_->SetBackground2(0.7, 0.7, 0.7);
-				theRenderer_->SetGradientBackground(true);
-			}
-			else
-			{
-				theRenderer_->SetBackground(1.0, 1.0, 1.0);
-				theRenderer_->SetBackground2(0.7, 0.7, 0.7);
-				theRenderer_->SetGradientBackground(true);
-			}
-		}
-	}
+	SetThemeDark(IsThemeDark());
 
 	theRenderWindow_ = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
 
@@ -791,7 +886,7 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 
 	InitLogoImage();
 
-	if(false)
+	if (false)
 	{
 		auto opaque_sequence = vtkSmartPointer<vtkSequencePass>::New();
 		auto passes2 = vtkSmartPointer<vtkRenderPassCollection>::New();
@@ -842,13 +937,39 @@ void ForgVisualLib::FrgVisual_Scene<Dim>::Init()
 		theRenderWindow_->OffScreenRenderingOn();
 	}
 
+	// Init theLegendScaleActor_
+	if constexpr (Dim == 3)
+	{
+		theRuler_ = vtkSmartPointer<FrgVisual_Scene_Ruler>::New();
+		theRuler_->SetParentScene(this);
+		theRuler_->TurnOff(false);
+
+		theRenderer_->AddActor2D(theRuler_);
+	}
+
+	// Init theAxesCenterWorldActor_
+	if constexpr (Dim == 3)
+	{
+		theAxesCenterWorldActor_ = vtkAxesActor::New();
+		theAxesCenterWorldActor_->SetShaftTypeToLine();
+		theAxesCenterWorldActor_->SetOrigin(0.0, 0.0, 0.0);
+		theAxesCenterWorldActor_->SetXAxisLabelText("");
+		theAxesCenterWorldActor_->SetYAxisLabelText("");
+		theAxesCenterWorldActor_->SetZAxisLabelText("");
+		theAxesCenterWorldActor_->PickableOff();
+		theAxesCenterWorldActor_->SetTotalLength(1.0, 1.0, 1.0);
+		theAxesCenterWorldActor_->SetShaftTypeToCylinder();
+
+		theRenderer_->AddActor(theAxesCenterWorldActor_);
+	}
+
 	theInitiated_ = true;
 }
 
 template<int Dim>
 void ForgVisualLib::FrgVisual_Scene<Dim>::RenderSceneSlot(bool resetCamera, bool resetView)
 {
-
+	FrgVisual_Scene_Entity::RenderSceneSlot(resetCamera, resetView);
 }
 
 template<int Dim>
@@ -1716,7 +1837,7 @@ DECLARE_LOAD_IMP(ForgVisualLib::FrgVisual_Scene<Dim>)
 
 	//this->RenderScene(false, false);
 
-	if(theRenderWindow_)
+	if (theRenderWindow_)
 		theRenderWindow_->Render();
 
 	/*if (theRenderer_)
