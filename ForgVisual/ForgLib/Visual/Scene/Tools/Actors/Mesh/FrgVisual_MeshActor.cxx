@@ -4,6 +4,7 @@
 
 #include <FrgBase_Pnt.hxx>
 #include <FrgBase_SerialSpec_Tuple.hxx>
+#include <FrgBase_Application.hxx>
 
 #include <vtkObjectFactory.h>
 #include <vtkPolyData.h>
@@ -309,25 +310,50 @@ void ForgVisualLib::FrgVisual_MeshActor<Dim>::UpdateScalarValues()
 template<int Dim>
 std::vector<double> ForgVisualLib::FrgVisual_MeshActor<Dim>::ConvertCellDataToPointData(const std::vector<double>& values)
 {
-	auto myArray = vtkSmartPointer<vtkDoubleArray>::New();
-	myArray->SetNumberOfComponents(1);
-	myArray->SetName("MyArray");
-	for (const auto& v : values)
-	{
-		auto d = new double(v);
-		myArray->InsertNextTypedTuple(d);
-	}
-
-	thePolyData_->GetCellData()->SetScalars(myArray);
-
-	auto convertor = vtkSmartPointer<vtkCellDataToPointData>::New();
-	convertor->SetInputData(thePolyData_);
-	convertor->Update();
-
 	std::vector<double> pointsData;
-	auto pointsScalarData = convertor->GetPolyDataOutput()->GetPointData()->GetScalars();
-	for (int i = 0; i < pointsScalarData->GetNumberOfValues(); i++)
-		pointsData.push_back(pointsScalarData->GetVariantValue(i).ToDouble());
+	auto func = [this, &pointsData, &values]()
+	{
+		std::exception ex("Null pointer detected in " __FUNCSIG__);
+
+		auto myArray = vtkSmartPointer<vtkDoubleArray>::New();
+		myArray->SetNumberOfComponents(1);
+		myArray->SetName("MyArray");
+		for (const auto& v : values)
+		{
+			auto d = new double(v);
+			myArray->InsertNextTypedTuple(d);
+		}
+
+		if (!thePolyData_)
+			throw ex;
+
+		auto cellData = thePolyData_->GetCellData();
+		if (!cellData)
+			throw ex;
+
+		cellData->SetScalars(myArray);
+
+		auto convertor = vtkSmartPointer<vtkCellDataToPointData>::New();
+		convertor->SetInputData(thePolyData_);
+		convertor->Update();
+
+		auto polyDataOutput = convertor->GetPolyDataOutput();
+		if (!polyDataOutput)
+			throw ex;
+
+		auto pointData = polyDataOutput->GetPointData();
+		if (!pointData)
+			throw ex;
+
+		auto pointsScalarData = pointData->GetScalars();
+		if (!pointsScalarData)
+			throw ex;
+
+		for (int i = 0; i < pointsScalarData->GetNumberOfValues(); i++)
+			pointsData.push_back(pointsScalarData->GetVariantValue(i).ToDouble());
+	};
+
+	ForgBaseLib::FrgBase_Application::CatchAndIgnore(func);
 
 	return pointsData;
 }
