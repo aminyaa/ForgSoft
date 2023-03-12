@@ -13,6 +13,8 @@
 
 #include <QtWidgets/QTreeWidgetItem>
 
+#include <nlohmann/json_fwd.hpp>
+
 BeginForgBaseLib
 
 class FrgBase_Tree;
@@ -34,7 +36,7 @@ class FORGBASE_EXPORT FrgBase_TreeItem
 
 public:
 
-		enum class LockType
+	enum class LockType
 	{
 		None,
 		Rename,
@@ -145,9 +147,9 @@ public:
 
 	void ConstructTItem
 	(
-		const FrgString & itemTitle,
-		FrgBase_TreeItem * parentItem,
-		FrgBase_Tree * parentTree
+		const FrgString& itemTitle,
+		FrgBase_TreeItem* parentItem,
+		FrgBase_Tree* parentTree
 	);
 
 	virtual void FormTItem();
@@ -182,6 +184,8 @@ public:
 	virtual bool CanShowContextMenuUsingLock() const;
 
 	virtual bool HasParentTItemNullTree() const;
+
+	virtual nlohmann::json ToJSON() const;
 
 private:
 
