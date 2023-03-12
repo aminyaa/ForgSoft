@@ -27,7 +27,13 @@ ForgBaseLib::FrgBase_MenuAction::FrgBase_MenuAction
 )
 	: QAction(icon, text, parent)
 {
-	connect(this, &QAction::triggered, this, &FrgBase_MenuAction::ClickedSignal);
+	connect
+	(
+		this,
+		&QAction::triggered,
+		this,
+		&FrgBase_MenuAction::ClickedSignal
+	);
 }
 
 bool ForgBaseLib::FrgBase_MenuAction::IsHidden() const
@@ -38,4 +44,9 @@ bool ForgBaseLib::FrgBase_MenuAction::IsHidden() const
 void ForgBaseLib::FrgBase_MenuAction::SetHidden(const bool c)
 {
 	setVisible(!c);
+}
+
+void ForgBaseLib::FrgBase_MenuAction::Click()
+{
+	emit triggered(this->isChecked());
 }

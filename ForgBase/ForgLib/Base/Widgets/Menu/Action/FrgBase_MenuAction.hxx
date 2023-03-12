@@ -38,7 +38,11 @@ public:
 	bool IsHidden() const;
 	void SetHidden(const bool c);
 
+	// This signal will emit only when QAction::triggered calls
 	Q_SIGNAL void ClickedSignal(bool checked = false);
+
+	// This method will emit QAction::triggered signal, so ClickedSignal will be emitted after
+	Q_SLOT void Click();
 };
 
 EndForgBaseLib
