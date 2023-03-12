@@ -34,6 +34,10 @@ public:
 
 	void FormWidget() override;
 
+	virtual void OnButtonClicked() {}
+
+	void mousePressEvent(QMouseEvent* ev) override;
+
 protected slots:
 
 	void DisplayNameChangedSlot(const QString& displayName);
@@ -51,8 +55,6 @@ protected:
 	QToolButton* theButton_ = nullptr;
 
 	QWidget* theParent_ = nullptr;
-
-	virtual void OnButtonClicked() {}
 };
 
 EndForgBaseLib

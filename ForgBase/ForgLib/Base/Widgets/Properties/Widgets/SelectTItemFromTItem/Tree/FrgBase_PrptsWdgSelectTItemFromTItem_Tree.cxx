@@ -11,7 +11,7 @@ ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Tree::FrgBase_PrptsWdgSelectTI
 	this->header()->setSectionResizeMode(0, QHeaderView::Interactive);
 	this->setSelectionMode(QAbstractItemView::SingleSelection);
 
-	QString style = "QTreeView::branch:has-siblings:!adjoins-item {"
+	/*QString style = "QTreeView::branch:has-siblings:!adjoins-item {"
 		"border-image:url(:/Icons/TreeStyle/stylesheet-vline.png)0;"
 		"}"
 
@@ -34,7 +34,7 @@ ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Tree::FrgBase_PrptsWdgSelectTI
 		"        border-image: none;"
 		"        image: url(:/Icons/TreeStyle/User-Interface-Minus-icon.png);"
 		"}";
-	this->setStyleSheet(style);
+	this->setStyleSheet(style);*/
 }
 
 ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Tree::~FrgBase_PrptsWdgSelectTItemFromTItem_Tree()

@@ -33,6 +33,9 @@ public:
 	const std::function<std::vector<FrgBase_TreeItem*>()>& GetParentItemsFunction() const { return theParentTItemsFunction_; }
 	void SetParentItemsFunction(const std::function<std::vector<FrgBase_TreeItem*>()>& func) { theParentTItemsFunction_ = func; }
 
+	const auto& GetSelectTItemFunction() const { return theSelectTItemFunction_; }
+	void SetSelectTItemFunction(const std::function<FrgBase_TreeItem*()>& function) { theSelectTItemFunction_ = function; }
+
 private:
 
 	DECLARE_SAVE_LOAD_HEADER(FORGBASE_EXPORT)
@@ -41,6 +44,8 @@ protected:
 
 	std::function<std::vector<FrgBase_TreeItem*>()> theParentTItemsFunction_;
 	//std::vector<FrgBase_TreeItem*> theParentTItems_;
+
+	std::function<FrgBase_TreeItem*()> theSelectTItemFunction_ = nullptr;
 
 protected:
 

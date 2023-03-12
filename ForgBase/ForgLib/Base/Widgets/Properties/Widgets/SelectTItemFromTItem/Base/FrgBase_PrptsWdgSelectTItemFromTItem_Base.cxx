@@ -6,6 +6,38 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QToolButton>
+#include <QMouseEvent>
+
+namespace ForgBaseLib
+{
+	class FrgBase_PrptsWdgSelectTItemFromTItem_Base_Label
+		: public QLabel
+	{
+
+	public:
+
+		FrgBase_PrptsWdgSelectTItemFromTItem_Base_Label
+		(
+			FrgBase_PrptsWdgSelectTItemFromTItem_Base* base,
+			const QString& text
+		)
+			: QLabel(text)
+			, theBase_(base)
+		{
+			
+		}
+
+		void mousePressEvent(QMouseEvent* ev) override
+		{
+			if (theBase_)
+			{
+				theBase_->OnButtonClicked();
+			}
+		}
+
+		FrgBase_PrptsWdgSelectTItemFromTItem_Base* theBase_ = nullptr;
+	};
+}
 
 ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::FrgBase_PrptsWdgSelectTItemFromTItem_Base
 (
@@ -46,7 +78,7 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::FormWidget()
 		myLayout->addWidget(thePrefixLabel_);
 	}
 
-	theSelectedTItemLabel_ = new QLabel("");
+	theSelectedTItemLabel_ = new FrgBase_PrptsWdgSelectTItemFromTItem_Base_Label(this, "");
 	myLayout->addWidget(theSelectedTItemLabel_);
 
 	if (myVariant)
@@ -72,6 +104,11 @@ void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::FormWidget()
 
 	connect(theButton_, SIGNAL(clicked()), this, SLOT(OnButtonClickedSlot()));
 	this->setLayout(myLayout);
+}
+
+void ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::mousePressEvent(QMouseEvent* ev)
+{
+	OnButtonClicked();
 }
 
 ForgBaseLib::FrgBase_PrptsWdgSelectTItemFromTItem_Base::~FrgBase_PrptsWdgSelectTItemFromTItem_Base()
