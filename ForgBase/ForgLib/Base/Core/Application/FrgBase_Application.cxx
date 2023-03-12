@@ -201,17 +201,20 @@ void ForgBaseLib::FrgBase_Application::CatchAndIgnore
 )
 {
 	auto mainWindow = Instance()->theParentMainWindow_;
-	const auto condition0 = mainWindow->IsConsoleSilent();
-	try
+	if(mainWindow)
 	{
-		mainWindow->SetConsoleSilent(true);
+		const auto condition0 = mainWindow->IsConsoleSilent();
+		try
+		{
+			mainWindow->SetConsoleSilent(true);
 
-		CatchAndThrowStdException(func);
-	}
-	catch (...)
-	{
-		// Do nothing
-	}
+			CatchAndThrowStdException(func);
+		}
+		catch (...)
+		{
+			// Do nothing
+		}
 
-	mainWindow->SetConsoleSilent(condition0);
+		mainWindow->SetConsoleSilent(condition0);
+	}
 }
