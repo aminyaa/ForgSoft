@@ -43,27 +43,85 @@ public:
 
 	~FrgBase_Menu();
 
+	// positionIndex = -1 means: add menu at the last position
+	FrgBase_Menu* AddMenu
+	(
+		const QString& menuTitle,
+		const int addTitleAsAnAction = false,
+		const int positionIndex = -1
+	);
+
+	// positionIndex = -1 means: add item at the last position
 	FrgBase_MenuAction* AddItem
 	(
 		const QString& itemTitle,
-		const bool isInToolBar = true
+		const int isInToolBar = true,
+		const int positionIndex = -1
 	);
 
+	// positionIndex = -1 means: add item at the last position
 	FrgBase_MenuAction* AddItem
 	(
 		const QString& iconAddress,
 		const QString& itemTitle,
-		const bool isInToolBar = true
+		const int isInToolBar = true,
+		const int positionIndex = -1
 	);
 
+	// positionIndex = -1 means: add item at the last position
 	FrgBase_MenuAction* AddItem
 	(
 		const QIcon& icon,
 		const QString& itemTitle,
-		const bool isInToolBar = true
+		const int isInToolBar = true,
+		const int positionIndex = -1
 	);
 
-	FrgBase_MenuAction* GetItem(const QString& itemTitle);
+	FrgBase_MenuAction* GetItem
+	(
+		const QString& itemTitle
+	);
+
+	// returns -1 if not found
+	int GetIndexUsingItem
+	(
+		FrgBase_MenuAction* action
+	);
+
+	void InsertItem
+	(
+		FrgBase_MenuAction* before,
+		FrgBase_MenuAction* action
+	);
+
+	// positionIndex = -1 means: add item at the last position
+	void InsertItem
+	(
+		const int positionIndex,
+		FrgBase_MenuAction* action
+	);
+
+	void RemoveItem
+	(
+		FrgBase_MenuAction* action
+	);
+
+	void InsertMenu
+	(
+		FrgBase_MenuAction* before,
+		FrgBase_Menu* menu
+	);
+
+	void InsertMenu
+	(
+		const int positionIndex,
+		FrgBase_Menu* menu
+	);
+
+	void RemoveMenu
+	(
+		FrgBase_Menu* menu
+	);
 
 	void SetToolBarHidden(const bool condition);
 
@@ -80,17 +138,26 @@ public:
 		QAction* at = nullptr
 	);
 
-	std::vector<QAction*>
+	std::vector<FrgBase_MenuAction*>
 		GetListOfActions
 		(
 			const bool containingHiddens = true
 		) const;
 
+	bool ContainsItem
+	(
+		FrgBase_MenuAction* action
+	) const;
+
 public slots:
 
 	void MenuTitleChangedSlot(const QString& name);
 
-private:
+protected:
+
+	void ReArrangeItems();
+
+protected:
 
 	bool theHasTitleAsAnAction_;
 };
