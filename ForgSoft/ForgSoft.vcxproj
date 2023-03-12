@@ -49,14 +49,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR_7_6);$(Qt_INCLUDEPATH_);$(SolutionDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(Qt_INCLUDELIB);$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(OPENCASCADE_INCLUDELIB_7_6);$(BOOST_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(Qt_INCLUDEPATH_);$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(Qt_INCLUDELIB);$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(BOOST_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR_7_6);$(Qt_INCLUDEPATH_);$(SolutionDir)include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(Qt_INCLUDELIB);$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(OPENCASCADE_INCLUDELIB_7_6);$(BOOST_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(Qt_INCLUDEPATH_);$(SolutionDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(Qt_INCLUDELIB);$(GMP_INCLUDELIB);$(TBB_INCLUDELIB);$(OPENCASCADE_INCLUDELIB);$(BOOST_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">

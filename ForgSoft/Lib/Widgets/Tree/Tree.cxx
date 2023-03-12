@@ -7,6 +7,7 @@
 #include <FrgVisual_Scene3D_TItem.hxx>
 #include <FrgVisual_Scene.hxx>
 #include <FrgBase_Pnt.hxx>
+#include <FrgBase_Menu.hxx>
 
 #include <FrgBase_ToolsParameters_TItem.hxx>
 #include <FrgBase_ToolsParameterScalar_TItem.hxx>
@@ -64,6 +65,30 @@ void Tree::FormTree()
 	theItems_.push_back(s1);
 	theItems_.push_back(s2);
 	theItems_.push_back(s3);
+
+	auto actions =
+		s1->GetContextMenu()->actions();
+
+	std::cout << "actions.size() = "
+		<< actions.size() << std::endl;
+
+	for (auto action : actions)
+		std::cout << "============> " << action->text().toStdString() << std::endl;
+
+	std::cout << "================================\n";
+
+	actions = s2->GetContextMenu()->actions();
+	for (auto action : actions)
+		std::cout << "============> " << action->text().toStdString() << std::endl;
+
+	std::cout << "================================\n";
+
+	auto m = s3->GetContextMenu()->AddMenu("Salam");
+	m->AddItem("SSALAAM");
+
+	actions = s3->GetContextMenu()->actions();
+	for (auto action : actions)
+		std::cout << "============> " << action->text().toStdString() << std::endl;
 
 	auto i = new ForgBaseLib::FrgBase_PrptsVrntBool("Boolean", true);
 	auto i2 = new ForgBaseLib::FrgBase_PrptsVrntTextEdit("TextEdit", "This is a test");

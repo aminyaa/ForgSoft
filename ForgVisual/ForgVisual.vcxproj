@@ -31,13 +31,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)D</TargetName>
-    <LibraryPath>$(OPENCASCADE_INCLUDELIB_7_6);$(Qt_INCLUDELIB);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR_7_6);$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCASCADE_INCLUDELIB);$(Qt_INCLUDELIB);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR_7_6);$(IncludePath)</IncludePath>
-    <LibraryPath>$(OPENCASCADE_INCLUDELIB_7_6);$(Qt_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(OPENCASCADE_INCLUDEDIR);$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCASCADE_INCLUDELIB);$(Qt_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -61,6 +61,9 @@
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
     <QtModules>core;gui;opengl;openglextensions;widgets</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />

@@ -52,7 +52,15 @@ public:
 
 	QString GetLineEditName() const;
 
+protected:
+
+	static bool IsNameValid(const QString& text);
+
+	static bool IsCharValid(const QChar myChar);
+
 private slots:
+	
+	void TextChangedSlot(const QString&);
 
 	void onOK();
 

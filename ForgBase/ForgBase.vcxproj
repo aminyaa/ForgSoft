@@ -32,13 +32,13 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <TargetName>$(ProjectName)D</TargetName>
     <LibraryPath>$(BOOST_INCLUDELIB);$(Qt_INCLUDELIB);$(LibraryPath)</LibraryPath>
-    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\CodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\CodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(NLOHMANN_INCLUDEDIR)</IncludePath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\CodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(Qt_INCLUDEDIR);$(BOOST_INCLUDEDIR);$(MSBuildProjectDirectory)\ThirdParties\exprtk;$(MSBuildProjectDirectory)\ThirdParties\CodeEditor\include;$(MSBuildProjectDirectory)\ThirdParties\ChaiScript\include;$(MSBuildProjectDirectory)\ThirdParties\AdvancedDockingSystem;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(NLOHMANN_INCLUDEDIR)</IncludePath>
     <LibraryPath>$(BOOST_INCLUDELIB);$(Qt_INCLUDELIB);$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <ReferencePath>$(VC_ReferencesPath_x64);</ReferencePath>
   </PropertyGroup>
@@ -64,6 +64,9 @@
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>msvc2017_64</QtInstall>
     <QtModules>core;gui;opengl;widgets</QtModules>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -257,7 +260,7 @@ xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\TextEdit\FrgBase_FieldTextEdit.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\TreeItem\FrgBase_FieldTreeItemWidget.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Field\Tree\FrgBase_FieldTreeWidget.cxx" />
-    <ClCompile Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools_TItem.cxx" />
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\FrgBase_ToolsParameters_TItem.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\FrgBase_ToolsParameter_TItem.cxx" />
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar\FrgBase_ToolsParameterScalar_TItem.cxx" />
@@ -470,7 +473,7 @@ xcopy /s /y /q "$(SolutionDir)$(Platform)\$(Configuration)\$(TargetName).dll"  "
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\Tree\FrgBase_PrptsWdgSelectTItem_Tree.hxx" />
     <ClInclude Include="ForgLib\Base\Widgets\Properties\Widgets\SelectTItem\FrgBase_PrptsWdgSelectTItemI.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\StringDouble\FrgBase_PrptsWdgStringDouble.hxx" />
-    <QtMoc Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools_TItem.hxx" />
+    <ClInclude Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\FrgBase_ToolsParameters_TItem.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\FrgBase_ToolsParameter_TItem.hxx" />
     <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\Parameter\Scalar\FrgBase_ToolsParameterScalar_TItem.hxx" />

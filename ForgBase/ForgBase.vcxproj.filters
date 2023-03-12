@@ -684,7 +684,7 @@
     <ClCompile Include="ForgLib\Base\Core\Data Types\Point\FrgBase_Pnt.cxx">
       <Filter>ForgLib\Base\Core\Data Types\Point</Filter>
     </ClCompile>
-    <ClCompile Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools_TItem.cxx">
+    <ClCompile Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools.cxx">
       <Filter>ForgLib\Base\Widgets\Tools</Filter>
     </ClCompile>
     <ClCompile Include="ForgLib\Base\Widgets\Tools\Parameters\FrgBase_ToolsParameters_TItem.cxx">
@@ -1151,6 +1151,9 @@
     <ClInclude Include="ForgLib\Base\Script\FrgBase_Script.hxx">
       <Filter>ForgLib\Base\Script</Filter>
     </ClInclude>
+    <ClInclude Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools.hxx">
+      <Filter>ForgLib\Base\Widgets\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ForgLib\Base\Widgets\Menu\FrgBase_Menu.hxx">
@@ -1284,9 +1287,6 @@
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Properties\Widgets\StringDouble\FrgBase_PrptsWdgStringDouble.hxx">
       <Filter>ForgLib\Base\Widgets\Properties\Widgets\StringDouble</Filter>
-    </QtMoc>
-    <QtMoc Include="ForgLib\Base\Widgets\Tools\FrgBase_Tools_TItem.hxx">
-      <Filter>ForgLib\Base\Widgets\Tools</Filter>
     </QtMoc>
     <QtMoc Include="ForgLib\Base\Widgets\Tools\Parameters\FrgBase_ToolsParameters_TItem.hxx">
       <Filter>ForgLib\Base\Widgets\Tools\Parameters</Filter>
