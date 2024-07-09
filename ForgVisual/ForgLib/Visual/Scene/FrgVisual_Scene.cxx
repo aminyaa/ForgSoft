@@ -658,6 +658,27 @@ void ForgVisualLib::FrgVisual_Scene_Entity::customContextMenuRequestedSlot(const
 	}
 }
 
+void ForgVisualLib::FrgVisual_Scene_Entity::HideAxesCenterWorldActor(const bool condition)
+{
+	if (theAxesCenterWorldActor_)
+	{
+		theRenderer_->RemoveActor(theAxesCenterWorldActor_);
+
+		if (!condition)
+			theRenderer_->AddActor(theAxesCenterWorldActor_);
+
+		RenderScene(false, false);
+	}
+}
+
+bool ForgVisualLib::FrgVisual_Scene_Entity::HasAxesCenterWorldActor() const
+{
+	if (theRenderer_)
+		return theRenderer_->HasViewProp(theAxesCenterWorldActor_);
+
+	return false;
+}
+
 void ForgVisualLib::FrgVisual_Scene_Entity::SetContextMenuInScene(ForgBaseLib::FrgBase_Menu* menu)
 {
 	theCopyContextMenuInScene_ = menu;

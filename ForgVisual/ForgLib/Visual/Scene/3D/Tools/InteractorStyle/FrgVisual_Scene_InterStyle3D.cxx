@@ -1073,6 +1073,8 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnChar()
 {
 	vtkRenderWindowInteractor* rwi = this->Interactor;
 
+	const auto parentScene = GetParentScene();
+
 	switch (rwi->GetKeyCode())
 	{
 	case 'Q':
@@ -1085,8 +1087,13 @@ void ForgVisualLib::FrgVisual_Scene_InterStyle3D::OnChar()
 	case 'R':
 	case 'r':
 
-		if (GetParentScene())
-			GetParentScene()->RenderScene(true);
+		if (parentScene)
+			parentScene->RenderScene(true);
+	case 'A':
+	case 'a':
+
+		if (parentScene)
+			parentScene->HideAxesCenterWorldActor(parentScene->HasAxesCenterWorldActor());
 
 		break;
 	}

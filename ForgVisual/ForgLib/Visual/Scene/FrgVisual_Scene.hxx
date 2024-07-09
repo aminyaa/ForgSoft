@@ -81,6 +81,9 @@ public:
 	vtkAxesActor* GetAxesCenterWorldActor() const { return theAxesCenterWorldActor_; }
 	vtkCameraInterpolator* GetCameraInterpolator() const { return theCameraInterpolator_; }
 
+	void HideAxesCenterWorldActor(const bool condition = true);
+	bool HasAxesCenterWorldActor() const;
+
 	ForgBaseLib::FrgBase_MainWindow* GetParentMainWindow() const { return theParentMainWindow_; }
 	ForgBaseLib::FrgBase_Menu* GetContextMenuInScene() const { return theCopyContextMenuInScene_ ? theCopyContextMenuInScene_ : theContextMenuInScene_; }
 	ForgBaseLib::FrgBase_Menu*& GetContextMenuInSceneRef() { return theCopyContextMenuInScene_; }
