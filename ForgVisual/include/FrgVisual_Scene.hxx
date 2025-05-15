@@ -301,6 +301,7 @@ class FrgVisual_RectangleActor;
 class FrgVisual_CircleActor;
 class FrgVisual_BoxActor;
 class FrgVisual_CylinderActor;
+class FrgVisual_SphereActor;
 
 template<int Dim>
 class FORGVISUAL_EXPORT FrgVisual_Scene
@@ -531,6 +532,18 @@ public:
 		double radius,
 		bool render = true
 	);
+
+	// ==================================================================================
+	// Add Sphere
+	// ==================================================================================
+
+	template <typename = typename std::enable_if_t<Dim == 3>>
+	FrgVisual_SphereActor* AddSphere
+	(
+		const ForgBaseLib::FrgBase_Pnt<3>& center,
+		double radius,
+		bool render = true
+	);	
 
 	// ==================================================================================
 	// Add Plane

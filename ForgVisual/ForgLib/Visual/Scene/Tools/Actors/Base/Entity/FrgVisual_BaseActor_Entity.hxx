@@ -42,6 +42,7 @@ public:
 		Rectangle,
 		Box,
 		Cylinder,
+		Sphere,
 		Mesh,
 		Polyhedral,
 		Grid,
@@ -131,6 +132,7 @@ public:
 	bool IsRectangle() const;
 	bool IsBox() const;
 	bool IsCylinder() const;
+	bool IsSphere() const;
 	bool IsMesh() const;
 	bool IsPolyhedral() const;
 	bool IsGrid() const;

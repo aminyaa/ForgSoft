@@ -19,6 +19,7 @@
 #include <FrgVisual_GridActor.hxx>
 #include <FrgVisual_BoxActor.hxx>
 #include <FrgVisual_CylinderActor.hxx>
+#include <FrgVisual_SphereActor.hxx>
 #include <FrgVisual_TextActor.hxx>
 #include <FrgVisual_PlaneActor.hxx>
 #include <FrgVisual_Scene_InterStyle2D.hxx>
@@ -1490,6 +1491,35 @@ ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<Dim>::Add
 	return std::move(actor);
 }
 
+template <int Dim>
+template <typename>
+ForgVisualLib::FrgVisual_SphereActor*
+ForgVisualLib::FrgVisual_Scene<Dim>::AddSphere
+(
+	const ForgBaseLib::FrgBase_Pnt<3>& center,
+	const double radius,
+	bool render
+)
+{
+	if (radius <= 0.0)
+	{
+		std::exception myException("Radius cannot be smaller than or equal to 0.0");
+		throw myException;
+	}
+
+	// Actor
+	auto actor = vtkSmartPointer<FrgVisual_SphereActor>::New();
+
+	actor->SetData(center, radius);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
 template<int Dim>
 ForgVisualLib::FrgVisual_PlaneActor<Dim>* ForgVisualLib::FrgVisual_Scene<Dim>::AddPlane
 (
@@ -1890,6 +1920,8 @@ template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::Frg
 
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(const ForgBaseLib::FrgBase_Pnt<3>& Start, const ForgBaseLib::FrgBase_Pnt<3>& End, double radius, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(double Start_X, double Start_Y, double Start_Z, double End_X, double End_Y, double End_Z, double radius, bool render);
+
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_SphereActor* ForgVisualLib::FrgVisual_Scene<3>::AddSphere(const ForgBaseLib::FrgBase_Pnt<3>& Center, double radius, bool render);
 
 //template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<2>* ForgVisualLib::FrgVisual_Scene<2>::AddText(const QString& value, double posx, double posy, bool render);
 //template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_TextActor<3>* ForgVisualLib::FrgVisual_Scene<3>::AddText(const QString& value, double posx, double posy, double posz, bool render);

@@ -65,6 +65,8 @@ inline
 void ForgVisualLib::FrgVisual_CurveActor<Dim>::SetRenderLinesAsTubes(bool condition)
 {
 	theRenderLinesAsTubes_ = condition;
+	
+	GetProperty()->SetRenderLinesAsTubes(condition);
 }
 
 template<int Dim>

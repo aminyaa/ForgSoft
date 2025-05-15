@@ -237,6 +237,11 @@ bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsCylinder() const
 	IsThatType(Cylinder);
 }
 
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsSphere() const
+{
+	IsThatType(Sphere);
+}
+
 bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsMesh() const
 {
 	IsThatType(Mesh);

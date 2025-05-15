@@ -275,6 +275,9 @@
     <Filter Include="ForgLib\Visual\Scene\Tools\Ruler">
       <UniqueIdentifier>{e9f90914-62cb-4855-8fd9-9ecd4408f9a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Sphere">
+      <UniqueIdentifier>{d2dd4b34-0690-4142-b96a-f56fb223a2b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\InteractorStyle\FrgVisual_Scene_InterStyle3D.cxx">
@@ -457,6 +460,9 @@
     <ClCompile Include="ForgLib\Visual\Scene\Tools\Ruler\FrgVisual_Scene_Ruler.cxx">
       <Filter>ForgLib\Visual\Scene\Tools\Ruler</Filter>
     </ClCompile>
+    <ClCompile Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Sphere\FrgVisual_SphereActor.cxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Sphere</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="ForgVisual.qrc">
@@ -628,6 +634,9 @@
     </ClInclude>
     <ClInclude Include="ForgLib\Visual\Scene\Tools\Ruler\FrgVisual_Scene_Ruler.hxx">
       <Filter>ForgLib\Visual\Scene\Tools\Ruler</Filter>
+    </ClInclude>
+    <ClInclude Include="ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Sphere\FrgVisual_SphereActor.hxx">
+      <Filter>ForgLib\Visual\Scene\3D\Tools\Actors\Solid\Conic\Sphere</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
