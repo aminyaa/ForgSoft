@@ -33,7 +33,7 @@ public:
 	const std::function<std::vector<FrgBase_TreeItem*>()>& GetParentItemsFunction() const { return theParentTItemsFunction_; }
 	void SetParentItemsFunction(const std::function<std::vector<FrgBase_TreeItem*>()>& func) { theParentTItemsFunction_ = func; }
 
-	const auto& GetSelectTItemFunction() const { return theSelectTItemFunction_; }
+	const std::function<FrgBase_TreeItem* ()>& GetSelectTItemFunction() const { return theSelectTItemFunction_; }
 	void SetSelectTItemFunction(const std::function<FrgBase_TreeItem*()>& function) { theSelectTItemFunction_ = function; }
 
 private:
