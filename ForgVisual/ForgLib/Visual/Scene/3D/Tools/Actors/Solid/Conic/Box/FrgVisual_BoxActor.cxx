@@ -14,7 +14,7 @@ ForgVisualLib::FrgVisual_BoxActor::FrgVisual_BoxActor()
 
 void ForgVisualLib::FrgVisual_BoxActor::SetData(const ForgBaseLib::FrgBase_Pnt<3>& P0, const ForgBaseLib::FrgBase_Pnt<3>& P1)
 {
-	SetData(P0.X(), P1.X(), P0.Y(), P1.Y(), P0.Z(), P1.Z());
+	SetData(P0.X(), P0.Y(), P0.Z(), P1.X(), P1.Y(), P1.Z());
 }
 
 void ForgVisualLib::FrgVisual_BoxActor::SetData(double P0_x, double P0_y, double P0_z, double P1_x, double P1_y, double P1_z)
