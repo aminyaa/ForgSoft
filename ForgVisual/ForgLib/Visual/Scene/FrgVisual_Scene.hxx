@@ -23,6 +23,8 @@ class vtkLogoRepresentation;
 class QPoint;
 class QVTKOpenGLNativeWidget;
 
+class TopoDS_Shape;
+
 template<class T>
 class vtkSmartPointer;
 
@@ -301,6 +303,7 @@ class FrgVisual_RectangleActor;
 class FrgVisual_CircleActor;
 class FrgVisual_BoxActor;
 class FrgVisual_CylinderActor;
+class FrgVisual_ShapeActor;
 class FrgVisual_SphereActor;
 
 template<int Dim>
@@ -530,6 +533,17 @@ public:
 		double End_Y,
 		double End_Z,
 		double radius,
+		bool render = true
+	);
+
+	// ==================================================================================
+	// Add Shape
+	// ==================================================================================
+
+	template <typename = typename std::enable_if_t<Dim == 3>>
+	FrgVisual_ShapeActor* AddShape
+	(
+		const TopoDS_Shape& shape,
 		bool render = true
 	);
 

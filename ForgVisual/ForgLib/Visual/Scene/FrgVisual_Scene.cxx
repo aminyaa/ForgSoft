@@ -19,6 +19,7 @@
 #include <FrgVisual_GridActor.hxx>
 #include <FrgVisual_BoxActor.hxx>
 #include <FrgVisual_CylinderActor.hxx>
+#include <FrgVisual_ShapeActor.hxx>
 #include <FrgVisual_SphereActor.hxx>
 #include <FrgVisual_TextActor.hxx>
 #include <FrgVisual_PlaneActor.hxx>
@@ -1491,6 +1492,30 @@ ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<Dim>::Add
 	return std::move(actor);
 }
 
+template<int Dim>
+template <typename>
+ForgVisualLib::FrgVisual_ShapeActor*
+ForgVisualLib::FrgVisual_Scene<Dim>::AddShape
+(
+	const TopoDS_Shape& shape,
+	bool render
+)
+{
+	// Actor
+	auto actor = vtkSmartPointer<FrgVisual_ShapeActor>::New();
+	//actor->SetRenderer(theRenderer_);
+
+	actor->SetData(shape);
+	//actor->SetColor(1.0, 1.0, 1.0);
+
+	AddActorToScene(actor);
+
+	if (render)
+		RenderScene(false);
+
+	return std::move(actor);
+}
+
 template <int Dim>
 template <typename>
 ForgVisualLib::FrgVisual_SphereActor*
@@ -1920,6 +1945,8 @@ template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_BoxActor* ForgVisualLib::Frg
 
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(const ForgBaseLib::FrgBase_Pnt<3>& Start, const ForgBaseLib::FrgBase_Pnt<3>& End, double radius, bool render);
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_CylinderActor* ForgVisualLib::FrgVisual_Scene<3>::AddCylinder(double Start_X, double Start_Y, double Start_Z, double End_X, double End_Y, double End_Z, double radius, bool render);
+
+template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_ShapeActor* ForgVisualLib::FrgVisual_Scene<3>::AddShape(const TopoDS_Shape& shape, bool render);
 
 template FORGVISUAL_EXPORT ForgVisualLib::FrgVisual_SphereActor* ForgVisualLib::FrgVisual_Scene<3>::AddSphere(const ForgBaseLib::FrgBase_Pnt<3>& Center, double radius, bool render);
 

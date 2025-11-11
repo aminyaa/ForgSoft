@@ -272,6 +272,11 @@ bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsPlane() const
 	IsThatType(Plane);
 }
 
+bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsShape() const
+{
+	IsThatType(Shape);
+}
+
 bool ForgVisualLib::FrgVisual_BaseActor_Entity::IsTwoDimension() const
 {
 	if (GetActorDimension() == ActorDimension::TwoDim)
