@@ -6,6 +6,7 @@
 #include <FrgBase_Object.hxx>
 
 #include <BRepMesh_FastDiscret.hxx>
+#include <vtkSmartPointer.h>
 
 namespace ForgBaseLib
 {
@@ -15,6 +16,7 @@ namespace ForgBaseLib
 
 class TopoDS_Shape;
 class TopoDS_Edge;
+class vtkPolyData;
 
 BeginForgVisualLib
 
@@ -23,6 +25,8 @@ class FrgVisual_Tools
 {
 
 public:
+
+	static vtkSmartPointer<vtkPolyData> ShapeToVTK(const TopoDS_Shape& shape);
 
 	/*static std::vector
 		<
