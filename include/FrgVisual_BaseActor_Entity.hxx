@@ -49,6 +49,7 @@ public:
 		Text,
 		Surface,
 		Plane,
+		Shape,
 		Other
 	};
 
@@ -139,6 +140,7 @@ public:
 	bool IsText() const;
 	bool IsSurface() const;
 	bool IsPlane() const;
+	bool IsShape() const;
 
 	bool IsTwoDimension() const;
 	bool IsThreeDimension() const;
