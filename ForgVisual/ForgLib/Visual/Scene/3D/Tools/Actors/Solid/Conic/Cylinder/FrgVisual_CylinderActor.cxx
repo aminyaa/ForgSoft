@@ -21,7 +21,7 @@ ForgVisualLib::FrgVisual_CylinderActor::FrgVisual_CylinderActor()
 
 void ForgVisualLib::FrgVisual_CylinderActor::SetData(const ForgBaseLib::FrgBase_Pnt<3>& Start, const ForgBaseLib::FrgBase_Pnt<3>& End, double radius)
 {
-	SetData(Start.X(), End.X(), Start.Y(), End.Y(), Start.Z(), End.Z(), radius);
+	SetData(Start.X(), Start.Y(), Start.Z(), End.X(), End.Y(), End.Z(), radius);
 }
 
 void ForgVisualLib::FrgVisual_CylinderActor::SetData(double Start_x, double Start_y, double Start_z, double End_x, double End_y, double End_z, double radius)
@@ -47,93 +47,18 @@ void ForgVisualLib::FrgVisual_CylinderActor::SetData(double Start_x, double Star
 		BRepPrimAPI_MakeCylinder c(ax, theRadius_, V.Magnitude());
 		auto shape = c.Shape();
 
-		bool isMeshEmpty = theMesh_.empty();
-		std::vector
-			<
-			std::tuple
-			<
-			std::vector<ForgBaseLib::FrgBase_Pnt<3>>,
-			std::vector<std::tuple<int, int, int>>
-			>
-			> meshes;
+		vtkSmartPointer<vtkPolyData> polyData = FrgVisual_Tools::ShapeToVTK(c.Shape());
 
-		if (IsRepresentationToSurface())
-		{
-			//meshes = FrgVisual_Tools::GetMeshOnSurfacesFromShape(shape);
-		}
-		else
-		{
-			//meshes = FrgVisual_Tools::GetMeshOnEdgesFromShape(shape);
-		}
-
-		if (!isMeshEmpty && meshes.size() != theMesh_.size())
-		{
-			if (theRenderer_)
-			{
-				for (const auto& mesh : theMesh_)
-					theRenderer_->RemoveActor(mesh);
-
-				theMesh_.clear();
-				isMeshEmpty = true;
-			}
-		}
-
-		int i = 0;
-		for (const auto& mesh : meshes)
-		{
-			if (isMeshEmpty)
-			{
-				auto actor = new FrgVisual_MeshActor<3>;
-
-				actor->SetDataTriangulation(std::get<0>(mesh), std::get<1>(mesh));
-
-				theMesh_.push_back(actor);
-			}
-			else
-				theMesh_[i]->SetDataTriangulation(std::get<0>(mesh), std::get<1>(mesh));
-
-			i++;
-		}
-
-		for (const auto& mesh : theMesh_)
-		{
-			if (IsRepresentationToSurface())
-			{
-				mesh->GetProperty()->SetRepresentationToSurface();
-				mesh->GetProperty()->EdgeVisibilityOff();
-			}
-			else
-			{
-				mesh->GetProperty()->SetRepresentationToWireframe();
-				mesh->GetProperty()->EdgeVisibilityOn();
-				mesh->GetProperty()->SetLineWidth(2.0f);
-			}
-		}
+		vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+		mapper->SetInputData(polyData);
+		this->SetMapper(mapper);
 	}
 	catch (const Standard_Failure& f)
 	{
-		/*const auto& app = FrgBase_Application::Instance();
-		if (app)
-		{
-			app->GetParentMainWindow()->PrintErrorToConsole(QString::fromStdString(f.GetMessageString()));
-		}*/
 
 		std::exception ex(f.GetMessageString());
 		throw ex;
 	}
-
-	//// actor
-	//vtkNew<vtkCylinderSource> cylinderSource;
-	//cylinderSource->SetCenter(0.0, 0.0, 0.0);
-	//cylinderSource->SetRadius(0.05);
-	//cylinderSource->SetHeight(0.5);
-	//cylinderSource->SetResolution(100);
-
-	//// mapper
-	//auto cubeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-	//cubeMapper->SetInputConnection(cylinderSource->GetOutputPort());
-
-	//this->SetMapper(cubeMapper);
 }
 
 void ForgVisualLib::FrgVisual_CylinderActor::SetRepresentationToSurface()
