@@ -8,6 +8,111 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <Poly_Triangulation.hxx>
+#include <vtkPolyData.h>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Tool.hxx>
+#include <Poly_Triangulation.hxx>
+#include <vtkTriangle.h>
+
+IMeshTools_Parameters ComputeMeshParameters(const TopoDS_Shape& shape)
+{
+    IMeshTools_Parameters params;
+
+    // Compute bounding box diagonal
+    Bnd_Box bbox;
+    BRepBndLib::Add(shape, bbox);
+    Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    Standard_Real diag = gp_Pnt(xmin, ymin, zmin).Distance(gp_Pnt(xmax, ymax, zmax));
+    const double dia = std::sqrt(bbox.SquareExtent());
+    const double tol = 0.001 * dia;
+    auto isXThin = bbox.IsXThin(tol);
+    auto isYThin = bbox.IsYThin(tol);
+    auto isZThin = bbox.IsZThin(tol);
+
+    const double dx = isXThin ? dia : std::abs(xmax - xmin);
+    const double dy = isYThin ? dia : std::abs(ymax - ymin);
+    const double dz = isZThin ? dia : std::abs(zmax - zmin);
+
+    const auto d = std::min(std::min(dx, dy), dz);
+
+
+    //if (diag < 1e-6)
+    //    diag = 1.0; // Avoid division by zero for degenerate shapes
+
+    // Compute key adaptive parameters
+    //params.Deflection = std::max(diag * 0.001, 1e-4);          // 0.1% of model size
+    params.Deflection = std::max(d * 0.001, 1e-4);          // 0.1% of model size
+    params.DeflectionInterior = params.Deflection * 0.5;       // finer inside
+    params.Angle = 0.25;                            // 30 degrees
+    params.AngleInterior = params.Angle * 0.7;
+    params.MinSize = std::max(d * 0.0001, 1e-5);            // avoid too small triangles
+
+    // Derived logical parameters
+    params.Relative = Standard_True;           // deflection relative to bbox size
+    params.InParallel = Standard_True;         // parallel meshing if available
+    params.CleanModel = Standard_True;         // remove degenerate edges
+    params.AdjustMinSize = Standard_True;      // auto adjust per surface
+    params.ControlSurfaceDeflection = Standard_False; // disable OCC deflection control
+    params.ForceFaceDeflection = Standard_False;      // let OCC handle per-face mesh
+    params.AllowQualityDecrease = Standard_False;     // keep mesh quality strict
+
+    return params;
+}
+
+vtkSmartPointer<vtkPolyData> ForgVisualLib::FrgVisual_Tools::ShapeToVTK(const TopoDS_Shape& shape)
+{
+    // Step 1: Mesh the shape (triangulate)
+    BRepMesh_IncrementalMesh mesher(shape, ComputeMeshParameters(shape));
+    mesher.Perform();
+
+    // Step 2: Prepare VTK containers
+    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+    vtkSmartPointer<vtkCellArray> triangles = vtkSmartPointer<vtkCellArray>::New();
+
+    // Step 3: Iterate over faces and extract triangles
+    TopExp_Explorer faceExplorer;
+    for (faceExplorer.Init(shape, TopAbs_FACE); faceExplorer.More(); faceExplorer.Next())
+    {
+        TopoDS_Face face = TopoDS::Face(faceExplorer.Current());
+
+        TopLoc_Location loc;
+        Handle(Poly_Triangulation) triangulation = BRep_Tool::Triangulation(face, loc);
+        if (triangulation.IsNull())
+            continue;
+
+        const Poly_Array1OfTriangle& tris = triangulation->Triangles();
+
+        // Map OCC points to VTK point indices
+        std::vector<vtkIdType> nodeIds(triangulation->NbNodes() + 1);
+        for (int i = triangulation->NbNodes(); i >= 1; --i)
+        {
+            gp_Pnt p = triangulation->Node(i).Transformed(loc.Transformation());
+            vtkIdType id = points->InsertNextPoint(p.X(), p.Y(), p.Z());
+            nodeIds[i] = id;
+        }
+
+        // Add each triangle to VTK
+        for (Standard_Integer i = tris.Lower(); i <= tris.Upper(); ++i)
+        {
+            Standard_Integer n1, n2, n3;
+            tris(i).Get(n1, n2, n3);
+
+            vtkSmartPointer<vtkTriangle> triangle = vtkSmartPointer<vtkTriangle>::New();
+            triangle->GetPointIds()->SetId(0, nodeIds[n1]);
+            triangle->GetPointIds()->SetId(1, nodeIds[n2]);
+            triangle->GetPointIds()->SetId(2, nodeIds[n3]);
+            triangles->InsertNextCell(triangle);
+        }
+    }
+
+    // Step 4: Create vtkPolyData
+    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+    polyData->SetPoints(points);
+    polyData->SetPolys(triangles);
+
+    return polyData;
+}
 
 //std::vector
 //<
