@@ -11,12 +11,32 @@
 #include <vtkPolyData.h>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
+#include <BRepLib.hxx>
 #include <Poly_Triangulation.hxx>
 #include <vtkTriangle.h>
 
 IMeshTools_Parameters ComputeMeshParameters(const TopoDS_Shape& shape)
 {
+    // 1) Precondition geometry/edges
+    BRepLib::BuildCurves3d(shape, 1e-7);            // ensure 3D edge curves exist
+    BRepLib::SameParameter(shape, 1e-7, true); // keep pcurves and 3D curves consistent
+
+    // 2) Size-based deflection
+    Bnd_Box bbox; BRepBndLib::Add(shape, bbox);
+    const double dia = std::sqrt(bbox.SquareExtent());
     IMeshTools_Parameters params;
+    params.Deflection = std::max(1e-3 * dia, 1e-4);   // relative chordal deflection
+    params.Angle = 5.0 * M_PI / 180.0; // max normal deviation ~10°
+    params.InParallel = true;
+    params.Relative = Standard_True; // "Deflection" is relative to local size
+    params.MinSize = 1e-7 * dia;    // avoid degenerate edges
+    params.InternalVerticesMode = Standard_True; // helps on complex trims/holes
+    params.ControlSurfaceDeflection = Standard_True; // keep sag on surface not only edges
+
+    return params;
+
+    /*IMeshTools_Parameters params;
 
     // Compute bounding box diagonal
     Bnd_Box bbox;
@@ -57,7 +77,7 @@ IMeshTools_Parameters ComputeMeshParameters(const TopoDS_Shape& shape)
     params.ForceFaceDeflection = Standard_False;      // let OCC handle per-face mesh
     params.AllowQualityDecrease = Standard_False;     // keep mesh quality strict
 
-    return params;
+    return params;*/
 }
 
 vtkSmartPointer<vtkPolyData> ForgVisualLib::FrgVisual_Tools::ShapeToVTK(const TopoDS_Shape& shape)
