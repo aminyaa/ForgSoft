@@ -6,6 +6,10 @@
 #include <vtkPolyDataMapper.h>
 #include <vtkPolyData.h>
 #include <vtkProperty.h>
+#include <vtkTransform.h>
+#include <vtkTransformPolyDataFilter.h>
+#include <vtkTriangleFilter.h>
+#include <vtkTriangleMeshPointNormals.h>
 
 #include <BRepPrimAPI_MakeCylinder.hxx>
 
@@ -20,8 +24,23 @@ void ForgVisualLib::FrgVisual_ShapeActor::SetData(const TopoDS_Shape& shape)
 {
 	vtkSmartPointer<vtkPolyData> polyData = FrgVisual_Tools::ShapeToVTK(shape);
 
+	auto userTransform = vtkSmartPointer<vtkTransform>::New();
+	auto transform = vtkSmartPointer<vtkTransformPolyDataFilter>::New();
+	transform->SetTransform(userTransform);
+	transform->SetInputData(polyData);
+
+	auto triangles = vtkSmartPointer<vtkTriangleFilter>::New();
+	triangles->SetInputConnection(transform->GetOutputPort());
+
+	auto norms = vtkSmartPointer<vtkTriangleMeshPointNormals>::New();
+	norms->SetInputConnection(triangles->GetOutputPort());
+
 	vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-	mapper->SetInputData(polyData);
+	mapper->SetInputConnection(norms->GetOutputPort());
+
+	mapper->InterpolateScalarsBeforeMappingOn();
+
+	//mapper->SetInputData(polyData);
 	this->SetMapper(mapper);
 }
 
