@@ -62,6 +62,11 @@ IMeshTools_Parameters ComputeMeshParameters(const TopoDS_Shape& shape)
 
 vtkSmartPointer<vtkPolyData> ForgVisualLib::FrgVisual_Tools::ShapeToVTK(const TopoDS_Shape& shape)
 {
+    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+
+    if (shape.IsNull())
+        return polyData;
+
     // Step 1: Mesh the shape (triangulate)
     BRepMesh_IncrementalMesh mesher(shape, ComputeMeshParameters(shape));
     mesher.Perform();
@@ -107,7 +112,6 @@ vtkSmartPointer<vtkPolyData> ForgVisualLib::FrgVisual_Tools::ShapeToVTK(const To
     }
 
     // Step 4: Create vtkPolyData
-    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
     polyData->SetPoints(points);
     polyData->SetPolys(triangles);
 
